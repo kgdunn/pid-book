@@ -9,6 +9,7 @@ Run with: uv run --no-project --with networkx==3.4.2 --with numpy==2.5.3 python 
 
 import json
 import math
+from collections import Counter
 from itertools import combinations
 from pathlib import Path
 
@@ -22,7 +23,7 @@ LIGHT = {"DESCRIBED_IN": 0.2, "ILLUSTRATES": 0.5, "ANSWERED_BY": 0.5, "CONTRASTS
 NAMES = {
     # anchor: (short name drawn on the map, full name)
     "full_factorial": ("Full factorials", "Full factorials, randomization, blocking and interactions"),
-    "fractional_factorial": ("Fractional factorials", "Fractional factorials, resolution and screening"),
+    "fractional_factorial": ("Fractional factorials", "Fractional factorials, aliasing, resolution and screening"),
     "rsm": ("Response surfaces", "Response surfaces, multiple responses and evolutionary operation"),
     "information_matrix": ("Judging designs", "Judging designs: information, prediction variance and optimality"),
     "omars_design": ("DSD and OMARS", "Definitive screening and OMARS designs"),
@@ -31,10 +32,45 @@ NAMES = {
     "curvature": ("Curvature", "Curvature, center points and second-order designs"),
     "optimal_design": ("Optimal and mixture designs", "Optimal designs, constraints and mixtures"),
     "experiment": ("Causality", "Experiments, causality and happenstance data"),
-    "confounding": ("Aliasing", "Aliasing, and how to measure it"),
 }
 TERM_GAP = 62  # least distance between two terms, in drawing units
 CLUSTER_GAP = 70  # least gap between two cluster circles
+RUNS = 200  # Louvain runs per round of consensus; at 100, whole small topics could still flip
+THRESHOLD = 0.5  # a pair of terms stays linked in the consensus graph if at least this share of runs joined them
+
+
+def louvain(graph: nx.Graph, seed: int) -> list[list[int]]:
+    """One Louvain partition, as sorted lists of integer node ids."""
+    return sorted(sorted(c) for c in nx.community.louvain_communities(graph, weight="weight", resolution=1.0, seed=seed))
+
+
+def consensus(g: nx.Graph, first_seed: int = 0) -> list[set[str]]:
+    """Topics that do not depend on Louvain's random seed (consensus clustering, Lancichinetti and Fortunato, 2012).
+
+    Run Louvain RUNS times and link each pair of terms by the share of runs that put them together,
+    dropping pairs below THRESHOLD; cluster that consensus graph the same way, and repeat until all
+    RUNS runs agree. A term left on its own joins the topic it was most often put in.
+    """
+    # Louvain iterates over sets of nodes; string ids hash differently on every run, integers do not.
+    gi = nx.convert_node_labels_to_integers(g, label_attribute="id")
+    graph, seed, first_round = gi, first_seed, None
+    for _ in range(20):
+        parts = [louvain(graph, seed + k) for k in range(RUNS)]
+        seed += RUNS
+        if all(p == parts[0] for p in parts):
+            break
+        together = Counter((a, b) for p in parts for c in p for a, b in combinations(c, 2))
+        first_round = first_round or together
+        graph = nx.Graph()
+        graph.add_nodes_from(gi.nodes)
+        graph.add_weighted_edges_from((a, b, k / RUNS) for (a, b), k in sorted(together.items()) if k / RUNS >= THRESHOLD)
+    else:
+        raise RuntimeError(f"consensus did not settle in 20 rounds of {RUNS} runs")
+    topics = [c for c in parts[0] if len(c) > 1]
+    for (lone,) in (c for c in parts[0] if len(c) == 1):
+        share = lambda t: sum(first_round[(min(lone, m), max(lone, m))] for m in t) / len(t)
+        max(topics, key=share).append(lone)
+    return [{gi.nodes[i]["id"] for i in t} for t in topics]
 
 
 def separate(points: dict[str, list[float]], gap: float, rounds: int = 400) -> None:
@@ -66,10 +102,7 @@ def main() -> None:
         else:
             g.add_edge(e["source"], e["target"], weight=w)
 
-    # Louvain iterates over sets of nodes; string ids hash differently on every run, integers do not.
-    gi = nx.convert_node_labels_to_integers(g, label_attribute="id")
-    found = nx.community.louvain_communities(gi, weight="weight", resolution=1.0, seed=SEED)
-    communities = [{gi.nodes[i]["id"] for i in c} for c in found]
+    communities = consensus(g)
     clusters = []
     for members in communities:
         anchors = [a for a in NAMES if a in members]

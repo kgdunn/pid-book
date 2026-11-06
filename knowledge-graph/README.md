@@ -3,7 +3,7 @@
 A graph of the design and analysis of experiments in *Process Improvement using Data*, for the
 factorial app: chapter 5, plus three design terms from chapter 7's mixed-level profile case study
 (split-plot design, coding schemes for a categorical factor, the joint F-test of a categorical
-interaction). 217 terms and 411 links of 35 kinds, grouped into 11 topics by Louvain clustering.
+interaction). 217 terms and 411 links of 35 kinds, grouped into 10 topics by consensus Louvain clustering.
 
 Chapter 7's multivariate sections (batch and multivariate monitoring, soft sensors, image
 analysis, process understanding, troubleshooting, product development by model inversion) and the
@@ -23,13 +23,15 @@ names their terms, and tapping a term shows its definition, the book's own line,
 |---|---|
 | `graph.yaml` | **The source.** Terms (with their evidence) and links, one per line: `[source, VERB, target, evidence]`. |
 | `build_kg.py` | Checks `graph.yaml` against the book; writes the generated files below. |
-| `layout_kg.py` | Louvain topics and fixed positions for the map; writes the page. |
+| `layout_kg.py` | Consensus Louvain topics and fixed positions for the map; writes the page. |
 | `template.html` | The page, without its data. |
-| `check_levels.py` | How stable the topics, and possible sub-topics, are across 30 Louvain seeds. |
+| `check_levels.py` | How stable the topics, and possible sub-topics, are across Louvain seeds. |
+| `check_map.mjs` | Drives the map in headless Chromium at phone and tablet widths; fails on any misbehaviour. |
+| `check_anchors.py` | Checks every book link's `#anchor` on learnche.org (needs the network). |
 | `doe_kg.json`, `doe_kg_map.json` | Generated: the graph, then with topics and positions. |
 | `doe_kg.cypher` | Generated: the graph as Cypher, for an empty Neo4j database. |
 | `experimental-design-graph.html` | Generated: the page with its data inlined. |
-| `audit/` | The November 2026 accuracy review (see below). |
+| `audit/` | The November 2026 accuracy review, and the one-off scripts that reshaped the graph. |
 
 ## Rebuild
 
@@ -44,6 +46,24 @@ uv run --no-project --with networkx==3.4.2 --with numpy==2.5.3 python -I layout_
 does not resolve, a verb is not in its list, a term has no links, a definition is over 32 words,
 or a text contains an em-dash. The layout is reproducible: Louvain runs on integer node ids and each
 topic's layout on a sorted graph.
+
+Then check the result:
+
+```bash
+node check_map.mjs                       # the map, in headless Chromium (needs Playwright)
+python3 check_anchors.py                 # the book links on learnche.org
+uv run --no-project --with networkx==3.4.2 --with numpy==2.5.3 python -I check_levels.py doe_kg_map.json
+```
+
+## How the topics are found
+
+One Louvain run depends on its random seed: single runs reproduce the published topics at a median
+adjusted Rand index of 0.82, and as low as 0.65. So `layout_kg.py` uses consensus clustering
+(Lancichinetti and Fortunato, 2012): it runs Louvain 200 times, links each pair of terms by the share
+of runs that put them together (pairs under half are dropped), clusters that consensus graph the
+same way, and repeats until all 200 runs agree. Consensus from four other seed batches reproduces the
+published topics at 0.95 to 0.98; the terms that still move sit between two topics (for example
+degrees of freedom, alias matrix). At 100 runs a round, a whole small topic could still flip.
 
 ## The accuracy review (November 2026)
 
@@ -75,10 +95,6 @@ curvature; and folding the link verbs had turned the book's "a word equals I" in
 
 ## Next steps
 
-1. Consensus topics. Across 30 Louvain seeds the 11 topics agree with the published ones at a
-   median adjusted Rand index of 0.79 (worst 0.59). Run Louvain about 100 times, count how often
-   each pair of terms shares a topic, and cluster those counts.
-2. A second level, only where a topic is large and its split is stable (`check_levels.py`). On the
-   current graph: full factorials (32 terms, median agreement 0.91), fractional factorials (29,
-   0.80), response surfaces (21, 1.00), judging designs (21, 1.00), DSD and OMARS (20, 1.00) and
-   significance (20, 1.00). Recheck after step 1, since consensus topics change what each holds.
+1. A second level, only where a topic is large and its split is stable. Find the sub-groups by
+   consensus too: single Louvain runs inside a topic are as seed-dependent as at the top level
+   (`check_levels.py`: fractional factorials splits at a median agreement of only 0.67).
