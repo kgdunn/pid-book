@@ -78,8 +78,10 @@ async function run(browser, width, height) {
   const verbs = await p.evaluate(() => [...new Set(DATA.edges.map((e) => e.type))].filter((v) => !(v in READ)));
   check(width, "every link verb has a reading", verbs.length === 0, verbs.join(", "));
   const how = await p.textContent("#how");
-  const n = await p.evaluate(() => DATA.nodes.length);
-  check(width, "the explanation is filled from the map's data", how.includes(`${n} terms`) && !/undefined|NaN/.test(how));
+  const n = await p.evaluate(() => DATA.edges.length);
+  check(width, "the explanation is filled from the map's data", how.includes(`${n} links`) && !/undefined|NaN/.test(how));
+  check(width, "the explanation draws each kind of term in its legend shape",
+    (await p.evaluate(() => document.querySelectorAll("#how .kind svg path").length)) === 5);
   const told = await p.evaluate(() => [...document.querySelectorAll("#how > p, #how > ul")].map((e) => e.textContent).join(" "));
   check(width, "the explanation is in words until 'Show the numbers' is opened", !/\d/.test(told), told.match(/\S*\d\S*/g)?.join(" "));
   const page = await p.evaluate(() => {
