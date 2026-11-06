@@ -42,6 +42,8 @@ h1 { font: 600 1.6rem/1.15 var(--display); margin: 0; text-wrap: balance; }
 .controls button { width: 40px; height: 40px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel); color: var(--fg);
   font: 500 1.15rem var(--body); cursor: pointer; display: grid; place-items: center; }
 .controls button svg { width: 18px; height: 18px; }
+.controls button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.controls #labels { font: 600 .95rem var(--display); }
 .strip { flex: 1; display: flex; align-items: center; gap: 10px; background: var(--panel); border: 1px solid var(--line);
   border-radius: 6px; padding: 6px 8px 6px 10px; font-size: .86rem; min-width: 0; }
 .strip span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
@@ -92,6 +94,7 @@ footer { color: var(--muted); font-size: .8rem; }
   <div class="mapbar">
     <div class="strip" id="strip"><span id="striptext"></span><button type="button" id="details">Details</button></div>
     <div class="controls">
+      <button type="button" id="labels" aria-pressed="true" aria-label="Show term names" title="Show term names">Aa</button>
       <button type="button" id="zin" aria-label="Zoom in">+</button>
       <button type="button" id="zout" aria-label="Zoom out">&minus;</button>
       <button type="button" id="home" aria-label="Show all topics">
@@ -162,6 +165,8 @@ const cy = cytoscape({ container: document.getElementById("cy"), elements, layou
   autounselectify: true, boxSelectionEnabled: false, wheelSensitivity: 0.35, pixelRatio: "auto" });
 
 let selected = null;   // a term id, a topic id, or null for the overview
+let labelsOn = true;   // term names on the map; with them off, only the selected term is named
+try { labelsOn = localStorage.getItem("edg-labels") !== "off"; } catch {}
 const DETAIL_GAP = 26;   // on-screen distance between terms at which they appear
 
 // An on-screen size: `base` where the terms appear, then growing more slowly than the map as you zoom in.
@@ -233,7 +238,8 @@ function placeLabels(z) {
     const W = cy.width(), H = cy.height();
     const candidates = [];
     cy.nodes(".term").forEach(n => {
-      const sel = n.hasClass("sel"), forced = sel || n.hasClass("nb");
+      const sel = n.hasClass("sel"), forced = sel || (labelsOn && n.hasClass("nb"));
+      if (!sel && !labelsOn) return;
       if (!forced && n.data("rank") >= shown) return;
       const p = n.renderedPosition();
       if (p.x < -160 || p.x > W + 160 || p.y < -160 || p.y > H + 160) return;
@@ -371,6 +377,14 @@ document.getElementById("links").addEventListener("click", ev => {
 });
 const zoomBy = f => { const z = Math.min(cy.maxZoom(), Math.max(cy.minZoom(), cy.zoom() * f));
   cy.stop(); cy.animate({ zoom: { level: z, renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } } }, { duration: reduce ? 0 : 250 }); };
+const labelsButton = document.getElementById("labels");
+const showLabelState = () => labelsButton.setAttribute("aria-pressed", String(labelsOn));
+labelsButton.addEventListener("click", () => {
+  labelsOn = !labelsOn;
+  try { localStorage.setItem("edg-labels", labelsOn ? "on" : "off"); } catch {}
+  showLabelState(); refresh(true);
+});
+showLabelState();
 document.getElementById("zin").addEventListener("click", () => zoomBy(1.6));
 document.getElementById("zout").addEventListener("click", () => zoomBy(1 / 1.6));
 document.getElementById("home").addEventListener("click", () => go(null));
