@@ -21,18 +21,17 @@ LIGHT = {"DESCRIBED_IN": 0.2, "ILLUSTRATES": 0.5, "ANSWERED_BY": 0.5, "CONTRASTS
 # A cluster is named by the anchor term it contains; the build fails if an anchor moves or two meet.
 NAMES = {
     # anchor: (short name drawn on the map, full name)
-    "pca": ("PCA and PLS in practice", "PCA and PLS in practice: monitoring, batches and product development"),
     "full_factorial": ("Full factorials", "Full factorials, randomization, blocking and interactions"),
-    "fractional_factorial": ("Fractional factorials", "Fractional factorials, aliasing and screening"),
-    "optimal_design": ("Optimal designs", "Optimal designs, and how designs are judged"),
-    "least_squares_model": ("Coefficients and coding", "Least squares coefficients, coding and steepest ascent"),
+    "fractional_factorial": ("Fractional factorials", "Fractional factorials, resolution and screening"),
+    "rsm": ("Response surfaces", "Response surfaces, multiple responses and evolutionary operation"),
+    "information_matrix": ("Judging designs", "Judging designs: information, prediction variance and optimality"),
     "omars_design": ("DSD and OMARS", "Definitive screening and OMARS designs"),
     "lenth_method": ("Significance", "Judging significance: Lenth's method, standard errors and t-tests"),
+    "coefficient": ("Coefficients and coding", "Factors, coding, coefficients and steepest ascent"),
     "curvature": ("Curvature", "Curvature, center points and second-order designs"),
-    "process_drift": ("Drift and updating", "Process drift, EVOP and keeping models current"),
+    "optimal_design": ("Optimal and mixture designs", "Optimal designs, constraints and mixtures"),
     "experiment": ("Causality", "Experiments, causality and happenstance data"),
-    "mixture_design": ("Mixtures and constraints", "Mixtures, constraints and model inversion"),
-    "rsm": ("Response surfaces", "Response surfaces and multiple responses"),
+    "confounding": ("Aliasing", "Aliasing, and how to measure it"),
 }
 TERM_GAP = 62  # least distance between two terms, in drawing units
 CLUSTER_GAP = 70  # least gap between two cluster circles

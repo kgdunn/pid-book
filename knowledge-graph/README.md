@@ -1,9 +1,14 @@
 # Experimental design knowledge graph (draft)
 
-A graph of the core of *Process Improvement using Data*: chapter 5 (design and analysis of
-experiments) and chapter 7 (its applications), with the few chapter 6 ideas that chapter 7 rests
-on. 283 terms (214 from chapter 5, 62 from chapter 7, 7 chapter 6 anchors) and 571 links of 35
-kinds, grouped into 12 topics by Louvain clustering.
+A graph of the design and analysis of experiments in *Process Improvement using Data*, for the
+factorial app: chapter 5, plus three design terms from chapter 7's mixed-level profile case study
+(split-plot design, coding schemes for a categorical factor, the joint F-test of a categorical
+interaction). 217 terms and 411 links of 35 kinds, grouped into 11 topics by Louvain clustering.
+
+Chapter 7's multivariate sections (batch and multivariate monitoring, soft sensors, image
+analysis, process understanding, troubleshooting, product development by model inversion) and the
+chapter 6 anchors they needed were reviewed and then removed, because the app is about designed
+experiments only; they are in the git history and in `audit/result_F.json` and `result_G.json`.
 
 **Every term and every link cites the book**: a `file:line` in pid-book, and for each term the
 words on that line it comes from. The build checks every quote against the book's current text and
@@ -52,7 +57,8 @@ it made in named tables at its top.
   17 links wrong and fixed or dropped, 5 unsupported and decided case by case.
 - Reviewer E proposed the terms of chapter 5's newer sections: OMARS, definitive screening as an
   OMARS design (not an optimal design), Lenth's method, power, lack of fit, desirability, mixtures.
-- Reviewers F and G proposed the terms of chapter 7 and the chapter 6 anchors it needs.
+- Reviewers F and G proposed the terms of chapter 7 and the chapter 6 anchors it needs; all but
+  three design terms were later removed, to keep the graph to designed experiments.
 - Six terms were folded into others (for example alias into confounding, steepest descent into
   steepest ascent) and six duplicate proposals merged; 123 terms are new.
 
@@ -63,20 +69,16 @@ curvature; and folding the link verbs had turned the book's "a word equals I" in
 
 ## Known limits
 
-- USES still carries 136 of the 571 links; some could be sharper.
+- USES still carries 88 of the 411 links; some could be sharper.
 - A quote must sit on one source line for the mechanical check, so some are sentence fragments.
-- Two chapter 7 links are inferred rather than stated: soft sensors are built from happenstance
-  data (chapter 7 never uses that word), and the design-build-test-learn cycle is a form of
-  sequential experimentation.
-- Chapter 6 is present only as the seven anchors chapter 7 needs; the exercises are not covered.
+- The chapter exercises are not covered.
 
 ## Next steps
 
-1. Consensus topics. Across 30 Louvain seeds the 12 topics agree with the published ones at a
-   median adjusted Rand index of 0.70 (worst 0.60). Run Louvain about 100 times, count how often
+1. Consensus topics. Across 30 Louvain seeds the 11 topics agree with the published ones at a
+   median adjusted Rand index of 0.79 (worst 0.59). Run Louvain about 100 times, count how often
    each pair of terms shares a topic, and cluster those counts.
 2. A second level, only where a topic is large and its split is stable (`check_levels.py`). On the
-   current graph: PCA and PLS in practice (46 terms, median agreement 0.86), full factorials (34,
-   0.84), optimal designs (29, 1.00), coefficients and coding (25, 0.83) and significance (20, 1.00).
-   Fractional factorials (34 terms, 0.67) and DSD and OMARS (22, 0.77) split differently with each
-   seed. Recheck after step 1, since consensus topics change what each topic holds.
+   current graph: full factorials (32 terms, median agreement 0.91), fractional factorials (29,
+   0.80), response surfaces (21, 1.00), judging designs (21, 1.00), DSD and OMARS (20, 1.00) and
+   significance (20, 1.00). Recheck after step 1, since consensus topics change what each holds.
