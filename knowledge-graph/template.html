@@ -259,6 +259,7 @@ function textWidth(text, font) {
 function placeLabels(z) {
   const gap = TERM_GAP * z;
   const show = new Set();
+  placed = [];
   if (gap >= DETAIL_GAP) {
     const { font, dot } = sizes(z), wrap = font * LABEL_EMS;
     const shown = gap < 40 ? 3 : gap < 60 ? 8 : Infinity;   // per topic, by rank, before space decides
@@ -283,10 +284,22 @@ function placeLabels(z) {
       const box = { x1: c.p.x - half, x2: c.p.x + half, y1: top, y2: top + lines * f * 1.3 + 4 };
       if (c.forced || !boxes.some(o => box.x1 < o.x2 && o.x1 < box.x2 && box.y1 < o.y2 && o.y1 < box.y2)) {
         boxes.push(box); show.add(c.n.id());
+        placed.push(c);
       }
     }
   }
   cy.nodes(".term").forEach(n => n.toggleClass("lab", show.has(n.id())));
+}
+
+// The first pass estimates label sizes; once they are drawn, their real boxes settle any overlap it missed.
+let placed = [];
+function settleOverlaps() {
+  const kept = [];
+  for (const c of placed) {
+    const b = c.n.renderedBoundingBox({ includeNodes: false, includeEdges: false, includeLabels: true });
+    if (!c.forced && kept.some(o => b.x1 < o.x2 && o.x1 < b.x2 && b.y1 < o.y2 && o.y1 < b.y2)) c.n.removeClass("lab");
+    else kept.push(b);
+  }
 }
 
 let styledZoom = null;
@@ -296,6 +309,7 @@ function refresh(force = false) {
     if (force || z !== styledZoom) { cy.style(sheet(z)); styledZoom = z; }
     placeLabels(z);
   });
+  cy.batch(settleOverlaps);   // after the first batch, so the labels have real sizes
 }
 let queued = false;
 cy.on("viewport", () => { if (!queued) { queued = true; requestAnimationFrame(() => { queued = false; refresh(); }); } });
