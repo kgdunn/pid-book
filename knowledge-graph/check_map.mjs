@@ -85,7 +85,9 @@ async function run(browser, width, height) {
   const told = await p.evaluate(() => [...document.querySelectorAll("#how > p, #how > ul")].map((e) => e.textContent).join(" "));
   check(width, "the explanation is in words until 'Show the numbers' is opened", !/\d/.test(told), told.match(/\S*\d\S*/g)?.join(" "));
   const page = await p.evaluate(() => {
-    const sub = document.createRange(); sub.selectNodeContents(document.querySelector("header .sub"));
+    // In DejaVu Sans, wider than any phone's own font, so two lines here are two lines on any phone.
+    const lede = document.querySelector("header .sub"); lede.style.fontFamily = '"DejaVu Sans", sans-serif';
+    const sub = document.createRange(); sub.selectNodeContents(lede);
     return { subLines: new Set([...sub.getClientRects()].map((r) => Math.round(r.top))).size,
       words: document.body.textContent + DATA.nodes.map((n) => n.definition).join(" "),
       examples: document.querySelector('#legend button[data-fam="context"]').getAttribute("aria-pressed"),
