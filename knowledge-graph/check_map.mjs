@@ -199,39 +199,54 @@ async function run(browser, width, height) {
   await context.close();
 }
 
-// On a phone, one finger that drags the map's content to its edge goes on to scroll the page, with no tap on lifting;
-// and the toolbar that then hides (a taller window) leaves the view alone, so the next drag scrolls the page at once.
+// On a touch screen one finger scrolls the page and leaves the map, with no tap on lifting; a hiding toolbar (a taller
+// window) keeps the view; two fingers move the map, and spreading them zooms in.
 async function fingerScrolls(browser) {
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true });
   const p = await context.newPage();
+  const errors = [];
+  p.on("console", (m) => m.type() === "error" && errors.push(m.text()));
   await p.route(ORIGIN, (r) => r.fulfill({ contentType: "text/html", body: html }));
   await p.goto(ORIGIN, { waitUntil: "load" });
   await p.waitForFunction(() => typeof cy !== "undefined" && cy.nodes().length > 0, null, { timeout: 30000 });
   await p.waitForTimeout(600);
   const finger = await context.newCDPSession(p);
-  const drag = async (rise) => {
+  const touch = (type, points) => finger.send("Input.dispatchTouchEvent", { type, touchPoints: points });
+  const drag = async (rise, fingers = 1) => {
     const box = await (await p.$("#cy")).boundingBox();
-    const [x, y] = [box.x + box.width / 2, box.y + 0.8 * box.height];
-    await finger.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x, y }] });
-    for (let step = 1; step <= rise / 15; step++)
-      await finger.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x, y: y - 15 * step }] });
-    await finger.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
-    await p.waitForTimeout(700);
+    const xs = Array.from({ length: fingers }, (_, k) => box.x + box.width * (k + 1) / (fingers + 1));
+    const y = box.y + 0.8 * box.height;
+    const at = (dy) => xs.map((x, id) => ({ x, y: y - dy, id }));
+    await touch("touchStart", at(0));
+    for (let step = 1; step <= rise / 15; step++) await touch("touchMove", at(15 * step));
+    await touch("touchEnd", []);
+    await p.waitForTimeout(800);
   };
   const view = () => p.evaluate(() => ({ scrolled: scrollY, title: document.querySelector("#card h2").textContent,
-    pan: JSON.stringify([cy.pan(), cy.zoom()]), bottom: cy.elements(":visible").renderedBoundingBox().y2 }));
+    pan: JSON.stringify([cy.pan(), cy.zoom()]), y: cy.pan().y, zoom: cy.zoom() }));
   const before = await view();
-  await drag(600);
+  await drag(300);
   const after = await view();
-  check(390, "a finger dragging the map to its edge goes on to scroll the page",
-    after.scrolled > before.scrolled + 100 && after.bottom >= 39 && after.title === before.title,
+  check(390, "one finger scrolls the page and leaves the map",
+    after.scrolled > before.scrolled + 100 && after.pan === before.pan && after.title === before.title,
     `scrolled ${after.scrolled - before.scrolled} px`);
   await p.setViewportSize({ width: 390, height: 900 }); await p.waitForTimeout(500);
   const kept = await view();
-  await drag(300);
-  const again = await view();
-  check(390, "a toolbar hiding keeps the view, and the next drag scrolls the page",
-    kept.pan === after.pan && again.scrolled > kept.scrolled + 200, `scrolled ${again.scrolled - kept.scrolled} px`);
+  check(390, "a toolbar hiding keeps the view", kept.pan === after.pan);
+  await p.evaluate(() => window.scrollTo(0, 0));
+  await drag(150, 2);
+  const moved = await view();
+  check(390, "two fingers move the map and leave the page", moved.y < kept.y - 50 && moved.scrolled === 0);
+  const box = await (await p.$("#cy")).boundingBox();
+  const [cx, cyy] = [box.x + box.width / 2, box.y + box.height / 2];
+  for (let k = 0; k <= 8; k++) {
+    const apart = 30 + 10 * k;
+    await touch(k ? "touchMove" : "touchStart", [{ x: cx - apart, y: cyy, id: 0 }, { x: cx + apart, y: cyy, id: 1 }]);
+  }
+  await touch("touchEnd", []);
+  await p.waitForTimeout(600);
+  check(390, "spreading two fingers zooms in", (await view()).zoom > moved.zoom * 1.5);
+  check(390, "no console errors from touch", errors.length === 0, errors.join(" | "));
   await context.close();
 }
 
