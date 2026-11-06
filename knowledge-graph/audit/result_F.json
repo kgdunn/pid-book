@@ -1,0 +1,933 @@
+{
+ "nodes": [],
+ "edges": [],
+ "overlaps": [
+  {
+   "ids": [
+    "troubleshooting",
+    "Troubleshooting with latent variable models"
+   ],
+   "note": "Not duplicates: chapter 5's node is fixing a problem by experimenting; chapter 7's is diagnosing it from existing process data with PCA. Keep both, linked by SUPPORTS."
+  },
+  {
+   "ids": [
+    "coding",
+    "Coding schemes for a categorical factor"
+   ],
+   "note": "Not duplicates: coding centres and scales a numeric factor to -1/+1; the new term covers reference, sum and cell-means coding of a several-level categorical factor."
+  },
+  {
+   "ids": [
+    "constraint",
+    "Operating window"
+   ],
+   "note": "Chapter 5's constraint is an infeasible factor region; chapter 7 also calls output inequalities, fixed specifications and T2/SPE limits constraints. Consider widening constraint's definition or noting the two senses."
+  },
+  {
+   "ids": [
+    "block",
+    "Split-plot design"
+   ],
+   "note": "The case study calls a whole plot 'a block of runs' (mixed-level-profile-case-study.rst:62), but a whole plot holds hard-to-change factors, not a nuisance disturbance; do not merge."
+  },
+  {
+   "ids": [
+    "Model inversion",
+    "Invert in the latent-variable space"
+   ],
+   "note": "Close but distinct: the second is the rule for correlated outputs (invert to a target score), kept separate because it carries the Jaeckle and MacGregor point about independent quality dimensions."
+  }
+ ],
+ "missing": [
+  {
+   "name": "Biplot",
+   "type": "Plot",
+   "definition": "A loadings plot with the scaled scores superimposed on it, so observations and variables are read together on one figure.",
+   "book_label": "APPS_process_understanding",
+   "evidence": "product-development-product-improvement/process-understanding.rst:15",
+   "quote": "The scores have been scaled and superimposed on the loadings plot, to create what is called a",
+   "links": [
+    {
+     "relation": "BUILT_ON",
+     "target": "Loadings plot",
+     "evidence": "product-development-product-improvement/process-understanding.rst:15",
+     "quote": "The scores have been scaled and superimposed on the loadings plot, to create what is called a"
+    }
+   ]
+  },
+  {
+   "name": "Troubleshooting with latent variable models",
+   "type": "Method",
+   "definition": "Fit a PCA model to data mostly from normal operation plus the problem period, then read score, SPE, loading and contribution plots to isolate the variables responsible.",
+   "book_label": "APPS_troubleshooting",
+   "evidence": "product-development-product-improvement/troubleshooting.rst:10",
+   "quote": "In general, troubleshooting with latent variable methods uses this approach:",
+   "links": [
+    {
+     "relation": "SUPPORTS",
+     "target": "troubleshooting",
+     "evidence": "product-development-product-improvement/troubleshooting.rst:10",
+     "quote": "In general, troubleshooting with latent variable methods uses this approach:"
+    },
+    {
+     "relation": "USES",
+     "target": "PCA",
+     "evidence": "product-development-product-improvement/troubleshooting.rst:24",
+     "quote": "Build the PCA model."
+    },
+    {
+     "relation": "USES",
+     "target": "Contribution plot",
+     "evidence": "product-development-product-improvement/troubleshooting.rst:26",
+     "quote": "Use contribution plots to learn why clusters of observations are different from others."
+    },
+    {
+     "relation": "TESTS",
+     "target": "conjecture",
+     "evidence": "product-development-product-improvement/troubleshooting.rst:28",
+     "quote": "the engineer has to be using her/his brain to formulate hypotheses, and then verify them in the data."
+    }
+   ],
+   "note": "Chapter 5's troubleshooting node is fixing a problem by experimenting; this is the data-analysis route on existing process data, so SUPPORTS rather than IS_A."
+  },
+  {
+   "name": "Multivariate image analysis",
+   "type": "Method",
+   "definition": "Unfold an image's pixel-by-wavelength array into a matrix with one row per pixel, fit PCA, then refold the scores and SPE into image shape to view them.",
+   "book_label": "APPS_image_analysis",
+   "evidence": "product-development-product-improvement/image-analysis.rst:11",
+   "quote": "When we receive a 3-dimensional array, such as an image, or a batch data set, then we must unfold that array into a (2D) matrix",
+   "links": [
+    {
+     "relation": "USES",
+     "target": "PCA",
+     "evidence": "product-development-product-improvement/image-analysis.rst:21",
+     "quote": "If we perform PCA on this matrix we can calculate score values and SPE values: one per pixel."
+    },
+    {
+     "relation": "MAPS_PER_PIXEL",
+     "target": "Squared prediction error (SPE)",
+     "evidence": "product-development-product-improvement/image-analysis.rst:21",
+     "quote": "Those scores can be refolded back into the original shape of the image."
+    }
+   ],
+   "note": "Unfolding is folded into this definition; the batch-monitoring files (other half of chapter 7) also unfold 3-D arrays, so a separate Unfolding node may come from that group."
+  },
+  {
+   "name": "Product development and improvement",
+   "type": "Concept",
+   "definition": "Choosing ingredients, their ratios and the process conditions so a product meets its specifications; usually adapting an existing product, by using all five uses of process data together.",
+   "book_label": "APPS_product_development",
+   "evidence": "product-development-product-improvement/product-development.rst:11",
+   "quote": "Most \"product development\" is really product improvement: new products are seldom developed from scratch.",
+   "links": [
+    {
+     "relation": "CHANGES",
+     "target": "Three degrees of freedom in product design",
+     "evidence": "product-development-product-improvement/product-development.rst:31",
+     "quote": "but a change to one of three things while the specifications stay the same:"
+    },
+    {
+     "relation": "ITERATES_BY",
+     "target": "Design-Build-Test-Learn cycle",
+     "evidence": "product-development-product-improvement/product-development.rst:85",
+     "quote": "Each Design-Build-Test-Learn cycle (introduced below) draws on every one of them:"
+    },
+    {
+     "relation": "USES",
+     "target": "designed_experiment",
+     "evidence": "product-development-product-improvement/product-development.rst:91",
+     "quote": ":ref:`response-surface optimization <DOE-RSM>` on top of a designed experiment"
+    },
+    {
+     "relation": "USES",
+     "target": "Model inversion",
+     "evidence": "product-development-product-improvement/product-development.rst:267",
+     "quote": "The whole point of the methodology is to invert the relationship"
+    }
+   ]
+  },
+  {
+   "name": "Three degrees of freedom in product design",
+   "type": "Concept",
+   "definition": "What a product designer can change: which ingredients are used (a discrete choice), their ratios (mass fractions that sum to one), and the process conditions.",
+   "book_label": "APPS_product_development",
+   "evidence": "product-development-product-improvement/product-development.rst:45",
+   "quote": "Each Design step in a product-development cycle is a choice over these three groups",
+   "links": [
+    {
+     "relation": "RATIOS_SUBJECT_TO",
+     "target": "mixture_constraint",
+     "evidence": "product-development-product-improvement/product-development.rst:49",
+     "quote": "This is a continuous choice constrained to a simplex: the mass fractions sum to 1, so reducing one ingredient forces another to increase."
+    },
+    {
+     "relation": "RATIOS_DESIGNED_WITH",
+     "target": "mixture_design",
+     "evidence": "product-development-product-improvement/product-development.rst:49",
+     "quote": "This sum-to-one structure is exactly what :ref:`mixture designs <DOE-mixture-designs>` are built to handle."
+    },
+    {
+     "relation": "CONDITIONS_SHOW",
+     "target": "correlation",
+     "evidence": "product-development-product-improvement/product-development.rst:51",
+     "quote": "where the historical data has the most correlation: temperature and flow rate, for example, are rarely independent in the historical record"
+    }
+   ]
+  },
+  {
+   "name": "Design-Build-Test-Learn cycle",
+   "type": "Phase",
+   "definition": "One product-development iteration: design the ingredients, ratios and conditions; build the experiments; test the product; learn by comparing outcomes with targets and updating the model.",
+   "book_label": "APPS_product_development",
+   "evidence": "product-development-product-improvement/product-development.rst:108",
+   "quote": "We frame each iteration as a Design-Build-Test-Learn (DBTL) cycle",
+   "links": [
+    {
+     "relation": "IS_A_FORM_OF",
+     "target": "sequential_experimentation",
+     "evidence": "product-development-product-improvement/product-development.rst:113",
+     "quote": "compare the outcomes against the targets, update the model, decide on the next iteration."
+    },
+    {
+     "relation": "MAY_START_WITH",
+     "target": "screening",
+     "evidence": "product-development-product-improvement/product-development.rst:138",
+     "quote": "The first iteration has little or no data, so the search direction has to come from prior knowledge or"
+    },
+    {
+     "relation": "HAS_EFFECTS_OF",
+     "target": "block",
+     "evidence": "product-development-product-improvement/product-development.rst:157",
+     "quote": "there are :ref:`block effects <DOE_blocking_section>` between iterations."
+    },
+    {
+     "relation": "DESIGN_STEP_USES",
+     "target": "Model inversion",
+     "evidence": "product-development-product-improvement/product-development.rst:91",
+     "quote": "reasoning on the ratios; often it is the inverse of a PLS model, with"
+    }
+   ],
+   "note": "The book does not name chapter 5's sequential experimentation here; the link follows from the Learn step deciding the next iteration."
+  },
+  {
+   "name": "Smoothed indicator for an inequality specification",
+   "type": "Method",
+   "definition": "Replace a yes/no specification, such as a shelf-life of 30 days or more, by a sigmoid or Gompertz function that approximates the cliff but stays differentiable.",
+   "book_label": "APPS_product_development",
+   "evidence": "product-development-product-improvement/product-development.rst:62",
+   "quote": "so we replace each one with a smoothed indicator",
+   "links": [
+    {
+     "relation": "SMOOTHS",
+     "target": "objective",
+     "evidence": "product-development-product-improvement/product-development.rst:62",
+     "quote": "These are yes/no constraints, and they introduce a discontinuity into the objective."
+    },
+    {
+     "relation": "HELPS_BUILD",
+     "target": "single_combined_response",
+     "evidence": "product-development-product-improvement/product-development.rst:122",
+     "quote": "Casting both into a single objective requires care, often using a smoothed indicator such as a sigmoid or"
+    }
+   ],
+   "note": "The book calls these output-side inequalities 'constraints'; they are not chapter 5's constraint node, which is an infeasible region of the factors."
+  },
+  {
+   "name": "Model inversion",
+   "type": "Method",
+   "definition": "Running a fitted model backwards, from a desired result to the recipe or process settings that would produce it.",
+   "book_label": "LVM_model_inversion_example",
+   "evidence": "product-development-product-improvement/product-development.rst:314",
+   "quote": "running the model backwards, from a desired result to the recipe that would produce it.",
+   "links": [
+    {
+     "relation": "ALTERNATIVE_TO",
+     "target": "rsm",
+     "evidence": "product-development-product-improvement/product-development.rst:91",
+     "quote": ":ref:`response-surface optimization <DOE-RSM>` on top of a designed experiment; sometimes it is :ref:`mixture-design <DOE-mixture-designs>` reasoning on the ratios; often it is the inverse of a PLS model"
+    },
+    {
+     "relation": "USES",
+     "target": "PLS",
+     "evidence": "product-development-product-improvement/product-development.rst:316",
+     "quote": "A PLS model built with these manipulated variables, and other process measurements in"
+    },
+    {
+     "relation": "HAS_PROPERTY",
+     "target": "Non-unique inversion",
+     "evidence": "product-development-product-improvement/product-development.rst:150",
+     "quote": "Model inversion is non-unique."
+    }
+   ],
+   "note": "Chapter 6 also teaches PLS inversion (LVM-PLS-model-inversion); chapter 7 introduces it on PCA and applies it to PLS in the case study."
+  },
+  {
+   "name": "Non-unique inversion",
+   "type": "Property",
+   "definition": "With more inputs than outputs the inverse problem is underdetermined: a target corresponds to a region of feasible recipes and conditions, not a single point.",
+   "book_label": "APPS_product_development",
+   "evidence": "product-development-product-improvement/product-development.rst:150",
+   "quote": "product design almost always has more inputs (manipulated variables) than outputs (targets), so the inverse problem is underdetermined.",
+   "links": [
+    {
+     "relation": "LEAVES",
+     "target": "Operating window",
+     "evidence": "product-development-product-improvement/product-development.rst:280",
+     "quote": "the inactive directions are the operating window described by item J of the desiderata."
+    },
+    {
+     "relation": "RESOLVED_BY",
+     "target": "Subject matter expert guides the inversion",
+     "evidence": "product-development-product-improvement/product-development.rst:200",
+     "quote": "chooses between alternative solutions when the inversion is non-unique."
+    }
+   ]
+  },
+  {
+   "name": "Operating window",
+   "type": "Concept",
+   "definition": "The directions in which the inputs can move without losing a solution, reported when constraints are inactive; the free directions a non-unique inversion leaves.",
+   "book_label": "APPS_product_development",
+   "evidence": "product-development-product-improvement/product-development.rst:206",
+   "quote": "When constraints are inactive, the directions in which we can move without losing the solution are reported as an",
+   "links": [
+    {
+     "relation": "BOUNDED_BY",
+     "target": "constraint",
+     "evidence": "product-development-product-improvement/product-development.rst:206",
+     "quote": "When constraints are active at a solution, the framework names them, so we learn the limits of the system."
+    },
+    {
+     "relation": "EXPLORED_BY",
+     "target": "Subject matter expert guides the inversion",
+     "evidence": "product-development-product-improvement/product-development.rst:206",
+     "quote": "ideally the solution is parameterised so the SME can fine-tune within that window."
+    }
+   ],
+   "note": "Chapter 7 uses 'constraint' more widely than chapter 5's node (fixed specifications, T2 and SPE limits as well as infeasible regions)."
+  },
+  {
+   "name": "Inversion with a fixed variable",
+   "type": "Method",
+   "definition": "Fixing one variable to a specification adds one equation, restricting the target score to a line; projecting the target orthogonally onto that line moves it as little as possible.",
+   "book_label": "LVM_model_inversion_example",
+   "evidence": "product-development-product-improvement/product-development.rst:457",
+   "quote": "Pinning one variable adds one equation that those two scores must satisfy, so it uses up one degree of freedom",
+   "links": [
+    {
+     "relation": "VARIANT_OF",
+     "target": "Model inversion",
+     "evidence": "product-development-product-improvement/product-development.rst:455",
+     "quote": "In practice some variables are fixed (a hardness specification, say) and the rest must be solved for."
+    },
+    {
+     "relation": "RESOLVES_PART_OF",
+     "target": "Non-unique inversion",
+     "evidence": "product-development-product-improvement/product-development.rst:479",
+     "quote": "Whenever a constraint leaves a degree of freedom unclaimed, some rule has to decide how to use it."
+    }
+   ]
+  },
+  {
+   "name": "Check that a target lies within the model",
+   "type": "Guideline",
+   "definition": "Before trusting an inverted recipe, check the target is inside the Hotelling's T2 limit and implies a low SPE; otherwise it extrapolates beyond how the process has been run.",
+   "book_label": "LVM_model_inversion_example",
+   "evidence": "product-development-product-improvement/product-development.rst:455",
+   "quote": "First, a target is only realistic if it lies within the model: inside the",
+   "links": [
+    {
+     "relation": "USES",
+     "target": "Hotelling's T2",
+     "evidence": "product-development-product-improvement/product-development.rst:455",
+     "quote": "inside the |T2| ellipse, and implying a low SPE."
+    },
+    {
+     "relation": "USES",
+     "target": "Squared prediction error (SPE)",
+     "evidence": "product-development-product-improvement/product-development.rst:312",
+     "quote": "This is well above the 95% limit of SPE, indicating that such a pastry is not consistent with how we have run our process in the past."
+    },
+    {
+     "relation": "GUARDS",
+     "target": "Model inversion",
+     "evidence": "product-development-product-improvement/product-development.rst:95",
+     "quote": "in the latent-variable space tells us whether a proposed recipe is still inside the region where the historical model can be trusted"
+    }
+   ]
+  },
+  {
+   "name": "Data tables D, F, Z and Y",
+   "type": "Concept",
+   "definition": "A property database D, a recipe table F of mass fractions, process conditions Z and quality outcomes Y; F, Z and Y share rows, and D shares columns with F.",
+   "book_label": "APPS_product_development",
+   "evidence": "product-development-product-improvement/product-development.rst:222",
+   "quote": "The methods later in this chapter operate on four data tables that fit together.",
+   "links": [
+    {
+     "relation": "INVERTED_BY",
+     "target": "Model inversion",
+     "evidence": "product-development-product-improvement/product-development.rst:267",
+     "quote": "The whole point of the methodology is to invert the relationship"
+    },
+    {
+     "relation": "MODELLED_WITH",
+     "target": "PLS",
+     "evidence": "product-development-product-improvement/product-development.rst:276",
+     "quote": "so they can be concatenated horizontally for a multi-block"
+    },
+    {
+     "relation": "F_SUBJECT_TO",
+     "target": "mixture_constraint",
+     "evidence": "product-development-product-improvement/product-development.rst:251",
+     "quote": "The entries in a row are mass fractions and typically sum to 1."
+    },
+    {
+     "relation": "Z_RECORDS",
+     "target": "disturbance",
+     "evidence": "product-development-product-improvement/product-development.rst:260",
+     "quote": "The correct rule is: store the suspected covariates as well as the obvious controlled variables, even if you do not plan to vary them."
+    }
+   ],
+   "note": "D lets the model generalize to new ingredients (the book's 'inductive, not transductive' property, line 202)."
+  },
+  {
+   "name": "Subject matter expert guides the inversion",
+   "type": "Guideline",
+   "definition": "The tool accelerates the expert and does not replace them: the expert specifies constraints, vetoes infeasible suggestions, and chooses among solutions when the inversion is non-unique.",
+   "book_label": "APPS_product_development",
+   "evidence": "product-development-product-improvement/product-development.rst:200",
+   "quote": "The tool accelerates the expert; it does not replace them.",
+   "links": [
+    {
+     "relation": "SPECIFIES",
+     "target": "constraint",
+     "evidence": "product-development-product-improvement/product-development.rst:200",
+     "quote": "The SME specifies constraints, vetoes infeasible suggestions, and chooses between alternative solutions"
+    },
+    {
+     "relation": "CHOOSES_WITHIN",
+     "target": "Operating window",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1424",
+     "quote": "the nominal centre. A subject-matter expert might spend the free direction differently, for instance"
+    }
+   ]
+  },
+  {
+   "name": "Split-plot design",
+   "type": "DesignType",
+   "definition": "Hard-to-change factors are held over a block of consecutive runs, a whole plot, while easy-to-change factors are reset within it, because full randomization is impractical.",
+   "book_label": "APPS_mixed_level_profile_case_study",
+   "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:62",
+   "quote": "split-plot: the two hard-to-change factors are held over a block of runs (a whole plot) while the",
+   "links": [
+    {
+     "relation": "RESTRICTS",
+     "target": "randomization",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:61",
+     "quote": "bath needs to settle), so a fully randomized order is impractical and the design is run as a"
+    },
+    {
+     "relation": "BUILT_AS",
+     "target": "optimal_design",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:111",
+     "quote": "exchange builds the split-plot design directly: it sets the hard-to-change factors once per whole"
+    },
+    {
+     "relation": "CLASSIFIES_AS_HARD_OR_EASY_TO_CHANGE",
+     "target": "factor",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:63",
+     "quote": "easy-to-change factors are reset within it. Switching between compounds is quick, just a different"
+    }
+   ],
+   "note": "Chapter 5 names split-plot structures as beyond its scope (design-analysis-experiments/optimal-designs.rst:61); this case study is where the book builds one."
+  },
+  {
+   "name": "Profile response",
+   "type": "Concept",
+   "definition": "A response that is a whole curve, such as a ten-point colour-development curve; its correlated points are modelled jointly with PLS, or summarized first by principal components.",
+   "book_label": "APPS_mixed_level_profile_case_study",
+   "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:34",
+   "quote": "drifting at long times, so the whole curve, not its endpoint, is the response.",
+   "links": [
+    {
+     "relation": "IS_A_KIND_OF",
+     "target": "response",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:34",
+     "quote": "drifting at long times, so the whole curve, not its endpoint, is the response."
+    },
+    {
+     "relation": "MODELLED_WITH",
+     "target": "PLS",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:342",
+     "quote": "A projection-to-latent-structures (PLS) model regresses all"
+    },
+    {
+     "relation": "SUMMARIZED_BY",
+     "target": "PCA",
+     "evidence": "product-development-product-improvement/product-development.rst:64",
+     "quote": "of the output space; the few scores that explain it become the specification"
+    }
+   ]
+  },
+  {
+   "name": "Coding schemes for a categorical factor",
+   "type": "Concept",
+   "definition": "Ways to remove the redundant indicator column: reference coding drops one level, sum coding makes level effects sum to zero, cell-means coding drops the intercept. Coefficients change meaning.",
+   "book_label": "profile-coding-intro",
+   "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:412",
+   "quote": "the choice fixes what each compound coefficient means:",
+   "links": [
+    {
+     "relation": "APPLIES_TO",
+     "target": "categorical_factor",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:409",
+     "quote": "All six indicators cannot enter the model alongside the intercept: they sum to one in every row, so"
+    },
+    {
+     "relation": "BUILT_FROM",
+     "target": "indicator_variable",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:346",
+     "quote": "columns, one per level: each run takes a single 1 in the column for its compound and 0 in the others."
+    },
+    {
+     "relation": "GENERALIZES",
+     "target": "coding",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:522",
+     "quote": "a two-level factor is exactly effects coding for the case"
+    }
+   ],
+   "note": "Distinct from chapter 5's coding node (centering and scaling a numeric factor to -1/+1); chapter 5 notes that -1/+1 for a two-level factor is effects coding."
+  },
+  {
+   "name": "Coding dependence of a truncated PLS model",
+   "type": "Property",
+   "definition": "Full-rank least squares gives the same predictions under any categorical coding; a PLS model kept below full rank does not, so its scores, diagnostics and inversions depend on the coding.",
+   "book_label": "profile-categorical-coding",
+   "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1140",
+   "quote": "model matrix, which the coding sets, so a PLS truncated below full rank keeps a coding-specific",
+   "links": [
+    {
+     "relation": "CONTRASTS_WITH",
+     "target": "least_squares_model",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1124",
+     "quote": "onto the column space of the model, and that subspace is the same for every coding, so the fitted"
+    },
+    {
+     "relation": "PROPERTY_OF",
+     "target": "PLS",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1145",
+     "quote": "the truncation is gone and PLS spans the same space as least squares, so the dependence disappears;"
+    },
+    {
+     "relation": "DEPENDS_ON",
+     "target": "Coding schemes for a categorical factor",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1148",
+     "quote": "The interaction model here keeps three of a possible twenty-four components, well below full rank, so"
+    }
+   ]
+  },
+  {
+   "name": "Check the coding before dropping a high-leverage run",
+   "type": "Guideline",
+   "definition": "Under sum coding the omitted level's runs sit at a corner of contrast space and take high Hotelling's T2; try another coding or check raw data before removing them.",
+   "book_label": "profile-categorical-coding",
+   "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1234",
+   "quote": "The advice is then to try an alternative coding when unsure about removing outliers involved with",
+   "links": [
+    {
+     "relation": "QUALIFIES",
+     "target": "Hotelling's T2",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1205",
+     "quote": "leverage. That effect belongs to the parameterization and moves with whichever level is omitted."
+    },
+    {
+     "relation": "CAUSED_BY",
+     "target": "Coding schemes for a categorical factor",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1206",
+     "quote": "is why the diagnostics flagged F so strongly: not because of its chemical features, but because of"
+    },
+    {
+     "relation": "APPLIES_TO",
+     "target": "designed_experiment",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1237",
+     "quote": "that place runs at the edges of the region on purpose, so high leverage there is expected and is not"
+    }
+   ]
+  },
+  {
+   "name": "Joint F-test of a categorical interaction",
+   "type": "Method",
+   "definition": "A categorical-by-continuous interaction carries one coefficient fewer than the number of levels; one F-test checks them all at once, showing the slopes differ without naming which level.",
+   "book_label": "APPS_mixed_level_profile_case_study",
+   "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:552",
+   "quote": "compounds. The F-test is a single joint test of all five at once: it weighs the drop in the",
+   "links": [
+    {
+     "relation": "TESTS",
+     "target": "interaction",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:554",
+     "quote": "remains, so a significant F says the compounds' slopes on that factor are not all equal, without"
+    },
+    {
+     "relation": "INVOLVES",
+     "target": "categorical_factor",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:551",
+     "quote": "so a compound-by-factor interaction carries five free coefficients, one short of the six"
+    },
+    {
+     "relation": "THRESHOLD_DEPENDS_ON",
+     "target": "degrees_of_freedom",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:556",
+     "quote": "numerator degrees of freedom (five here), the residual degrees of freedom, and the significance"
+    }
+   ]
+  },
+  {
+   "name": "PLS shrinkage of coefficients",
+   "type": "Property",
+   "definition": "A PLS model with fewer components than model terms pulls some coefficients toward zero compared with least squares; in the case study the gap matched the estimation uncertainty.",
+   "book_label": "APPS_mixed_level_profile_case_study",
+   "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:604",
+   "quote": "compound terms toward zero, the shrinkage from describing the response with fewer directions than",
+   "links": [
+    {
+     "relation": "COMPARED_WITH",
+     "target": "least_squares_model",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:702",
+     "quote": "largest gap is 2.4 standard errors, so the low-rank shrinkage is of the same order as the estimation"
+    },
+    {
+     "relation": "PROPERTY_OF",
+     "target": "PLS",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:603",
+     "quote": "the three-component PLS pulls several of the"
+    }
+   ]
+  },
+  {
+   "name": "Cross-validated Q2 in a designed experiment",
+   "type": "Guideline",
+   "definition": "Read leave-one-out Q2 with caution for a designed experiment: runs span the region with few repeats, so predicting a left-out run is closer to extrapolation.",
+   "book_label": "APPS_mixed_level_profile_case_study",
+   "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:769",
+   "quote": "a designed experiment. A design places its runs to span the whole factor region, with few or no",
+   "links": [
+    {
+     "relation": "APPLIES_TO",
+     "target": "designed_experiment",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:769",
+     "quote": "a designed experiment. A design places its runs to span the whole factor region, with few or no"
+    },
+    {
+     "relation": "MORE_INFORMATIVE_WITH",
+     "target": "replicate",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:772",
+     "quote": "the design as much as any fault in the model. Where a design has replicate runs at some locations,"
+    },
+    {
+     "relation": "VALIDATES",
+     "target": "PLS",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:730",
+     "quote": "predicts for runs it did not see: leave out each run in turn, refit, and predict the held-out curve."
+    }
+   ],
+   "note": "Q2 itself is a chapter 6 idea (LVM_number_of_components); it is defined inside this guideline rather than as a separate anchor."
+  },
+  {
+   "name": "Invert in the latent-variable space",
+   "type": "Guideline",
+   "definition": "Correlated outputs are not independent specifications, so invert to a target score: the number of significant components is the number of quality dimensions that can be specified independently.",
+   "book_label": "APPS_mixed_level_profile_case_study",
+   "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1266",
+   "quote": "quality dimensions that can be specified independently. So we invert in the latent-variable space:",
+   "links": [
+    {
+     "relation": "REFINES",
+     "target": "Model inversion",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1262",
+     "quote": "There is one nuance though. We do not go backwards from the ten-dimensional raw output; those ten time"
+    },
+    {
+     "relation": "USES_SCORES_OF",
+     "target": "PLS",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1267",
+     "quote": "find the goal as a three-dimensional vector in the score space (three components, and PLS constructs"
+    },
+    {
+     "relation": "APPLIES_TO",
+     "target": "Profile response",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1263",
+     "quote": "points are not ten independent specifications. As Jaeckle and MacGregor (1998) put it, the correlation"
+    }
+   ]
+  },
+  {
+   "name": "Constrained inversion within T2 and SPE limits",
+   "type": "Method",
+   "definition": "Minimize the distance to the target subject to Hotelling's T2 and SPE staying below their limits, so the solution may leave the model plane (Muteki and MacGregor, 2007).",
+   "book_label": "profile-constrained-inversion",
+   "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1838",
+   "quote": "pose the inversion as a constrained optimization: minimize the distance to the target subject to",
+   "links": [
+    {
+     "relation": "VARIANT_OF",
+     "target": "Model inversion",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1834",
+     "quote": "One variant of the inversion is worth ruling out."
+    },
+    {
+     "relation": "CONSTRAINED_BY",
+     "target": "Hotelling's T2",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1849",
+     "quote": "an inverted point is a new row, so it is held below the limit for new rows"
+    },
+    {
+     "relation": "CONSTRAINED_BY",
+     "target": "Squared prediction error (SPE)",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1839",
+     "quote": "and the SPE staying below their limits, so the solution may float off the"
+    }
+   ]
+  },
+  {
+   "name": "Own product against a competitor's",
+   "type": "Example",
+   "definition": "A biplot of six quality variables shows the product is two-dimensional and the competitor's product less variable; low SPE values make the comparison valid.",
+   "book_label": "APPS_process_understanding",
+   "evidence": "product-development-product-improvement/process-understanding.rst:15",
+   "quote": "In the example shown here the company was interested in how their product performed against that of their competitor.",
+   "links": [
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Biplot",
+     "evidence": "product-development-product-improvement/process-understanding.rst:15",
+     "quote": "The scores have been scaled and superimposed on the loadings plot, to create what is called a"
+    },
+    {
+     "relation": "USES",
+     "target": "Squared prediction error (SPE)",
+     "evidence": "product-development-product-improvement/process-understanding.rst:40",
+     "quote": "the competitor's product points are close to the model plane (low SPE values), so this comparison is valid."
+    },
+    {
+     "relation": "USES",
+     "target": "Loadings plot",
+     "evidence": "product-development-product-improvement/process-understanding.rst:15",
+     "quote": "The loadings for these 6 variables are labelled below, while the remaining points are the scores."
+    }
+   ]
+  },
+  {
+   "name": "Poor-yield lots of plastic pellets",
+   "type": "Example",
+   "definition": "Six raw-material measurements on 24 lots; score, loading and contribution values for lots 8 and 22 point to size, TGA, TMA and DSC as reasons for poor yield.",
+   "book_label": "APPS_troubleshooting",
+   "evidence": "product-development-product-improvement/troubleshooting.rst:32",
+   "quote": "Here is an example where the yield of a company's product was declining.",
+   "links": [
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Troubleshooting with latent variable models",
+     "evidence": "product-development-product-improvement/troubleshooting.rst:34",
+     "quote": "The score plot (left) and loadings plot (right) help isolate potential reasons for the reduced yield."
+    },
+    {
+     "relation": "USES",
+     "target": "Contribution plot",
+     "evidence": "product-development-product-improvement/troubleshooting.rst:65",
+     "quote": "This illustrates that the actual contribution values are a more precise diagnostic tool that just interpreting the loadings."
+    },
+    {
+     "relation": "USES",
+     "target": "Loadings plot",
+     "evidence": "product-development-product-improvement/troubleshooting.rst:34",
+     "quote": "The score plot (left) and loadings plot (right) help isolate potential reasons for the reduced yield."
+    }
+   ]
+  },
+  {
+   "name": "Pastry recipe by PCA model inversion",
+   "type": "Example",
+   "definition": "A two-component PCA model of five food-texture measurements is inverted to turn a target score into a pastry recipe, then constrained to fix the hardness at 110 or 150.",
+   "book_label": "LVM_model_inversion_example",
+   "evidence": "product-development-product-improvement/product-development.rst:327",
+   "quote": "A latent variable model can be run in reverse to answer it.",
+   "links": [
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Model inversion",
+     "evidence": "product-development-product-improvement/product-development.rst:327",
+     "quote": "This is called model inversion."
+    },
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Inversion with a fixed variable",
+     "evidence": "product-development-product-improvement/product-development.rst:499",
+     "quote": "Asking for a hardness of 150 is a different matter."
+    },
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Check that a target lies within the model",
+     "evidence": "product-development-product-improvement/product-development.rst:312",
+     "quote": "indicating that such a pastry is not consistent with how we have run our process in the past."
+    },
+    {
+     "relation": "USES",
+     "target": "PCA",
+     "evidence": "product-development-product-improvement/product-development.rst:356",
+     "quote": "model = PCA(n_components=A).fit(food_mcuv)"
+    }
+   ]
+  },
+  {
+   "name": "Matching a reference chromogen's colour curve",
+   "type": "Example",
+   "definition": "A sixty-run I-optimal split-plot over a six-level compound and four continuous factors; PLS models the ten-point colour curve, and inversion finds which candidate reproduces the reference.",
+   "book_label": "APPS_mixed_level_profile_case_study",
+   "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:14",
+   "quote": "The design is a sixty-run split-plot over a six-level categorical factor, the compound, and four",
+   "links": [
+    {
+     "relation": "USES",
+     "target": "Split-plot design",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:14",
+     "quote": "The design is a sixty-run split-plot over a six-level categorical factor, the compound, and four"
+    },
+    {
+     "relation": "CHOOSES",
+     "target": "v_optimal",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:276",
+     "quote": "a single coefficient as precisely as possible, so the I-optimal criterion matches the goal, and the"
+    },
+    {
+     "relation": "USES",
+     "target": "Profile response",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:32",
+     "quote": "mixing to plateau, so each run yields a ten-point"
+    },
+    {
+     "relation": "USES",
+     "target": "augmentation",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1598",
+     "quote": "The efficient route is to augment the existing design rather than start again."
+    }
+   ]
+  },
+  {
+   "name": "PCA",
+   "type": "Method",
+   "definition": "Principal component analysis builds a model for a matrix of data, summarizing many correlated variables by a few score directions.",
+   "book_label": "SECTION_PCA",
+   "evidence": "latent-variable-modelling/principal-component-analysis/index.rst:19",
+   "quote": "Principal component analysis, PCA, builds a model for a matrix of data.",
+   "links": [
+    {
+     "relation": "SUMMARIZES",
+     "target": "correlation",
+     "evidence": "product-development-product-improvement/product-development.rst:246",
+     "quote": "Such blocks are highly correlated and are a natural fit for a"
+    }
+   ],
+   "note": "chapter 6 anchor"
+  },
+  {
+   "name": "PLS",
+   "type": "Method",
+   "definition": "Projection to latent structures relates an X block to a Y block through a few latent components; used for prediction, monitoring and new product development.",
+   "book_label": "SECTION_PLS",
+   "evidence": "latent-variable-modelling/projection-to-latent-structures/index.rst:16",
+   "quote": "In the PLS method we divide our variables (columns) into two blocks: called",
+   "links": [
+    {
+     "relation": "COMPARED_WITH",
+     "target": "least_squares_model",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:1985",
+     "quote": "least-squares analysis of variance and PLS."
+    },
+    {
+     "relation": "USED_FOR",
+     "target": "Product development and improvement",
+     "evidence": "latent-variable-modelling/projection-to-latent-structures/index.rst:20",
+     "quote": "It is also widely used for new product development, or for improving existing products."
+    }
+   ],
+   "note": "chapter 6 anchor"
+  },
+  {
+   "name": "Hotelling's T2",
+   "type": "Diagnostic",
+   "definition": "A scalar summary of an observation's scores: the distance from the centre of the model plane to the observation's projection, with each score scaled by its variance.",
+   "book_label": "LVM-Hotellings-T2",
+   "evidence": "latent-variable-modelling/principal-component-analysis/hotellings-t2-statistic.rst:19",
+   "quote": "It is the distance from the center of the (hyper)plane to the projection of the observation onto the (hyper)plane.",
+   "links": [
+    {
+     "relation": "COMPUTED_FROM",
+     "target": "PCA",
+     "evidence": "latent-variable-modelling/principal-component-analysis/hotellings-t2-statistic.rst:11",
+     "quote": "The final quantity from a PCA model that we need to consider is called Hotelling's"
+    },
+    {
+     "relation": "COMPLEMENTS",
+     "target": "Squared prediction error (SPE)",
+     "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:969",
+     "quote": "the model plane, scaled by the score spread. The squared prediction error"
+    }
+   ],
+   "note": "chapter 6 anchor"
+  },
+  {
+   "name": "Squared prediction error (SPE)",
+   "type": "Diagnostic",
+   "definition": "The residual distance from an observation to the model plane: the part of the observation the model does not explain.",
+   "book_label": "LVM-interpreting-SPE-residuals",
+   "evidence": "latent-variable-modelling/principal-component-analysis/interpreting-the-residuals.rst:16",
+   "quote": "the residual distance from the actual observation to the model plane is given by:",
+   "links": [
+    {
+     "relation": "DIAGNOSTIC_OF",
+     "target": "PCA",
+     "evidence": "product-development-product-improvement/troubleshooting.rst:24",
+     "quote": "You should observe the abnormal operation appearing as outliers in the score plots and SPE plots."
+    }
+   ],
+   "note": "chapter 6 anchor"
+  },
+  {
+   "name": "Contribution plot",
+   "type": "Plot",
+   "definition": "A bar chart that breaks a score, SPE or T2 value into one term per variable, showing which variables drive it.",
+   "book_label": "LVM_contribution_plots",
+   "evidence": "latent-variable-modelling/principal-component-analysis/latent-variable-contribution-plots.rst:6",
+   "quote": "We breakdown the value, such as SPE, into its individual terms, one from each variable.",
+   "links": [
+    {
+     "relation": "EXPLAINS",
+     "target": "Squared prediction error (SPE)",
+     "evidence": "product-development-product-improvement/troubleshooting.rst:26",
+     "quote": "Use contribution plots to isolate the variables related to large SPE values."
+    }
+   ],
+   "note": "chapter 6 anchor"
+  },
+  {
+   "name": "Loadings plot",
+   "type": "Plot",
+   "definition": "A plot of the direction vectors that define the model; it shows how variables relate to each other and gives the score plot its meaning.",
+   "book_label": "LVM_interpreting_loadings",
+   "evidence": "latent-variable-modelling/principal-component-analysis/interpreting-score-plots-and-loading-plots.rst:145",
+   "quote": "is a plot of the direction vectors that define the model.",
+   "links": [
+    {
+     "relation": "SHOWS",
+     "target": "correlation",
+     "evidence": "product-development-product-improvement/product-development.rst:310",
+     "quote": "we can initially guess from the loadings plot that this is not possible: oil percentage and crispiness are positively correlated"
+    }
+   ],
+   "note": "chapter 6 anchor"
+  }
+ ]
+}

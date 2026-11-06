@@ -1,0 +1,784 @@
+{
+ "nodes": [
+  {
+   "id": "experiment",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:274",
+   "quote": "In order to learn about a system, we have to disturb it and change it. This is to ensure cause and effect.",
+   "definition": "",
+   "book_label": "",
+   "note": "Same line continues: 'To disturb the system, we change several factors. When we make these changes, we say that we have run an experiment.'"
+  },
+  {
+   "id": "run",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:338",
+   "quote": "When we perform an experiment, we call it a run.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "response",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:300",
+   "quote": "An important aspect about the outcome is that it is always measurable--in some way.",
+   "definition": "",
+   "book_label": "",
+   "note": "Line 297 equates outcome and response; RSM line 18 writes it as y."
+  },
+  {
+   "id": "qualitative_outcome",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:302",
+   "quote": "A qualitative outcome might also be a description of what happened, for example,",
+   "definition": "",
+   "book_label": "",
+   "note": "Same line gives the flower colour example (light red, red, dark red)."
+  },
+  {
+   "id": "objective",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:307",
+   "quote": "which combines an outcome and the need to adjust that outcome.",
+   "definition": "",
+   "book_label": "",
+   "note": "The book stresses an objective is optional (line 309); the definition does not contradict that, but see the experiment HAS objective edge."
+  },
+  {
+   "id": "factor",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:298",
+   "quote": "is the thing you can change to influence the outcome.",
+   "definition": "",
+   "book_label": "",
+   "note": "The book's synonym is 'variables'; the alias 'input' is not used in the book (harmless)."
+  },
+  {
+   "id": "numeric_factor",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:325",
+   "quote": "Numeric factors are quantified by measuring, such as giving 15 mL of water or 30 mL of water to the plant each day.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "categorical_factor",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:327",
+   "quote": "Categorical factors usually take on a limited number of values.",
+   "definition": "",
+   "book_label": "",
+   "note": "Book hedges with 'usually'; line 329 adds that most categorical factors can be converted to numeric ones with careful thought."
+  },
+  {
+   "id": "level",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/index.rst:19",
+   "quote": "In this section we consider the case when these factors are at two levels.",
+   "definition": "",
+   "book_label": "",
+   "note": "Low and high levels with the minus and plus signs appear in the table at using-two-levels-for-two-or-more-factors.rst:16; the -1/+1 coding is at analysis-by-least-squares-modelling.rst:30-33."
+  },
+  {
+   "id": "cause_and_effect",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:26",
+   "quote": "you must disturb your system, and then observe it. This is the principle of causality, or",
+   "definition": "",
+   "book_label": "",
+   "note": "'Only by intentional manipulation' is line 28; line 63 says designed experiments are the only way to be sure correlated events are causal."
+  },
+  {
+   "id": "happenstance_data",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:57",
+   "quote": "That is why happenstance data cannot be relied on to imply cause and effect.",
+   "definition": "Everyday operating data, collected without intentional changes to the system; it is confounded by other events, so it cannot be relied on to imply cause and effect.",
+   "book_label": "",
+   "note": "Graph says it 'cannot show' cause and effect; the book is softer: it 'does not always help, because it is confounded by other events' (line 28) and 'cannot be relied on to imply' causality (line 57)."
+  },
+  {
+   "id": "feedback_control",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:36",
+   "quote": "Feedback control systems keep the region of operation to a small zone.",
+   "definition": "",
+   "book_label": "",
+   "note": "Same line: 'data collected from such systems has low information quality.'"
+  },
+  {
+   "id": "correlation",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:63",
+   "quote": "some observable association is usually present when there is a causal link, but the association on its own is not sufficient evidence of it.",
+   "definition": "Two variables moving together. Some association is usually present when there is a causal link, but on its own it is not sufficient evidence of causality.",
+   "book_label": "",
+   "note": "Calling correlation 'necessary' for causality contradicts the book: the same line says association is only 'usually' present and that a genuine causal effect can show near-zero linear correlation when the relationship is curved or mechanisms offset."
+  },
+  {
+   "id": "learning_cycle",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:12",
+   "quote": "learning from and improving a system is an iterative process. It usually follows this cycle:",
+   "definition": "",
+   "book_label": "",
+   "note": "Steps at lines 14-17. The book says the cycle is 'described' in Box, Hunter and Hunter, not introduced there (see edge). The line calls BHH 'the first reference', but the reference list (examples-of-how-designed-experiments-are-used.rst:34-35) now starts with Fisher: a stale cross-reference in the book."
+  },
+  {
+   "id": "conjecture",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:14",
+   "quote": "Make a conjecture (hypothesis), which we believe is true.",
+   "definition": "",
+   "book_label": "",
+   "note": "Consequences tested by experiment: lines 15-16. Only taught as one step of the learning cycle."
+  },
+  {
+   "id": "troubleshooting",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:19",
+   "quote": "One of the most frequent reasons we experiment is to fix a problem with our process.",
+   "definition": "",
+   "book_label": "",
+   "note": "Same line: 'thereby learn more about our system while fixing the problem.'"
+  },
+  {
+   "id": "time_effect",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:14",
+   "quote": "and time-dependent effects (catalyst deactivation, fouling), will impact the response.",
+   "definition": "",
+   "book_label": "DOE_blocking_section",
+   "note": "The sentence sits in 'Characterization of disturbances' under DOE_blocking_section (line 1), not under DOE-Blocking-and-confounding (line 27). Also why-learning-about-systems-is-important.rst:59 (time-based effects, randomize)."
+  },
+  {
+   "id": "operating_range",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/index.rst:19",
+   "quote": "The general guidance is to choose the low and high values at the edges of normal operation.",
+   "definition": "",
+   "book_label": "file:full-factorial-designs/index.rst",
+   "note": "Taught in the full-factorial index page, which has no label. The book adds a second half elsewhere: wide enough to show a difference, not so wide as to move to a different operating regime (using-two-levels-for-two-or-more-factors.rst:11, response-surface-methods.rst:67)."
+  },
+  {
+   "id": "resolution_v",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst:40",
+   "quote": "But two-factor interactions are aliased with three-factor interactions",
+   "definition": "Shortest word in the defining relation has five letters: no main effect or two-factor interaction is aliased with another, but two-factor interactions are aliased with three-factor interactions.",
+   "book_label": "",
+   "note": "Graph omits the 2fi-3fi aliasing and that main effects are clear of 2fi (lines 37-40). 'Good for optimizing' is line 35, but line 42 qualifies it: many optimizations succeed with resolution IV."
+  },
+  {
+   "id": "sequential_experimentation",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst:10",
+   "quote": "Experiments are not a one-shot operation. They are almost always sequential, as we learn more and more about our system.",
+   "definition": "",
+   "book_label": "",
+   "note": "Also general-approach-for-experimentation.rst:13 ('experiments are never run in one go') and the index entry at line 8."
+  },
+  {
+   "id": "rsm",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:285",
+   "quote": "We achieved this by building successive least squares models that approximate the underlying surface.",
+   "definition": "",
+   "book_label": "",
+   "note": "Purpose stated at line 18; sequential at line 24. Book adds 'taking into account any constraints' (line 18)."
+  },
+  {
+   "id": "response_surface",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:18",
+   "quote": "As we map out the unknown response surface of",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "contour_plot",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:512",
+   "quote": "Draw contour plots of this estimated response surface",
+   "definition": "",
+   "book_label": "",
+   "note": "Same line: 'determine where to place your sequential experiments'. Line 494 also uses it when interactions are large."
+  },
+  {
+   "id": "optimum",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:227",
+   "quote": "recall that the first derivative is zero at an optimum, implying the surface flattens out",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "multiple_responses",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:519",
+   "quote": "For example we can achieve a higher production rate, but it is at the expense of more energy.",
+   "definition": "",
+   "book_label": "DOE-multi-response-optimization",
+   "note": "The RSM sidebar only introduces it; the chapter now has a whole section on it (multi-response-optimization.rst), which is where it is taught."
+  },
+  {
+   "id": "single_combined_response",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:521",
+   "quote": "One way to balance all competing objectives is to rephrase the",
+   "definition": "",
+   "book_label": "",
+   "note": "Same line: 'in terms of total costs, or better still, net profit'. The new section adds the condition it needs: relative values known in advance (multi-response-optimization.rst:17-18, table line 430)."
+  },
+  {
+   "id": "overlay_surfaces",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:523",
+   "quote": "This is tremendously helpful when discussing and evaluating alternate operating points, because plant managers and operators can then visually see the trade-offs.",
+   "definition": "",
+   "book_label": "",
+   "note": "Matches the RSM sidebar. The multi-response section develops this route into the 'sweet spot' (DOE-sweet-spot), which the graph lacks: see missing."
+  },
+  {
+   "id": "categorical_in_rsm",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:531",
+   "quote": "are handled by fixing them at one or the other value, and then performing the optimization conditional on those selected values.",
+   "definition": "",
+   "book_label": "",
+   "note": "Also line 500 (alternate a binary factor's sign at a new baseline). Line 458 adds: with categorical factors prefer an optimal design over a Box-Behnken design."
+  },
+  {
+   "id": "evop",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:546",
+   "quote": "EVOP is an iterative hunt for the process optimum by making small perturbations to the system.",
+   "definition": "",
+   "book_label": "",
+   "note": "'Factorial' is slightly narrow: the same line allows designs that estimate curvature, like the central composite design. Line 548: small ranges because every run must give saleable product."
+  },
+  {
+   "id": "process_drift",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:544",
+   "quote": "Since the process is not constant, the optimum will gradually move away from its current operating point.",
+   "definition": "",
+   "book_label": "",
+   "note": "Raw-material change comes from general-approach-for-experimentation.rst:43."
+  },
+  {
+   "id": "phase_optimize",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:39",
+   "quote": "Once you reach the optimum, then second order effects and curvature must be added to assess the direction of the optimum.",
+   "definition": "",
+   "book_label": "",
+   "note": "The four phases in the current book are: 1 screening (line 20), 2 sequential experiments: foldover, projectivity, higher-resolution fractions (line 30), 3 optimizing (line 36), 4 maintain the optimum with EVOP (line 41). They match the graph. Only the two guidelines at lines 15-16 are attributed to BHH, not the phases. Line 38: phase 3 uses full or half-fraction factorials for steepest ascent."
+  },
+  {
+   "id": "phase_maintain",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:43",
+   "quote": "You should be always hunting for the process optimum.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "budget_rule",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:16",
+   "quote": "do not spend more than 20% to 25% of your time and budget on your first group of experiments.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "after_the_experiment",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:15",
+   "quote": "The best time to run an experiment is after the experiment.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "ex_yield_pressure",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:47",
+   "quote": "However, it is the high impurity that actually causes the lower yield, not the pressure itself.",
+   "definition": "",
+   "book_label": "",
+   "note": "Adapted from BHH (line 45, 47)."
+  },
+  {
+   "id": "q_two_goals",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst:15",
+   "quote": "How can we determine other settings (factors) that give long shelf life but reduce the energy consumed?",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "ref_bhh",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst:35",
+   "quote": "Chapters 5 and 6 with topics from Chapters 11, 12, 13 and 15 are the most heavily used in this chapter.",
+   "definition": "",
+   "book_label": "",
+   "note": "Listed as 'Strongly recommended', second after Fisher."
+  },
+  {
+   "id": "ref_box_1957",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:550",
+   "quote": "Some examples of the success of EVOP and a review paper are in these readings:",
+   "definition": "George Box, Evolutionary Operation: A Method for Increasing Industrial Productivity, Applied Statistics, 1957; a reading the chapter gives on evolutionary operation.",
+   "book_label": "",
+   "note": "'Introduced EVOP' is true historically but the book never says it; it lists the paper as a reading (line 552, and the reference list line 38)."
+  }
+ ],
+ "edges": [
+  {
+   "source": "experiment", "relation": "PART_OF", "target": "learning_cycle",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:16",
+   "quote": "Experiment and collect data. Are the consequences that we expected visible in the data?",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "conjecture", "relation": "PART_OF", "target": "learning_cycle",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:14",
+   "quote": "Make a conjecture (hypothesis), which we believe is true.",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "experiment", "relation": "SHOWS", "target": "cause_and_effect",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:63",
+   "quote": "Designed experiments are the only way we can be sure that these correlated events are causal.",
+   "fix": "", "note": "Sharper verb: ESTABLISHES (the book says 'ensure cause and effect', design-analysis-experiments.rst:274)."
+  },
+  {
+   "source": "happenstance_data", "relation": "CONTRASTS_WITH", "target": "experiment",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:28",
+   "quote": "does not always help, because it is confounded by other events that occur at the same time.",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "happenstance_data", "relation": "CANNOT_SHOW", "target": "cause_and_effect",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:57",
+   "quote": "That is why happenstance data cannot be relied on to imply cause and effect.",
+   "fix": "", "note": "Book's wording is 'cannot be relied on to imply'; CANNOT_ESTABLISH would match it better."
+  },
+  {
+   "source": "feedback_control", "relation": "CAUSES", "target": "happenstance_data",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:28",
+   "quote": "Everyday, happenstance data is limited by feedback control systems.",
+   "fix": "feedback_control LIMITS happenstance_data",
+   "note": "Happenstance data are everyday operating data; feedback control does not create them, it confines operation to a small zone so the data carry little information (line 36)."
+  },
+  {
+   "source": "correlation", "relation": "CONTRASTS_WITH", "target": "cause_and_effect",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:57",
+   "quote": "Pressure is correlated with the yield, but there is no cause-and-effect relationship between them.",
+   "fix": "", "note": "Sharper: IS_NOT_SUFFICIENT_FOR (line 63)."
+  },
+  {
+   "source": "troubleshooting", "relation": "IS_A", "target": "experiment",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:19",
+   "quote": "One of the most frequent reasons we experiment is to fix a problem with our process.",
+   "fix": "", "note": "The book presents troubleshooting as a reason to experiment; IS_A_PURPOSE_OF would be closer than IS_A."
+  },
+  {
+   "source": "experiment", "relation": "HAS", "target": "response",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:309",
+   "quote": "Every experiment always has an outcome.",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "experiment", "relation": "HAS", "target": "factor",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:323",
+   "quote": "All experiments must have at least one factor that is changed.",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "experiment", "relation": "HAS", "target": "objective",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:309",
+   "quote": "Every experiment does not have to have an objective, but usually we have an objective in our mind.",
+   "fix": "experiment MAY_HAVE objective",
+   "note": "Beside 'HAS response' and 'HAS factor', which the book makes mandatory, this triple reads as mandatory too; the book says the opposite in so many words."
+  },
+  {
+   "source": "objective", "relation": "USES", "target": "response",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:307",
+   "quote": "which combines an outcome and the need to adjust that outcome.",
+   "fix": "", "note": "USES is vague; SETS_GOAL_FOR states the book's meaning."
+  },
+  {
+   "source": "qualitative_outcome", "relation": "IS_A", "target": "response",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:302",
+   "quote": "Qualitative measurements are also possible.",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "numeric_factor", "relation": "IS_A", "target": "factor",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:323",
+   "quote": "We distinguish between two types of factors:",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "categorical_factor", "relation": "IS_A", "target": "factor",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:323",
+   "quote": "We distinguish between two types of factors:",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "factor", "relation": "HAS", "target": "level",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/index.rst:19",
+   "quote": "In this section we consider the case when these factors are at two levels.",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "categorical_factor", "relation": "CONTRASTS_WITH", "target": "numeric_factor",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:327",
+   "quote": "Categorical variables have no implicit ordering.",
+   "fix": "", "note": "Line 329: most categorical factors can be converted to numeric ones; a CONVERTIBLE_TO edge would capture that."
+  },
+  {
+   "source": "run", "relation": "PART_OF", "target": "experiment",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:338",
+   "quote": "we can say \"there are eight runs\" in the set of experiments.",
+   "fix": "", "note": "The book uses 'experiment' both for one run (same line) and for the whole set (e.g. 'a 15-run experiment', response-surface-methods.rst:338); the edge uses the second sense, while the experiment node's definition is closer to the first."
+  },
+  {
+   "source": "time_effect", "relation": "IS_A", "target": "disturbance",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:14",
+   "quote": "Operators, ambient conditions, physical equipment, lab analyses, and time-dependent effects (catalyst deactivation, fouling), will impact the response.",
+   "fix": "", "note": "The list follows 'External disturbances will always have an effect on our response variable' on the same line."
+  },
+  {
+   "source": "operating_range", "relation": "APPLIES_TO", "target": "level",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/index.rst:19",
+   "quote": "The general guidance is to choose the low and high values at the edges of normal operation.",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "resolution_v", "relation": "IS_A", "target": "resolution",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst:35",
+   "quote": "Resolution V designs: are good for optimizing",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "resolution_v", "relation": "SUITED_TO", "target": "phase_optimize",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst:36",
+   "quote": "For optimizing a process, learning about complex effects, and developing high-accuracy predictive models",
+   "fix": "", "note": "Follows from the resolution section, but with two caveats: line 42 says many optimizations succeed with resolution IV, and the phase 3 text itself (general-approach-for-experimentation.rst:38-39) names full or half-fraction factorials for steepest ascent and then curvature terms, which no two-level design estimates."
+  },
+  {
+   "source": "rsm", "relation": "IS_A", "target": "sequential_experimentation",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:24",
+   "quote": "RSM then is a tool the describes how we should run these sequential sets of experiments.",
+   "fix": "", "note": "Same line contrasts it with COST: sequential, but changing multiple factors simultaneously."
+  },
+  {
+   "source": "rsm", "relation": "MAPS", "target": "response_surface",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:18",
+   "quote": "As we map out the unknown response surface of",
+   "fix": "", "note": "The book does say 'map out', but RSM never maps the whole surface: it fits successive local models along a path (line 285, 'approximate the underlying surface'). Sharper verb: APPROXIMATES_LOCALLY."
+  },
+  {
+   "source": "rsm", "relation": "SEEKS", "target": "optimum",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:18",
+   "quote": "we move our process as close as possible towards the optimum, taking into account any constraints.",
+   "fix": "", "note": "SEEKS is vague and loses 'subject to constraints'. Sharper verb: MOVES_PROCESS_TOWARDS (line 18) or CONVERGES_ON (line 285)."
+  },
+  {
+   "source": "rsm", "relation": "USES", "target": "full_factorial",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:478",
+   "quote": "Perform factorial experiments (full or fractional factorials), completely randomized.",
+   "fix": "", "note": "Also fractional factorials and, near the optimum, central composite designs (line 506); USES ccd and USES fractional_factorial are missing."
+  },
+  {
+   "source": "rsm", "relation": "USES", "target": "steepest_ascent",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:486",
+   "quote": "Use the model to estimate the path of steepest ascent (or descent if minimizing",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "optimum", "relation": "HAS", "target": "curvature",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:235",
+   "quote": "An optimum exhibits curvature, so a model that only has linear terms in it will not be suitable",
+   "fix": "", "note": "Book's verb is EXHIBITS."
+  },
+  {
+   "source": "contour_plot", "relation": "SHOWS", "target": "response_surface",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:512",
+   "quote": "Draw contour plots of this estimated response surface",
+   "fix": "", "note": "The plot shows the fitted model's surface, an estimate of the unknown one (line 130 contrasts model contours with the true contours 'unknown in practice'). SHOWS_ESTIMATE_OF is more precise."
+  },
+  {
+   "source": "contour_plot", "relation": "LOCATES", "target": "optimum",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:281",
+   "quote": "We get those two values by eye-balling the solid contour lines, drawn from the above non-linear model.",
+   "fix": "", "note": "Approximately, and only the model's optimum: line 283 says it is close to, not at, the true optimum; line 512 adds it can be found analytically."
+  },
+  {
+   "source": "multiple_responses", "relation": "REMEDIED_BY", "target": "single_combined_response",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:521",
+   "quote": "One way to balance all competing objectives is to rephrase the",
+   "fix": "", "note": "REMEDIED_BY treats several responses as a defect; HANDLED_BY is accurate. The new section treats this as one of three approaches and says it needs costs known well enough to combine credibly (multi-response-optimization.rst:17-18); the third approach, desirability, is missing from the graph."
+  },
+  {
+   "source": "multiple_responses", "relation": "REMEDIED_BY", "target": "overlay_surfaces",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:523",
+   "quote": "Another way is to superimpose the response surfaces of two or more",
+   "fix": "", "note": "Use HANDLED_BY. The multi-response section turns this route into the sweet spot: specification boundaries on shared axes (multi-response-optimization.rst:185-188)."
+  },
+  {
+   "source": "overlay_surfaces", "relation": "USES", "target": "contour_plot",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/multi-response-optimization.rst:187",
+   "quote": "Drawing it is a matter of putting both boundaries on the same axes and shading the",
+   "fix": "", "note": "The boundaries are each response's contour at its specification limit (line 219)."
+  },
+  {
+   "source": "categorical_in_rsm", "relation": "APPLIES_TO", "target": "categorical_factor",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:531",
+   "quote": "Categorical variables (yes/no, catalyst A or B) are handled by fixing them at one or the other value",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "categorical_in_rsm", "relation": "APPLIES_TO", "target": "rsm",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:531",
+   "quote": "Response surface methods generally work best when the variables we adjust are numerically continuous.",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "evop", "relation": "IS_A", "target": "sequential_experimentation",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:546",
+   "quote": "Similar to response surface methods, once every iteration is completed, the process is moved towards the optimum.",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "evop", "relation": "TRACKS", "target": "optimum",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:544",
+   "quote": "Evolutionary operation (EVOP) is a tool to help maintain a full-scale process at its optimum.",
+   "fix": "", "note": "TRACKS is acceptable because the optimum moves; the book's own verbs are MAINTAINS_PROCESS_AT (line 544) and HUNTS_FOR (line 546)."
+  },
+  {
+   "source": "process_drift", "relation": "REMEDIED_BY", "target": "evop",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:43",
+   "quote": "An EVOP program should always be in place on a process, because raw materials change, fouling and catalyst deactivation take place",
+   "fix": "", "note": "EVOP does not remove the drift; it follows the moving optimum. Sharper: MOTIVATES (process_drift MOTIVATES evop) or COMPENSATED_BY."
+  },
+  {
+   "source": "evop", "relation": "USES", "target": "replicate",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:548",
+   "quote": "Replicate runs are also made to separate the signal from noise, because the optimum region is usually flat.",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "process_drift", "relation": "IS_A", "target": "time_effect",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:544",
+   "quote": "Chemical processes drift due to things such as heat-exchanger fouling, build-up inside reactors and tubing, catalyst deactivation, and other slowly varying disturbances in the system.",
+   "fix": "", "note": "The book says drift is due to these slow disturbances, so CAUSED_BY is more exact than IS_A; the two nodes overlap (see overlaps)."
+  },
+  {
+   "source": "phase_optimize", "relation": "PRECEDES", "target": "phase_maintain",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:41",
+   "quote": "using the concepts of evolutionary operation (EVOP).",
+   "fix": "", "note": "Line 41 is the fourth phase; line 36 is the third."
+  },
+  {
+   "source": "phase_optimize", "relation": "USES", "target": "rsm",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:36",
+   "quote": "by exploring the response surface using the important variables discovered in the prior phases.",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "phase_maintain", "relation": "USES", "target": "evop",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:41",
+   "quote": "using the concepts of evolutionary operation (EVOP).",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "budget_rule", "relation": "APPLIES_TO", "target": "sequential_experimentation",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:16",
+   "quote": "Keep some time aside to add more experiments and learn more about the system.",
+   "fix": "", "note": "Book derives it from after_the_experiment ('For the above reason'); a budget_rule FOLLOWS_FROM after_the_experiment edge is missing."
+  },
+  {
+   "source": "after_the_experiment", "relation": "APPLIES_TO", "target": "sequential_experimentation",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:13",
+   "quote": "The main point is that experiments are never run in one go. You will always have more questions after the first round.",
+   "fix": "", "note": "Line 13 attributes both guidelines to Box, Hunter and Hunter; no such edge exists."
+  },
+  {
+   "source": "ex_yield_pressure", "relation": "ILLUSTRATES", "target": "happenstance_data",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:45",
+   "quote": "A line could be drawn through the points from the happenstance measurements, taken from the process at different times in the past.",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "ex_yield_pressure", "relation": "ILLUSTRATES", "target": "correlation",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:57",
+   "quote": "Pressure is correlated with the yield, but there is no cause-and-effect relationship between them.",
+   "fix": "", "note": ""
+  },
+  {
+   "source": "q_two_goals", "relation": "ANSWERED_BY", "target": "multiple_responses",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:519",
+   "quote": "For example we can achieve a higher production rate, but it is at the expense of more energy.",
+   "fix": "", "note": "The book never maps the usage questions to sections, but shelf life against energy is the same trade-off the sidebar describes. A concept does not answer a question: IS_INSTANCE_OF multiple_responses is sharper, and the answering methods are overlay_surfaces, single_combined_response and desirability."
+  },
+  {
+   "source": "evop", "relation": "INTRODUCED_IN", "target": "ref_box_1957",
+   "verdict": "unsupported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:550",
+   "quote": "Some examples of the success of EVOP and a review paper are in these readings:",
+   "fix": "", "note": "Historically true (Box 1957 is the founding EVOP paper), but the book only lists it as a reading. DESCRIBED_IN is what the book supports."
+  },
+  {
+   "source": "learning_cycle", "relation": "INTRODUCED_IN", "target": "ref_bhh",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:12",
+   "quote": "learning from and improving a system is an iterative process. It usually follows this cycle:",
+   "fix": "learning_cycle DESCRIBED_IN ref_bhh",
+   "note": "The line opens 'As described in the first reference, the book by Box, Hunter and Hunter'. BHH describes the cycle; it did not introduce it (the conjecture, consequence, test cycle is the scientific method, and Box wrote about it before BHH). Also the book's 'first reference' is stale: the list now starts with Fisher."
+  }
+ ],
+ "overlaps": [
+  {"ids": ["process_drift", "time_effect"], "note": "Both definitions are built on fouling and catalyst deactivation. process_drift is the EVOP-specific consequence (the optimum moves); link them with CAUSED_BY rather than IS_A, or merge."},
+  {"ids": ["phase_maintain", "evop"], "note": "Phase 4 is defined as 'use EVOP'; the phase node adds nothing beyond its USES edge and the PRECEDES ordering."},
+  {"ids": ["phase_optimize", "rsm"], "note": "Phase 3 restates RSM (explore the response surface, steepest ascent, then curvature terms)."},
+  {"ids": ["learning_cycle", "sequential_experimentation"], "note": "Both describe iterating experiments; the book gives the cycle as the reason experiments are sequential. Link (sequential_experimentation FOLLOWS_FROM learning_cycle) rather than merge."},
+  {"ids": ["after_the_experiment", "budget_rule"], "note": "Distinct guidelines, but the book derives the 20 to 25% rule from the first ('For the above reason', general-approach-for-experimentation.rst:16); add FOLLOWS_FROM."}
+ ],
+ "missing": [
+  {
+   "name": "Sweet spot",
+   "type": "Concept",
+   "definition": "The region of factor space where every response meets its specification at once. It does not rank settings inside it, and it can be empty.",
+   "book_label": "DOE-sweet-spot",
+   "evidence": "design-analysis-experiments/multi-response-optimization.rst:185",
+   "quote": "The region where every requirement is met at once is the",
+   "links": [
+    {"relation": "HANDLES", "target": "multiple_responses", "evidence": "design-analysis-experiments/multi-response-optimization.rst:23"},
+    {"relation": "USES", "target": "overlay_surfaces", "evidence": "design-analysis-experiments/multi-response-optimization.rst:187"},
+    {"relation": "CONTRASTS_WITH", "target": "single_combined_response", "evidence": "design-analysis-experiments/multi-response-optimization.rst:434"}
+   ]
+  },
+  {
+   "name": "Desirability",
+   "type": "Method",
+   "definition": "Grades each response from 0 to 1 and combines the grades by a weighted geometric mean, so one failed specification makes the overall desirability zero.",
+   "book_label": "DOE-desirability",
+   "evidence": "design-analysis-experiments/multi-response-optimization.rst:259",
+   "quote": "a response does, on a scale from 0 to 1, and then combines the grades.",
+   "links": [
+    {"relation": "HANDLES", "target": "multiple_responses", "evidence": "design-analysis-experiments/multi-response-optimization.rst:25"},
+    {"relation": "LOCATES", "target": "optimum", "evidence": "design-analysis-experiments/multi-response-optimization.rst:344"},
+    {"relation": "CONTRASTS_WITH", "target": "single_combined_response", "evidence": "design-analysis-experiments/multi-response-optimization.rst:437"}
+   ]
+  },
+  {
+   "name": "Lack-of-fit test",
+   "type": "Diagnostic",
+   "definition": "Splits the residual sum of squares into pure error and lack of fit; a large F-ratio of their mean squares is evidence the model is missing a term.",
+   "book_label": "DOE-lack-of-fit",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:304",
+   "quote": "The idea is to split the model's residual sum of squares into two parts.",
+   "links": [
+    {"relation": "USES", "target": "replicate", "evidence": "design-analysis-experiments/response-surface-methods.rst:342"},
+    {"relation": "CHECKS", "target": "quadratic_model", "evidence": "design-analysis-experiments/response-surface-methods.rst:299"},
+    {"relation": "FORMALIZES", "target": "curvature_check", "evidence": "design-analysis-experiments/response-surface-methods.rst:300"}
+   ]
+  },
+  {
+   "name": "Pure error",
+   "type": "Concept",
+   "definition": "The run-to-run variability of the system, estimated from the spread among replicated runs without reference to any model.",
+   "book_label": "DOE-lack-of-fit",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:306",
+   "quote": "the run-to-run variability of the system,",
+   "links": [
+    {"relation": "ESTIMATED_FROM", "target": "replicate", "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:18"}
+   ]
+  },
+  {
+   "name": "Randomization, replication and blocking",
+   "type": "Guideline",
+   "definition": "Three principles that underpin the design of any experiment: randomize against unmeasured disturbances, replicate to estimate the noise, block to absorb known nuisance variation.",
+   "book_label": "DOE-general-approach",
+   "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:18",
+   "quote": "Three principles underpin the design of any experiment: randomization, replication, and blocking.",
+   "links": [
+    {"relation": "INCLUDES", "target": "randomization", "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:18"},
+    {"relation": "INCLUDES", "target": "replicate", "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:18"},
+    {"relation": "INCLUDES", "target": "blocking", "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:18"}
+   ]
+  },
+  {
+   "name": "Confirmation run",
+   "type": "Guideline",
+   "definition": "Run the recommended setting and compare the result with the prediction interval there; this is what turns the predicted optimum into a result.",
+   "book_label": "DOE-uncertainty-at-the-optimum",
+   "evidence": "design-analysis-experiments/multi-response-optimization.rst:418",
+   "quote": "settings, compared against these intervals, is what turns the prediction into a result.",
+   "links": [
+    {"relation": "APPLIES_TO", "target": "optimum", "evidence": "design-analysis-experiments/multi-response-optimization.rst:416"}
+   ]
+  }
+ ]
+}

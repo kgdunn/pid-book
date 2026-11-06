@@ -1,0 +1,1131 @@
+{
+ "nodes": [
+  {
+   "id": "dsd",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/definitive-screening-designs.rst:8",
+   "quote": "the same needs without an optimization step: the definitive screening design.",
+   "definition": "A three-level screening design of about 2k+1 runs, a folded-over conference matrix plus a centre run; main effects are clear of all second-order effects, and curvature is detectable.",
+   "book_label": "",
+   "note": "The book now presents the DSD as a ready-made family built without an optimization step, and as a special case of the OMARS family (judging-and-comparing-designs.rst:331), not as a type of optimal design. 'Can also estimate second-order effects' overstates: all k quadratics are estimable, but the two-factor interactions stay correlated and cannot all be estimated at once (definitive-screening-designs.rst:80)."
+  },
+  {
+   "id": "optimal_design",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:23",
+   "quote": "then let an algorithm choose the runs that make that number as good as possible. This first",
+   "definition": "",
+   "book_label": "",
+   "note": "Still matches the book. The section now also teaches coordinate exchange (no candidate set), augmentation by the determinant of the combined information matrix, and categorical factors; see the proposed terms Information matrix and Coordinate-exchange algorithm."
+  },
+  {
+   "id": "mixture_design",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:14",
+   "quote": "Mixture experiments are used to optimize recipes: the factors being varied are the proportions",
+   "definition": "",
+   "book_label": "",
+   "note": "Correct as far as it goes. The section's key assumption, that the response depends only on the proportions and not on the total amount (mixture-experiments.rst:31), could be added. The section now teaches Scheffe models, pseudocomponents and mixture-process experiments (proposed as new terms)."
+  },
+  {
+   "id": "center_point",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/comparing-design-families.rst:68",
+   "quote": "the five quadratics apart. That single curvature signal is precisely the cue to augment the",
+   "definition": "A run with every factor at coded 0. It checks overall curvature and, replicated, estimates pure error, but cannot tell which factor curves; in a factorial it keeps X orthogonal.",
+   "book_label": "",
+   "note": "'Tests curvature' overstates: centre runs give only a one-degree-of-freedom test for overall curvature and cannot tell the quadratics apart (comparing-design-families.rst:67). 'Without breaking orthogonality' holds for the factorial model (assessing-significance-of-main-effects-and-interactions.rst:230); in a quadratic design a centre run adds information to the intercept alone and changes its correlation with the quadratic terms (judging-and-comparing-designs.rst:280)."
+  },
+  {
+   "id": "pareto_plot",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:23",
+   "quote": "The Pareto plot ranks the effects but leaves the cutoff to the eye;",
+   "definition": "",
+   "book_label": "",
+   "note": "Still correct for the plot itself, but out of date as a summary: the book now draws the bars coloured by sign with Lenth's margins of error as the cutoff (line 75). Add an edge from the proposed Lenth's method (ADDS_CUTOFF_TO pareto_plot)."
+  },
+  {
+   "id": "v_optimal",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:236",
+   "quote": "variance over the whole region. V-optimality is the closely related criterion that averages",
+   "definition": "Minimize the average prediction variance over a chosen finite set of points; I-optimality, a separate criterion, averages it over the whole region.",
+   "book_label": "",
+   "note": "The node's alias 'I-optimality' is wrong now: the book separates I-optimality (whole region) from V-optimality (finite set of points), also at judging-and-comparing-designs.rst:134. Drop the alias; I-optimality is proposed as its own term."
+  },
+  {
+   "id": "effect_sparsity",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:94",
+   "quote": "in most systems only a few of the many effects are real, and the rest scatter around zero at the size of the experimental noise.",
+   "definition": "Only a few of the many factors or effects studied are real and drive most of the variation; the rest scatter around zero at the size of the noise.",
+   "book_label": "DOE-screening-principles",
+   "note": "The current definition (main effects first, then two-factor interactions) is effect hierarchy, which the book treats as a separate principle (saturated-designs-for-screening.rst:196). The name 'Few large effects' and the DSD and Lenth sections use sparsity (definitive-screening-designs.rst:62). Drop the alias 'effect hierarchy'; Effect hierarchy is proposed as its own term."
+  },
+  {
+   "id": "box_behnken",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:360",
+   "quote": "A BBD places no runs at the cube vertices: there is no run with every",
+   "definition": "A three-level response surface design for the full quadratic model with no runs at the cube corners; useful when corners are unsafe, but it cannot be built sequentially.",
+   "book_label": "DOE-box-behnken-designs",
+   "note": "Out of date: the book no longer merely names it for further research; it now has its own section (response-surface-methods.rst:345), and the OMARS section places it among the largest OMARS designs (omars-designs.rst:69)."
+  },
+  {
+   "id": "axial_point",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/comparing-design-families.rst:428",
+   "quote": "would place those runs at",
+   "definition": "A run on one factor's axis, the others at the centre: plus or minus 1 in a face-centred design; 1.41 for two factors, 1.7 for three, in a rotatable one.",
+   "book_label": "",
+   "note": "The fixed formula (2^k)^0.25 does not hold for the newer sections: the face-centred CCD puts axial runs at plus or minus 1 (comparing-design-families.rst:426), and the rotatable five-factor CCD on a half-fraction cube puts them at plus or minus 2 (line 428), not (2^5)^0.25 = 2.38."
+  },
+  {
+   "id": "exchange_algorithm",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:311",
+   "quote": "optimum, and the surface is bumpy, so in practice the algorithm is",
+   "definition": "Point exchange: swap a design point for a candidate point whenever that improves the criterion, until no swap helps; it reaches a local optimum, so it is restarted many times.",
+   "book_label": "DOE-exchange-algorithms",
+   "note": "'Until the criterion is best' overstates: the book says the search climbs to a local optimum and is restarted from many random designs. The book now also teaches coordinate exchange, which needs no candidate set (proposed as a new term)."
+  },
+  {
+   "id": "simplex",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:40",
+   "quote": "For three ingredients this is a triangle,",
+   "definition": "The region of allowed mixture proportions; for three ingredients a triangle, drawn as a ternary plot, with pure components at the vertices and binary blends on the edges.",
+   "book_label": "",
+   "note": "The node restricts the simplex to three components; the book defines it as the region of allowed settings for any number of ingredients, a triangle only for three."
+  },
+  {
+   "id": "multiple_responses",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/multi-response-optimization.rst:20",
+   "quote": "responses are carried separately, each with its own model, and the settings are chosen with",
+   "definition": "",
+   "book_label": "DOE-multi-response-optimization",
+   "note": "Definition fine, but the topic is now taught in its own section, which compares combining into one response, the sweet spot and desirability."
+  }
+ ],
+ "edges": [],
+ "overlaps": [],
+ "missing": [
+  {
+   "name": "OMARS design",
+   "type": "DesignType",
+   "definition": "Orthogonal minimally aliased response surface design: main effects orthogonal to one another and to every second-order effect; a catalogue filling the range between a DSD and a central composite design.",
+   "book_label": "DOE-omars-designs",
+   "evidence": "design-analysis-experiments/omars-designs.rst:12",
+   "quote": "The defining property generalises the one that makes the DSD work: the main effects are orthogonal",
+   "links": [
+    {
+     "relation": "GENERALIZES",
+     "target": "dsd",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:331"
+    },
+    {
+     "relation": "INCLUDES",
+     "target": "box_behnken",
+     "evidence": "design-analysis-experiments/omars-designs.rst:69"
+    },
+    {
+     "relation": "ANALYSED_BY",
+     "target": "Design-based staged analysis",
+     "evidence": "design-analysis-experiments/omars-designs.rst:834"
+    }
+   ]
+  },
+  {
+   "name": "Conference matrix",
+   "type": "Concept",
+   "definition": "A square matrix with zeros on the diagonal and plus or minus 1 elsewhere, with orthogonal columns; folded over with a centre run, it gives a definitive screening design.",
+   "book_label": "DOE-definitive-screening-designs",
+   "evidence": "design-analysis-experiments/definitive-screening-designs.rst:30",
+   "quote": "of a conference matrix with a centre run added, a route to the DSD",
+   "links": [
+    {
+     "relation": "BUILDS",
+     "target": "dsd",
+     "evidence": "design-analysis-experiments/definitive-screening-designs.rst:30"
+    },
+    {
+     "relation": "IS_FOLDED_OVER_BY",
+     "target": "foldover",
+     "evidence": "design-analysis-experiments/definitive-screening-designs.rst:34"
+    }
+   ]
+  },
+  {
+   "name": "Mirror-image pair",
+   "type": "Concept",
+   "definition": "A run and its sign-flipped copy in a foldover. The pair has identical values in every second-order column, so it separates main effects but adds no distinct second-order row.",
+   "book_label": "DOE-omars-estimability-frontier",
+   "evidence": "design-analysis-experiments/omars-designs.rst:158",
+   "quote": "Runs 3 and 4 flip sign in the main-effect columns, which is what estimates the main effects, but",
+   "links": [
+    {
+     "relation": "PART_OF",
+     "target": "foldover",
+     "evidence": "design-analysis-experiments/omars-designs.rst:141"
+    },
+    {
+     "relation": "DETERMINES",
+     "target": "Estimability frontier",
+     "evidence": "design-analysis-experiments/omars-designs.rst:164"
+    },
+    {
+     "relation": "ENABLES",
+     "target": "Keep mirror pairs in one block",
+     "evidence": "design-analysis-experiments/omars-worked-study.rst:175"
+    }
+   ]
+  },
+  {
+   "name": "Estimability frontier",
+   "type": "Concept",
+   "definition": "The book's name for the smallest foldover that estimates every coefficient of the full second-order model jointly: N = k^2+k+1 runs, k(k-1)/2 above the parameter count.",
+   "book_label": "DOE-omars-estimability-frontier",
+   "evidence": "design-analysis-experiments/omars-designs.rst:256",
+   "quote": "The frontier is a property of the foldover construction, not of OMARS designs as such.",
+   "links": [
+    {
+     "relation": "PROPERTY_OF",
+     "target": "foldover",
+     "evidence": "design-analysis-experiments/omars-designs.rst:256"
+    },
+    {
+     "relation": "APPLIES_TO",
+     "target": "quadratic_model",
+     "evidence": "design-analysis-experiments/omars-designs.rst:177"
+    },
+    {
+     "relation": "MARKS_FULL_CLASS_IN",
+     "target": "OMARS trade-off table",
+     "evidence": "design-analysis-experiments/omars-designs.rst:392"
+    }
+   ]
+  },
+  {
+   "name": "OMARS trade-off table",
+   "type": "Concept",
+   "definition": "For each run count and number of factors, the largest model an OMARS foldover can estimate (Full, Quad or Satd) and the error degrees of freedom left to test it.",
+   "book_label": "DOE-omars-reading-the-table",
+   "evidence": "design-analysis-experiments/omars-designs.rst:374",
+   "quote": "The OMARS trade-off table as a capability staircase. Each cell gives the largest model the",
+   "links": [
+    {
+     "relation": "ANALOGUE_OF",
+     "target": "trade_off_table",
+     "evidence": "design-analysis-experiments/omars-designs.rst:110"
+    },
+    {
+     "relation": "REPORTS_ESTIMABILITY_NOT",
+     "target": "resolution",
+     "evidence": "design-analysis-experiments/omars-designs.rst:112"
+    },
+    {
+     "relation": "DESCRIBES",
+     "target": "OMARS design",
+     "evidence": "design-analysis-experiments/omars-designs.rst:533"
+    },
+    {
+     "relation": "REPORTS",
+     "target": "degrees_of_freedom",
+     "evidence": "design-analysis-experiments/omars-designs.rst:380"
+    }
+   ]
+  },
+  {
+   "name": "Information matrix",
+   "type": "Concept",
+   "definition": "M = X'X, from the model matrix; sigma squared times its inverse is the variance-covariance matrix of the coefficients, and every optimality criterion is a summary of M.",
+   "book_label": "DOE-optimal-designs",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:168",
+   "quote": "It earns its name from the least squares result for the covariance of the estimated coefficients",
+   "links": [
+    {
+     "relation": "COMPUTED_FROM",
+     "target": "model_matrix",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:146"
+    },
+    {
+     "relation": "SUMMARIZED_BY",
+     "target": "optimality_criterion",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:197"
+    },
+    {
+     "relation": "IS_DIAGONAL_UNDER",
+     "target": "orthogonality",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:192"
+    }
+   ]
+  },
+  {
+   "name": "E-optimality",
+   "type": "Criterion",
+   "definition": "Maximize the smallest eigenvalue of X'X, strengthening the worst-estimated combination of coefficients; a minimax criterion, rarely the primary one in practice.",
+   "book_label": "DOE-optimal-designs",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:226",
+   "quote": "confidence ellipsoid stretches furthest. E-optimality is a minimax criterion: it forces",
+   "links": [
+    {
+     "relation": "TYPE_OF",
+     "target": "optimality_criterion",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:222"
+    },
+    {
+     "relation": "SUMMARIZES",
+     "target": "Information matrix",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:222"
+    }
+   ]
+  },
+  {
+   "name": "I-optimality",
+   "type": "Criterion",
+   "definition": "Minimize the average prediction variance over the whole region; suited to prediction and response-surface work. V-optimality averages over a chosen finite set of points instead.",
+   "book_label": "DOE-optimal-designs",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:236",
+   "quote": "variance over the whole region. V-optimality is the closely related criterion that averages",
+   "links": [
+    {
+     "relation": "TYPE_OF",
+     "target": "optimality_criterion",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:233"
+    },
+    {
+     "relation": "DISTINCT_FROM",
+     "target": "v_optimal",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:236"
+    },
+    {
+     "relation": "SUITS",
+     "target": "rsm",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:604"
+    },
+    {
+     "relation": "AVERAGES",
+     "target": "Prediction variance",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:235"
+    }
+   ]
+  },
+  {
+   "name": "Coordinate-exchange algorithm",
+   "type": "Method",
+   "definition": "An optimal-design search with no candidate set: it sets each coordinate of each run in turn to the value that most improves the criterion, cycling until nothing improves.",
+   "book_label": "DOE-exchange-algorithms",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:306",
+   "quote": "altogether. It walks through each coordinate of each run in turn and sets it to the value that",
+   "links": [
+    {
+     "relation": "ALTERNATIVE_TO",
+     "target": "exchange_algorithm",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:305"
+    },
+    {
+     "relation": "NEEDS_NO",
+     "target": "candidate_set",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:305"
+    },
+    {
+     "relation": "HANDLES",
+     "target": "constraint",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:308"
+    },
+    {
+     "relation": "PERFORMS",
+     "target": "augmentation",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:463"
+    }
+   ]
+  },
+  {
+   "name": "Effects coding",
+   "type": "Concept",
+   "definition": "Coding an L-level categorical factor so its level effects sum to zero, each the departure from the average; two-level -1/+1 coding is the case L = 2.",
+   "book_label": "DOE-categorical-factors",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:522",
+   "quote": "a two-level factor is exactly effects coding for the case",
+   "links": [
+    {
+     "relation": "APPLIES_TO",
+     "target": "categorical_factor",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:500"
+    },
+    {
+     "relation": "ALTERNATIVE_TO",
+     "target": "indicator_variable",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:515"
+    },
+    {
+     "relation": "GENERALIZES",
+     "target": "coding",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:521"
+    }
+   ]
+  },
+  {
+   "name": "Prediction variance",
+   "type": "Property",
+   "definition": "The variance of the fitted model's prediction at a point: sigma squared times x' M^-1 x. It depends on where you predict, on the design's layout, and on the noise.",
+   "book_label": "DOE-judging-and-comparing-designs",
+   "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:61",
+   "quote": "Read this as a product of three things. The variance of a prediction at a new point depends on",
+   "links": [
+    {
+     "relation": "DERIVED_FROM",
+     "target": "Information matrix",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:64"
+    },
+    {
+     "relation": "MAXIMUM_MINIMIZED_BY",
+     "target": "g_optimal",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:234"
+    },
+    {
+     "relation": "SCALED_INTO",
+     "target": "Scaled prediction variance",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:126"
+    }
+   ]
+  },
+  {
+   "name": "Scaled prediction variance",
+   "type": "Criterion",
+   "definition": "Prediction variance times the run count, divided by sigma squared (SPV): it depends only on the design's geometry, so replicating a design does not make it look better.",
+   "book_label": "DOE-judging-and-comparing-designs",
+   "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:133",
+   "quote": "The SPV depends only on the geometry of the design. The G-optimal value is its maximum",
+   "links": [
+    {
+     "relation": "SCALES",
+     "target": "Prediction variance",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:126"
+    },
+    {
+     "relation": "MAXIMUM_GIVES",
+     "target": "g_optimal",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:133"
+    },
+    {
+     "relation": "AVERAGE_GIVES",
+     "target": "I-optimality",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:134"
+    },
+    {
+     "relation": "PLOTTED_IN",
+     "target": "Fraction-of-design-space plot",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:386"
+    }
+   ]
+  },
+  {
+   "name": "Fraction-of-design-space plot",
+   "type": "Plot",
+   "definition": "SPV values at many points in the region, sorted and plotted against the fraction of the region they cover; a low, flat curve means precise, uniform prediction (FDS plot).",
+   "book_label": "DOE-fds-plot",
+   "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:407",
+   "quote": "therefore just the running fraction (percentiles), and the curve is the empirical cumulative",
+   "links": [
+    {
+     "relation": "PLOTS",
+     "target": "Scaled prediction variance",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:386"
+    },
+    {
+     "relation": "RIGHT_END_GIVES",
+     "target": "g_optimal",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:421"
+    },
+    {
+     "relation": "SHOWS_TRADE_OFF_WITH",
+     "target": "v_optimal",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:460"
+    }
+   ]
+  },
+  {
+   "name": "Judge separability and precision separately",
+   "type": "Guideline",
+   "definition": "A good design must tell effects apart (separability) and estimate them precisely (precision); a design can be good on one and poor on the other, so look at both.",
+   "book_label": "DOE-judging-and-comparing-designs",
+   "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:23",
+   "quote": "A good design has to do two separate jobs well, and it helps to keep them apart in",
+   "links": [
+    {
+     "relation": "SEPARABILITY_MEASURED_BY",
+     "target": "Maximum absolute correlation between model terms",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:541"
+    },
+    {
+     "relation": "PRECISION_MEASURED_BY",
+     "target": "optimality_criterion",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:506"
+    },
+    {
+     "relation": "ILLUSTRATED_BY",
+     "target": "cost",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:552"
+    }
+   ]
+  },
+  {
+   "name": "Maximum absolute correlation between model terms",
+   "type": "Criterion",
+   "definition": "The largest absolute correlation between any two second-order terms after centring: the tightest confounding in the design. Zero means separable; one means identical columns.",
+   "book_label": "DOE-judging-and-comparing-designs",
+   "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:543",
+   "quote": "entanglement lives) is the single tightest confounding anywhere in the design (the worst case you",
+   "links": [
+    {
+     "relation": "MEASURES",
+     "target": "confounding",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:543"
+    },
+    {
+     "relation": "GENERALIZED_BY",
+     "target": "Variance inflation factor",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:567"
+    }
+   ]
+  },
+  {
+   "name": "Variance inflation factor",
+   "type": "Diagnostic",
+   "definition": "VIF_j = 1/(1 - R_j^2): the factor by which correlation with the other model terms inflates a coefficient's variance; 1 is orthogonal, and past 5 or 10 is a flag.",
+   "book_label": "DOE-variance-inflation-factors",
+   "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:588",
+   "quote": "raises a flag past 5, and a serious one past 10.",
+   "links": [
+    {
+     "relation": "EQUALS_ONE_UNDER",
+     "target": "orthogonality",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:586"
+    },
+    {
+     "relation": "GENERALIZES",
+     "target": "Maximum absolute correlation between model terms",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:567"
+    }
+   ]
+  },
+  {
+   "name": "Alias matrix",
+   "type": "Concept",
+   "definition": "A = (X1'X1)^-1 X1'X2: how much each term left out of the model biases each fitted coefficient. Its main-effect rows are exactly zero for DSD and OMARS designs.",
+   "book_label": "DOE-alias-bias",
+   "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:633",
+   "quote": "interaction shifts one fitted coefficient: an entry of zero leaves that coefficient",
+   "links": [
+    {
+     "relation": "QUANTIFIES_BIAS_FROM",
+     "target": "alias",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:616"
+    },
+    {
+     "relation": "HAS_ZERO_MAIN_EFFECT_ROWS_FOR",
+     "target": "OMARS design",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:641"
+    },
+    {
+     "relation": "CONTRASTS_WITH",
+     "target": "Variance inflation factor",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:635"
+    }
+   ]
+  },
+  {
+   "name": "Statistical power",
+   "type": "Criterion",
+   "definition": "The probability that the test on a coefficient is significant when the effect really has a stated size, at a stated significance level; it needs residual degrees of freedom.",
+   "book_label": "DOE-statistical-power",
+   "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:659",
+   "quote": "experimenter actually cares about: if an effect is really there, how likely are we to detect it? We",
+   "links": [
+    {
+     "relation": "REQUIRES",
+     "target": "degrees_of_freedom",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:676"
+    },
+    {
+     "relation": "DEPENDS_ON",
+     "target": "Effect size",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:684"
+    },
+    {
+     "relation": "IS_ZERO_FOR",
+     "target": "saturated_design",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:678"
+    }
+   ]
+  },
+  {
+   "name": "Effect size",
+   "type": "Concept",
+   "definition": "The size of a coefficient worth detecting, in units of the noise standard deviation; power is always quoted for a stated effect size and significance level.",
+   "book_label": "DOE-statistical-power",
+   "evidence": "design-analysis-experiments/omars-designs.rst:731",
+   "quote": "It needs an effect size and a significance level, gives",
+   "links": [
+    {
+     "relation": "INPUT_TO",
+     "target": "Statistical power",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:684"
+    },
+    {
+     "relation": "EXPRESSES",
+     "target": "practical_significance",
+     "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:661"
+    }
+   ]
+  },
+  {
+   "name": "D-efficiency",
+   "type": "Criterion",
+   "definition": "The determinant of X'X raised to the power 1/p and divided by the run count, as a percentage: information per run. Across run counts it favours the smaller design.",
+   "book_label": "DOE-omnibus-comparison",
+   "evidence": "design-analysis-experiments/comparing-design-families.rst:242",
+   "quote": "Let's focus on the last row first. Recall what D-efficiency measures: it takes the determinant of",
+   "links": [
+    {
+     "relation": "SCALES",
+     "target": "d_optimal",
+     "evidence": "design-analysis-experiments/comparing-design-families.rst:242"
+    },
+    {
+     "relation": "RESTRICTED_BY",
+     "target": "Compare D-efficiency only at equal run counts",
+     "evidence": "design-analysis-experiments/comparing-design-families.rst:518"
+    }
+   ]
+  },
+  {
+   "name": "D for estimation, I for prediction",
+   "type": "Guideline",
+   "definition": "Choose D-optimality when the goal is to estimate the coefficients and I-optimality when the goal is prediction over the region; the two often disagree.",
+   "book_label": "DOE-omnibus-comparison",
+   "evidence": "design-analysis-experiments/comparing-design-families.rst:517",
+   "quote": "they frequently disagree, so choose by what you will actually do with the model. Second,",
+   "links": [
+    {
+     "relation": "CHOOSES",
+     "target": "d_optimal",
+     "evidence": "design-analysis-experiments/comparing-design-families.rst:516"
+    },
+    {
+     "relation": "CHOOSES",
+     "target": "I-optimality",
+     "evidence": "design-analysis-experiments/comparing-design-families.rst:516"
+    }
+   ]
+  },
+  {
+   "name": "Compare D-efficiency only at equal run counts",
+   "type": "Guideline",
+   "definition": "Across run counts, D-efficiency and scaled prediction variance favour the smaller design; compare designs of different size on unscaled prediction variance, coefficient variance, power and error df.",
+   "book_label": "DOE-omnibus-comparison",
+   "evidence": "design-analysis-experiments/comparing-design-families.rst:519",
+   "quote": "different run counts it favours the smaller design, so judge larger-versus-smaller on",
+   "links": [
+    {
+     "relation": "RESTRICTS",
+     "target": "D-efficiency",
+     "evidence": "design-analysis-experiments/comparing-design-families.rst:518"
+    },
+    {
+     "relation": "RESTRICTS",
+     "target": "Scaled prediction variance",
+     "evidence": "design-analysis-experiments/comparing-design-families.rst:261"
+    },
+    {
+     "relation": "PREFERS",
+     "target": "Statistical power",
+     "evidence": "design-analysis-experiments/comparing-design-families.rst:520"
+    }
+   ]
+  },
+  {
+   "name": "Face-centred central composite design",
+   "type": "DesignType",
+   "definition": "A central composite design with its axial runs at plus or minus 1, so every run stays inside the factor ranges and each factor takes three levels.",
+   "book_label": "DOE-screen-then-optimise-study",
+   "evidence": "design-analysis-experiments/screen-then-optimise-study.rst:209",
+   "quote": "A face-centred central composite design (CCD) keeps every run inside the factor ranges,",
+   "links": [
+    {
+     "relation": "VARIANT_OF",
+     "target": "ccd",
+     "evidence": "design-analysis-experiments/comparing-design-families.rst:425"
+    },
+    {
+     "relation": "MEMBER_OF",
+     "target": "OMARS design",
+     "evidence": "design-analysis-experiments/omars-designs.rst:68"
+    }
+   ]
+  },
+  {
+   "name": "Rotatability",
+   "type": "Property",
+   "definition": "A design property: the prediction variance is the same at every point a fixed distance from the centre. Box-Behnken designs are rotatable or nearly rotatable.",
+   "book_label": "DOE-box-behnken-designs",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:376",
+   "quote": "giving roughly uniform prediction variance at a",
+   "links": [
+    {
+     "relation": "PROPERTY_OF",
+     "target": "box_behnken",
+     "evidence": "design-analysis-experiments/response-surface-methods.rst:375"
+    },
+    {
+     "relation": "CONCERNS",
+     "target": "Prediction variance",
+     "evidence": "design-analysis-experiments/response-surface-methods.rst:376"
+    },
+    {
+     "relation": "PROPERTY_OF",
+     "target": "ccd",
+     "evidence": "design-analysis-experiments/comparing-design-families.rst:427"
+    }
+   ]
+  },
+  {
+   "name": "Design-based staged analysis",
+   "type": "Method",
+   "definition": "Analysis for DSD and OMARS data: check estimability, estimate and test main effects, pool inactive ones into error, F-test for any second-order effect, then select second-order terms.",
+   "book_label": "DOE-analysing-economical-designs",
+   "evidence": "design-analysis-experiments/omars-designs.rst:788",
+   "quote": "clean; pool the inactive ones into the error estimate; then test for, and select among, the",
+   "links": [
+    {
+     "relation": "ANALYSES",
+     "target": "dsd",
+     "evidence": "design-analysis-experiments/omars-designs.rst:833"
+    },
+    {
+     "relation": "ANALYSES",
+     "target": "OMARS design",
+     "evidence": "design-analysis-experiments/omars-designs.rst:834"
+    },
+    {
+     "relation": "OPTIONALLY_USES",
+     "target": "Effect heredity",
+     "evidence": "design-analysis-experiments/omars-designs.rst:840"
+    },
+    {
+     "relation": "STARTS_WITH",
+     "target": "Judge estimability from the rank of the model matrix",
+     "evidence": "design-analysis-experiments/omars-designs.rst:827"
+    }
+   ]
+  },
+  {
+   "name": "Effect heredity",
+   "type": "Concept",
+   "definition": "Strong heredity admits an interaction only if both parent main effects are active; weak heredity needs one. It can drop terms that locate an optimum near the centre.",
+   "book_label": "DOE-analysing-economical-designs",
+   "evidence": "design-analysis-experiments/omars-designs.rst:851",
+   "quote": "range its linear effect is small, so strong heredity can drop the terms that locate the optimum, as",
+   "links": [
+    {
+     "relation": "JUSTIFIES",
+     "target": "hierarchy_rule",
+     "evidence": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:198"
+    },
+    {
+     "relation": "OPTION_IN",
+     "target": "Design-based staged analysis",
+     "evidence": "design-analysis-experiments/omars-designs.rst:840"
+    }
+   ]
+  },
+  {
+   "name": "Effect hierarchy",
+   "type": "Concept",
+   "definition": "Main effects tend to be larger than two-factor interactions, which tend to be larger than three-factor and higher interactions; a tendency, not a law.",
+   "book_label": "DOE-screening-principles",
+   "evidence": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:196",
+   "quote": "The principle of effect hierarchy states that main effects tend to be larger than two-factor interactions",
+   "links": [
+    {
+     "relation": "DISTINCT_FROM",
+     "target": "effect_sparsity",
+     "evidence": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:194"
+    },
+    {
+     "relation": "JUSTIFIES",
+     "target": "resolution_iii",
+     "evidence": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:196"
+    }
+   ]
+  },
+  {
+   "name": "Fake factor",
+   "type": "Concept",
+   "definition": "A column of a larger definitive screening design left unassigned to any factor; orthogonal to every second-order column, it picks up only noise and gives error degrees of freedom.",
+   "book_label": "DOE-screen-then-optimise-study",
+   "evidence": "design-analysis-experiments/screen-then-optimise-study.rst:154",
+   "quote": "present the fake factors pick up only noise. They give the analysis 2 degrees of freedom for error",
+   "links": [
+    {
+     "relation": "COLUMN_OF",
+     "target": "dsd",
+     "evidence": "design-analysis-experiments/screen-then-optimise-study.rst:152"
+    },
+    {
+     "relation": "PROVIDES",
+     "target": "degrees_of_freedom",
+     "evidence": "design-analysis-experiments/screen-then-optimise-study.rst:154"
+    },
+    {
+     "relation": "FEEDS",
+     "target": "Design-based staged analysis",
+     "evidence": "design-analysis-experiments/screen-then-optimise-study.rst:168"
+    }
+   ]
+  },
+  {
+   "name": "Keep mirror pairs in one block",
+   "type": "Guideline",
+   "definition": "To block a foldover, put each run and its mirror image in the same block; every main effect then sums to zero within each block, orthogonal to the block effect.",
+   "book_label": "DOE-omars-worked-study",
+   "evidence": "design-analysis-experiments/omars-worked-study.rst:176",
+   "quote": "block, and every main effect sums to zero within each block, whichever way the pairs are divided.",
+   "links": [
+    {
+     "relation": "APPLIES",
+     "target": "blocking",
+     "evidence": "design-analysis-experiments/omars-worked-study.rst:174"
+    },
+    {
+     "relation": "USES",
+     "target": "Mirror-image pair",
+     "evidence": "design-analysis-experiments/omars-worked-study.rst:175"
+    },
+    {
+     "relation": "APPLIES_TO",
+     "target": "dsd",
+     "evidence": "design-analysis-experiments/omars-worked-study.rst:366"
+    }
+   ]
+  },
+  {
+   "name": "Judge estimability from the rank of the model matrix",
+   "type": "Guideline",
+   "definition": "A model can be fitted only if its model matrix has full rank; more runs than parameters is not enough, as a foldover near the parameter count shows.",
+   "book_label": "DOE-omars-estimability-frontier",
+   "evidence": "design-analysis-experiments/omars-designs.rst:253",
+   "quote": "model. Judge estimability from the rank of the model matrix, not from the",
+   "links": [
+    {
+     "relation": "APPLIES_TO",
+     "target": "model_matrix",
+     "evidence": "design-analysis-experiments/omars-designs.rst:253"
+    },
+    {
+     "relation": "DETECTS_SHORTFALL_BELOW",
+     "target": "Estimability frontier",
+     "evidence": "design-analysis-experiments/omars-designs.rst:250"
+    }
+   ]
+  },
+  {
+   "name": "Minimum aberration",
+   "type": "Criterion",
+   "definition": "Among two-level fractions of the same resolution, prefer the one with the fewest shortest words in its defining relation (four-letter words at resolution IV).",
+   "book_label": "DOE-omars-what-a-cell-reports",
+   "evidence": "design-analysis-experiments/omars-designs.rst:512",
+   "quote": "factors resolution alone does not decide: 95 designs reach resolution IV, and the table prints one",
+   "links": [
+    {
+     "relation": "REFINES",
+     "target": "resolution",
+     "evidence": "design-analysis-experiments/omars-designs.rst:512"
+    },
+    {
+     "relation": "COUNTS",
+     "target": "word",
+     "evidence": "design-analysis-experiments/omars-designs.rst:513"
+    },
+    {
+     "relation": "PICKS_DESIGN_IN",
+     "target": "trade_off_table",
+     "evidence": "design-analysis-experiments/omars-designs.rst:513"
+    }
+   ]
+  },
+  {
+   "name": "Lenth's method",
+   "type": "Method",
+   "definition": "Judges effects of an unreplicated design against a pseudo standard error from the small effects: beyond the margin of error is significant; the simultaneous margin allows for testing all.",
+   "book_label": "DOE-lenth-method",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:94",
+   "quote": "When the design is unreplicated, so there are no degrees of freedom for a standard error, we can still place an objective cutoff",
+   "links": [
+    {
+     "relation": "ADDS_CUTOFF_TO",
+     "target": "pareto_plot",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:23"
+    },
+    {
+     "relation": "RELIES_ON",
+     "target": "effect_sparsity",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:94"
+    },
+    {
+     "relation": "USES",
+     "target": "Pseudo standard error",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105"
+    },
+    {
+     "relation": "SHOWN_BY",
+     "target": "Half-normal plot",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:131"
+    }
+   ]
+  },
+  {
+   "name": "Pseudo standard error",
+   "type": "Concept",
+   "definition": "A robust estimate of an effect's standard error: 1.5 times the median absolute effect, taken over the effects small enough to be plausibly noise (PSE).",
+   "book_label": "DOE-lenth-method",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105",
+   "quote": "(PSE) is a robust estimate of the standard error of an effect.",
+   "links": [
+    {
+     "relation": "ESTIMATES",
+     "target": "standard_error",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105"
+    },
+    {
+     "relation": "PART_OF",
+     "target": "Lenth's method",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105"
+    }
+   ]
+  },
+  {
+   "name": "Half-normal plot",
+   "type": "Plot",
+   "definition": "Absolute effects plotted against half-normal quantiles: noise effects fall on a straight line through the origin, and the real effects break away to the upper right.",
+   "book_label": "DOE-lenth-method",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:131",
+   "quote": "Noise effects fall along a straight line through the origin; the real effects break away to the upper right.",
+   "links": [
+    {
+     "relation": "GRAPHICAL_FORM_OF",
+     "target": "Lenth's method",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:131"
+    },
+    {
+     "relation": "COMPANION_OF",
+     "target": "pareto_plot",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:12"
+    }
+   ]
+  },
+  {
+   "name": "Pure error",
+   "type": "Concept",
+   "definition": "The run-to-run variability estimated from replicated runs at identical settings, without reference to any model.",
+   "book_label": "DOE-lack-of-fit",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:305",
+   "quote": "two or more runs at exactly the same factor-level combination, differ only by noise, so the spread",
+   "links": [
+    {
+     "relation": "ESTIMATED_FROM",
+     "target": "replicate",
+     "evidence": "design-analysis-experiments/response-surface-methods.rst:305"
+    },
+    {
+     "relation": "ESTIMATED_FROM",
+     "target": "center_point",
+     "evidence": "design-analysis-experiments/omars-worked-study.rst:616"
+    },
+    {
+     "relation": "PART_OF",
+     "target": "Lack-of-fit test",
+     "evidence": "design-analysis-experiments/response-surface-methods.rst:304"
+    }
+   ]
+  },
+  {
+   "name": "Lack-of-fit test",
+   "type": "Diagnostic",
+   "definition": "Splits the residual sum of squares into pure error and lack of fit; a large F ratio between them is evidence of a missing term. Needs replicated runs.",
+   "book_label": "DOE-lack-of-fit",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:304",
+   "quote": "The idea is to split the model's residual sum of squares into two parts. Replicated runs, meaning",
+   "links": [
+    {
+     "relation": "USES",
+     "target": "Pure error",
+     "evidence": "design-analysis-experiments/response-surface-methods.rst:304"
+    },
+    {
+     "relation": "FORMALIZES",
+     "target": "curvature_check",
+     "evidence": "design-analysis-experiments/response-surface-methods.rst:301"
+    },
+    {
+     "relation": "REQUIRES",
+     "target": "replicate",
+     "evidence": "design-analysis-experiments/response-surface-methods.rst:342"
+    }
+   ]
+  },
+  {
+   "name": "Sweet spot",
+   "type": "Concept",
+   "definition": "The region of factor space where every response meets its specification at once. It does not rank the settings inside it, and it can be empty.",
+   "book_label": "DOE-sweet-spot",
+   "evidence": "design-analysis-experiments/multi-response-optimization.rst:478",
+   "quote": "The sweet spot is the set of settings meeting every specification at once. It ranks",
+   "links": [
+    {
+     "relation": "HANDLES",
+     "target": "multiple_responses",
+     "evidence": "design-analysis-experiments/multi-response-optimization.rst:24"
+    },
+    {
+     "relation": "DRAWN_BY",
+     "target": "overlay_surfaces",
+     "evidence": "design-analysis-experiments/multi-response-optimization.rst:187"
+    },
+    {
+     "relation": "ALTERNATIVE_TO",
+     "target": "Overall desirability",
+     "evidence": "design-analysis-experiments/multi-response-optimization.rst:258"
+    }
+   ]
+  },
+  {
+   "name": "Individual desirability",
+   "type": "Method",
+   "definition": "A score from 0 to 1 for one response: 0 at the unacceptable limit, 1 at the goal, with a ramp between them whose shape the weight sets.",
+   "book_label": "DOE-desirability",
+   "evidence": "design-analysis-experiments/multi-response-optimization.rst:481",
+   "quote": "Individual desirability grades one response from 0 to 1 between a pair of limits, with a",
+   "links": [
+    {
+     "relation": "COMBINED_INTO",
+     "target": "Overall desirability",
+     "evidence": "design-analysis-experiments/multi-response-optimization.rst:297"
+    },
+    {
+     "relation": "HANDLES",
+     "target": "multiple_responses",
+     "evidence": "design-analysis-experiments/multi-response-optimization.rst:25"
+    }
+   ]
+  },
+  {
+   "name": "Overall desirability",
+   "type": "Criterion",
+   "definition": "The geometric mean of the individual desirabilities, weighted by importances; one failed specification makes it zero. Maximizing it gives a single recommended setting.",
+   "book_label": "DOE-desirability",
+   "evidence": "design-analysis-experiments/multi-response-optimization.rst:482",
+   "quote": "Overall desirability is the geometric mean of",
+   "links": [
+    {
+     "relation": "ALTERNATIVE_TO",
+     "target": "single_combined_response",
+     "evidence": "design-analysis-experiments/multi-response-optimization.rst:444"
+    },
+    {
+     "relation": "ALTERNATIVE_TO",
+     "target": "Sweet spot",
+     "evidence": "design-analysis-experiments/multi-response-optimization.rst:258"
+    }
+   ]
+  },
+  {
+   "name": "Confirm the predicted optimum",
+   "type": "Guideline",
+   "definition": "A recommended setting is a prediction: report the prediction interval for each response there, and run confirmation runs before treating it as established.",
+   "book_label": "DOE-uncertainty-at-the-optimum",
+   "evidence": "design-analysis-experiments/multi-response-optimization.rst:489",
+   "quote": "The recommended setting is a prediction. Report the prediction interval for each response",
+   "links": [
+    {
+     "relation": "APPLIES_TO",
+     "target": "optimum",
+     "evidence": "design-analysis-experiments/multi-response-optimization.rst:416"
+    },
+    {
+     "relation": "FOLLOWS",
+     "target": "Overall desirability",
+     "evidence": "design-analysis-experiments/screen-then-optimise-study.rst:20"
+    }
+   ]
+  },
+  {
+   "name": "Scheffe model",
+   "type": "Concept",
+   "definition": "The standard mixture model: linear blending and cross-product terms, with no intercept and no pure quadratics; a positive cross-product coefficient means synergistic blending.",
+   "book_label": "DOE-mixture-experiments",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:97",
+   "quote": "None of these has an intercept or a pure quadratic term.",
+   "links": [
+    {
+     "relation": "MODEL_FOR",
+     "target": "mixture_design",
+     "evidence": "design-analysis-experiments/mixture-experiments.rst:77"
+    },
+    {
+     "relation": "SHAPED_BY",
+     "target": "mixture_constraint",
+     "evidence": "design-analysis-experiments/mixture-experiments.rst:48"
+    },
+    {
+     "relation": "DIFFERS_FROM",
+     "target": "quadratic_model",
+     "evidence": "design-analysis-experiments/mixture-experiments.rst:97"
+    }
+   ]
+  },
+  {
+   "name": "Pseudocomponent",
+   "type": "Concept",
+   "definition": "A rescaled proportion, (a_i - L_i)/(1 - sum of L_j), that maps a lower-bounded mixture region back onto a full simplex, so the same designs apply.",
+   "book_label": "DOE-mixture-experiments",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:143",
+   "quote": "the original. The same kind of design is then optimal for the constrained region as for the full",
+   "links": [
+    {
+     "relation": "MAPS_ONTO",
+     "target": "simplex",
+     "evidence": "design-analysis-experiments/mixture-experiments.rst:142"
+    },
+    {
+     "relation": "HANDLES",
+     "target": "constraint",
+     "evidence": "design-analysis-experiments/mixture-experiments.rst:139"
+    }
+   ]
+  },
+  {
+   "name": "Mixture-process variable experiment",
+   "type": "DesignType",
+   "definition": "A study varying ingredient proportions and ordinary process variables together; its model crosses a Scheffe model with a response-surface model, with no intercept or process-variable main effects.",
+   "book_label": "DOE-mixture-experiments",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:173",
+   "quote": "the combined model has no intercept and no process-variable main effects.",
+   "links": [
+    {
+     "relation": "EXTENDS",
+     "target": "mixture_design",
+     "evidence": "design-analysis-experiments/mixture-experiments.rst:169"
+    },
+    {
+     "relation": "USES",
+     "target": "Scheffe model",
+     "evidence": "design-analysis-experiments/mixture-experiments.rst:171"
+    }
+   ]
+  }
+ ]
+}

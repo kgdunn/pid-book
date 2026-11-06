@@ -1,0 +1,975 @@
+{
+ "nodes": [],
+ "edges": [],
+ "overlaps": [
+  {
+   "ids": [
+    "Phase I: building the monitoring chart",
+    "phase_screening"
+   ],
+   "note": "Name collision, different meanings: monitoring phase I (building the chart) versus the chapter 5 experimentation phase 1 (screening). Keep the names distinct."
+  },
+  {
+   "ids": [
+    "Phase II: using the monitoring chart",
+    "phase_sequential"
+   ],
+   "note": "Name collision, different meanings: monitoring phase II (using the chart) versus the chapter 5 experimentation phase 2 (sequential runs)."
+  },
+  {
+   "ids": [
+    "Model ageing",
+    "process_drift"
+   ],
+   "note": "Not duplicates: process drift is the cause, model ageing the effect on a fixed model. time_effect names the same slow causes (fouling, catalyst ageing)."
+  },
+  {
+   "ids": [
+    "On-line batch monitoring",
+    "missing_values"
+   ],
+   "note": "Different senses of missing data: unmeasured cells of a running batch versus lost DOE responses. Do not merge or link."
+  }
+ ],
+ "missing": [
+  {
+   "name": "Three-way batch data array",
+   "type": "Concept",
+   "definition": "Each batch leaves a table of every recorded tag at every sample; stacking the tables of many batches gives a three-way array of batches by tags by time.",
+   "book_label": "APPS_batch_monitoring",
+   "evidence": "product-development-product-improvement/batch-process-monitoring.rst:12",
+   "quote": "many batches and the data set is a three-way array of batches by tags by time.",
+   "links": [
+    {
+     "relation": "UNFOLDED_BY",
+     "target": "Batchwise unfolding",
+     "evidence": "product-development-product-improvement/batch-process-monitoring.rst:14",
+     "quote": "The table of one batch is flattened"
+    }
+   ]
+  },
+  {
+   "name": "Batchwise unfolding",
+   "type": "Method",
+   "definition": "Flattening each batch's table into one long row, so the array becomes an ordinary matrix with one row per batch and one column per (tag, time) pair.",
+   "book_label": "APPS_batch_monitoring",
+   "evidence": "product-development-product-improvement/batch-process-monitoring.rst:15",
+   "quote": "into a single long row, so the array becomes an ordinary matrix with one row per batch and one",
+   "links": [
+    {
+     "relation": "REQUIRES",
+     "target": "Batch alignment",
+     "evidence": "product-development-product-improvement/batch-process-monitoring.rst:111",
+     "quote": "The first is alignment. Unfolding assumes that sample"
+    },
+    {
+     "relation": "CONTRASTS_WITH",
+     "target": "Observation-wise unfolding",
+     "evidence": "product-development-product-improvement/batch-case-study-dupont.rst:125",
+     "quote": "tag, so its components describe the shape of the trajectories rather than the differences"
+    },
+    {
+     "relation": "MAKES_APPLICABLE",
+     "target": "Principal component analysis (PCA)",
+     "evidence": "product-development-product-improvement/batch-process-monitoring.rst:16",
+     "quote": "column per (tag, time) pair, and the tools of the preceding sections apply to it unchanged."
+    }
+   ]
+  },
+  {
+   "name": "Observation-wise unfolding",
+   "type": "Method",
+   "definition": "One row per time sample and one column per tag; components describe trajectory shape, so comparing batches needs a second model. Suits trajectories varied on purpose.",
+   "book_label": "APPS_batch_case_dupont",
+   "evidence": "product-development-product-improvement/batch-case-study-dupont.rst:124",
+   "quote": "The alternative, observation-wise unfolding, has one row per time sample and one column per",
+   "links": [
+    {
+     "relation": "SUITED_TO",
+     "target": "designed_experiment",
+     "evidence": "product-development-product-improvement/batch-case-study-dupont.rst:128",
+     "quote": "It suits trajectories varied on purpose, as in a designed experiment."
+    }
+   ]
+  },
+  {
+   "name": "Landmark features",
+   "type": "Method",
+   "definition": "A handful of quantities that summarise each trajectory, such as a phase's duration or a temperature slope, used as the columns in place of the raw trajectories.",
+   "book_label": "APPS_batch_case_fmc",
+   "evidence": "product-development-product-improvement/batch-case-study-fmc.rst:1337",
+   "quote": "This is the landmark feature approach: pick a handful of quantities that summarise each",
+   "links": [
+    {
+     "relation": "ALTERNATIVE_TO",
+     "target": "Batchwise unfolding",
+     "evidence": "product-development-product-improvement/batch-case-study-fmc.rst:1342",
+     "quote": "Of the three ways of handling the trajectory array, landmark features, batchwise unfolding and"
+    },
+    {
+     "relation": "ILLUSTRATED_BY",
+     "target": "Industrial batch dryer",
+     "evidence": "product-development-product-improvement/batch-case-study-fmc.rst:1339",
+     "quote": "those as the columns. The operating-condition block here is already one, since eight of its"
+    }
+   ]
+  },
+  {
+   "name": "Batch alignment",
+   "type": "Method",
+   "definition": "Putting batches of different lengths on one time axis, so sample k means the same stage in every batch, before unfolding. Alignment discards the durations.",
+   "book_label": "APPS_batch_monitoring",
+   "evidence": "product-development-product-improvement/batch-process-monitoring.rst:112",
+   "quote": "in every row, so the batches have to be put on one time axis before any of this.",
+   "links": [
+    {
+     "relation": "USES",
+     "target": "Maturity variable",
+     "evidence": "product-development-product-improvement/batch-case-study-fmc.rst:101",
+     "quote": "The first two phases were aligned against a maturity variable, a quantity that rises"
+    },
+    {
+     "relation": "ILLUSTRATED_BY",
+     "target": "Industrial batch dryer",
+     "evidence": "product-development-product-improvement/batch-case-study-fmc.rst:100",
+     "quote": "Batch durations vary widely, so the trajectories were aligned within each phase to 325"
+    }
+   ],
+   "note": "The book also names dynamic time warping (batch-process-monitoring.rst:117) as an alternative that aligns raw trajectories, including a running batch; not proposed as a separate term."
+  },
+  {
+   "name": "Maturity variable",
+   "type": "Concept",
+   "definition": "A measured quantity that rises steadily through a phase, against which batches of different lengths are aligned within that phase.",
+   "book_label": "APPS_batch_monitoring",
+   "evidence": "product-development-product-improvement/batch-process-monitoring.rst:113",
+   "quote": "within each phase against a maturity variable, a measured quantity that rises steadily through",
+   "links": [
+    {
+     "relation": "ILLUSTRATED_BY",
+     "target": "Industrial batch dryer",
+     "evidence": "product-development-product-improvement/batch-case-study-fmc.rst:102",
+     "quote": "steadily through the phase, first the collector tank level and then the dryer temperature,"
+    }
+   ]
+  },
+  {
+   "name": "Reference set",
+   "type": "Concept",
+   "definition": "The batches a monitoring model is built from; it defines what unusual means, so for judging new batches it carries only batches with acceptable operation and acceptable product.",
+   "book_label": "APPS_batch_monitoring",
+   "evidence": "product-development-product-improvement/batch-process-monitoring.rst:124",
+   "quote": "is from its reference set, so that set defines what",
+   "links": [
+    {
+     "relation": "CHOSEN_IN",
+     "target": "Phase I: building the monitoring chart",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:88",
+     "quote": "that are from out-of control operation, then build a latent variable model (either PCA or PLS)"
+    },
+    {
+     "relation": "USED_BY",
+     "target": "On-line batch monitoring",
+     "evidence": "product-development-product-improvement/batch-case-study-sbr.rst:955",
+     "quote": "reference model here is fitted to the 51 batches without 34 and 37, and the two are run"
+    }
+   ]
+  },
+  {
+   "name": "Observability",
+   "type": "Concept",
+   "definition": "The condition of a batch must be observable through the measurements before any model can report on it: a model detects only what the measurements contain.",
+   "book_label": "APPS_batch_what_goes_in",
+   "evidence": "product-development-product-improvement/batch-process-monitoring.rst:74",
+   "quote": "to be observable through the measurements before any model of them can report on it.",
+   "links": [
+    {
+     "relation": "REMEDIED_BY",
+     "target": "Multiblock PLS",
+     "evidence": "product-development-product-improvement/batch-case-study-dupont.rst:683",
+     "quote": "measurements. The remedy is to measure something else, such as the raw material properties,",
+     "note": "The remedy is a measurement decision (a new block, e.g. raw materials); multiblock PLS is how the book then joins that block (batch-case-study-dupont.rst:684)."
+    }
+   ]
+  },
+  {
+   "name": "Batch PCA",
+   "type": "Method",
+   "definition": "PCA of the batchwise-unfolded trajectories, one row per batch; its components describe how batches deviate from the average batch, used to find and diagnose unusual batches.",
+   "book_label": "APPS_batch_case_dupont",
+   "evidence": "product-development-product-improvement/batch-case-study-dupont.rst:118",
+   "quote": "The components therefore describe how batches deviate from the average batch, not the shape of",
+   "links": [
+    {
+     "relation": "IS_A",
+     "target": "Principal component analysis (PCA)",
+     "evidence": "product-development-product-improvement/batch-case-study-dupont.rst:12",
+     "quote": "A principal component model of the"
+    },
+    {
+     "relation": "USES",
+     "target": "Batchwise unfolding",
+     "evidence": "product-development-product-improvement/batch-case-study-dupont.rst:113",
+     "quote": "unfolds batchwise: each batch becomes one row of 10 tags by 100 samples, 1000 columns."
+    }
+   ],
+   "aliases": [
+    "multiway PCA"
+   ]
+  },
+  {
+   "name": "Batch PLS",
+   "type": "Method",
+   "definition": "PLS from the batchwise-unfolded trajectories to final quality, which can predict that quality while a batch is still running.",
+   "book_label": "APPS_batch_case_sbr",
+   "evidence": "product-development-product-improvement/batch-case-study-sbr.rst:14",
+   "quote": "asked what the quality will be while a batch is still running.",
+   "links": [
+    {
+     "relation": "IS_A",
+     "target": "Projection to latent structures (PLS)",
+     "evidence": "product-development-product-improvement/batch-case-study-sbr.rst:13",
+     "quote": "quality measured, so the model is a PLS from the trajectories to that quality, and it can be"
+    },
+    {
+     "relation": "USES",
+     "target": "Batchwise unfolding",
+     "evidence": "product-development-product-improvement/batch-case-study-sbr.rst:128",
+     "quote": "unfolds each batch batchwise into one row of 6 tags by 200 samples, 1200"
+    }
+   ],
+   "aliases": [
+    "multiway PLS"
+   ]
+  },
+  {
+   "name": "Multiblock PLS",
+   "type": "Method",
+   "definition": "PLS fitting one set of components to several X blocks at once; block scores combine into a super score, so it can say which block a problem came from.",
+   "book_label": "APPS_batch_case_fmc",
+   "evidence": "product-development-product-improvement/batch-case-study-fmc.rst:561",
+   "quote": "number per batch per component, through super weights that say how much each block pulls.",
+   "links": [
+    {
+     "relation": "IS_A",
+     "target": "Projection to latent structures (PLS)",
+     "evidence": "product-development-product-improvement/batch-case-study-fmc.rst:559",
+     "quote": "Multiblock PLS fits one set of components to several X blocks at once."
+    },
+    {
+     "relation": "HAS",
+     "target": "Block score",
+     "evidence": "product-development-product-improvement/batch-case-study-fmc.rst:560",
+     "quote": "own block scores and block weights, and those block scores combine into a super score, one"
+    },
+    {
+     "relation": "USED_IN",
+     "target": "Multivariate statistical process control (MSPC)",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:739",
+     "quote": "On a plant with several units, the tags can be grouped into one block per unit, so that a chart"
+    }
+   ]
+  },
+  {
+   "name": "Block score",
+   "type": "Concept",
+   "definition": "A multiblock model's score for one block alone. A batch can be unusual in one block and ordinary in the others, which the super score hides.",
+   "book_label": "APPS_batch_case_fmc_block_scores",
+   "evidence": "product-development-product-improvement/batch-case-study-fmc.rst:1130",
+   "quote": "A batch can be unusual in one block and ordinary in the others, and the super score hides",
+   "links": [
+    {
+     "relation": "IS_A",
+     "target": "Score",
+     "evidence": "product-development-product-improvement/batch-case-study-fmc.rst:1064",
+     "quote": "A multiblock model has a score plot for every block, not only the super-score plot."
+    },
+    {
+     "relation": "ILLUSTRATED_BY",
+     "target": "Industrial batch dryer",
+     "evidence": "product-development-product-improvement/batch-case-study-fmc.rst:1133",
+     "quote": "Batches 2, 3, 6 and 7 are the case. Placing every batch with whichever of the two class"
+    }
+   ]
+  },
+  {
+   "name": "Batch contribution plot",
+   "type": "Plot",
+   "definition": "Contributions with one entry per (tag, time) cell, summed per tag to rank the variables and per sample to locate the event in the batch.",
+   "book_label": "APPS_batch_case_dupont",
+   "evidence": "product-development-product-improvement/batch-case-study-dupont.rst:251",
+   "quote": "per tag, which ranks the variables;",
+   "links": [
+    {
+     "relation": "IS_A",
+     "target": "Contribution plot",
+     "evidence": "product-development-product-improvement/batch-case-study-dupont.rst:246",
+     "quote": "The contribution vector has one entry per (tag, time) cell, 1000 here, holding that cell's"
+    }
+   ]
+  },
+  {
+   "name": "On-line batch monitoring",
+   "type": "Method",
+   "definition": "Running a batch through a reference model sample by sample: its scores so far are estimated with unmeasured cells as missing data, giving T2, SPE and predicted quality.",
+   "book_label": "APPS_batch_case_sbr_online",
+   "evidence": "product-development-product-improvement/batch-process-monitoring.rst:233",
+   "quote": "A batch that is still running is a row whose later cells are not yet measured.",
+   "links": [
+    {
+     "relation": "APPLIES",
+     "target": "Phase II: using the monitoring chart",
+     "evidence": "product-development-product-improvement/batch-case-study-sbr.rst:956",
+     "quote": "through it sample by sample, as if they were new batches on a running plant."
+    },
+    {
+     "relation": "USES",
+     "target": "Batch PLS",
+     "evidence": "product-development-product-improvement/batch-case-study-sbr.rst:771",
+     "quote": "the model's regression from scores to quality turns those scores into a prediction;"
+    },
+    {
+     "relation": "USES",
+     "target": "Hotelling's T2",
+     "evidence": "product-development-product-improvement/batch-case-study-sbr.rst:958",
+     "quote": "Two statistics are tracked. Hotelling's"
+    },
+    {
+     "relation": "USES",
+     "target": "Squared prediction error (SPE)",
+     "evidence": "product-development-product-improvement/batch-case-study-sbr.rst:959",
+     "quote": "the SPE of the newest sample says how far"
+    }
+   ],
+   "note": "Chapter 5 node missing_values (lost DOE responses) is a different sense of missing data; do not link. The SBR page estimates the scores by trimmed score regression (batch-case-study-sbr.rst:775)."
+  },
+  {
+   "name": "Along or off the model components",
+   "type": "Guideline",
+   "definition": "A large T2 is a batch doing more of what the reference batches did, which can be forecast; a large SPE is something they never did, flagged but not forecast.",
+   "book_label": "APPS_batch_monitoring",
+   "evidence": "product-development-product-improvement/batch-process-monitoring.rst:93",
+   "quote": "Which of the two is large says what kind of departure it is, and that changes what can be done",
+   "links": [
+    {
+     "relation": "USES",
+     "target": "Hotelling's T2",
+     "evidence": "product-development-product-improvement/batch-process-monitoring.rst:89",
+     "quote": "the reference batches. A large value is a batch doing more of what the reference batches did."
+    },
+    {
+     "relation": "USES",
+     "target": "Squared prediction error (SPE)",
+     "evidence": "product-development-product-improvement/batch-process-monitoring.rst:91",
+     "quote": "doing something the reference batches never did."
+    }
+   ]
+  },
+  {
+   "name": "Multivariate statistical process control (MSPC)",
+   "type": "Method",
+   "definition": "Monitoring many correlated variables with the usual Shewhart, CUSUM or EWMA charts on a latent variable model's scores, Hotelling's T2 and SPE, instead of on each variable.",
+   "book_label": "LVM_monitoring",
+   "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:55",
+   "quote": "the same charts are used: Shewhart, CUSUM and EWMA charts, the only difference is that we replace the variables in the charts with variables from a",
+   "links": [
+    {
+     "relation": "USES",
+     "target": "Principal component analysis (PCA)",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:88",
+     "quote": "then build a latent variable model (either PCA or PLS)"
+    },
+    {
+     "relation": "HAS_PHASE",
+     "target": "Phase I: building the monitoring chart",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:77",
+     "quote": "We will look at the steps for phase I (building the monitoring charts) and phase II (using the monitoring charts)."
+    },
+    {
+     "relation": "USED_FOR",
+     "target": "troubleshooting",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:778",
+     "quote": "The same models serve troubleshooting from historical data, where nothing is monitored on-line.",
+     "note": "Chapter 7 troubleshoots from historical data; the chapter 5 node troubleshooting is defined as experimenting to fix a problem. Link only if that node is broadened."
+    }
+   ],
+   "aliases": [
+    "multivariate process monitoring"
+   ]
+  },
+  {
+   "name": "Joint limit versus univariate limits",
+   "type": "Concept",
+   "definition": "Univariate charts together mark out a rectangle; the joint limit is an ellipse tilted along the correlation. A sample can pass every univariate limit yet be jointly unusual.",
+   "book_label": "LVM_monitoring",
+   "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:51",
+   "quote": "the univariate charts together mark out a rectangle, while the joint limit is an ellipse tilted along the correlation",
+   "links": [
+    {
+     "relation": "MOTIVATES",
+     "target": "Multivariate statistical process control (MSPC)",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:53",
+     "quote": "All our measurements on a system must be jointly within in the limits of common operation."
+    },
+    {
+     "relation": "ARISES_FROM",
+     "target": "correlation",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:53",
+     "quote": "to pick up all quality problems if the variables are correlated."
+    },
+    {
+     "relation": "DRAWN_BY",
+     "target": "Hotelling's T2",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:42",
+     "quote": "Joint scatter plot of two negatively correlated variables with their T-squared ellipse"
+    }
+   ]
+  },
+  {
+   "name": "Phase I: building the monitoring chart",
+   "type": "Phase",
+   "definition": "Building the monitoring chart: model in-control data with PCA or PLS, pruning outlying observations iteratively, then set limits on scores, T2 and SPE, tested with known good and bad data.",
+   "book_label": "LVM_monitoring",
+   "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:82",
+   "quote": "The procedure for building a multivariate monitoring chart, i.e. the phase I steps:",
+   "links": [
+    {
+     "relation": "PRECEDES",
+     "target": "Phase II: using the monitoring chart",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:77",
+     "quote": "We will look at the steps for phase I (building the monitoring charts) and phase II (using the monitoring charts)."
+    }
+   ],
+   "note": "Not the chapter 5 phases phase_screening / phase_sequential, which share the words Phase 1 and 2."
+  },
+  {
+   "name": "Phase II: using the monitoring chart",
+   "type": "Phase",
+   "definition": "Using the chart on-line: project each new observation onto the phase I model, plot its scores, T2 and SPE, and at an alarm read the contribution plot with engineering knowledge.",
+   "book_label": "LVM_monitoring",
+   "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:111",
+   "quote": "The phase II steps, when we now wish to apply this quality chart on-line",
+   "links": [
+    {
+     "relation": "USES",
+     "target": "Contribution plot",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:113",
+     "quote": "use your engineering knowledge, in conjunction with the relevant contribution plot."
+    },
+    {
+     "relation": "CONTRASTS_WITH",
+     "target": "feedback_control",
+     "evidence": "product-development-product-improvement/soft-sensors.rst:68",
+     "quote": "that follow an alarm are infrequent, manual, and made only when a special cause has been",
+     "note": "The book's phrase is 'monitoring is not feedback control' (soft-sensors.rst:67)."
+    }
+   ]
+  },
+  {
+   "name": "Soft sensor",
+   "type": "Method",
+   "definition": "A model that infers a hard-to-measure quality variable, usually a lab measurement, in real time from cheap process measurements already on the data historian.",
+   "book_label": "LVM_inferential_sensors",
+   "evidence": "product-development-product-improvement/soft-sensors.rst:25",
+   "quote": "The intention of an inferential sensor is to infer a hard-to-measure property, usually a lab",
+   "links": [
+    {
+     "relation": "USES",
+     "target": "Projection to latent structures (PLS)",
+     "evidence": "product-development-product-improvement/soft-sensors.rst:49",
+     "quote": "Soft sensors using latent variables will almost always be PLS models."
+    },
+    {
+     "relation": "ENABLES",
+     "target": "feedback_control",
+     "evidence": "product-development-product-improvement/soft-sensors.rst:45",
+     "quote": "Once validated, a soft sensor can also reduce costs of a process by allowing for rapid feedback"
+    },
+    {
+     "relation": "BUILT_FROM",
+     "target": "happenstance_data",
+     "evidence": "product-development-product-improvement/soft-sensors.rst:12",
+     "quote": "cheap, real-time process measurements that are already on the data historian",
+     "note": "The book does not use the word happenstance here; historian data are everyday operating data, which is the chapter 5 definition."
+    },
+    {
+     "relation": "CANNOT_SHOW",
+     "target": "cause_and_effect",
+     "evidence": "product-development-product-improvement/soft-sensors.rst:358",
+     "quote": "The PLS coefficients are a measure of correlation, not causation."
+    }
+   ],
+   "aliases": [
+    "inferential sensor",
+    "software sensor"
+   ]
+  },
+  {
+   "name": "Check T2 and SPE before using a prediction",
+   "type": "Guideline",
+   "definition": "Each new observation's T2 and SPE are checked for consistency with the model before a prediction is made; values consistently above the limits mean the model needs updating.",
+   "book_label": "LVM_inferential_sensors",
+   "evidence": "product-development-product-improvement/soft-sensors.rst:51",
+   "quote": "for consistency with the model before a prediction is made.",
+   "links": [
+    {
+     "relation": "APPLIES_TO",
+     "target": "Soft sensor",
+     "evidence": "product-development-product-improvement/soft-sensors.rst:50",
+     "quote": "built, it can be applied in real-time."
+    },
+    {
+     "relation": "USES",
+     "target": "Squared prediction error (SPE)",
+     "evidence": "product-development-product-improvement/soft-sensors.rst:50",
+     "quote": "and SPE value for each new observation is checked"
+    },
+    {
+     "relation": "INDICATES",
+     "target": "Model ageing",
+     "evidence": "product-development-product-improvement/soft-sensors.rst:54",
+     "quote": "It is an indication that the predictive models need to be updated if the SPE and/or"
+    }
+   ]
+  },
+  {
+   "name": "RMSEP on held-out data",
+   "type": "Diagnostic",
+   "definition": "Root-mean-square error of prediction on data the model has not seen, such as the last stretch in time order; deploy once it is small against the specification limits.",
+   "book_label": "APPS_soft_sensors_building_model",
+   "evidence": "product-development-product-improvement/soft-sensors.rst:241",
+   "quote": "held-out test set, and we report the root-mean-square error of prediction (RMSEP) on the test",
+   "links": [
+    {
+     "relation": "TESTS",
+     "target": "Soft sensor",
+     "evidence": "product-development-product-improvement/soft-sensors.rst:85",
+     "quote": "data, then tested on data it has not seen before it is deployed."
+    }
+   ]
+  },
+  {
+   "name": "Model ageing",
+   "type": "Concept",
+   "definition": "A model that is never updated falls out of step as the process drifts: its predictions develop a systematic offset and its limits make normal operation look abnormal.",
+   "book_label": "APPS_adaptive_soft_sensor",
+   "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:8",
+   "quote": "common-cause operation, and a model that is never updated gradually falls out",
+   "links": [
+    {
+     "relation": "CAUSED_BY",
+     "target": "process_drift",
+     "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:6",
+     "quote": "Catalysts age, heat exchangers foul, and feedstock and ambient conditions",
+     "note": "Same causes as chapter 5 process_drift and time_effect; the book does not cross-reference."
+    },
+    {
+     "relation": "DETECTED_BY",
+     "target": "Squared prediction error (SPE)",
+     "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:275",
+     "quote": "moved off the model plane. These crossings are the signal that the model"
+    },
+    {
+     "relation": "REMEDIED_BY",
+     "target": "Recursive updating",
+     "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:286",
+     "quote": "There are two ways to keep a model current once monitoring shows it has aged."
+    }
+   ]
+  },
+  {
+   "name": "Moving-window re-fit",
+   "type": "Method",
+   "definition": "Keeping a model current by refitting it on a sliding window of recent data, perhaps weighting earlier observations down exponentially; it keeps a data store and rebuilds the model.",
+   "book_label": "APPS_adaptive_soft_sensor",
+   "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:288",
+   "quote": "the model from it, perhaps weighting earlier observations down exponentially so",
+   "links": [
+    {
+     "relation": "REMEDIES",
+     "target": "Model ageing",
+     "evidence": "product-development-product-improvement/soft-sensors.rst:374",
+     "quote": "is to re-fit the model on a rolling window of the most recent lab values;"
+    },
+    {
+     "relation": "CONTRASTS_WITH",
+     "target": "Recursive updating",
+     "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:290",
+     "quote": "updates the existing model in place:"
+    }
+   ]
+  },
+  {
+   "name": "Recursive updating",
+   "type": "Method",
+   "definition": "Updating the existing model in place: each accepted observation moves the centring and scaling vectors and the association matrices a little, and no window of past data is kept.",
+   "book_label": "APPS_adaptive_soft_sensor",
+   "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:292",
+   "quote": "association matrices a little, and no window of past data is retained.",
+   "links": [
+    {
+     "relation": "HAS_SETTING",
+     "target": "Forgetting factor",
+     "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:332",
+     "quote": "The X-space kernel is then blended: a fraction of the old kernel is forgotten and"
+    }
+   ],
+   "aliases": [
+    "adaptive model",
+    "recursive model"
+   ]
+  },
+  {
+   "name": "Forgetting factor",
+   "type": "Property",
+   "definition": "The fraction of the old association matrix forgotten as each new row is mixed in: a larger value adapts faster but less stably, in the extreme tracking every fluctuation.",
+   "book_label": "APPS_adaptive_soft_sensor",
+   "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:333",
+   "quote": "the new row's contribution is mixed in, controlled by the",
+   "links": [
+    {
+     "relation": "TUNED_WITH",
+     "target": "Distance metric",
+     "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:720",
+     "quote": "The distance metric gives a second, unsupervised check on the forgetting factor,"
+    }
+   ]
+  },
+  {
+   "name": "Distance metric",
+   "type": "Diagnostic",
+   "definition": "Sum of squared cosines between current and training weight directions: equals the number of components when unchanged and falls as the model ages; a jagged trace means over-fast adaptation.",
+   "book_label": "APPS_adaptive_soft_sensor",
+   "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:367",
+   "quote": "A single number summarises how far the model has moved.",
+   "links": [
+    {
+     "relation": "MEASURES",
+     "target": "Model ageing",
+     "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:610",
+     "quote": "It is a compact way to watch a model age, and its rate of change"
+    }
+   ]
+  },
+  {
+   "name": "First-principles features",
+   "type": "Method",
+   "definition": "Engineered variables a linear model cannot form from raw tags, such as temperature differences or flow ratios; they let a static model extrapolate a little further under drift.",
+   "book_label": "APPS_adaptive_soft_sensor",
+   "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:761",
+   "quote": "Adaptation is one way to cope with drift; better",
+   "links": [
+    {
+     "relation": "ALTERNATIVE_TO",
+     "target": "Recursive updating",
+     "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:878",
+     "quote": "adaptation are, on this data, two routes to the same correction rather than"
+    }
+   ]
+  },
+  {
+   "name": "DuPont polymerization reactor",
+   "type": "Example",
+   "definition": "Batch PCA of ten trajectories from 55 industrial nylon batches: finds and diagnoses unusual batches, yet four poor-quality batches sit among the normal batches on both statistics.",
+   "book_label": "APPS_batch_case_dupont",
+   "evidence": "product-development-product-improvement/batch-case-study-dupont.rst:14",
+   "quote": "which they differ, and shows what such a model cannot detect.",
+   "links": [
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Batch PCA",
+     "evidence": "product-development-product-improvement/batch-process-monitoring.rst:32",
+     "quote": "a batch PCA model of the trajectories of an industrial"
+    },
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Observability",
+     "evidence": "product-development-product-improvement/batch-case-study-dupont.rst:677",
+     "quote": "That is the lesson of the case study. A model detects only what the measurements"
+    },
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Batch contribution plot",
+     "evidence": "product-development-product-improvement/batch-case-study-dupont.rst:252",
+     "quote": "per time sample, which locates the event in the batch."
+    },
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Reference set",
+     "evidence": "product-development-product-improvement/batch-case-study-dupont.rst:430",
+     "quote": "A reference model must describe normal operation, so batches 49 to 55 are removed and model"
+    }
+   ]
+  },
+  {
+   "name": "SBR emulsion polymerization reactor",
+   "type": "Example",
+   "definition": "Batch PLS of 53 simulated rubber batches to latex quality, with a known feed-impurity fault starting at two times: diagnosed, predicted mid-batch, and caught on-line.",
+   "book_label": "APPS_batch_case_sbr",
+   "evidence": "product-development-product-improvement/batch-case-study-sbr.rst:29",
+   "quote": "The 53 batches were simulated from a first-principles model of the reactor (Nomikos and",
+   "links": [
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Batch PLS",
+     "evidence": "product-development-product-improvement/batch-process-monitoring.rst:35",
+     "quote": "a batch PLS model from the trajectories of a simulated rubber"
+    },
+    {
+     "relation": "ILLUSTRATES",
+     "target": "On-line batch monitoring",
+     "evidence": "product-development-product-improvement/batch-case-study-sbr.rst:764",
+     "quote": "if it is possible to predict what its final quality will be while the batch is still"
+    },
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Along or off the model components",
+     "evidence": "product-development-product-improvement/batch-case-study-sbr.rst:1157",
+     "quote": "Which statistic catches a fault says what kind of fault it is; how much of the batch has been seen"
+    }
+   ]
+  },
+  {
+   "name": "Industrial batch dryer",
+   "type": "Example",
+   "definition": "Multiblock batch PLS from charge chemistry, operating conditions and aligned trajectories to final quality: variation in how batches were operated, not the chemistry, dominated the poor quality.",
+   "book_label": "APPS_batch_case_fmc",
+   "evidence": "product-development-product-improvement/batch-case-study-fmc.rst:1049",
+   "quote": "impact on the quality, and the variation in how the batches were operated was the dominant",
+   "links": [
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Multiblock PLS",
+     "evidence": "product-development-product-improvement/batch-case-study-fmc.rst:14",
+     "quote": "conditions, the trajectories and the final quality, so a multiblock PLS can say which of the"
+    },
+    {
+     "relation": "CANNOT_SHOW",
+     "target": "cause_and_effect",
+     "evidence": "product-development-product-improvement/batch-case-study-fmc.rst:1245",
+     "quote": "it describes how the batches co-varied, not cause and effect"
+    },
+    {
+     "relation": "SUGGESTS",
+     "target": "designed_experiment",
+     "evidence": "product-development-product-improvement/batch-case-study-fmc.rst:1246",
+     "quote": "That reading is a hypothesis for a designed experiment."
+    },
+    {
+     "relation": "ILLUSTRATES",
+     "target": "troubleshooting",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:785",
+     "quote": "use plant data from an industrial batch dryer to find why its product often missed the quality",
+     "note": "Troubleshooting from plant records, not by experiment; see the note on the MSPC link."
+    }
+   ],
+   "aliases": [
+    "FMC batch dryer"
+   ]
+  },
+  {
+   "name": "Flotation cell monitoring",
+   "type": "Example",
+   "definition": "Five tags of a mineral flotation cell: a Shewhart chart on pulp level compared with a two-component PCA chart of T2 and SPE, whose contribution plot points to upstream pH.",
+   "book_label": "APPS_multivariate_monitoring_flotation",
+   "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:136",
+   "quote": "froth that overflows. Five process tags are recorded every 30 seconds:",
+   "links": [
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Multivariate statistical process control (MSPC)",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:27",
+     "quote": "multivariate-statistical-process-control (MSPC) chart on all five"
+    },
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Phase I: building the monitoring chart",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:149",
+     "quote": "so we discard them entirely. Phase 1 is the next 1000 observations"
+    },
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Phase II: using the monitoring chart",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:456",
+     "quote": "To monitor phase 2, we project each new subgroup mean onto the model and"
+    },
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Contribution plot",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:583",
+     "quote": "the operator at the pH measurement and the collector dosing first, from a"
+    }
+   ]
+  },
+  {
+   "name": "Kamyr digester Kappa number",
+   "type": "Example",
+   "definition": "A PLS soft sensor predicting the lab Kappa number of a continuous pulp digester from 19 process tags, several shifted in time, tested on a held-out tail.",
+   "book_label": "APPS_soft_sensors_case_kamyr",
+   "evidence": "product-development-product-improvement/soft-sensors.rst:16",
+   "quote": "section is a worked example: predicting the Kappa number on a continuous Kamyr pulp digester,",
+   "links": [
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Soft sensor",
+     "evidence": "product-development-product-improvement/soft-sensors.rst:176",
+     "quote": "We build the model with PLS, using the Kappa number as the"
+    },
+    {
+     "relation": "ILLUSTRATES",
+     "target": "RMSEP on held-out data",
+     "evidence": "product-development-product-improvement/soft-sensors.rst:295",
+     "quote": "The held-out RMSEP is 1.96 Kappa units, on a Kappa number that varies between 12 and 28 in this"
+    }
+   ]
+  },
+  {
+   "name": "Vapour-pressure adaptive soft sensor",
+   "type": "Example",
+   "definition": "Hourly refinery column data over 2.5 years with lab vapour pressure three times a week: a static PLS soft sensor drifts into bias, which a recursive adaptive model removes.",
+   "book_label": "APPS_adaptive_soft_sensor",
+   "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:29",
+   "quote": "hourly series from a distillation column that stabilises a hydrocarbon product",
+   "links": [
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Model ageing",
+     "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:24",
+     "quote": "below builds a static soft sensor, watches it drift, and then lets an adaptive"
+    },
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Recursive updating",
+     "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:293",
+     "quote": "takes the recursive route: it needs only bounded memory and"
+    },
+    {
+     "relation": "ILLUSTRATES",
+     "target": "First-principles features",
+     "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:856",
+     "quote": "The control row confirms that the gain comes from meaningful physics, not simply"
+    },
+    {
+     "relation": "ILLUSTRATES",
+     "target": "Distance metric",
+     "evidence": "product-development-product-improvement/adaptive-soft-sensor.rst:636",
+     "quote": "The subspace-overlap distance metric ages from 3.0 (identical to the training"
+    }
+   ]
+  },
+  {
+   "name": "Principal component analysis (PCA)",
+   "type": "Method",
+   "definition": "Builds a model for a matrix of data, summarising many correlated variables by a few components: scores for the observations and loadings for the variables.",
+   "book_label": "SECTION_PCA",
+   "evidence": "latent-variable-modelling/principal-component-analysis/index.rst:19",
+   "quote": "Principal component analysis, PCA, builds a model for a matrix of data.",
+   "links": [
+    {
+     "relation": "HAS",
+     "target": "Score",
+     "evidence": "latent-variable-modelling/principal-component-analysis/interpreting-score-plots-and-loading-plots.rst:10",
+     "quote": "There is one score value for each observation (row) in the data set"
+    },
+    {
+     "relation": "HAS",
+     "target": "Hotelling's T2",
+     "evidence": "latent-variable-modelling/principal-component-analysis/hotellings-t2-statistic.rst:11",
+     "quote": "The final quantity from a PCA model that we need to consider is called Hotelling's"
+    }
+   ],
+   "note": "chapter 6 anchor"
+  },
+  {
+   "name": "Projection to latent structures (PLS)",
+   "type": "Method",
+   "definition": "A latent variable model with two blocks: X, always available when using the model, and Y, not always available; most commonly used to predict Y from X.",
+   "book_label": "SECTION_PLS",
+   "evidence": "latent-variable-modelling/projection-to-latent-structures/index.rst:18",
+   "quote": "takes the variables which are always available when using the model, while",
+   "links": [
+    {
+     "relation": "EXTENDS",
+     "target": "Principal component analysis (PCA)",
+     "evidence": "latent-variable-modelling/projection-to-latent-structures/index.rst:16",
+     "quote": "is the first step we will take to extending latent variable methods to using more than one block of data."
+    }
+   ],
+   "note": "chapter 6 anchor"
+  },
+  {
+   "name": "Score",
+   "type": "Concept",
+   "definition": "One value per observation per component: the distance from the model centre along the loading direction to where the observation projects.",
+   "book_label": "LVM_interpreting_scores",
+   "evidence": "latent-variable-modelling/principal-component-analysis/interpreting-score-plots-and-loading-plots.rst:12",
+   "quote": "is the distance from the origin, along the direction (loading vector) of the first component",
+   "links": [
+    {
+     "relation": "SUMMARIZED_BY",
+     "target": "Hotelling's T2",
+     "evidence": "latent-variable-modelling/principal-component-analysis/hotellings-t2-statistic.rst:16",
+     "quote": "is a scalar number that summarizes all the score values."
+    }
+   ],
+   "note": "chapter 6 anchor"
+  },
+  {
+   "name": "Hotelling's T2",
+   "type": "Diagnostic",
+   "definition": "Sum of each score squared over its variance: how far an observation lies along the model's components from the centre, compared with the reference data.",
+   "book_label": "LVM-Hotellings-T2",
+   "evidence": "latent-variable-modelling/principal-component-analysis/hotellings-t2-statistic.rst:19",
+   "quote": "It is the distance from the center of the (hyper)plane to the projection of the observation onto the (hyper)plane.",
+   "links": [
+    {
+     "relation": "CONTRASTS_WITH",
+     "target": "Squared prediction error (SPE)",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:61",
+     "quote": "they measure the on-the-plane and off-the-plane variation respectively, compressing"
+    }
+   ],
+   "note": "chapter 6 anchor"
+  },
+  {
+   "name": "Squared prediction error (SPE)",
+   "type": "Diagnostic",
+   "definition": "The distance of an observation off the model plane, from its residual vector; a large value means a broken correlation structure, something the reference data never did.",
+   "book_label": "LVM-interpreting-SPE-residuals",
+   "evidence": "latent-variable-modelling/principal-component-analysis/interpreting-the-residuals.rst:34",
+   "quote": "can be reduced to a single number, a distance value called SPE",
+   "links": [
+    {
+     "relation": "RESIDUAL_OF",
+     "target": "Principal component analysis (PCA)",
+     "evidence": "latent-variable-modelling/principal-component-analysis/interpreting-the-residuals.rst:9",
+     "quote": "called squared prediction errors (SPE)"
+    }
+   ],
+   "note": "chapter 6 anchor"
+  },
+  {
+   "name": "Contribution plot",
+   "type": "Plot",
+   "definition": "A bar chart that breaks a score, T2 or SPE into one term per variable, showing which variables carry the value; it is correlational, not causal.",
+   "book_label": "LVM_contribution_plots",
+   "evidence": "latent-variable-modelling/principal-component-analysis/latent-variable-contribution-plots.rst:6",
+   "quote": "We breakdown the value, such as SPE, into its individual terms, one from each variable.",
+   "links": [
+    {
+     "relation": "DECOMPOSES",
+     "target": "Squared prediction error (SPE)",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:117",
+     "quote": "The contribution to SPE for a new observation was derived in an"
+    },
+    {
+     "relation": "CANNOT_SHOW",
+     "target": "cause_and_effect",
+     "evidence": "product-development-product-improvement/multivariate-process-monitoring.rst:703",
+     "quote": "Contribution plots are correlational"
+    }
+   ],
+   "note": "chapter 6 anchor"
+  }
+ ]
+}
