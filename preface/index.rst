@@ -46,6 +46,37 @@ Chapter 5 covers :ref:`designed experiments <SECTION-design-analysis-experiments
 
 The final chapter, Chapter 6, is on :ref:`latent variable modelling <SECTION_latent_variable_modelling>` where we learn how to deal with multiple variables and extract information from them. This section is divided in several chapters (PCA, PLS, and applications). It is still a work in progress and will be improved in the future.
 
+The chapters build on one another, as the figure below shows. Data visualization, in Chapter 1,
+is used in every chapter, so it sits under all of them. Each method chapter sits above the chapters
+it needs, and the applications at the top draw on the methods below them.
+
+.. only:: html
+
+   .. raw:: html
+
+      <figure class="pid-chapter-map">
+        <object data="../_static/chapter-links.svg" type="image/svg+xml"
+                aria-label="The chapters drawn as a building: data visualization is the foundation,
+                univariate data analysis the first floor, process monitoring and least squares above it,
+                then design of experiments and latent variable modelling, with the applications chapter
+                as the roof. Each chapter is a link to it.">
+          A map of how the chapters build on one another.
+        </object>
+        <figcaption>How the chapters build on one another. Select a chapter to open it. A ribbon joins
+        two chapters that refer to each other at least five times; the wider the ribbon, the more
+        cross-references between them.</figcaption>
+      </figure>
+
+.. only:: latex
+
+   .. figure:: ../figures/concepts/chapter-links.png
+      :source: concepts/chapter-links.py
+      :alt: The chapters drawn as a building: data visualization is the foundation, univariate data analysis the first floor, process monitoring and least squares above it, then design of experiments and latent variable modelling, with the applications chapter as the roof. Ribbons join chapters that refer to each other often.
+      :width: 100%
+
+      How the chapters build on one another. A ribbon joins two chapters that refer to each other at
+      least five times; the wider the ribbon, the more cross-references between them.
+
 Because this is a predominantly electronic book, we resort to many hyperlinks in the text. We recommend a good PDF reader that allows forward and back navigation of links. However, we have ensured that a printed copy can be navigated just as easily, especially if you use the table of contents and index for cross referencing.
 
 **Updates**: This book is continually updated; there isn't a fixed edition. You should view it as a wiki. You might currently have an incomplete or older draft of the document. The latest version is always available at `https://learnche.org/pid <https://learnche.org/pid>`_.

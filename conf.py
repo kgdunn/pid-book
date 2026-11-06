@@ -197,7 +197,9 @@ html_theme_options = {
     "pygments_dark_style": "github-dark",
 }
 
-html_static_path = ["_static"]
+# The chapter map (contents.rst, preface) is an SVG whose cards link to the chapters. It is served from
+# _static/ and embedded with <object>, so its links resolve from one place for every page.
+html_static_path = ["_static", "figures/concepts/chapter-links.svg"]
 html_css_files = ["css/theme-extended-kgd.css", "css/code-collapse.css"]
 
 # Long-press (or Alt-click) a figure to see which script drew it. The
