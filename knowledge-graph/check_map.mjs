@@ -191,12 +191,37 @@ async function run(browser, width, height) {
   await context.close();
 }
 
+// On a phone, one finger that drags the map's content to its edge goes on to scroll the page, with no tap on lifting.
+async function fingerScrolls(browser) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true });
+  const p = await context.newPage();
+  await p.route(ORIGIN, (r) => r.fulfill({ contentType: "text/html", body: html }));
+  await p.goto(ORIGIN, { waitUntil: "load" });
+  await p.waitForFunction(() => typeof cy !== "undefined" && cy.nodes().length > 0, null, { timeout: 30000 });
+  await p.waitForTimeout(600);
+  const box = await (await p.$("#cy")).boundingBox();
+  const [x, y] = [box.x + box.width / 2, box.y + 0.8 * box.height];
+  const before = await p.evaluate(() => [scrollY, document.querySelector("#card h2").textContent]);
+  const finger = await context.newCDPSession(p);
+  await finger.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x, y }] });
+  for (let step = 1; step <= 40; step++)
+    await finger.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x, y: y - 15 * step }] });
+  await finger.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  await p.waitForTimeout(700);
+  const after = await p.evaluate(() => [scrollY, document.querySelector("#card h2").textContent,
+    cy.elements(":visible").renderedBoundingBox().y2]);
+  check(390, "a finger dragging the map to its edge goes on to scroll the page",
+    after[0] > before[0] + 100 && after[2] >= 39 && after[1] === before[1], `scrolled ${after[0] - before[0]} px`);
+  await context.close();
+}
+
 const browser = await playwright().chromium.launch({
   executablePath: process.env.CHROMIUM_PATH || undefined,
   proxy: process.env.HTTPS_PROXY ? { server: process.env.HTTPS_PROXY } : undefined,
 });
 try {
   await run(browser, 390, 844); // a phone
+  await fingerScrolls(browser);
   await run(browser, 680, 1000); // a tablet in portrait
 } finally {
   await browser.close();
