@@ -1,0 +1,1045 @@
+{
+ "nodes": [
+  {
+   "id": "indicator_variable",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:141",
+   "quote": "is an indicator variable. For example,",
+   "definition": "",
+   "book_label": "",
+   "note": "The book also uses indicator (dummy) columns, one per level, for a categorical factor with more than two levels (optimal-designs.rst:504), where all L of them cannot sit beside the intercept."
+  },
+  {
+   "id": "least_squares_model",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:28",
+   "quote": "whether the experimental design was executed accurately or not: the least squares model always works",
+   "definition": "",
+   "book_label": "",
+   "note": "b = (X'X)^-1 X'y is written out at analysis-by-least-squares-modelling.rst:77."
+  },
+  {
+   "id": "model_matrix",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:147",
+   "quote": "Each row is one experimental run; each column is one term in the model.",
+   "definition": "",
+   "book_label": "",
+   "note": "The book stresses that the columns are model terms, not just factors (line 146), so one design gives a different X for a different model. The alias 'design matrix' is not the book's term for X and often means the factor settings alone; prefer 'model matrix' (used at optimal-designs.rst:446)."
+  },
+  {
+   "id": "intercept",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:104",
+   "quote": "Notice from the least squares equations how it is just the average of the four experimental values, even though we did not actually perform an experiment at the center.",
+   "definition": "",
+   "book_label": "",
+   "note": "response-surface-methods.rst:239 confirms the linear model's predicted centre is just the intercept."
+  },
+  {
+   "id": "center_point",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:230",
+   "quote": "Note that the center point runs do not change the orthogonality of",
+   "definition": "",
+   "book_label": "",
+   "note": "Coded 0 for every factor: analysis-by-least-squares-modelling.rst:33. Degrees of freedom: assessing-significance...rst:12. Curvature: response-surface-methods.rst:241. Unstated qualifications: centre runs reduce only the intercept's variance (same line 230), and their curvature test is one overall signal that cannot separate the quadratic terms (comparing-design-families.rst:65-68)."
+  },
+  {
+   "id": "missing_values",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:26",
+   "quote": "if the least squares model was saturated, it becomes an underdetermined system: more unknowns than equations",
+   "definition": "Responses lost from some runs. Main effects can often still be estimated; if the least squares model was saturated, drop higher-order interaction terms to get a square system.",
+   "book_label": "",
+   "note": "Dropping terms is needed only when the lost runs leave a saturated model underdetermined; the book first notes main effects can still be estimated, and cites Draper (1961) for better methods."
+  },
+  {
+   "id": "off_target_run",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:18",
+   "quote": "will not be a diagonal matrix, but it will be almost diagonal.",
+   "definition": "",
+   "book_label": "",
+   "note": "The book says the columns 'will not be orthogonal anymore' while X'X stays almost diagonal; 'almost orthogonal' matches. Line 20 treats a belatedly discovered constraint the same way."
+  },
+  {
+   "id": "curvature",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:235",
+   "quote": "An optimum exhibits curvature, so a model that only has linear terms in it will not be suitable",
+   "definition": "",
+   "book_label": "",
+   "note": "'Every optimum' slightly generalizes 'An optimum exhibits curvature'; an optimum on a constraint (extended-topics...rst:39) need not show curvature."
+  },
+  {
+   "id": "curvature_check",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:504",
+   "quote": "Curvature can be assessed by comparing the predicted center point, i.e. the model's intercept",
+   "definition": "",
+   "book_label": "",
+   "note": "The linear model must be fitted without the centre run (line 239). The lack-of-fit test is the formal version (lines 300-302). The check gives one overall curvature signal, not which factor is curved (comparing-design-families.rst:65-68)."
+  },
+  {
+   "id": "quadratic_model",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:241",
+   "quote": "The way to accommodate for that is to add quadratic terms to the estimate model.",
+   "definition": "",
+   "book_label": "",
+   "note": "The full second-order model also keeps the linear and two-factor interaction terms (optimal-designs.rst:153). Fitting it needs runs at more than two levels, such as axial points; centre points alone cannot separate the quadratics (comparing-design-families.rst:62-68)."
+  },
+  {
+   "id": "ccd",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:506",
+   "quote": "If there is curvature, add axial points to expand the factorial into a central composite design.",
+   "definition": "",
+   "book_label": "",
+   "note": "Line 434 states the build: augment a factorial with axial and centre points."
+  },
+  {
+   "id": "axial_point",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:249",
+   "quote": "Rules for higher numbers of factors, and the reasoning behind the 1.4 and 1.7 unit step size can be found, for example in the textbook by Box, Hunter and Hunter.",
+   "definition": "A CCD run with one factor off-center and the rest at 0: about 1.4 coded units out for 2 factors, 1.7 for 3 (rotatable); face-centred designs use ±1.",
+   "book_label": "",
+   "note": "The book gives only 4^0.25 = 1.4 (k=2) and 8^0.25 = 1.7 (k=3) and defers the general rule to BHH; 1.68 is numerically right but the book prints 1.7. (2^k)^0.25 is the rotatable distance for a full-factorial cube only: the book's five-factor CCD on a half-fraction cube would put rotatable axial runs at ±2 (comparing-design-families.rst:81, 428), not 32^0.25 = 2.38, and its face-centred CCDs put them at ±1 (comparing-design-families.rst:425-427). multi-response-optimization.rst:84 calls 1.41 'the rotatable axial distance'. 'Star point' does not appear in the chapter text."
+  },
+  {
+   "id": "box_behnken",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:360",
+   "quote": "A BBD places no runs at the cube vertices: there is no run with every",
+   "definition": "A three-level response surface design for the full quadratic model with no runs at the cube corners; suits infeasible corners but cannot be built sequentially from a factorial.",
+   "book_label": "DOE-box-behnken-designs",
+   "note": "'Named as another design to research' is out of date: the chapter now has a full Box-Behnken section (response-surface-methods.rst:345-472) and design-resolution.rst no longer mentions it. It needs at least three factors (line 374); not sequential (line 440)."
+  },
+  {
+   "id": "big_interactions",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:233",
+   "quote": "The two-factor interaction terms become similar to, or larger than, the main effect terms.",
+   "definition": "",
+   "book_label": "",
+   "note": "The same line says this signals the first-order model breaking down and is distinct from pure quadratic curvature; see the edge to curvature."
+  },
+  {
+   "id": "center_mismatch",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:504",
+   "quote": "A large difference in the prediction, when compared to the model's effects, indicates the response surface is curved.",
+   "definition": "The measured center point differs from the predicted center point, b0, by an amount that is large compared with the model's effects.",
+   "book_label": "",
+   "note": "The book's yardstick is the size of the model's effects (lines 239, 504), not the noise. Comparing against noise is the formal lack-of-fit test, which needs replicated runs (DOE-lack-of-fit)."
+  },
+  {
+   "id": "first_run_center",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:24",
+   "quote": "Since the center point is not required to analyze the data, it is worth using that first run to learn about your system.",
+   "definition": "",
+   "book_label": "",
+   "note": "If successful, the run is still included in the least squares model (same line)."
+  },
+  {
+   "id": "constraint",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:41",
+   "quote": "The shaded region represents the constraint where we may not operate.",
+   "definition": "",
+   "book_label": "",
+   "note": "Reasons named: physical or safety (line 20); optimal-designs.rst:48-49 adds combinations that are 'simply not of interest'."
+  },
+  {
+   "id": "lost_orthogonality",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:49",
+   "quote": "We have lost orthogonality. We have also reduced the space",
+   "definition": "",
+   "book_label": "",
+   "note": "The book replaces the forbidden corner run with two others (line 41) rather than moving it. An off-target run also leaves X non-orthogonal (line 18), so the definition could be widened beyond constraints."
+  },
+  {
+   "id": "optimal_design",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:83",
+   "quote": "select the experimental runs by optimizing some criterion,",
+   "definition": "",
+   "book_label": "",
+   "note": "Line 84 continues 'subject to constraints.' The procedure (lines 104-114) also has the user state how many runs they can afford."
+  },
+  {
+   "id": "candidate_set",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:106",
+   "quote": "The computer enumerates every combination of factor levels that satisfies the",
+   "definition": "",
+   "book_label": "",
+   "note": "It includes centre points and any runs the user adds (lines 107-109). Coordinate exchange needs no candidate set (line 305), so not every optimal design picks from one."
+  },
+  {
+   "id": "exchange_algorithm",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:302",
+   "quote": "keeping the swap whenever it improves the criterion, until no",
+   "definition": "Point exchange: repeatedly swap a design run for a candidate point while the criterion improves; it reaches only a local optimum, so it is restarted many times.",
+   "book_label": "DOE-exchange-algorithms",
+   "note": "The book's name is point exchange (Fedorov, Wynn-Mitchell, DETMAX); 'candidate exchange' is not used. It stops when no swap helps, a local optimum, so it is restarted from many random designs (lines 311-312); 'until the criterion is best' overstates. The book's index maps 'exchange algorithm' to coordinate exchange, a second family missing from the graph."
+  },
+  {
+   "id": "optimality_criterion",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:135",
+   "quote": "A criterion is a single number computed from the design, and every criterion we use is built",
+   "definition": "",
+   "book_label": "",
+   "note": "The matrix it is built from is the information matrix M = X'X (lines 162-166), which the graph lacks."
+  },
+  {
+   "id": "d_optimal",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:204",
+   "quote": "so a large determinant means the smallest",
+   "definition": "",
+   "book_label": "",
+   "note": "'General variance' is not the book's phrase; it speaks of the volume of the joint confidence region of all coefficients (lines 203-205) and matches D to screening (lines 207-209)."
+  },
+  {
+   "id": "a_optimal",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:212",
+   "quote": "which is exactly the sum of the individual coefficient variances (the diagonal entries of",
+   "definition": "",
+   "book_label": "",
+   "note": "The trace is the sum; 'average' matches the book's mnemonic (line 220)."
+  },
+  {
+   "id": "g_optimal",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:234",
+   "quote": "G-optimality minimizes the largest prediction variance anywhere in",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "v_optimal",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:236",
+   "quote": "variance over the whole region. V-optimality is the closely related criterion that averages",
+   "definition": "Minimize the average prediction variance over a chosen finite set of points, rather than over the whole region as I-optimality does.",
+   "book_label": "",
+   "note": "The book names I-optimality separately (also called IV-optimality, line 235) and distinguishes it from V (lines 235-237; judging-and-comparing-designs.rst:134-135). Remove the alias 'I-optimality' and add I-optimality as its own criterion: the book uses I-optimal designs far more than V (optimal-designs.rst:604; screen-then-optimise-study.rst:237)."
+  },
+  {
+   "id": "specify_model",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:116",
+   "quote": "First, the user must specify the model.",
+   "definition": "",
+   "book_label": "",
+   "note": "Lines 117-118: in a factorial or central composite design the model is implicit in the template."
+  },
+  {
+   "id": "augmentation",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:99",
+   "quote": "A D-optimal augmentation finds the extra",
+   "definition": "",
+   "book_label": "DOE-augmenting-a-design",
+   "note": "The section now has its own label. The criterion is computed on the combined design, det(X1'X1 + X2'X2), with the old runs held fixed (lines 456-464); the book adds a block for drift and needs only as many runs as new terms (lines 472-482)."
+  },
+  {
+   "id": "mixture_design",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:14",
+   "quote": "Mixture experiments are used to optimize recipes: the factors being varied are the proportions",
+   "definition": "",
+   "book_label": "",
+   "note": "Proportions sum to 1, or 100% (lines 28-30); the response depends only on the proportions (lines 31-32)."
+  },
+  {
+   "id": "mixture_constraint",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:34",
+   "quote": "The constraint has one immediate consequence: you cannot change a single ingredient proportion",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "simplex",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:40",
+   "quote": "For three ingredients this is a triangle,",
+   "definition": "The region of allowed mixture settings; for three ingredients a triangle (ternary plot) with pure components at the vertices and two-ingredient blends on the edges.",
+   "book_label": "",
+   "note": "The book defines the simplex as the region of allowed settings for any number of ingredients; the triangle is only the three-ingredient case. Bounds cut it to a smaller region (lines 42-43)."
+  },
+  {
+   "id": "ex_rsm_profit",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:281",
+   "quote": "As the solid contour lines in the illustration show, we should run our next experiments roughly at",
+   "definition": "",
+   "book_label": "",
+   "note": "343 K and 1.60 g/L is the fitted model's best point for the next runs, close to the true optimum but slightly low in temperature (line 283)."
+  },
+  {
+   "id": "ex_fruit_punch",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:163",
+   "quote": "finds a lowest-cost fruit-punch recipe that still meets a taste target, with the shaded region",
+   "definition": "",
+   "book_label": "",
+   "note": "Now only a figure caption (lines 161-164); the shaded region rules out combinations that are too acidic."
+  },
+  {
+   "id": "q_old_data",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst:14",
+   "quote": "What interesting results do you see in this data, and where should we operate the system",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "q_unsafe_corner",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst:16",
+   "quote": "operating at both high temperature and pressure is unsafe. How do we plan such an experiment?",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "ref_st_john_draper",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:128",
+   "quote": "D-Optimality for Regression Designs: A Review",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  }
+ ],
+ "edges": [
+  {
+   "source": "least_squares_model",
+   "relation": "USES",
+   "target": "indicator_variable",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:141",
+   "quote": "is an indicator variable. For example,",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "least_squares_model",
+   "relation": "ESTIMATES",
+   "target": "coefficient",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:259",
+   "quote": "The parameters in this model are found in the usual way, using a least-squares model:",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "least_squares_model",
+   "relation": "USES",
+   "target": "model_matrix",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:18",
+   "quote": "and enter that value in the least squares model for matrix",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "least_squares_model",
+   "relation": "HAS",
+   "target": "intercept",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:104",
+   "quote": "The 61.5 term in the least squares model is the expected conversion at the baseline conditions.",
+   "fix": "",
+   "note": "HAS is vague; INCLUDES_TERM is sharper."
+  },
+  {
+   "source": "center_point",
+   "relation": "ADDS",
+   "target": "degrees_of_freedom",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:12",
+   "quote": "becomes available once replicate runs, center points, or an external estimate of the noise supply some degrees of freedom.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "center_point",
+   "relation": "KEEPS",
+   "target": "orthogonality",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:230",
+   "quote": "Note that the center point runs do not change the orthogonality of",
+   "fix": "",
+   "note": "Supported as stated: centre rows are zero in every non-intercept column, so the off-diagonals of X'X do not change. Do not fold it into 'center point prevents lost orthogonality': in the book lost orthogonality comes from replacing a constrained corner run (extended-topics...rst:41-49), which centre runs cannot repair."
+  },
+  {
+   "source": "missing_values",
+   "relation": "REMEDIED_BY",
+   "target": "least_squares_model",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:26",
+   "quote": "Then proceed to analyze the results from the least squares model as usual.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "off_target_run",
+   "relation": "REMEDIED_BY",
+   "target": "least_squares_model",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:18",
+   "quote": "This is not a wasted experiment. Simply code this as",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "off_target_run",
+   "relation": "IS_A",
+   "target": "lost_orthogonality",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:18",
+   "quote": "Note that the columns in the X-matrix will not be orthogonal anymore",
+   "fix": "[off_target_run, REDUCES, orthogonality]",
+   "note": "An off-target run is not a kind of lost orthogonality; it is one cause, and a mild one (X'X almost diagonal). The graph's lost_orthogonality node is defined for constraints."
+  },
+  {
+   "source": "curvature_check",
+   "relation": "USES",
+   "target": "center_point",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:504",
+   "quote": "against the actual center point response(s).",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "curvature_check",
+   "relation": "USES",
+   "target": "intercept",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:504",
+   "quote": "Curvature can be assessed by comparing the predicted center point, i.e. the model's intercept",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "curvature_check",
+   "relation": "DETECTS",
+   "target": "curvature",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:241",
+   "quote": "So when the measured center point value is quite different from the predicted center point in the linear model, then that is a good indication there is",
+   "fix": "",
+   "note": "It detects overall curvature only; it cannot say which quadratic term is responsible (comparing-design-families.rst:65-68)."
+  },
+  {
+   "source": "big_interactions",
+   "relation": "INDICATES",
+   "target": "curvature",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:233",
+   "quote": "though it is distinct from the pure quadratic curvature detected by the centre-point check below.",
+   "fix": "[big_interactions, INDICATES, near_optimum]",
+   "note": "The book says large interactions twist the plane and signal that the first-order model is breaking down, distinct from curvature; line 502 lists them as a separate sign 'that you are reaching an optimum'. A second true edge: big_interactions INVALIDATES steepest_ascent (line 494)."
+  },
+  {
+   "source": "center_mismatch",
+   "relation": "INDICATES",
+   "target": "curvature",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:504",
+   "quote": "A large difference in the prediction, when compared to the model's effects, indicates the response surface is curved.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "curvature",
+   "relation": "REMEDIED_BY",
+   "target": "quadratic_model",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:241",
+   "quote": "The way to accommodate for that is to add quadratic terms to the estimate model.",
+   "fix": "",
+   "note": "REMEDIED_BY is loose; MODELLED_BY is sharper. The terms also need runs beyond two levels, such as axial points."
+  },
+  {
+   "source": "ccd",
+   "relation": "ESTIMATES",
+   "target": "quadratic_model",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:259",
+   "quote": "This allows us to estimate a model with quadratic terms in it:",
+   "fix": "",
+   "note": "Verb: SUPPORTS is sharper (the book's word at line 351); a design supports a model whose coefficients are estimated."
+  },
+  {
+   "source": "ccd",
+   "relation": "USES",
+   "target": "axial_point",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:247",
+   "quote": "These designs take an existing orthogonal factorial and augment it with axial points.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "ccd",
+   "relation": "USES",
+   "target": "center_point",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:434",
+   "quote": "yes: augment a factorial with axial and centre points",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "box_behnken",
+   "relation": "ESTIMATES",
+   "target": "quadratic_model",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:372",
+   "quote": "it fits the full quadratic model: intercept, linear, two-factor interaction, and pure",
+   "fix": "",
+   "note": "Verb: SUPPORTS is sharper."
+  },
+  {
+   "source": "first_run_center",
+   "relation": "APPLIES_TO",
+   "target": "center_point",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:24",
+   "quote": "It is advisable to choose your first experiment to be the center point",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "first_run_center",
+   "relation": "APPLIES_TO",
+   "target": "phase_screening",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:24",
+   "quote": "You also learn how to run the experiment on this system, as the operating protocol isn't always certain ahead of time.",
+   "fix": "",
+   "note": "Line 24 is a bullet under 'The first phase is usually screening' (line 20)."
+  },
+  {
+   "source": "constraint",
+   "relation": "CAUSES",
+   "target": "lost_orthogonality",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:49",
+   "quote": "We have lost orthogonality.",
+   "fix": "",
+   "note": "The direct cause is replacing the forbidden corner run with two others (line 41)."
+  },
+  {
+   "source": "constraint",
+   "relation": "REMEDIED_BY",
+   "target": "optimal_design",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:51",
+   "quote": "A D-optimal design works well for constraint-handling because it places the experiments, within the constraints",
+   "fix": "",
+   "note": "A constraint is not remedied; HANDLED_BY is sharper."
+  },
+  {
+   "source": "optimal_design",
+   "relation": "IS_A",
+   "target": "designed_experiment",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:10",
+   "quote": "Optimal designs of experiments: D-, A-, and G-optimality and the information matrix",
+   "fix": "",
+   "note": "Follows directly from the section."
+  },
+  {
+   "source": "optimal_design",
+   "relation": "USES",
+   "target": "candidate_set",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:113",
+   "quote": "An algorithm selects that many runs from the candidate set so as to optimize the",
+   "fix": "",
+   "note": "True for point exchange; coordinate exchange needs no candidate set (line 305), so CAN_USE is more exact."
+  },
+  {
+   "source": "optimal_design",
+   "relation": "USES",
+   "target": "exchange_algorithm",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:315",
+   "quote": "runs under the hood when you (or the code in this book) ask for an optimal design.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "optimal_design",
+   "relation": "OPTIMIZES",
+   "target": "optimality_criterion",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:83",
+   "quote": "select the experimental runs by optimizing some criterion,",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "optimal_design",
+   "relation": "REQUIRES",
+   "target": "specify_model",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:116",
+   "quote": "First, the user must specify the model.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "d_optimal",
+   "relation": "IS_A",
+   "target": "optimality_criterion",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:120",
+   "quote": "ones carry single-letter names, A-, D-, G- and V-optimality, and a full",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "a_optimal",
+   "relation": "IS_A",
+   "target": "optimality_criterion",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:120",
+   "quote": "ones carry single-letter names, A-, D-, G- and V-optimality, and a full",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "g_optimal",
+   "relation": "IS_A",
+   "target": "optimality_criterion",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:120",
+   "quote": "ones carry single-letter names, A-, D-, G- and V-optimality, and a full",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "v_optimal",
+   "relation": "IS_A",
+   "target": "optimality_criterion",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:120",
+   "quote": "ones carry single-letter names, A-, D-, G- and V-optimality, and a full",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "d_optimal",
+   "relation": "USES",
+   "target": "model_matrix",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:51",
+   "quote": "It does this by maximizing the determinant of",
+   "fix": "",
+   "note": "Strictly it uses the information matrix X'X built from the model matrix (optimal-designs.rst:162-166)."
+  },
+  {
+   "source": "augmentation",
+   "relation": "USES",
+   "target": "d_optimal",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:456",
+   "quote": "so the two experiments add their information. A D-optimal augmentation chooses the new runs",
+   "fix": "",
+   "note": "D is the book's example criterion, not the only possible one."
+  },
+  {
+   "source": "augmentation",
+   "relation": "IS_A",
+   "target": "sequential_experimentation",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:439",
+   "quote": "Experimentation is sequential: a first experiment answers some questions and raises others.",
+   "fix": "",
+   "note": "IS_A is loose; PART_OF is sharper."
+  },
+  {
+   "source": "lost_orthogonality",
+   "relation": "REMEDIED_BY",
+   "target": "augmentation",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:22",
+   "quote": "for how one can add one or more additional experiments to fix an existing bad set of experiments.",
+   "fix": "[off_target_run, REMEDIED_BY, augmentation]",
+   "note": "The book offers added runs to fix a bad set of experiments (off-target runs, a belatedly found constraint); that restores precision, not orthogonality, and a constraint still forbids the corner. For known constraints the book's remedy is to place runs with an optimal design (line 51)."
+  },
+  {
+   "source": "mixture_design",
+   "relation": "IS_A",
+   "target": "designed_experiment",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:17",
+   "quote": "are screening and optimization designs for mixtures, but the analysis differs in an important",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "mixture_design",
+   "relation": "REQUIRES",
+   "target": "mixture_constraint",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:23",
+   "quote": "The defining feature of a mixture experiment is the",
+   "fix": "",
+   "note": "IS_DEFINED_BY is sharper."
+  },
+  {
+   "source": "mixture_design",
+   "relation": "USES",
+   "target": "simplex",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:40",
+   "quote": "Geometrically, the allowed settings form a",
+   "fix": "",
+   "note": "USES is vague; LIES_ON is sharper."
+  },
+  {
+   "source": "mixture_design",
+   "relation": "USES",
+   "target": "d_optimal",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:162",
+   "quote": "A D-optimal algorithm places the runs within the remaining region.",
+   "fix": "",
+   "note": "For constrained regions; the unconstrained second-order Scheffe design uses vertices and edge midpoints (lines 102-105)."
+  },
+  {
+   "source": "mixture_constraint",
+   "relation": "CONTRASTS_WITH",
+   "target": "full_factorial",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:37",
+   "quote": "effects cannot be estimated independently, unlike the factors of a",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "constraint",
+   "relation": "APPLIES_TO",
+   "target": "mixture_design",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:43",
+   "quote": "as lower or upper bounds on an ingredient cut the simplex down to a smaller region inside it.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "ex_rsm_profit",
+   "relation": "ILLUSTRATES",
+   "target": "rsm",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:285",
+   "quote": "This example has demonstrated how powerful response surface methods are.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "ex_rsm_profit",
+   "relation": "ILLUSTRATES",
+   "target": "curvature_check",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:239",
+   "quote": "yet the actual centre point from run 6 showed a profit of $688",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "ex_rsm_profit",
+   "relation": "ILLUSTRATES",
+   "target": "ccd",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:257",
+   "quote": "So a central composite design layout was added to the factorial in the above example",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "ex_fruit_punch",
+   "relation": "ILLUSTRATES",
+   "target": "mixture_design",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:163",
+   "quote": "finds a lowest-cost fruit-punch recipe that still meets a taste target, with the shaded region",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "q_old_data",
+   "relation": "ANSWERED_BY",
+   "target": "least_squares_model",
+   "verdict": "unsupported",
+   "evidence": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst:14",
+   "quote": "What interesting results do you see in this data, and where should we operate the system",
+   "fix": "",
+   "note": "The chapter poses the question but never works it; least squares is a reasonable answer (extended-topics...rst:28 prefers it however the design was run), but the link is not stated."
+  },
+  {
+   "source": "q_unsafe_corner",
+   "relation": "ANSWERED_BY",
+   "target": "constraint",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:367",
+   "quote": "constraint forbids running both factors high at once, so in coded units the region is the square",
+   "fix": "[q_unsafe_corner, ANSWERED_BY, optimal_design]",
+   "note": "The constraint is the problem, not the answer; the book answers it with a constrained D-optimal design (lines 364-417). Box-Behnken designs are a second answer (response-surface-methods.rst:366-367)."
+  },
+  {
+   "source": "d_optimal",
+   "relation": "REVIEWED_IN",
+   "target": "ref_st_john_draper",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:128",
+   "quote": "D-Optimality for Regression Designs: A Review",
+   "fix": "",
+   "note": ""
+  }
+ ],
+ "overlaps": [
+  {
+   "ids": [
+    "curvature_check",
+    "center_mismatch"
+   ],
+   "note": "center_mismatch is the positive result of curvature_check, taken from the same lines (response-surface-methods.rst:239-241, 504). Merge, or link center_mismatch RESULT_OF curvature_check."
+  },
+  {
+   "ids": [
+    "lost_orthogonality",
+    "off_target_run"
+   ],
+   "note": "Both leave X non-orthogonal, but lost_orthogonality is defined only for constraints. Widen it and give it two causes, constraint and off_target_run, instead of the IS_A edge."
+  },
+  {
+   "ids": [
+    "constraint",
+    "mixture_constraint"
+   ],
+   "note": "Different ideas sharing a word: a forbidden operating region versus proportions summing to one. Keep both; the edge constraint APPLIES_TO mixture_design refers to ingredient bounds, not the sum."
+  }
+ ],
+ "missing": [
+  {
+   "name": "I-optimality",
+   "type": "Criterion",
+   "definition": "Minimize the average prediction variance over the whole design region; suits prediction across a region, as in response surface work, better than D-optimality.",
+   "book_label": "DOE-optimal-designs",
+   "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:134",
+   "quote": "over the region, and the I-optimal value is its average over the region (V-optimality is the",
+   "links": [
+    {
+     "relation": "IS_A",
+     "target": "optimality_criterion",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:233"
+    },
+    {
+     "relation": "CONTRASTS_WITH",
+     "target": "v_optimal",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:236"
+    },
+    {
+     "relation": "CONTRASTS_WITH",
+     "target": "d_optimal",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:604"
+    }
+   ]
+  },
+  {
+   "name": "Information matrix",
+   "type": "Concept",
+   "definition": "M = X'X for the model matrix X. Its inverse, times the noise variance, is the covariance matrix of the coefficients; every optimality criterion summarizes it.",
+   "book_label": "DOE-optimal-designs",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:168",
+   "quote": "It earns its name from the least squares result for the covariance of the estimated coefficients",
+   "links": [
+    {
+     "relation": "BUILT_FROM",
+     "target": "model_matrix",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:144"
+    },
+    {
+     "relation": "SUMMARIZED_BY",
+     "target": "optimality_criterion",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:197"
+    },
+    {
+     "relation": "MAXIMIZED_BY",
+     "target": "d_optimal",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:202"
+    }
+   ]
+  },
+  {
+   "name": "Coordinate-exchange algorithm",
+   "type": "Method",
+   "definition": "Adjust one coordinate of one run at a time to the value that most improves the criterion, cycling until nothing improves; needs no candidate set and suits constrained regions.",
+   "book_label": "DOE-exchange-algorithms",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:306",
+   "quote": "altogether. It walks through each coordinate of each run in turn and sets it to the value that",
+   "links": [
+    {
+     "relation": "CONTRASTS_WITH",
+     "target": "exchange_algorithm",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:342"
+    },
+    {
+     "relation": "USED_BY",
+     "target": "optimal_design",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:309"
+    },
+    {
+     "relation": "USED_BY",
+     "target": "augmentation",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:463"
+    }
+   ]
+  },
+  {
+   "name": "Lack-of-fit test",
+   "type": "Diagnostic",
+   "definition": "Split the residual sum of squares into pure error, from replicated runs, and lack of fit; a large F ratio of their mean squares signals a missing term.",
+   "book_label": "DOE-lack-of-fit",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:323",
+   "quote": "which measures the part of the residual that the model failed to explain but that is not just",
+   "links": [
+    {
+     "relation": "FORMALIZES",
+     "target": "curvature_check",
+     "evidence": "design-analysis-experiments/response-surface-methods.rst:300"
+    },
+    {
+     "relation": "REQUIRES",
+     "target": "replicate",
+     "evidence": "design-analysis-experiments/response-surface-methods.rst:342"
+    },
+    {
+     "relation": "APPLIES_TO",
+     "target": "quadratic_model",
+     "evidence": "design-analysis-experiments/response-surface-methods.rst:299"
+    }
+   ]
+  },
+  {
+   "name": "Scheffe model",
+   "type": "Concept",
+   "definition": "The standard mixture model: linear blending terms plus two- (and three-) ingredient cross-products, with no intercept and no pure quadratic terms, because of the mixture constraint.",
+   "book_label": "DOE-mixture-designs",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:97",
+   "quote": "None of these has an intercept or a pure quadratic term.",
+   "links": [
+    {
+     "relation": "USED_BY",
+     "target": "mixture_design",
+     "evidence": "design-analysis-experiments/mixture-experiments.rst:77"
+    },
+    {
+     "relation": "CAUSED_BY",
+     "target": "mixture_constraint",
+     "evidence": "design-analysis-experiments/mixture-experiments.rst:48"
+    },
+    {
+     "relation": "CONTRASTS_WITH",
+     "target": "quadratic_model",
+     "evidence": "design-analysis-experiments/mixture-experiments.rst:65"
+    }
+   ]
+  },
+  {
+   "name": "Face-centred central composite design",
+   "type": "DesignType",
+   "definition": "A central composite design with its axial points at ±1, so each factor has three levels and every run stays inside the factor ranges; a rotatable CCD uses five levels.",
+   "book_label": "DOE-box-behnken-designs",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:422",
+   "quote": "5 (rotatable) or 3 (face-centred)",
+   "links": [
+    {
+     "relation": "IS_A",
+     "target": "ccd",
+     "evidence": "design-analysis-experiments/response-surface-methods.rst:422"
+    },
+    {
+     "relation": "USES",
+     "target": "axial_point",
+     "evidence": "design-analysis-experiments/comparing-design-families.rst:426"
+    },
+    {
+     "relation": "CONTRASTS_WITH",
+     "target": "box_behnken",
+     "evidence": "design-analysis-experiments/response-surface-methods.rst:455"
+    }
+   ]
+  },
+  {
+   "name": "Pseudocomponents",
+   "type": "Concept",
+   "definition": "Rescaled proportions x_i = (a_i - L_i)/(1 - sum of L_j) for ingredients with lower bounds; the remaining region is again a simplex, so the same designs apply.",
+   "book_label": "DOE-mixture-designs",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:143",
+   "quote": "the original. The same kind of design is then optimal for the constrained region as for the full",
+   "links": [
+    {
+     "relation": "APPLIES_TO",
+     "target": "simplex",
+     "evidence": "design-analysis-experiments/mixture-experiments.rst:142"
+    },
+    {
+     "relation": "APPLIES_TO",
+     "target": "mixture_design",
+     "evidence": "design-analysis-experiments/mixture-experiments.rst:144"
+    },
+    {
+     "relation": "HANDLES",
+     "target": "constraint",
+     "evidence": "design-analysis-experiments/mixture-experiments.rst:139"
+    }
+   ]
+  },
+  {
+   "name": "E-optimality",
+   "type": "Criterion",
+   "definition": "Maximize the smallest eigenvalue of X'X, strengthening the hardest-to-estimate combination of coefficients; rarely the primary criterion in practice.",
+   "book_label": "DOE-optimal-designs",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:222",
+   "quote": "maximizes the smallest eigenvalue of",
+   "links": [
+    {
+     "relation": "IS_A",
+     "target": "optimality_criterion",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:222"
+    },
+    {
+     "relation": "CONTRASTS_WITH",
+     "target": "d_optimal",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:230"
+    },
+    {
+     "relation": "CONTRASTS_WITH",
+     "target": "a_optimal",
+     "evidence": "design-analysis-experiments/optimal-designs.rst:230"
+    }
+   ]
+  }
+ ]
+}

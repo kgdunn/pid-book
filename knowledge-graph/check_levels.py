@@ -8,7 +8,7 @@ from math import comb
 
 import networkx as nx
 
-LIGHT = {"CITED_IN": 0.2, "ILLUSTRATES": 0.5, "ANSWERED_BY": 0.5, "COMPARED_WITH": 0.6}
+LIGHT = {"DESCRIBED_IN": 0.2, "ILLUSTRATES": 0.5, "ANSWERED_BY": 0.5, "CONTRASTS_WITH": 0.6, "ALTERNATIVE_TO": 0.6}
 d = json.load(open(sys.argv[1]))
 g = nx.Graph()
 g.add_nodes_from(n["id"] for n in d["nodes"])

@@ -1,0 +1,1521 @@
+{
+ "nodes": [
+  {
+   "id": "disturbance",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:14",
+   "quote": "Operators, ambient conditions, physical equipment, lab analyses, and time-dependent effects (catalyst deactivation, fouling), will impact the response.",
+   "definition": "",
+   "book_label": "DOE_blocking_section",
+   "note": "Also defined at experiments-with-a-single-variable-at-two-levels.rst:14 as variables that might affect y but that we do not wish to quantify. The characterization is taught in the unlabelled first subsection under DOE_blocking_section, not under DOE-Blocking-and-confounding."
+  },
+  {
+   "id": "controlled_disturbance",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:20",
+   "quote": "in which case it isn't a disturbance anymore, as it is held constant for all experiments, and its effect cancels out.",
+   "definition": "",
+   "book_label": "DOE_blocking_section",
+   "note": "The book adds that it may still be worth investigating if the process later runs with the disturbance at another level."
+  },
+  {
+   "id": "randomization",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:180",
+   "quote": "experiments must be performed in random order to avoid any unmeasured, and uncontrolled, disturbances from impacting the system.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "independence",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:252",
+   "quote": "By randomizing our experiments, we are able to guarantee that the results we obtain from using",
+   "definition": "Independence is required to compare the z-value with the t-distribution; randomizing the run order is what makes the t-based results appropriate.",
+   "book_label": "",
+   "note": "The book says randomization guarantees that the t-based results are appropriate, not that it guarantees independence. In standard practice randomization does not make the errors independent; it makes the t reference distribution approximately valid, which is what the randomization histogram shows."
+  },
+  {
+   "id": "randomization_test",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:194",
+   "quote": "Fisher's insight was to create one long vector of these outcomes",
+   "definition": "",
+   "book_label": "",
+   "note": "The book never names the method 'randomization test' or 'permutation test'; it calls the histogram of all splits the reference distribution (line 202). The alias 'permutation test' is not book wording."
+  },
+  {
+   "id": "pairing",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:16",
+   "quote": "pairing is when two experiments are run on the same subject and we analyze the differences in the two response values, rather than the actual response values.",
+   "definition": "",
+   "book_label": "",
+   "note": "experiments-with-a-single-variable-at-two-levels.rst:14 now adds that pairing is blocking with blocks of size two."
+  },
+  {
+   "id": "two_group_comparison",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:19",
+   "quote": "We first calculate a pooled variance, then a",
+   "definition": "",
+   "book_label": "",
+   "note": "The statistic is called z for continuity but is t-distributed on n_A + n_B - 2 degrees of freedom (line 31)."
+  },
+  {
+   "id": "pooled_variance",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:40",
+   "quote": "which already assumes the spread at level A equals the spread at level B.",
+   "definition": "",
+   "book_label": "",
+   "note": "The definition omits the equal-spread assumption, which the new allocation subsection (DOE-two-level-allocation) makes explicit."
+  },
+  {
+   "id": "confidence_interval",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:33",
+   "quote": "significant effect when this confidence interval does not span zero.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "t_distribution",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:31",
+   "quote": "from the data (rather than known), this statistic is strictly",
+   "definition": "",
+   "book_label": "",
+   "note": "For coefficients: assessing-significance-of-main-effects-and-interactions.rst:181, the ratio b_i / S_E(b_i) is t-distributed."
+  },
+  {
+   "id": "null_hypothesis",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:196",
+   "quote": "We do this because the null hypothesis is that there is no difference between A and B.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "statistical_significance",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:12",
+   "quote": "There are three ways to judge whether a main effect or interaction is significant.",
+   "definition": "An effect is statistically significant when its confidence interval does not span zero; without replicates, Lenth's margin of error gives an objective cutoff instead.",
+   "book_label": "",
+   "note": "The confidence interval is now only one of three routes (Pareto plot, Lenth's method, standard error). 'Larger than the noise' is not the book's phrasing for this term."
+  },
+  {
+   "id": "practical_significance",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:33",
+   "quote": "However, the width of this interval and how symmetrically it spans zero can cause us to come to a different,",
+   "definition": "",
+   "book_label": "",
+   "note": "The book also uses how symmetrically the interval spans zero, which the definition drops."
+  },
+  {
+   "id": "cost",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst:25",
+   "quote": "is not an efficient way for experimentation. Note that OFAT is an alternative name for COST",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "false_optimum",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst:46",
+   "quote": "Changing one single variable at a time leads you into thinking you've reached the optimum, when all you've done in fact is trap yourself at a suboptimal solution.",
+   "definition": "",
+   "book_label": "",
+   "note": "'False optimum' is not book wording; the book says 'suboptimal solution'."
+  },
+  {
+   "id": "order_dependence",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst:48",
+   "quote": "This is very unsatisfactory: we cannot use methods to optimize our processes that depend on the order of experiments!",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "designed_experiment",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst:52",
+   "quote": "Designed experiments are always run in random order -- as we will presently see -- and we will get the same result, no matter the order.",
+   "definition": "A planned set of runs that changes multiple factors simultaneously, learning about a system efficiently, often in fewer runs than COST, and not depending on which factor is changed first.",
+   "book_label": "",
+   "note": "The node copies line 52 but misreads it. In context (line 48) 'no matter the order' means the order in which factors are changed, not the run order; randomizing does not make results independent of run order, it turns a drift into noise instead of bias. 'Always run in random order' is also overstated, by the book itself: runs are randomized only within each block (blocking-and-confounding-for-disturbances.rst:54) and hard-to-change factors lead to split-plot structures (optimal-designs.rst:61). Line 52 of the book should be reworded too."
+  },
+  {
+   "id": "full_factorial",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/index.rst:19",
+   "quote": "In this section we consider the case when these factors are at two levels.",
+   "definition": "",
+   "book_label": "",
+   "note": "The 2^k run count is at using-two-levels-for-two-or-more-factors.rst:25."
+  },
+  {
+   "id": "coding",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:28",
+   "quote": "It is standard practice to represent the data from designed experiments in a centered and scaled form:",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "standard_order",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:25",
+   "quote": "which alternates the sign of the first variable the fastest and the last variable the slowest.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "cube_plot",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:62",
+   "quote": "For simple systems you can visualize the design and results",
+   "definition": "",
+   "book_label": "",
+   "note": "That the response is written at each corner is shown in the figure, not stated in the text."
+  },
+  {
+   "id": "main_effect",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:79",
+   "quote": "The effects are considered, by convention, to be the difference from the high level to the low level.",
+   "definition": "",
+   "book_label": "",
+   "note": "This is the full-range (low-to-high) change, twice the least squares coefficient (example-design-and-analysis-of-a-three-factor-experiment.rst:126). See the half_range_effect problem."
+  },
+  {
+   "id": "interaction",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:134",
+   "quote": "In summary, interaction means the effect of one factor depends on the level of the other factor.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "two_factor_interaction",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:186",
+   "quote": "What is missing is an interaction term, given by the product of temperature and substrate.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "three_factor_interaction",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/fractional-factorial-designs/index.rst:19",
+   "quote": "Very very seldom do three-factor interactions occur, nor are they often of practical significance.",
+   "definition": "",
+   "book_label": "",
+   "note": "Also blocking-and-confounding-for-disturbances.rst:52: the ABC term is almost always small for many systems."
+  },
+  {
+   "id": "interaction_plot",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:186",
+   "quote": "The lack of parallel lines is a clear indication of interaction.",
+   "definition": "",
+   "book_label": "",
+   "note": "First introduced at line 105 as an alternative way to visualize main effects when no software is available."
+  },
+  {
+   "id": "half_range_effect",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:140",
+   "quote": "Box, Hunter and Hunter, like the hand calculations in this section, report effects that are double the coefficients.",
+   "definition": "Least squares coefficients measure the change over half a factor's range; effects, by hand or in Box, Hunter and Hunter, are the low-to-high change, double the coefficients.",
+   "book_label": "",
+   "note": "The book does not report effects over half the range. Its hand-calculated main effects and interactions (using-two-levels-for-two-or-more-factors.rst:79, this file line 51) use the same full-range convention as Box, Hunter and Hunter; only the least squares coefficients are half (line 136). The node name should change, for example to 'Coefficient versus effect', or the node should be merged into coefficient."
+  },
+  {
+   "id": "orthogonality",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:92",
+   "quote": "matrix has only zeros on the off-diagonals: it indicates that matrix",
+   "definition": "The columns of X are mutually orthogonal, so X'X has zeros off the diagonal and each coefficient can be calculated and interpreted separately.",
+   "book_label": "",
+   "note": "'Independent' reads as linear independence, which does not give a diagonal X'X: a full-rank design that is not orthogonal has independent but correlated columns. The book's 'independent' refers to the factor changes being made independently."
+  },
+  {
+   "id": "coefficient",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:98",
+   "quote": "They are the same, as long as we are careful to interpret them as the change over",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "hierarchy_rule",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst:16",
+   "quote": "Also, if you conclude the interaction term is significant, then you must also include all main factors that make up that interaction term in the model.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "interpret_with_interaction",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst:16",
+   "quote": "We cannot interpret the main effects separately from the interaction effects",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "robustness",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst:22",
+   "quote": "This is desirable in some situations. It means we can adjust that",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "degrees_of_freedom",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:185",
+   "quote": "If there are more experiments than parameters to be estimated, then we have extra degrees of freedom. Having degrees of freedom implies we can calculate the standard error,",
+   "definition": "",
+   "book_label": "",
+   "note": "Lenth's method (line 102) uses a second, conventional meaning: d = m/3 degrees of freedom for its t-value, with no residual degrees of freedom at all."
+  },
+  {
+   "id": "replicate",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:8",
+   "quote": "a complete replicate implies the entire experiment is repeated: system setup, running the experiment and measuring the result.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "repeat_measurement",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:8",
+   "quote": "is not a true replicate. That is only an estimate of the measurement error and analytical error.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "standard_error",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:12",
+   "quote": "The third uses the standard error, and becomes available once replicate runs, center points, or an external estimate of the noise supply some degrees of freedom.",
+   "definition": "S_E, the noise estimate from replicate runs, residual degrees of freedom or external data; in a coded orthogonal design a coefficient's is S_E(b) = sqrt(S_E^2 / sum x^2).",
+   "book_label": "",
+   "note": "The formula SE(b) = sqrt(S_E^2 / sum x^2) holds only for a coded, orthogonal X (line 187), and S_E can come from duplicates or an external dataset, not only from residuals."
+  },
+  {
+   "id": "pareto_plot",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:26",
+   "quote": "then plot as shown the absolute value of the model coefficients in sorted order, from largest magnitude to smallest, ignoring the intercept term.",
+   "definition": "",
+   "book_label": "",
+   "note": "The current figure also carries the Lenth margins of error (line 75), and the book says the plot alone leaves the cutoff to the eye (line 23). Bars are coloured by sign."
+  },
+  {
+   "id": "se_significance",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:232",
+   "quote": "However, it is customary to just report the standard error next to the coefficients, so that users can apply their own level of confidence.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "refit",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:244",
+   "quote": "After having established which effects are significant, we can exclude the nonsignificant effects and increase the degrees of freedom.",
+   "definition": "",
+   "book_label": "",
+   "note": "The book flags the circular reasoning (line 250), and its own example shows an omitted effect, b_C = -1.125, exceeding the 1.04 yardstick (line 246)."
+  },
+  {
+   "id": "residual_analysis",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:244",
+   "quote": "Plots of the residuals in experimental order, against fitted values, q-q plots and all the other assessment tools from earlier are used, as usual.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "factorial_efficiency",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:277",
+   "quote": "whereas the COST comparison uses only two, so part of the variance reduction is simply the extra runs.",
+   "definition": "A factorial halves a main effect's variance versus COST, partly by using more runs; those same runs also estimate the other effects and interactions at no additional cost.",
+   "book_label": "",
+   "note": "The definition drops the book's own qualification that part of the halving is just the extra runs; the real gain is that the same runs also estimate b_S and b_TS."
+  },
+  {
+   "id": "half_fraction",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/fractional-factorial-designs/half-fractions.rst:24",
+   "quote": "So this is our half-factorial designed experiment in 3 factors, but it only requires 4 experiments as shown by the open points in the figure.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "complementary_fraction",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:106",
+   "quote": "This complementary fraction is found by flipping the sign on the generating factor.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "blocking",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:18",
+   "quote": "blocking is a special way of running the experiment so that the disturbance actually does affect the response, but we construct the experiment so that this effect is not misleading.",
+   "definition": "",
+   "book_label": "",
+   "note": "Used for disturbances that are known (line 16 and 48); unknown ones are handled by randomization."
+  },
+  {
+   "id": "block",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:54",
+   "quote": "The experiments within each block must be run randomly.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "ex_cost_bioreactor",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst:44",
+   "quote": "We're proud of ourselves because we have boosted our yield from 63% to 67%, and then from 67% to 69.7%.",
+   "definition": "Changing temperature, then substrate concentration, one at a time over eight runs raises yield from 63% to 69.7%, but stops at a suboptimal point.",
+   "book_label": "",
+   "note": "The book's final yield is 69.7%, not 69.5%."
+  },
+  {
+   "id": "ex_tea",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:182",
+   "quote": "If the lady has test score values better than by random chance, then there is a reasonable claim the lady is reliable.",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "ex_brittleness",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:200",
+   "quote": "degrees of freedom, would be 79.4%. See how close they agree?",
+   "definition": "Brittleness from TK104 and TK107: enumerating all 24,310 splits gives 79.6%, close to the 79.4% from the t-distribution with 15 degrees of freedom.",
+   "book_label": "",
+   "note": "The t-based value is 79.4%, not 79.3%. Recomputed: z = 0.8435, t-distribution CDF on 15 degrees of freedom = 0.7939; 4956 of 24,310 splits exceed the observed 63.2, so 79.6%. The example uses only the first 8 and 9 values."
+  },
+  {
+   "id": "ex_two_factor",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:104",
+   "quote": "The 61.5 term in the least squares model is the expected conversion at the baseline conditions.",
+   "definition": "",
+   "book_label": "",
+   "note": "Coefficients 61.5, -5, -3, -0.5 at analysis-by-least-squares-modelling.rst:84."
+  },
+  {
+   "id": "ex_handwashing",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:132",
+   "quote": "The effect of warm water enhances the effect of soap. Conversely, the effect of soap is enhanced by using warm water.",
+   "definition": "",
+   "book_label": "",
+   "note": "The book alternates between 'hot' and 'warm' water."
+  },
+  {
+   "id": "ex_pollutant",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:132",
+   "quote": "It is expected that the chemical compound and speed have a strong effect on",
+   "definition": "",
+   "book_label": "",
+   "note": "The chemical x speed interaction is b_CS = -6.75 (line 124), the CS effect -13.5 (line 91)."
+  },
+  {
+   "id": "ex_raw_material_blocks",
+   "verdict": "correct",
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:50",
+   "quote": "the question is how to arrange the 2 sets of 4 runs so that the known, but unmeasurable disturbance from the impurity has the least effect on our results",
+   "definition": "",
+   "book_label": "",
+   "note": ""
+  },
+  {
+   "id": "ref_fisher",
+   "verdict": "imprecise",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:182",
+   "quote": "The concept of randomization was elegantly described in an example by Fisher in Chapter 2 of his book,",
+   "definition": "Fisher's 1935 book; its Chapter 2 describes randomization through the lady tasting tea, and his work showed that changing one factor at a time is inefficient.",
+   "book_label": "",
+   "note": "The book says Fisher 'described' randomization and credits his work since the mid-1930s for showing OFAT is inefficient (changing-one-single-variable-at-a-time.rst:25). It never calls the book the source of randomization or of factorial experimentation; historically Fisher introduced randomization in the 1920s."
+  }
+ ],
+ "edges": [
+  {
+   "source": "designed_experiment",
+   "relation": "IS_A",
+   "target": "experiment",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/design-analysis-experiments.rst:274",
+   "quote": "To disturb the system, we change several factors. When we make these changes, we say that we have",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "designed_experiment",
+   "relation": "USES",
+   "target": "randomization",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst:52",
+   "quote": "Designed experiments are always run in random order",
+   "fix": "",
+   "note": "Randomization can be restricted: within blocks only (blocking-and-confounding-for-disturbances.rst:54)."
+  },
+  {
+   "source": "controlled_disturbance",
+   "relation": "IS_A",
+   "target": "disturbance",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:20",
+   "quote": "Finally, a disturbance can be characterized as a",
+   "fix": "",
+   "note": "The same sentence goes on to say it 'isn't a disturbance anymore' once held constant; acceptable as a classification."
+  },
+  {
+   "source": "disturbance",
+   "relation": "AFFECTS",
+   "target": "response",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:14",
+   "quote": "External disturbances will always have an effect on our response variable,",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "randomization",
+   "relation": "PROTECTS_AGAINST",
+   "target": "disturbance",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:14",
+   "quote": "disturbances cannot systematically affect the response.",
+   "fix": "",
+   "note": "Specifically the unknown, unmeasurable and uncontrollable disturbances."
+  },
+  {
+   "source": "randomization",
+   "relation": "GUARANTEES",
+   "target": "independence",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:252",
+   "quote": "By randomizing our experiments, we are able to guarantee that the results we obtain from using",
+   "fix": "[randomization, JUSTIFIES, t_distribution]",
+   "note": "The book's guarantee is that t-based results are appropriate. Randomization does not make errors independent (serial correlation survives any run order); it validates the t reference distribution approximately."
+  },
+  {
+   "source": "t_distribution",
+   "relation": "REQUIRES",
+   "target": "independence",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:252",
+   "quote": "Recall that independence is required to calculate the",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "randomization_test",
+   "relation": "TESTS",
+   "target": "null_hypothesis",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:196",
+   "quote": "We do this because the null hypothesis is that there is no difference between A and B.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "randomization_test",
+   "relation": "AGREES_WITH",
+   "target": "t_distribution",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:200",
+   "quote": "degrees of freedom, would be 79.4%. See how close they agree?",
+   "fix": "",
+   "note": "Shown on one example: 79.6% from 24,310 splits versus 79.4% from the t-distribution (recomputed and confirmed); the figure overlays the t curve on the histogram (line 250). Agreement is approximate, so APPROXIMATED_BY would be sharper."
+  },
+  {
+   "source": "pairing",
+   "relation": "PROTECTS_AGAINST",
+   "target": "disturbance",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:14",
+   "quote": "If we cannot control the disturbance, then at least we can use",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "blocking",
+   "relation": "PROTECTS_AGAINST",
+   "target": "disturbance",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:16",
+   "quote": "For these cases we perform pairing and blocking.",
+   "fix": "",
+   "note": "For known, controllable or measurable disturbances."
+  },
+  {
+   "source": "pairing",
+   "relation": "CONTRASTS_WITH",
+   "target": "blocking",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:14",
+   "quote": "Pairing is blocking with blocks of size two:",
+   "fix": "[pairing, SPECIAL_CASE_OF, blocking]",
+   "note": "blocking-and-confounding-for-disturbances.rst:18 still says 'Blocking is slightly different', so the book is internally inconsistent; the newer line 14 is the precise statement."
+  },
+  {
+   "source": "two_group_comparison",
+   "relation": "USES",
+   "target": "pooled_variance",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:19",
+   "quote": "We first calculate a pooled variance, then a",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "two_group_comparison",
+   "relation": "USES",
+   "target": "confidence_interval",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:19",
+   "quote": "and finally a confidence interval based on this",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "two_group_comparison",
+   "relation": "USES",
+   "target": "t_distribution",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:31",
+   "quote": "from the data (rather than known), this statistic is strictly",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "two_group_comparison",
+   "relation": "AGREES_WITH",
+   "target": "least_squares_model",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:169",
+   "quote": "Both methods give identical results, but by very different routes.",
+   "fix": "",
+   "note": "Identical, not approximate: GIVES_SAME_RESULT_AS would be sharper."
+  },
+  {
+   "source": "confidence_interval",
+   "relation": "DECIDES",
+   "target": "statistical_significance",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:33",
+   "quote": "significant effect when this confidence interval does not span zero.",
+   "fix": "",
+   "note": "For unreplicated factorials the book now uses Lenth's margin of error instead."
+  },
+  {
+   "source": "practical_significance",
+   "relation": "CONTRASTS_WITH",
+   "target": "statistical_significance",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:33",
+   "quote": "In other words, we override the narrow statistical conclusion based on the richer information we can infer from the width of the confidence interval and the variance of the process.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "practical_significance",
+   "relation": "USES",
+   "target": "confidence_interval",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:33",
+   "quote": "However, the width of this interval and how symmetrically it spans zero can cause us to come to a different,",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "cost",
+   "relation": "LEADS_TO",
+   "target": "false_optimum",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst:46",
+   "quote": "The problem with this approach is that it leaves undiscovered values behind.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "cost",
+   "relation": "SUFFERS_FROM",
+   "target": "order_dependence",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst:48",
+   "quote": "This is very unsatisfactory: we cannot use methods to optimize our processes that depend on the order of experiments!",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "cost",
+   "relation": "CANNOT_ESTIMATE",
+   "target": "interaction",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:277",
+   "quote": "whereas the COST approach cannot estimate the effect of interactions at all.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "cost",
+   "relation": "CONTRASTS_WITH",
+   "target": "designed_experiment",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst:52",
+   "quote": "Designed experiments, on the other hand, provide an efficient mechanism to learn about a system, often in fewer runs than the COST approach,",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "full_factorial",
+   "relation": "IS_A",
+   "target": "designed_experiment",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst:4",
+   "quote": "The factorial experimental design is intentionally constructed so that each factor is independent of the others.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "factorial_efficiency",
+   "relation": "CONTRASTS_WITH",
+   "target": "cost",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:263",
+   "quote": "Finally, we end this section on factorials by illustrating their efficiency. Contrast the two cases: COST and the full factorial approach.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "full_factorial",
+   "relation": "HAS_PROPERTY",
+   "target": "orthogonality",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:92",
+   "quote": "matrix has only zeros on the off-diagonals: it indicates that matrix",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "full_factorial",
+   "relation": "HAS_PROPERTY",
+   "target": "factorial_efficiency",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:279",
+   "quote": "Factorial designs make each experimental observation work twice.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "full_factorial",
+   "relation": "USES",
+   "target": "coding",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:28",
+   "quote": "It is standard practice to represent the data from designed experiments in a centered and scaled form:",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "full_factorial",
+   "relation": "USES",
+   "target": "standard_order",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:25",
+   "quote": "but always write the table in this standard order.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "full_factorial",
+   "relation": "USES",
+   "target": "randomization",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:58",
+   "quote": "Experiments were performed in random order; in this case, we happened to run experiment 4 first and experiment 3 last.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "full_factorial",
+   "relation": "ESTIMATES",
+   "target": "main_effect",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:85",
+   "quote": "So we now have two temperature effects, and the average of them is a",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "full_factorial",
+   "relation": "ESTIMATES",
+   "target": "interaction",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:63",
+   "quote": "Calculate the 3 two-factor interactions (2fi) by hand, recalling that interactions are defined as the half difference going from high to low.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "cube_plot",
+   "relation": "SHOWS",
+   "target": "main_effect",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:87",
+   "quote": "when calculating main effects from a cube plot by hand.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "cube_plot",
+   "relation": "SHOWS",
+   "target": "full_factorial",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:62",
+   "quote": "For simple systems you can visualize the design and results",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "interaction_plot",
+   "relation": "SHOWS",
+   "target": "interaction",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:186",
+   "quote": "The lack of parallel lines is a clear indication of interaction.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "two_factor_interaction",
+   "relation": "IS_A",
+   "target": "interaction",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:186",
+   "quote": "and call it the temperature-substrate interaction term.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "three_factor_interaction",
+   "relation": "IS_A",
+   "target": "interaction",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:95",
+   "quote": "Calculate the single three-factor interaction (3fi).",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "main_effect",
+   "relation": "MEASURED_AS",
+   "target": "half_range_effect",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:126",
+   "quote": "whereas the effect measures the change over the",
+   "fix": "[coefficient, IS_HALF_OF, main_effect]",
+   "note": "The book's main effect is the full-range, low-to-high change (using-two-levels-for-two-or-more-factors.rst:79); the coefficient is the half-range change and equals half the effect."
+  },
+  {
+   "source": "coefficient",
+   "relation": "MEASURED_AS",
+   "target": "half_range_effect",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:136",
+   "quote": "The least squares coefficients in this text quantify an effect as the change in response over",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "orthogonality",
+   "relation": "PROPERTY_OF",
+   "target": "model_matrix",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:92",
+   "quote": "matrix has only zeros on the off-diagonals: it indicates that matrix",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "coding",
+   "relation": "MAKES",
+   "target": "orthogonality",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst:4",
+   "quote": "The factorial experimental design is intentionally constructed so that each factor is independent of the others.",
+   "fix": "[coding, MAKES_COMPARABLE, coefficient]",
+   "note": "The book attributes orthogonality to the design's construction, not to coding. Centering is needed for the columns to be orthogonal to the intercept, but coding cannot make a non-orthogonal design orthogonal (a coded half fraction stays collinear, half-fractions.rst:63). What coding does in the book is make coefficients comparable (assessing-significance-of-main-effects-and-interactions.rst:79)."
+  },
+  {
+   "source": "hierarchy_rule",
+   "relation": "APPLIES_TO",
+   "target": "interaction",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst:16",
+   "quote": "then you must also include all main factors that make up that interaction term in the model.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "interpret_with_interaction",
+   "relation": "APPLIES_TO",
+   "target": "main_effect",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst:16",
+   "quote": "We cannot interpret the main effects separately from the interaction effects",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "robustness",
+   "relation": "MEANS_SMALL",
+   "target": "main_effect",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst:22",
+   "quote": "A small or zero effect from an",
+   "fix": "",
+   "note": "Vague verb; INDICATED_BY_SMALL or 'main_effect SMALL_MEANS robustness' would read better."
+  },
+  {
+   "source": "replicate",
+   "relation": "ADDS",
+   "target": "degrees_of_freedom",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:42",
+   "quote": "If we had replicate experiments, we would have degrees of freedom to estimate the error, but more on that later.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "repeat_measurement",
+   "relation": "CONTRASTS_WITH",
+   "target": "replicate",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:8",
+   "quote": "is not a true replicate. That is only an estimate of the measurement error and analytical error.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "degrees_of_freedom",
+   "relation": "NEEDED_FOR",
+   "target": "standard_error",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:6",
+   "quote": "There are no degrees of freedom left to calculate the standard error or the confidence intervals for the main effects and interaction terms.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "standard_error",
+   "relation": "NEEDED_FOR",
+   "target": "se_significance",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:12",
+   "quote": "The third uses the standard error, and becomes available once replicate runs, center points, or an external estimate of the noise supply some degrees of freedom.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "se_significance",
+   "relation": "USES",
+   "target": "confidence_interval",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:185",
+   "quote": "then confidence intervals can be constructed for each main effect and interaction.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "se_significance",
+   "relation": "USES",
+   "target": "t_distribution",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:232",
+   "quote": "we can multiply it by the critical",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "pareto_plot",
+   "relation": "REQUIRES",
+   "target": "coding",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:23",
+   "quote": "It is only meaningful when the factors are centered and scaled, so that the coefficients are directly comparable.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "pareto_plot",
+   "relation": "SHOWS",
+   "target": "coefficient",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:26",
+   "quote": "the absolute value of the model coefficients in sorted order",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "pareto_plot",
+   "relation": "CONTRASTS_WITH",
+   "target": "se_significance",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:12",
+   "quote": "The first two need no replicate runs: a Pareto plot ranks the effects, and",
+   "fix": "",
+   "note": "The book now places Lenth's method between them: it gives the Pareto ranking an objective cutoff without replicates, and the Pareto figure shows its margins of error (line 75). Lenth's method is missing from the graph."
+  },
+  {
+   "source": "refit",
+   "relation": "ADDS",
+   "target": "degrees_of_freedom",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:244",
+   "quote": "we can exclude the nonsignificant effects and increase the degrees of freedom.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "refit",
+   "relation": "LEADS_TO",
+   "target": "residual_analysis",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:244",
+   "quote": "The residuals will be nonzero now, so we can then estimate the standard error and apply all the tools from least squares modelling to assess the residuals.",
+   "fix": "",
+   "note": "In the book's example the effects to drop are chosen by Pareto plot or Lenth's method first (line 246)."
+  },
+  {
+   "source": "half_fraction",
+   "relation": "IS_A",
+   "target": "fractional_factorial",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/fractional-factorial-designs/index.rst:17",
+   "quote": "Running a half fraction, or quarter fraction, of the full set will allow us to estimate the main effects and two-factor interactions (2fi) in many cases,",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "complementary_fraction",
+   "relation": "IS_A",
+   "target": "half_fraction",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:80",
+   "quote": "This shows the complementary half fraction is in fact generated by",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "half_fraction",
+   "relation": "CAN_AUGMENT_TO",
+   "target": "full_factorial",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:106",
+   "quote": "So we see that we can always complete our half-fraction by creating a complementary fraction.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "complementary_fraction",
+   "relation": "COMPLETES",
+   "target": "half_fraction",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:104",
+   "quote": "Analyzing the data together we can calculate the main effects and two-factor interactions without aliasing because we are back to the usual full factorial of",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "blocking",
+   "relation": "USES",
+   "target": "block",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:54",
+   "quote": "and the process of creating these 2 blocks is called",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "blocking",
+   "relation": "USES",
+   "target": "block_generator",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:117",
+   "quote": "Here are the block generators you can use when splitting a",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "blocking",
+   "relation": "CAUSES",
+   "target": "confounding",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:52",
+   "quote": "the effect of the disturbance with an effect that is expected to be the least significant.",
+   "fix": "",
+   "note": "The confounding is deliberate, not a side effect: DELIBERATELY_CONFOUNDS_WITH three_factor_interaction would be sharper."
+  },
+  {
+   "source": "block",
+   "relation": "USES",
+   "target": "randomization",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:54",
+   "quote": "The experiments within each block must be run randomly.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "full_factorial",
+   "relation": "SPLIT_BY",
+   "target": "blocking",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:115",
+   "quote": "factorial in two blocks you should create a",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "complementary_fraction",
+   "relation": "USED_AS",
+   "target": "block",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:115",
+   "quote": "half fraction to run as the first block, and then run the other block on the complementary half-fraction.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "full_factorial",
+   "relation": "CAN_AUGMENT_TO",
+   "target": "ccd",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:247",
+   "quote": "These designs take an existing orthogonal factorial and augment it with axial points.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "full_factorial",
+   "relation": "HAS_PROPERTY",
+   "target": "d_optimal",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:121",
+   "quote": "turns out to be A-, D-, G- and V-optimal all at once for the main-effects-and-interactions",
+   "fix": "",
+   "note": "Only for the main-effects-and-interactions model (line 122); a 2^k cannot estimate a quadratic model at all. True in standard practice: X'X = nI with the largest possible diagonal. optimal-designs.rst:320 shows the 2^2 factorial as the D-optimal four-run design. The A-, G- and V-optimality claims at line 121 hold for the same model."
+  },
+  {
+   "source": "ex_cost_bioreactor",
+   "relation": "ILLUSTRATES",
+   "target": "cost",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst:27",
+   "quote": "Consider a bioreactor where we are producing a particular enzyme.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "ex_cost_bioreactor",
+   "relation": "ILLUSTRATES",
+   "target": "false_optimum",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst:46",
+   "quote": "trap yourself at a suboptimal solution.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "ex_tea",
+   "relation": "ILLUSTRATES",
+   "target": "randomization",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:182",
+   "quote": "The concept of randomization was elegantly described in an example by Fisher in Chapter 2 of his book,",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "ex_brittleness",
+   "relation": "ILLUSTRATES",
+   "target": "randomization_test",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:184",
+   "quote": "Let's take a look at a more engineering-oriented example.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "ex_brittleness",
+   "relation": "ILLUSTRATES",
+   "target": "two_group_comparison",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:167",
+   "quote": "For example, you will find when comparing TK104 and TK107 that",
+   "fix": "",
+   "note": "This comparison uses all 20 and 23 values (z = 1.4056), not the 8 and 9 used for the randomization example."
+  },
+  {
+   "source": "ex_two_factor",
+   "relation": "ILLUSTRATES",
+   "target": "main_effect",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:85",
+   "quote": "So we now have two temperature effects, and the average of them is a",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "ex_two_factor",
+   "relation": "ILLUSTRATES",
+   "target": "least_squares_model",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:8",
+   "quote": "and analyze the experimental data using a least squares model.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "ex_handwashing",
+   "relation": "ILLUSTRATES",
+   "target": "interaction",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:130",
+   "quote": "We say there is an interaction between using soap and the temperature of the water.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "ex_pollutant",
+   "relation": "ILLUSTRATES",
+   "target": "full_factorial",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:42",
+   "quote": "the designed-experiments app, which opens these eight runs with their results.",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "ex_pollutant",
+   "relation": "ILLUSTRATES",
+   "target": "two_factor_interaction",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:132",
+   "quote": "interaction. You can see this last interpretation by writing out the full",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "ex_raw_material_blocks",
+   "relation": "ILLUSTRATES",
+   "target": "blocking",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:54",
+   "quote": "Each group of 4 runs is called a",
+   "fix": "",
+   "note": ""
+  },
+  {
+   "source": "randomization",
+   "relation": "INTRODUCED_IN",
+   "target": "ref_fisher",
+   "verdict": "wrong",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:182",
+   "quote": "The concept of randomization was elegantly described in an example by Fisher in Chapter 2 of his book,",
+   "fix": "[randomization, DESCRIBED_IN, ref_fisher]",
+   "note": "The book says 'described'. Historically Fisher introduced randomization in the 1920s (Statistical Methods for Research Workers, 1925; 'The arrangement of field experiments', 1926), before the 1935 book."
+  },
+  {
+   "source": "cost",
+   "relation": "CRITICIZED_IN",
+   "target": "ref_fisher",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst:25",
+   "quote": "We have known since the mid-1930s (about 90 years), due to the work by",
+   "fix": "",
+   "note": "The book credits Fisher's work and links the reference list; it does not cite a page of the 1935 book."
+  },
+  {
+   "source": "half_range_effect",
+   "relation": "CONTRASTS_WITH",
+   "target": "ref_bhh",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:144",
+   "quote": "Remember: the coefficients are half the effects reported in Box, Hunter and Hunter, and in some other textbooks; their standard errors are also half.",
+   "fix": "",
+   "note": "The contrast is between least squares coefficients and BHH effects; the book's own hand-calculated effects agree with BHH (line 140)."
+  },
+  {
+   "source": "ex_tea",
+   "relation": "INTRODUCED_IN",
+   "target": "ref_fisher",
+   "verdict": "supported",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:182",
+   "quote": "The concept of randomization was elegantly described in an example by Fisher in Chapter 2 of his book,",
+   "fix": "",
+   "note": ""
+  }
+ ],
+ "overlaps": [
+  {
+   "ids": [
+    "half_range_effect",
+    "coefficient"
+   ],
+   "note": "half_range_effect only restates the coefficient's scale; merge it into coefficient, or rename it 'Coefficient versus effect' with the corrected definition."
+  },
+  {
+   "ids": [
+    "main_effect",
+    "coefficient"
+   ],
+   "note": "Not duplicates, but the graph must keep them distinct: main effect = full-range change = 2 x coefficient in coded units."
+  },
+  {
+   "ids": [
+    "interaction",
+    "two_factor_interaction"
+   ],
+   "note": "interaction is defined for two factors ('depends on the level of another'), so two_factor_interaction adds only an example; either generalize interaction or merge."
+  },
+  {
+   "ids": [
+    "randomization",
+    "independence"
+   ],
+   "note": "independence is defined only through randomization and the t-test; fold it into randomization or t_distribution."
+  },
+  {
+   "ids": [
+    "pairing",
+    "blocking"
+   ],
+   "note": "The book now defines pairing as blocking with blocks of size two."
+  },
+  {
+   "ids": [
+    "statistical_significance",
+    "se_significance"
+   ],
+   "note": "se_significance is the confidence-interval test of statistical_significance applied to model coefficients; both also overlap confidence_interval."
+  },
+  {
+   "ids": [
+    "hierarchy_rule",
+    "interpret_with_interaction"
+   ],
+   "note": "Both come from the same bullet (summary-so-far.rst:16); distinct rules but could be one guideline."
+  }
+ ],
+ "missing": [
+  {
+   "name": "Lenth's method",
+   "type": "Method",
+   "definition": "Uses the many near-zero effects of an unreplicated design to estimate the noise, giving an objective cutoff for judging which effects are significant.",
+   "book_label": "DOE-lenth-method",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:94",
+   "quote": "When the design is unreplicated, so there are no degrees of freedom for a standard error, we can still place an objective cutoff by using the idea of",
+   "links": [
+    {
+     "relation": "USES",
+     "target": "effect_sparsity",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:94"
+    },
+    {
+     "relation": "ADDS_CUTOFF_TO",
+     "target": "pareto_plot",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:23"
+    },
+    {
+     "relation": "ALTERNATIVE_TO",
+     "target": "se_significance",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:12"
+    },
+    {
+     "relation": "USES",
+     "target": "t_distribution",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105"
+    }
+   ]
+  },
+  {
+   "name": "Pseudo standard error",
+   "type": "Concept",
+   "definition": "A robust estimate of an effect's standard error: 1.5 times the median absolute effect, taken only over effects small enough to be plausibly noise.",
+   "book_label": "DOE-lenth-method",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105",
+   "quote": "(PSE) is a robust estimate of the standard error of an effect.",
+   "links": [
+    {
+     "relation": "ESTIMATES",
+     "target": "standard_error",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105"
+    },
+    {
+     "relation": "USES",
+     "target": "effect_sparsity",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:94"
+    }
+   ]
+  },
+  {
+   "name": "Margin of error",
+   "type": "Criterion",
+   "definition": "Lenth's individual 95% cutoff, t(0.975, m/3) times the pseudo standard error; an effect whose magnitude exceeds it is significant on its own.",
+   "book_label": "DOE-lenth-method",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105",
+   "quote": "(ME) is the individual 95% cutoff: an effect whose magnitude exceeds the ME is significant on its own.",
+   "links": [
+    {
+     "relation": "DECIDES",
+     "target": "statistical_significance",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105"
+    },
+    {
+     "relation": "USES",
+     "target": "t_distribution",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105"
+    }
+   ]
+  },
+  {
+   "name": "Simultaneous margin of error",
+   "type": "Criterion",
+   "definition": "Lenth's stricter cutoff for testing all m effects at once, set so that all noise effects together stay below it with probability 0.95.",
+   "book_label": "DOE-lenth-method",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105",
+   "quote": "It is the stricter cutoff to use when scanning many effects at once.",
+   "links": [
+    {
+     "relation": "DECIDES",
+     "target": "statistical_significance",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:129"
+    }
+   ]
+  },
+  {
+   "name": "Half-normal plot",
+   "type": "Plot",
+   "definition": "Absolute effects plotted against half-normal quantiles; noise effects fall on a straight line through the origin and real effects break away to the upper right.",
+   "book_label": "DOE-lenth-method",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:131",
+   "quote": "Noise effects fall along a straight line through the origin; the real effects break away to the upper right.",
+   "links": [
+    {
+     "relation": "ALTERNATIVE_TO",
+     "target": "pareto_plot",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:131"
+    },
+    {
+     "relation": "USES",
+     "target": "effect_sparsity",
+     "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:94"
+    }
+   ]
+  },
+  {
+   "name": "Allocating runs between two levels",
+   "type": "Guideline",
+   "definition": "For a fixed budget, split runs in proportion to sigma divided by the square root of cost; the even split is best only for equal variances and costs.",
+   "book_label": "DOE-two-level-allocation",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:128",
+   "quote": "The general principle is to place more runs where the variance is larger and where the runs are cheaper.",
+   "links": [
+    {
+     "relation": "APPLIES_TO",
+     "target": "two_group_comparison",
+     "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:40"
+    },
+    {
+     "relation": "RELAXES_ASSUMPTION_OF",
+     "target": "pooled_variance",
+     "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:42"
+    }
+   ]
+  },
+  {
+   "name": "Reference distribution",
+   "type": "Concept",
+   "definition": "The histogram of the difference in averages over every possible split of the results into groups A and B, against which the observed difference is judged.",
+   "book_label": "DOE-randomization",
+   "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:202",
+   "quote": "You can build the reference distribution yourself; enumerating all 24,310 splits takes under a second:",
+   "links": [
+    {
+     "relation": "BUILT_BY",
+     "target": "randomization_test",
+     "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:198"
+    },
+    {
+     "relation": "APPROXIMATED_BY",
+     "target": "t_distribution",
+     "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:250"
+    }
+   ]
+  },
+  {
+   "name": "Blocking into more than two blocks",
+   "type": "Method",
+   "definition": "Index g blocks with new two-level block variables generated from interactions, chosen so that no block contrast, including their products, is confounded with a main effect.",
+   "book_label": "DOE-Generators-for-blocking",
+   "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:153",
+   "quote": "The goal is to keep those three block contrasts away from the effects we care about, and especially away from the main effects.",
+   "links": [
+    {
+     "relation": "EXTENDS",
+     "target": "blocking",
+     "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:135"
+    },
+    {
+     "relation": "USES",
+     "target": "block_generator",
+     "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:157"
+    }
+   ]
+  }
+ ]
+}

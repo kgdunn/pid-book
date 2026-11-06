@@ -17,19 +17,22 @@ import networkx as nx
 HERE = Path(__file__).parent
 SEED = 7
 # Links that say where a term is taught or shown, not what it is: they should not pull topics together.
-LIGHT = {"CITED_IN": 0.2, "ILLUSTRATES": 0.5, "ANSWERED_BY": 0.5, "COMPARED_WITH": 0.6}
+LIGHT = {"DESCRIBED_IN": 0.2, "ILLUSTRATES": 0.5, "ANSWERED_BY": 0.5, "CONTRASTS_WITH": 0.6, "ALTERNATIVE_TO": 0.6}
 # A cluster is named by the anchor term it contains; the build fails if an anchor moves or two meet.
 NAMES = {
     # anchor: (short name drawn on the map, full name)
-    "fractional_factorial": ("Fractional factorials", "Fractional factorials and screening"),
-    "full_factorial": ("Full factorials", "Full factorials, randomization and blocking"),
-    "optimal_design": ("Optimal designs", "Least squares, constraints and optimal designs"),
-    "experiment": ("Causality", "Experiments, factors and causality"),
-    "rsm": ("Response surfaces", "Response surfaces and evolutionary operation"),
-    "two_group_comparison": ("Significance", "Significance, standard errors and replicates"),
-    "curvature": ("Curvature", "Curvature, center points and quadratic models"),
-    "cost": ("Interactions", "Interactions, and changing one factor at a time"),
-    "steepest_ascent": ("Steepest ascent", "Climbing to the optimum by steepest ascent"),
+    "pca": ("PCA and PLS in practice", "PCA and PLS in practice: monitoring, batches and product development"),
+    "full_factorial": ("Full factorials", "Full factorials, randomization, blocking and interactions"),
+    "fractional_factorial": ("Fractional factorials", "Fractional factorials, aliasing and screening"),
+    "optimal_design": ("Optimal designs", "Optimal designs, and how designs are judged"),
+    "least_squares_model": ("Coefficients and coding", "Least squares coefficients, coding and steepest ascent"),
+    "omars_design": ("DSD and OMARS", "Definitive screening and OMARS designs"),
+    "lenth_method": ("Significance", "Judging significance: Lenth's method, standard errors and t-tests"),
+    "curvature": ("Curvature", "Curvature, center points and second-order designs"),
+    "process_drift": ("Drift and updating", "Process drift, EVOP and keeping models current"),
+    "experiment": ("Causality", "Experiments, causality and happenstance data"),
+    "mixture_design": ("Mixtures and constraints", "Mixtures, constraints and model inversion"),
+    "rsm": ("Response surfaces", "Response surfaces and multiple responses"),
 }
 TERM_GAP = 62  # least distance between two terms, in drawing units
 CLUSTER_GAP = 70  # least gap between two cluster circles

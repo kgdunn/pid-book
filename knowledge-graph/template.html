@@ -59,6 +59,9 @@ h1 { font: 600 1.6rem/1.15 var(--display); margin: 0; text-wrap: balance; }
 .card h2 { font: 600 1.35rem/1.2 var(--display); margin: 0; text-wrap: balance; }
 .card p { margin: 0; max-width: 65ch; }
 .aka { color: var(--muted); font-size: .88rem; }
+.quote { margin: 4px 0 0; padding: 6px 0 6px 12px; border-left: 2px solid var(--line); color: var(--muted); font-size: .9rem; }
+.quote p { margin: 0; font-style: italic; }
+.quote cite { display: block; margin-top: 2px; font: 400 .74rem var(--mono); font-style: normal; overflow-wrap: anywhere; }
 .book { font: 400 .82rem var(--mono); }
 .book a { color: var(--accent); overflow-wrap: anywhere; }
 .links { display: grid; gap: 10px; }
@@ -78,7 +81,8 @@ footer { color: var(--muted); font-size: .8rem; }
 <div class="wrap">
   <header>
     <h1>Experimental Design Graph</h1>
-    <p class="sub">The core of the Design and Analysis of Experiments chapter of <em>Process Improvement using Data</em>: its terms, the links between them, and the topics they form.</p>
+    <p class="sub">The core of <em>Process Improvement using Data</em>, chapter 5 (design and analysis of experiments) and
+      chapter 7 (its applications): the terms, the links between them, and the topics they form.</p>
     <div class="stats" id="stats"></div>
   </header>
 
@@ -108,8 +112,8 @@ footer { color: var(--muted); font-size: .8rem; }
   <article class="card" id="card" aria-live="polite"></article>
   <section class="links" id="links" aria-label="Links from the selected item"></section>
 
-  <footer>Built from the chapter text extracted in pid-book pull request 22. Topics found by Louvain clustering of the links.
-    Every term links to the section of the book that teaches it.</footer>
+  <footer>Every term quotes the line of the book it comes from, and the build checks each quote against the book's
+    current text. Topics found by Louvain clustering of the links. Source: knowledge-graph in pid-book pull request 22.</footer>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
@@ -124,13 +128,24 @@ const FAMILIES = {
   guide: ["Guidelines and warning signs", "triangle", "M10 2 18.5 17.5H1.5z"],
   context: ["Examples, questions, sources", "hexagon", "M5.5 2.5h9L19 10l-4.5 7.5h-9L1 10z"],
 };
-const READ = { USES: ["uses", "used by"], IS_A: ["is a kind of", "kinds"], ILLUSTRATES: ["illustrates", "illustrated by"],
-  SHOWS: ["shows", "shown by"], COMPARED_WITH: ["compared with", "compared with"], CAUSES: ["causes", "caused by"],
-  APPLIES_TO: ["applies to", "guided by"], PART_OF: ["part of", "has parts"], CITED_IN: ["source", "source of"],
-  HAS_PROPERTY: ["has property", "property of"], REMEDIED_BY: ["remedied by", "remedies"], REQUIRES: ["requires", "required by"],
-  SUITED_TO: ["suited to", "served by"], ANSWERED_BY: ["answered by", "answers"], PREVENTS: ["prevents", "prevented by"],
-  ESTIMATES: ["estimates", "estimated by"], INDICATES: ["indicates", "indicated by"], PRECEDES: ["comes before", "comes after"],
-  CAN_AUGMENT_TO: ["can be augmented to", "augments"], CANNOT_SHOW: ["cannot show", "not shown by"] };
+// How each verb reads from its source ([0]) and from its target ([1]); the verbs are those build_kg.py allows.
+const READ = {
+  IS_A: ["is a kind of", "kinds"], PART_OF: ["part of", "has parts"], HAS_PROPERTY: ["has property", "property of"],
+  USES: ["uses", "used by"], REQUIRES: ["requires", "required by"], JUSTIFIES: ["justifies", "justified by"],
+  ESTIMATES: ["estimates", "estimated by"], MEASURES: ["measures", "measured by"], SHOWS: ["shows", "shown by"],
+  LOCATES: ["locates", "located by"], TESTS: ["tests", "tested by"], CAUSES: ["causes", "caused by"],
+  ENABLES: ["enables", "enabled by"], LIMITS: ["limits", "limited by"], PREVENTS: ["prevents", "prevented by"],
+  KEEPS: ["keeps", "kept by"], REMEDIED_BY: ["remedied by", "remedies"], INDICATES: ["indicates", "indicated by"],
+  AGREES_WITH: ["agrees with", "agrees with"], CONTRASTS_WITH: ["contrasts with", "contrasts with"],
+  ALTERNATIVE_TO: ["alternative to", "alternative to"], COMPLEMENTS: ["complements", "complemented by"],
+  GENERALIZES: ["generalizes", "generalized by"], CAN_AUGMENT_TO: ["can be augmented to", "augments"],
+  CAN_BE: ["can be", "a possible form of"], SUITED_TO: ["suited to", "served by"], APPLIES_TO: ["applies to", "addressed by"],
+  PRECEDES: ["comes before", "comes after"], ILLUSTRATES: ["illustrates", "illustrated by"],
+  ANSWERED_BY: ["answered by", "answers"], DESCRIBED_IN: ["described in", "describes"],
+  CANNOT_SHOW: ["cannot show", "not shown by"], EQUALS: ["equals", "equals"], IS_HALF_OF: ["is half of", "is twice"],
+  MAY_HAVE: ["may have", "may belong to"],
+};
+const read = (verb, i) => (READ[verb] || [verb.toLowerCase().replaceAll("_", " "), `${verb.toLowerCase().replaceAll("_", " ")} (from)`])[i];
 const TERM_GAP = 62;   // least distance between two terms in the drawing (layout_kg.py)
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -327,12 +342,13 @@ function render() {
   if (selected && terms.has(selected)) {
     const n = terms.get(selected), color = css(`--f-${fam(n)}`);
     card.style.setProperty("--fam", color);
-    card.innerHTML = `<span class="type">${n.type.replace(/([a-z])([A-Z])/g, "$1 $2")}</span><h2>${esc(n.name)}</h2><p>${esc(n.definition)}</p>
+    card.innerHTML = `<span class="type">${n.type.replace(/([a-z])([A-Z])/g, "$1 $2")} · chapter ${n.chapter}</span><h2>${esc(n.name)}</h2><p>${esc(n.definition)}</p>
       ${n.aliases.length ? `<p class="aka">Also called: ${esc(n.aliases.join(", "))}</p>` : ""}
+      <blockquote class="quote"><p>${esc(n.quote)}</p><cite>${esc(n.evidence)}</cite></blockquote>
       <p class="book">In the book: <a href="${bookUrl(n)}" target="_blank" rel="noopener">${esc(n.book_label || n.book_file.split("/").pop())}</a></p>`;
     const groups = new Map();
     for (const e of linksOf(selected)) {
-      const [rel, other] = e.source === selected ? [READ[e.type][0], e.target] : [READ[e.type][1], e.source];
+      const [rel, other] = e.source === selected ? [read(e.type, 0), e.target] : [read(e.type, 1), e.source];
       groups.set(rel, [...(groups.get(rel) || []), other]);
     }
     links.innerHTML = group("Topic", [n.cluster]) + [...groups].map(([rel, ids]) => group(rel, ids)).join("");

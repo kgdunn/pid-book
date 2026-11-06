@@ -1,75 +1,82 @@
 # Experimental design knowledge graph (draft)
 
-A hand-built graph of the core of the Design and Analysis of Experiments chapter: 171 terms, 253
-links of 20 kinds, grouped into 9 topics by Louvain clustering. Every term links to the section of
-the book that teaches it. It was written from `../doe_extracted_text.txt`, the chapter text this
-pull request extracted in December 2025.
+A graph of the core of *Process Improvement using Data*: chapter 5 (design and analysis of
+experiments) and chapter 7 (its applications), with the few chapter 6 ideas that chapter 7 rests
+on. 283 terms (214 from chapter 5, 62 from chapter 7, 7 chapter 6 anchors) and 571 links of 35
+kinds, grouped into 12 topics by Louvain clustering.
 
-Open `experimental-design-graph.html` in a browser to explore it: zoomed out it shows the topics,
-zooming in names their terms, and tapping a term shows its links.
+**Every term and every link cites the book**: a `file:line` in pid-book, and for each term the
+words on that line it comes from. The build checks every quote against the book's current text and
+stops if one no longer matches, so the graph cannot drift from the book unnoticed.
+
+Open `experimental-design-graph.html` in a browser: zoomed out it shows the topics, zooming in
+names their terms, and tapping a term shows its definition, the book's own line, and its links.
 
 ## Files
 
 | File | What it is |
 |---|---|
-| `build_kg.py` | The terms and links, written by hand, and the checks on them. Source of truth. |
+| `graph.yaml` | **The source.** Terms (with their evidence) and links, one per line: `[source, VERB, target, evidence]`. |
+| `build_kg.py` | Checks `graph.yaml` against the book; writes the generated files below. |
 | `layout_kg.py` | Louvain topics and fixed positions for the map; writes the page. |
 | `template.html` | The page, without its data. |
-| `doe_kg.json` | Generated: terms and links. |
-| `doe_kg_map.json` | Generated: the same, with topics and positions. |
-| `doe_kg.cypher` | Generated: the graph as Cypher, to load into an empty Neo4j database. |
+| `check_levels.py` | How stable the topics, and possible sub-topics, are across 30 Louvain seeds. |
+| `doe_kg.json`, `doe_kg_map.json` | Generated: the graph, then with topics and positions. |
+| `doe_kg.cypher` | Generated: the graph as Cypher, for an empty Neo4j database. |
 | `experimental-design-graph.html` | Generated: the page with its data inlined. |
+| `audit/` | The November 2026 accuracy review (see below). |
 
 ## Rebuild
 
-The book links point at the current book, so build against a checkout of `main`; against this
-branch's older chapter, 22 links do not resolve and the build stops.
+Build against a checkout of pid-book `main`: the links point at the current book.
 
 ```bash
-python3 build_kg.py ../../pid-book            # path to a checkout of main
+uv run --no-project --with pyyaml==6.0.1 python -I build_kg.py ../../pid-book
 uv run --no-project --with networkx==3.4.2 --with numpy==2.5.3 python -I layout_kg.py
 ```
 
-The output is reproducible: Louvain runs on integer node ids and each topic's layout on a sorted
-graph, because networkx iterates sets of string ids in an order that changes from run to run.
+`build_kg.py` stops, listing every problem, when a quote is not on its cited line, a book label
+does not resolve, a verb is not in its list, a term has no links, a definition is over 32 words,
+or a text contains an em-dash. The layout is reproducible: Louvain runs on integer node ids and each
+topic's layout on a sorted graph.
 
-## Known problems, to fix before trusting it
+## The accuracy review (November 2026)
 
-Content:
-- Wrong links: "center point prevents lost orthogonality" (lost orthogonality is about
-  constraints); "steepest descent is a kind of steepest ascent"; "a word uses the identity column"
-  (a word equals I).
-- Folded links lose meaning: SHOWS absorbed 14 verbs (tests, locates, seeks, ...); COMPARED_WITH
-  joins "agrees with" and "contrasts with", which mean opposite things; USES is a catch-all.
-- Effect sparsity and effect hierarchy are two principles merged into one node.
-- "A definitive screening design is a kind of optimal design" repeats the old text; DSDs are
-  built from conference matrices.
+The first draft was written by hand from the December 2025 chapter text. Seven reviewers checked
+it against the book as it is now (`audit/BRIEF.md` is their brief; `audit/result_*.json` their
+verdicts, each with an exact quote). Every quote was then verified mechanically
+(`audit/verify_audit.py`), and `audit/merge_audit.py` applied the verdicts once, with every judgment
+it made in named tables at its top.
 
-Structure and provenance:
-- "Concept" holds 78 of 171 terms, so the type says little. Some terms overlap (phase 1 and
-  screening; optimum and near an optimum).
-- Definitions come from the December 2025 text but link to the current book, which has changed
-  since; they may no longer match. Line numbers were not kept.
-- The checks cover ids, orphans and book links, not meaning: the wrong links above pass them.
-- Newer chapter topics are missing: OMARS, desirability, Lenth's method, power, lack of fit.
-- There are now three sets of definitions: `web/glossary.js` in process-improve (80 terms), the
-  package's `experiments/knowledge` YAML (31 entries), and this graph.
+- Reviewers A to D checked the 171 original terms and 255 links: 37 definitions corrected,
+  17 links wrong and fixed or dropped, 5 unsupported and decided case by case.
+- Reviewer E proposed the terms of chapter 5's newer sections: OMARS, definitive screening as an
+  OMARS design (not an optimal design), Lenth's method, power, lack of fit, desirability, mixtures.
+- Reviewers F and G proposed the terms of chapter 7 and the chapter 6 anchors it needs.
+- Six terms were folded into others (for example alias into confounding, steepest descent into
+  steepest ascent) and six duplicate proposals merged; 123 terms are new.
 
-Page:
-- The `#section` part of each book link is derived from the label name and not yet checked on
-  learnche.org.
-- The topics follow the links, so wrong links also move terms between topics.
+Some of what it found: the book now prints 79.4% and 69.7% where the old text had 79.3% and
+69.5%; hand-calculated effects in the book are full-range, like Box, Hunter and Hunter's, and only
+least squares coefficients are half-range; "large interactions" signal an optimum, as distinct from
+curvature; and folding the link verbs had turned the book's "a word equals I" into "uses".
 
-## Next steps, in this order
+## Known limits
 
-1. Accuracy pass: fix the problems above and add the newer chapter topics.
-2. Consensus topics. Across 30 Louvain seeds the 9 topics agree with the published ones at a
-   median adjusted Rand index of only 0.77 (worst 0.46). Run Louvain about 100 times, count how
-   often each pair of terms shares a topic, and cluster those counts, so the topics no longer
-   depend on the seed.
-3. A second level, only where a topic is large and its split is stable (`check_levels.py`). On
-   the current graph that is three topics: fractional factorials (36 terms, 5 sub-groups,
-   median agreement 0.85), least squares and optimal designs (24, 6, 1.00), and causality
-   (20, 4, 1.00). Full factorials (25 terms) splits differently with each seed (0.34); the
-   smaller topics are read whole. Draw the sub-groups as inner circles between the topic view and
-   the term view.
+- USES still carries 136 of the 571 links; some could be sharper.
+- A quote must sit on one source line for the mechanical check, so some are sentence fragments.
+- Two chapter 7 links are inferred rather than stated: soft sensors are built from happenstance
+  data (chapter 7 never uses that word), and the design-build-test-learn cycle is a form of
+  sequential experimentation.
+- Chapter 6 is present only as the seven anchors chapter 7 needs; the exercises are not covered.
+
+## Next steps
+
+1. Consensus topics. Across 30 Louvain seeds the 12 topics agree with the published ones at a
+   median adjusted Rand index of 0.70 (worst 0.60). Run Louvain about 100 times, count how often
+   each pair of terms shares a topic, and cluster those counts.
+2. A second level, only where a topic is large and its split is stable (`check_levels.py`). On the
+   current graph: PCA and PLS in practice (46 terms, median agreement 0.86), full factorials (34,
+   0.84), optimal designs (29, 1.00), coefficients and coding (25, 0.83) and significance (20, 1.00).
+   Fractional factorials (34 terms, 0.67) and DSD and OMARS (22, 0.77) split differently with each
+   seed. Recheck after step 1, since consensus topics change what each topic holds.
