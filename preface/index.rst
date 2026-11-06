@@ -46,6 +46,19 @@ Chapter 5 covers :ref:`designed experiments <SECTION-design-analysis-experiments
 
 The final chapter, Chapter 6, is on :ref:`latent variable modelling <SECTION_latent_variable_modelling>` where we learn how to deal with multiple variables and extract information from them. This section is divided in several chapters (PCA, PLS, and applications). It is still a work in progress and will be improved in the future.
 
+The chapters are not independent. The figure below counts, for each pair of chapters, the
+cross-references from one to the other. Arcs above the line point back to material a chapter builds
+on; arcs below point ahead to where a topic is used again. The last chapter, on product development
+and improvement, draws most heavily on latent variable models and designed experiments.
+
+.. figure:: ../figures/concepts/chapter-links.png
+   :source: concepts/chapter-links.py
+   :alt: Arc diagram of the seven chapters in reading order, with arcs for the cross-references between each pair of chapters.
+   :width: 100%
+
+   Cross-references between the chapters, counted from the book's source. The width of an arc
+   grows with the number of references, which is printed on it.
+
 Because this is a predominantly electronic book, we resort to many hyperlinks in the text. We recommend a good PDF reader that allows forward and back navigation of links. However, we have ensured that a printed copy can be navigated just as easily, especially if you use the table of contents and index for cross referencing.
 
 **Updates**: This book is continually updated; there isn't a fixed edition. You should view it as a wiki. You might currently have an incomplete or older draft of the document. The latest version is always available at `https://learnche.org/pid <https://learnche.org/pid>`_.
