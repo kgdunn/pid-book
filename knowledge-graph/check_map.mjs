@@ -77,6 +77,9 @@ async function run(browser, width, height) {
 
   const verbs = await p.evaluate(() => [...new Set(DATA.edges.map((e) => e.type))].filter((v) => !(v in READ)));
   check(width, "every link verb has a reading", verbs.length === 0, verbs.join(", "));
+  const how = await p.textContent("#how");
+  const n = await p.evaluate(() => DATA.nodes.length);
+  check(width, "the explanation is filled from the map's data", how.includes(`${n} terms`) && !/undefined|NaN/.test(how));
   check(width, "no sideways scroll", (await p.evaluate(() => document.documentElement.scrollWidth)) <= width);
   check(width, "opens on the topics, terms hidden", (await state(p)).terms === 0);
 

@@ -79,6 +79,23 @@ h1 { font: 600 1.6rem/1.15 var(--display); margin: 0; text-wrap: balance; }
 .chip small { color: var(--muted); font-family: var(--mono); }
 .chip:hover { border-color: var(--accent); }
 .chip:focus-visible, .controls button:focus-visible, .strip button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.howlink { font: 400 .82rem var(--body); color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 2px; justify-self: start; }
+.howlink:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.how { border-top: 1px solid var(--line); padding-top: 18px; margin-top: 6px; display: grid; gap: 10px; scroll-margin-top: 12px; }
+.how h2 { font: 600 1.35rem/1.2 var(--display); margin: 0; text-wrap: balance; }
+.how h3 { font: 600 1.08rem/1.3 var(--display); margin: 12px 0 0; text-wrap: balance; }
+.how p, .how li { max-width: 68ch; margin: 0; }
+.how ol, .how ul { margin: 0; padding-left: 1.3em; display: grid; gap: 5px; }
+.how .eg li { color: var(--muted); }
+.how .eg b { color: var(--fg); font-weight: 600; }
+.how .cite { font: 400 .74rem var(--mono); overflow-wrap: anywhere; }
+.how .num { font-variant-numeric: tabular-nums; }
+.tablewrap { overflow-x: auto; max-width: 100%; }
+.how table { border-collapse: collapse; font-size: .88rem; font-variant-numeric: tabular-nums; width: 100%; }
+.how th, .how td { text-align: left; padding: 6px 12px 6px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.how th { font: 500 .72rem var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.how td:nth-child(2) { text-align: right; }
 footer { color: var(--muted); font-size: .8rem; }
 @media (max-width: 480px) { h1 { font-size: 1.4rem; } .mapbox { height: clamp(340px, 58vh, 520px); } }
 </style>
@@ -89,6 +106,7 @@ footer { color: var(--muted); font-size: .8rem; }
     <p class="sub">The design and analysis of experiments, as taught in <em>Process Improvement using Data</em>: the terms,
       the links between them, and the topics they form.</p>
     <div class="stats" id="stats"></div>
+    <button type="button" class="howlink" id="howlink">How this map was made</button>
   </header>
 
   <div class="search">
@@ -116,6 +134,8 @@ footer { color: var(--muted); font-size: .8rem; }
 
   <article class="card" id="card" aria-live="polite"></article>
   <section class="links" id="links" aria-label="Links from the selected item"></section>
+
+  <section class="how" id="how" aria-labelledby="how-title"></section>
 
   <footer>Every term quotes the line of the book it comes from, and the build checks each quote against the book's
     current text. Topics found by Louvain clustering of the links. Source: knowledge-graph in pid-book pull request 22.</footer>
@@ -510,6 +530,102 @@ q.addEventListener("keydown", ev => {
   if (ev.key === "Escape") results.hidden = true;
 });
 document.addEventListener("click", ev => { if (!ev.target.closest(".search")) results.hidden = true; });
+
+// ---------- how the map was made: every number comes from DATA, so it cannot drift from the map
+function renderHow() {
+  const m = DATA.method, N = DATA.nodes.length, E = DATA.edges.length;
+  const verbs = new Set(DATA.edges.map(e => e.type)).size;
+  const inChapter = k => DATA.nodes.filter(n => n.chapter === k).length;
+  const name = id => esc(terms.get(id).name);
+  const pairs = n => (n * (n - 1)) / 2;
+  const examples = [["box_behnken", "IS_A", "omars_design"], ["center_point", "KEEPS", "orthogonality"],
+    ["coefficient", "IS_HALF_OF", "main_effect"]]
+    .map(([s, v, t]) => DATA.edges.find(e => e.source === s && e.type === v && e.target === t)).filter(Boolean);
+  const light = Object.entries(m.light).map(([v, w]) => `"${read(v, 0)}" counts ${w}`).join(", ");
+  const withSubs = DATA.clusters.filter(c => c.subs.length);
+  const rows = DATA.clusters.map(c => {
+    const level = c.subs.length ? `${c.subs.length} sub-topics; other seed batches agree at ${c.agreement.toFixed(2)} at worst`
+      : c.size < m.sub_min_size ? `None: fewer than ${m.sub_min_size} terms`
+      : `None: other seed batches agree at only ${c.agreement.toFixed(2)}`;
+    return `<tr><td>${esc(c.short)}</td><td>${c.size}</td><td>${level}</td></tr>`;
+  }).join("");
+  const unstable = DATA.clusters.filter(c => c.moved && c.moved.length).map(c => `<p>In <b>${esc(c.name)}</b>
+    (${c.size} terms), another seed batch moved ${c.moved.map(id => `"${name(id)}"`).join(" and ")} from one sub-group to
+    another; every other term kept its group. Agreement is counted over all ${pairs(c.size)} pairs of terms, and the pairs
+    these ${c.moved.length} terms form with their old and new group-mates are enough to bring it down to
+    ${c.agreement.toFixed(2)}. Terms that move like this sit between two groups, so the links do not settle where they
+    belong. Drawn, this topic's sub-topics could change after a rebuild for no reason in the book, so it is shown whole.</p>`).join("");
+
+  document.getElementById("how").innerHTML = `
+    <h2 id="how-title">How this map was made</h2>
+
+    <h3>1. Where the text comes from</h3>
+    <p>Every term comes from <em>Process Improvement using Data</em>, the open textbook at learnche.org/pid:
+      ${inChapter(5)} from chapter 5, <em>Design and analysis of experiments</em>, and ${inChapter(7)} from the design side of
+      chapter 7's mixed-level case study. Chapter 7's multivariate sections and the exercises are left out: this map
+      is about designed experiments.</p>
+    <p>A first draft was written by hand from the chapter's text, extracted from the book's source in December 2025.
+      In November 2026 seven reviewers checked every term and link against the chapter as it is now, and proposed
+      what its newer sections add, such as OMARS designs, Lenth's method and desirability. Every verdict quoted the
+      book, and a script checked each quote against the book's text.</p>
+
+    <h3>2. Where the terms and links come from</h3>
+    <p><b>${N} terms</b> are the points on the map. Each is one idea the chapter teaches, of one of five kinds, drawn
+      in five shapes: a design or a property of one, a method, a concept, a guideline or warning sign, or an example,
+      question or source. Each has a definition of at most 32 words, in the book's words where it has them, and the
+      line of the book it comes from: tap a term to see both.</p>
+    <p><b>${E} links</b> are the lines between them. Each is a short sentence, term, verb, term, using one of ${verbs}
+      verbs, and each cites the line of the book it rests on. For example:</p>
+    <ul class="eg">${examples.map(e => `<li><b>${name(e.source)}</b> ${read(e.type, 0)} <b>${name(e.target)}</b>
+      <span class="cite">${esc(e.evidence)}</span></li>`).join("")}</ul>
+    <p>Before the map is drawn, a check runs over all of it: every quote must still appear on its line of the book,
+      every verb must be one of the ${verbs}, and every term must have at least one link. If the book changes under a
+      term, the map stops building until the term is brought back in line.</p>
+
+    <h3>3. How the topics are found</h3>
+    <p>A topic is a group of terms with many links among them and few to other groups. Louvain clustering finds such
+      groups: it takes one term at a time and moves it into a neighbour's group whenever that makes the groups tighter,
+      until no move helps. Links that only say where a term is taught or shown count for less: ${light}, and every
+      other link counts 1.</p>
+    <p>Louvain visits the terms in a random order, set by a number called the seed, and a term linked about equally
+      to two groups lands wherever its turn falls. Run ${m.single_runs} times with different seeds, single runs
+      reproduce the topics on this map at a median agreement of <span class="num">${m.single_median.toFixed(2)}</span>,
+      and as low as <span class="num">${m.single_min.toFixed(2)}</span>. So the map uses consensus clustering, which asks
+      many runs and keeps what they agree on:</p>
+    <ol>
+      <li>Run Louvain ${m.runs} times, each with a different seed.</li>
+      <li>For every pair of terms, count the share of runs that put them in the same group.</li>
+      <li>Build a new network: link each pair that was together in at least ${Math.round(m.threshold * 100)}% of runs,
+        as strongly as that share, and drop the rest.</li>
+      <li>Cluster the new network ${m.runs} times the same way, and repeat until all ${m.runs} runs agree. A term left
+        on its own joins the group it was most often put in.</li>
+    </ol>
+    <p><b>How agreement is measured.</b> Two groupings of the same terms are compared pair by pair: for each pair of
+      terms, are they together in both, or apart in both? The share of pairs on which the groupings agree, corrected for
+      the agreement chance alone would give, is the adjusted Rand index: 1 for identical groupings, about 0 for
+      unrelated ones. Most pairs are apart in any sensible grouping, so the correction makes the index strict: a few
+      moved terms lower it noticeably.</p>
+    <p>To test the consensus, the whole procedure is run again with seeds it has not used. Those runs reproduce the
+      ${DATA.clusters.length} topics at ${m.consensus_other.map(x => `<span class="num">${x.toFixed(2)}</span>`).join(" and ")};
+      the terms that still move sit between two topics.</p>
+
+    <h3>4. How the sub-topics are found</h3>
+    <p>Inside each topic the same consensus clustering runs again, on that topic's terms and the links among them.
+      A topic opens into sub-topics only where they are worth reading: when it has at least ${m.sub_min_size} terms, and
+      when two other seed batches reproduce its split at an agreement of ${m.sub_min_agreement} or better. That holds for
+      ${withSubs.length} of the ${DATA.clusters.length} topics.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Topic</th><th>Terms</th><th>Second level</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>
+    ${unstable}
+    <p>A sub-topic is named after its most connected term, or given a clearer heading by hand. On the map, sub-topics
+      appear as dashed circles once you zoom past the topics, named in their middle; zoom on, and their names move to
+      the edge while their terms are named.</p>`;
+}
+renderHow();
+document.getElementById("howlink").addEventListener("click", () =>
+  document.getElementById("how").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }));
 
 // ---------- start, theme and size changes
 const restyle = () => { drawLegend(); refresh(true); render(); };

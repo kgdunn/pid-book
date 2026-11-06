@@ -42,7 +42,7 @@ print(f"  consensus, 4 other seed batches: {', '.join(f'{b:.2f}' for b in batche
 print()
 for cid in sorted(short, key=lambda c: -sum(1 for t in topic.values() if t == c)):
     members = sorted(m for m in topic if topic[m] == cid)
-    groups, agreement = second_level(subgraph(g, members))
+    groups, agreement, _ = second_level(subgraph(g, members))
     if groups:
         verdict = f"{len(groups)} sub-topics; other seed batches agree at {agreement:.2f} at worst"
     elif len(members) < SUB_MIN_SIZE:

@@ -117,15 +117,34 @@ def subgraph(g: nx.Graph, members: list[str]) -> nx.Graph:
     return sub
 
 
-def second_level(sub: nx.Graph) -> tuple[list[list[str]], float]:
-    """A topic's sub-topics, found by consensus, or none when the topic is small or its split is unstable."""
+def moved_terms(a: list, b: list) -> list[str]:
+    """Terms that grouping b puts outside the group that best matches their group in a."""
+    home_b = {x: i for i, c in enumerate(b) for x in c}
+    moved = []
+    for group in a:
+        counts = Counter(home_b[x] for x in group)
+        main = max(counts, key=lambda k: (counts[k], -k))
+        moved += [x for x in group if home_b[x] != main]
+    return sorted(moved)
+
+
+def second_level(sub: nx.Graph) -> tuple[list[list[str]], float, list[str]]:
+    """A topic's sub-topics, found by consensus, or none when the topic is small or its split is unstable.
+
+    Also returns the lowest agreement of two other seed batches with the split, and, when that is too
+    low, the terms the worst batch moved: what the reader would see change after a rebuild.
+    """
     if sub.number_of_nodes() < SUB_MIN_SIZE:
-        return [], 0.0
+        return [], 0.0, []
     parts = consensus(sub, 0)
     if len(parts) < 2:
-        return [], 0.0
-    agreement = min(ari(parts, consensus(sub, first)) for first in (10_000, 20_000))
-    return (sorted(sorted(p) for p in parts) if agreement >= SUB_MIN_AGREEMENT else []), agreement
+        return [], 0.0, []
+    others = [consensus(sub, first) for first in (10_000, 20_000)]
+    scores = [ari(parts, o) for o in others]
+    agreement = min(scores)
+    if agreement >= SUB_MIN_AGREEMENT:
+        return sorted(sorted(p) for p in parts), agreement, []
+    return [], agreement, moved_terms(parts, others[scores.index(agreement)])
 
 
 def scatter(sub: nx.Graph, pad: float) -> tuple[dict[str, list[float]], float]:
@@ -277,7 +296,7 @@ def main() -> None:
     local, sub_of, by_id = {}, {}, {n["id"]: n for n in data["nodes"]}
     for i, c in enumerate(clusters):
         sub = subgraph(g, c["members"])
-        groups, c["agreement"] = second_level(sub)
+        groups, c["agreement"], c["moved"] = second_level(sub)
         if not groups:
             pts, c["r"] = scatter(sub, pad=46)
             local.update(pts)
@@ -324,6 +343,16 @@ def main() -> None:
         print("sub-topic names not used (their hub term is no longer a hub):", ", ".join(unused))
     data["clusters"] = clusters
     data["cluster_links"] = [{"a": f"c{a}", "b": f"c{b}", "n": n} for (a, b), n in sorted(links.items())]
+    # How the topics were found, and how stable they are, for the page's explanation.
+    gi = nx.convert_node_labels_to_integers(g, label_attribute="id")
+    single = sorted(ari(communities, [{gi.nodes[i]["id"] for i in c} for c in louvain(gi, s)]) for s in range(30))
+    others = [ari(communities, consensus(g, first)) for first in (10_000, 20_000)]
+    data["method"] = {
+        "runs": RUNS, "threshold": THRESHOLD, "sub_min_size": SUB_MIN_SIZE, "sub_min_agreement": SUB_MIN_AGREEMENT,
+        "light": LIGHT, "single_runs": 30, "single_median": round(single[15], 2), "single_min": round(single[0], 2),
+        "consensus_other": [round(x, 2) for x in others],
+        "modularity": round(nx.community.modularity(g, communities, weight="weight"), 3),
+    }
     payload = json.dumps(data, separators=(",", ":"))
     (HERE / "doe_kg_map.json").write_text(payload, encoding="utf-8")
     page = (HERE / "template.html").read_text(encoding="utf-8").replace("__DATA__", payload)
