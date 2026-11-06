@@ -24,6 +24,21 @@ Process Improvement Using Data
       :class: only-dark pid-banner
       :alt: One figure from each of chapters 1 to 6, each drawn by one of the book's examples, above its Run in browser button.
 
+   .. raw:: html
+
+      <figure class="pid-chapter-map">
+        <object data="_static/chapter-links.svg" type="image/svg+xml"
+                aria-label="The chapters drawn as a building: data visualization is the foundation,
+                univariate data analysis the first floor, process monitoring and least squares above it,
+                then design of experiments and latent variable modelling, with the applications chapter
+                as the roof. Each chapter is a link to it.">
+          A map of how the chapters build on one another.
+        </object>
+        <figcaption>How the chapters build on one another. Select a chapter to open it. A ribbon joins
+        two chapters that refer to each other at least five times; the wider the ribbon, the more
+        cross-references between them.</figcaption>
+      </figure>
+
 .. toctree::
    :hidden:
 

@@ -370,3 +370,18 @@ button.copybtn:focus,
 img.pid-banner {
 	margin: 0.5rem 0 1.75rem;
 }
+
+/* The chapter map (contents.rst, preface): an <object>, not an <img>, so its chapter cards stay
+   clickable. The SVG is transparent, so it sits on the light and the dark page alike. */
+figure.pid-chapter-map {
+	margin: 0.5rem 0 1.75rem;
+}
+
+figure.pid-chapter-map object {
+	display: block;
+	width: 100%;
+	aspect-ratio: 777.6 / 504; /* the SVG's viewBox */
+	/* Match the SVG's own colour scheme: a mismatch makes the browser paint an opaque white
+	   backdrop behind the embedded document on the dark page. */
+	color-scheme: normal;
+}
