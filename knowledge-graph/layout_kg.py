@@ -9,6 +9,7 @@ Run with: uv run --no-project --with networkx==3.4.2 --with numpy==2.5.3 python 
 
 import json
 import math
+import subprocess
 from collections import Counter
 from itertools import combinations
 from pathlib import Path
@@ -59,6 +60,14 @@ SUB_NAMES = {
 }
 RUNS = 200  # Louvain runs per round of consensus; at 100, whole small topics could still flip
 THRESHOLD = 0.5  # a pair of terms stays linked in the consensus graph if at least this share of runs joined them
+
+
+def code_url() -> str:
+    """This file on GitHub at the last commit that changed it: a permalink, still valid once the branch is gone."""
+    name = Path(__file__).name
+    log = ["git", "log", "-1", "--format=%H", "--", name]
+    sha = subprocess.run(log, cwd=HERE, capture_output=True, text=True, check=True).stdout.strip()
+    return f"https://github.com/kgdunn/pid-book/blob/{sha}/knowledge-graph/{name}"
 
 
 def louvain(graph: nx.Graph, seed: int) -> list[list[int]]:
@@ -352,6 +361,7 @@ def main() -> None:
         "light": LIGHT, "single_runs": 30, "single_median": round(single[15], 2), "single_min": round(single[0], 2),
         "consensus_other": [round(x, 2) for x in others],
         "modularity": round(nx.community.modularity(g, communities, weight="weight"), 3),
+        "code": code_url(),
     }
     payload = json.dumps(data, separators=(",", ":"))
     (HERE / "doe_kg_map.json").write_text(payload, encoding="utf-8")
