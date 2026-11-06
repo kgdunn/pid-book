@@ -37,10 +37,10 @@ definition, the book's own line, and its links.
 
 ## Rebuild
 
-Build against a checkout of pid-book `main`: the links point at the current book.
+From this folder, against the book it sits in:
 
 ```bash
-uv run --no-project --with pyyaml==6.0.1 python -I build_kg.py ../../pid-book
+uv run --no-project --with pyyaml==6.0.1 python -I build_kg.py ..
 uv run --no-project --with networkx==3.4.2 --with numpy==2.5.3 python -I layout_kg.py
 ```
 
@@ -56,6 +56,23 @@ node check_map.mjs                       # the map, in headless Chromium (needs 
 python3 check_anchors.py                 # the book links on learnche.org
 uv run --no-project --with networkx==3.4.2 --with numpy==2.5.3 python -I check_levels.py doe_kg_map.json
 ```
+
+## When the book changes
+
+A paragraph added near the top of a file moves every line below it. `graph.yaml` records the book
+commit it was last checked against (`checked_against`), and `build_kg.py` follows each citation from
+that commit to the book as it is now, with git and a line diff:
+
+- a line that only moved is followed, and needs nothing;
+- a term whose cited line was rewritten is found again by its quote, anywhere in its file;
+- a link whose cited line was rewritten is listed (`check: ...`) for a person to read again, since a
+  link has no quote to search for;
+- a term whose quote is gone from the book stops the build.
+
+`build_kg.py --relocate ..` writes the new line numbers, and the book's current commit, into
+`graph.yaml`. The `Knowledge graph` workflow (`.github/workflows/knowledge-graph.yml`) runs the
+check on every pull request that touches chapter 5, chapter 7 or this folder, and turns each link to
+read again into a warning on the pull request.
 
 ## How the topics are found
 

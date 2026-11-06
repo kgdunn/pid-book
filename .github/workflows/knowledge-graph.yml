@@ -1,0 +1,53 @@
+name: Knowledge graph
+
+# knowledge-graph/ is a map of the ideas of chapter 5, published in Factorial at https://factori.al/map/.
+# Every term and link in it cites a line of the book, and this job checks the graph against the book as a
+# pull request leaves it (knowledge-graph/build_kg.py). The graph records the book commit it was last
+# checked against, and each citation is followed from there:
+#
+# - a line that only moved is followed, and needs nothing;
+# - a link whose cited line was rewritten is flagged, as a warning, for a person to check;
+# - a term whose quoted words are gone from the book fails the job.
+#
+# To write moved lines back into graph.yaml: `uv run --no-project --with pyyaml==6.0.1 python -I
+# build_kg.py --relocate ..` in knowledge-graph/, then commit graph.yaml.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "design-analysis-experiments/**"
+      - "product-development-product-improvement/**"
+      - "knowledge-graph/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "design-analysis-experiments/**"
+      - "product-development-product-improvement/**"
+      - "knowledge-graph/**"
+  workflow_dispatch:
+
+concurrency:
+  group: knowledge-graph-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    name: Every citation still in the book
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout pid-book
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # each citation is followed from the commit the graph was last checked against
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Check the graph against the book
+        working-directory: knowledge-graph
+        shell: bash
+        run: |
+          uv run --no-project --with pyyaml==6.0.1 python -I build_kg.py .. | tee check.txt
+          sed -n 's/^check: /::warning title=A link of the concept map to check::/p' check.txt

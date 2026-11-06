@@ -2,6 +2,9 @@
 # Every term and link cites the book: evidence is file:line in pid-book, and quote must appear on that line.
 # Links read as sentences, "source VERB target"; the verbs allowed are listed in build_kg.py.
 
+# The book's commit this graph was last checked against: build_kg.py follows each citation from it.
+checked_against: 60ab13110906032c781cd5327c5afcc8566893ae
+
 nodes:
 - id: experiment
   name: Experiment
