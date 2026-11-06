@@ -211,7 +211,7 @@
    "id": "troubleshooting",
    "name": "Troubleshooting",
    "type": "Concept",
-   "definition": "Experimenting to fix a problem, which also teaches you about the system.",
+   "definition": "Experimenting to fix a problem, which also shows how the system works.",
    "aliases": [],
    "book_label": "DOE_learning_about_systems",
    "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:19",

@@ -1,4 +1,4 @@
-<title>Experimental Design Graph</title>
+<title>Experimental Design Concept Graph</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -95,14 +95,14 @@ h1 { font: 600 1.6rem/1.15 var(--display); margin: 0; text-wrap: balance; }
 .how th { font: 500 .72rem var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
 .how td:nth-child(2) { text-align: right; }
 footer { color: var(--muted); font-size: .8rem; }
+.how a, footer a { color: var(--accent); }
 @media (max-width: 480px) { h1 { font-size: 1.4rem; } .mapbox { height: clamp(340px, 58vh, 520px); } }
 </style>
 
 <div class="wrap">
   <header>
-    <h1>Experimental Design Graph</h1>
-    <p class="sub">The design and analysis of experiments, as taught in <em>Process Improvement using Data</em>: the terms,
-      the links between them, and the topics they form.</p>
+    <h1>Experimental Design Concept Graph</h1>
+    <p class="sub">The ideas of designed experiments in <em>Process Improvement using Data</em>, and how they link.</p>
     <button type="button" class="howlink" id="howlink">How this map was made</button>
   </header>
 
@@ -135,7 +135,8 @@ footer { color: var(--muted); font-size: .8rem; }
   <section class="how" id="how" aria-labelledby="how-title"></section>
 
   <footer>Every term quotes the line of the book it comes from, and the build checks each quote against the book's
-    current text. Topics found by Louvain clustering of the links. Source: knowledge-graph in pid-book pull request 22.</footer>
+    current text. Topics found by <a href="https://en.wikipedia.org/wiki/Louvain_method" target="_blank" rel="noopener">Louvain clustering</a> of the links:
+    <a id="code" target="_blank" rel="noopener">the Python code</a>.</footer>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
@@ -188,7 +189,7 @@ const linksOf = id => DATA.edges.filter(e => e.source === id || e.target === id)
 
 // Kinds of term hidden from the map, remembered in this browser. The selected term always stays visible.
 const hidden = new Set();
-try { for (const k of JSON.parse(localStorage.getItem("edg-hidden") || "[]")) if (k in FAMILIES) hidden.add(k); } catch {}
+try { for (const k of JSON.parse(localStorage.getItem("edg-hidden") || '["context"]')) if (k in FAMILIES) hidden.add(k); } catch {}
 const drawLegend = () => {
   document.getElementById("legend").innerHTML = `<span class="title">Show:</span>` + Object.entries(FAMILIES)
     .map(([k, [label]]) => `<button type="button" data-fam="${k}" aria-pressed="${!hidden.has(k)}"
@@ -552,18 +553,18 @@ function renderHow() {
     <h2 id="how-title">How this map was made</h2>
 
     <h3>1. Where the ideas come from</h3>
-    <p>Every term comes from <em>Process Improvement using Data</em>, the open textbook at learnche.org/pid, mostly
+    <p>Every term comes from <em>Process Improvement using Data</em>, the open textbook at <a href="https://learnche.org/pid" target="_blank" rel="noopener">learnche.org/pid</a>, mostly
       from its chapter on designing and analysing experiments. Each term, and each link between two terms, quotes the
       line of the book it rests on, and the map is checked against the book each time it is built.</p>
     <details><summary>Show the numbers</summary>
       <p>${N} terms: ${inChapter(5)} from chapter 5 and ${inChapter(7)} from the design side of a case study in chapter 7,
         whose multivariate sections are left out. A first list was written by hand from the chapter's text; reviewers
-        then checked every term and link against the chapter as it is now, and added what its newer sections teach,
+        then checked every term and link against the chapter as it is now, and added what its newer sections cover,
         such as OMARS designs, Lenth's method and desirability.</p>
     </details>
 
     <h3>2. What the points and lines mean</h3>
-    <p>Each point is one idea the book teaches, and its shape says what kind: a design or a property of one, a method,
+    <p>Each point is one idea the book explains, and its shape says what kind: a design or a property of one, a method,
       a concept, a guideline or warning sign, or an example. Tap one to read its definition and the book's own words.</p>
     <p>Each line is a short sentence that joins two ideas, for example:</p>
     <ul class="eg">${examples.map(e => `<li><b>${name(e.source)}</b> ${read(e.type, 0)} <b>${name(e.target)}</b></li>`).join("")}</ul>
@@ -576,9 +577,9 @@ function renderHow() {
       depends on chance, so it makes hundreds of tries and keeps the grouping they agree on. Chance then has little say
       in the topics.</p>
     <details><summary>Show the numbers</summary>
-      <p>The method is Louvain clustering: it moves one term at a time into a neighbour's group whenever that makes the
+      <p>The method is <a href="https://en.wikipedia.org/wiki/Louvain_method" target="_blank" rel="noopener">Louvain clustering</a>: it moves one term at a time into a neighbour's group whenever that makes the
         groups tighter, and stops when no move helps. It visits the terms in a random order, so a term linked about
-        equally to two groups lands wherever its turn falls. Consensus clustering (Lancichinetti and Fortunato, 2012)
+        equally to two groups lands wherever its turn falls. Consensus clustering (<a href="https://doi.org/10.1038/srep00336" target="_blank" rel="noopener">Lancichinetti and Fortunato, 2012</a>)
         makes it repeatable: ${m.runs} runs a round, each with its own random seed; a pair of terms together in at least
         ${Math.round(m.threshold * 100)}% of runs is kept, as strongly as that share, and the rest dropped; rounds repeat
         until all ${m.runs} runs agree. A term left on its own joins the group it was most often in. Link weights:
@@ -590,6 +591,7 @@ function renderHow() {
         low as ${m.single_min.toFixed(2)}, over ${m.single_runs} seeds. Consensus from seeds it had not used reproduces
         them at ${m.consensus_other.map(x => x.toFixed(2)).join(" and ")}; the terms that still move sit between two
         topics.</p>
+      <p><a href="${m.code}" target="_blank" rel="noopener">The Python code that finds the topics and sub-topics</a>.</p>
     </details>
 
     <h3>4. How the sub-topics are found</h3>
@@ -611,6 +613,7 @@ function renderHow() {
     </details>`;
 }
 renderHow();
+document.getElementById("code").href = DATA.method.code;
 document.getElementById("howlink").addEventListener("click", () =>
   document.getElementById("how").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }));
 

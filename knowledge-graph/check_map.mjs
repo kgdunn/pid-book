@@ -82,6 +82,17 @@ async function run(browser, width, height) {
   check(width, "the explanation is filled from the map's data", how.includes(`${n} terms`) && !/undefined|NaN/.test(how));
   const told = await p.evaluate(() => [...document.querySelectorAll("#how > p, #how > ul")].map((e) => e.textContent).join(" "));
   check(width, "the explanation is in words until 'Show the numbers' is opened", !/\d/.test(told), told.match(/\S*\d\S*/g)?.join(" "));
+  const page = await p.evaluate(() => {
+    const sub = document.createRange(); sub.selectNodeContents(document.querySelector("header .sub"));
+    return { subLines: new Set([...sub.getClientRects()].map((r) => Math.round(r.top))).size,
+      words: document.body.textContent + DATA.nodes.map((n) => n.definition).join(" "),
+      examples: document.querySelector('#legend button[data-fam="context"]').getAttribute("aria-pressed"),
+      code: document.getElementById("code").href };
+  });
+  check(width, "the subtitle fits on two lines", page.subLines <= 2, `${page.subLines} lines`);
+  check(width, "no 'teach' or 'taught' on the page", !/\bteach|\btaught/i.test(page.words));
+  check(width, "examples, questions and sources start hidden", page.examples === "false");
+  check(width, "the footer links the clustering code", page.code.startsWith("https://github.com/kgdunn/pid-book/blob/"));
   check(width, "no sideways scroll", (await p.evaluate(() => document.documentElement.scrollWidth)) <= width);
   check(width, "opens on the topics, terms hidden", (await state(p)).terms === 0);
 
