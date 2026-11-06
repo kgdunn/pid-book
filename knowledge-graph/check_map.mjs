@@ -80,6 +80,10 @@ async function run(browser, width, height) {
   const how = await p.textContent("#how");
   const n = await p.evaluate(() => DATA.edges.length);
   check(width, "the explanation is filled from the map's data", how.includes(`${n} links`) && !/undefined|NaN/.test(how));
+  const guide = await p.evaluate(() => ({ steps: document.querySelectorAll("#how details.guide ol > li").length,
+    folder: [...document.querySelectorAll("#how details.guide a")].find((a) => a.textContent.includes("folder"))?.href }));
+  check(width, "the step-by-step guide links the code's folder", guide.steps === 7
+    && /^https:\/\/github\.com\/kgdunn\/pid-book\/tree\/[0-9a-f]{40}\/knowledge-graph$/.test(guide.folder ?? ""), guide.folder);
   check(width, "the explanation draws each kind of term in its legend shape",
     (await p.evaluate(() => document.querySelectorAll("#how .kind svg path").length)) === 5);
   const told = await p.evaluate(() => [...document.querySelectorAll("#how > p, #how > ul")].map((e) => e.textContent).join(" "));
