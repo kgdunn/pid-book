@@ -600,29 +600,31 @@ function renderHow() {
     </details>
 
     <h3>3. How the topics are found</h3>
-    <p>A topic is a group of ideas linked more to each other than to the rest. A computer finds the groups, but one try
-      depends on chance, so it makes hundreds of tries and keeps the grouping they agree on. Chance then has little say
-      in the topics.</p>
+    <p>A topic is a group of ideas that are more related to each other than to the rest. A computer finds the groups,
+      but each attempt depends on probabilities, so it makes hundreds of tries and keeps the grouping that is most stable
+      and consistent.</p>
     <details><summary>Show the numbers</summary>
       <p>The method is <a href="https://en.wikipedia.org/wiki/Louvain_method" target="_blank" rel="noopener">Louvain clustering</a>: it moves one term at a time into a neighbour's group whenever that makes the
-        groups tighter, and stops when no move helps. It visits the terms in a random order, so a term linked about
-        equally to two groups lands wherever its turn falls. Consensus clustering (<a href="https://doi.org/10.1038/srep00336" target="_blank" rel="noopener">Lancichinetti and Fortunato, 2012</a>)
+        groups tighter, and stops when no move helps. It visits the terms in a random order.
+        Consensus clustering (<a href="https://doi.org/10.1038/srep00336" target="_blank" rel="noopener">Lancichinetti and Fortunato, 2012</a>)
         makes it repeatable: ${m.runs} runs a round, each with its own random seed; a pair of terms together in at least
-        ${Math.round(m.threshold * 100)}% of runs is kept, as strongly as that share, and the rest dropped; rounds repeat
+        ${Math.round(m.threshold * 100)}% of runs is kept, and the rest dropped; rounds repeat
         until all ${m.runs} runs agree. A term left on its own joins the group it was most often in. Link weights:
         ${light}; every other link counts 1.</p>
-      <p>Two groupings are compared pair by pair: for each pair of terms, are they together in both, or apart in both?
-        The share of pairs that match, corrected for what chance alone would give, is the adjusted Rand index: 1 for
+      <p>Two groupings are compared pair by pair: for each pair of terms, are they together in both, or separate in both?
+        The fraction of pairs that match, after correcting for what chance alone would give, is the adjusted Rand index: 1 for
         identical groupings, about 0 for unrelated ones.</p>
-      <p>Single runs reproduce these ${DATA.clusters.length} topics at a median of ${m.single_median.toFixed(2)}, and as
-        low as ${m.single_min.toFixed(2)}, over ${m.single_runs} seeds. Consensus from seeds it had not used reproduces
-        them at ${m.consensus_other.map(x => x.toFixed(2)).join(" and ")}; the terms that still move sit between two
-        topics.</p>
+      <p>To test this, a computer ran ${m.single_runs} times on its own, each from a different random start. A typical
+        run matched the ${DATA.clusters.length} topics on this map at ${m.single_median.toFixed(2)}, and the worst at
+        ${m.single_min.toFixed(2)}, so a single run puts quite a few terms in a different topic. The full method, repeated
+        twice from fresh random starts, matched them at ${m.consensus_other.map(x => x.toFixed(2)).join(" and ")}. The few
+        terms that still moved are linked about equally to two topics.</p>
       <p><a href="${m.code}" target="_blank" rel="noopener">The Python code that finds the topics and sub-topics</a>.</p>
     </details>
 
     <h3>4. How the sub-topics are found</h3>
-    <p>The larger topics are split the same way, but only where the tries agree on the split; the others are shown
+    <p>The larger topics are split into sub-topics in the same way, but only where the tries agree on the split; the
+      others are shown
       whole. Zoom past the topics to see the sub-topics as dashed circles, each named after its most connected term.</p>
     <details><summary>Show the numbers</summary>
       <p>A topic gets sub-topics when it has at least ${m.sub_min_size} terms and two other seed batches reproduce its
@@ -632,7 +634,7 @@ function renderHow() {
         <thead><tr><th>Topic</th><th>Terms</th><th>Second level</th></tr></thead>
         <tbody>${rows}</tbody>
       </table></div>
-      ${whole.map(c => `<p>In "${esc(c.short)}" (${c.size} terms), another seed batch moved ${quoted(c.moved)} from one
+      ${whole.map((c, i) => `<p>${i ? "In" : "For example, in"} "${esc(c.short)}" (${c.size} terms), another seed batch moved ${quoted(c.moved)} from one
         sub-group to another; every other term kept its group. Agreement is counted over all ${pairs(c.size)} pairs of
         terms, and the pairs these ${c.moved.length} terms form with their old and new group-mates bring it down to
         ${c.agreement.toFixed(2)}. A split that changes with chance would change the map for no reason in the book, so
