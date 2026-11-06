@@ -191,7 +191,8 @@ async function run(browser, width, height) {
   await context.close();
 }
 
-// On a phone, one finger that drags the map's content to its edge goes on to scroll the page, with no tap on lifting.
+// On a phone, one finger that drags the map's content to its edge goes on to scroll the page, with no tap on lifting;
+// and the toolbar that then hides (a taller window) leaves the view alone, so the next drag scrolls the page at once.
 async function fingerScrolls(browser) {
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true });
   const p = await context.newPage();
@@ -199,19 +200,30 @@ async function fingerScrolls(browser) {
   await p.goto(ORIGIN, { waitUntil: "load" });
   await p.waitForFunction(() => typeof cy !== "undefined" && cy.nodes().length > 0, null, { timeout: 30000 });
   await p.waitForTimeout(600);
-  const box = await (await p.$("#cy")).boundingBox();
-  const [x, y] = [box.x + box.width / 2, box.y + 0.8 * box.height];
-  const before = await p.evaluate(() => [scrollY, document.querySelector("#card h2").textContent]);
   const finger = await context.newCDPSession(p);
-  await finger.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x, y }] });
-  for (let step = 1; step <= 40; step++)
-    await finger.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x, y: y - 15 * step }] });
-  await finger.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
-  await p.waitForTimeout(700);
-  const after = await p.evaluate(() => [scrollY, document.querySelector("#card h2").textContent,
-    cy.elements(":visible").renderedBoundingBox().y2]);
+  const drag = async (rise) => {
+    const box = await (await p.$("#cy")).boundingBox();
+    const [x, y] = [box.x + box.width / 2, box.y + 0.8 * box.height];
+    await finger.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x, y }] });
+    for (let step = 1; step <= rise / 15; step++)
+      await finger.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x, y: y - 15 * step }] });
+    await finger.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    await p.waitForTimeout(700);
+  };
+  const view = () => p.evaluate(() => ({ scrolled: scrollY, title: document.querySelector("#card h2").textContent,
+    pan: JSON.stringify([cy.pan(), cy.zoom()]), bottom: cy.elements(":visible").renderedBoundingBox().y2 }));
+  const before = await view();
+  await drag(600);
+  const after = await view();
   check(390, "a finger dragging the map to its edge goes on to scroll the page",
-    after[0] > before[0] + 100 && after[2] >= 39 && after[1] === before[1], `scrolled ${after[0] - before[0]} px`);
+    after.scrolled > before.scrolled + 100 && after.bottom >= 39 && after.title === before.title,
+    `scrolled ${after.scrolled - before.scrolled} px`);
+  await p.setViewportSize({ width: 390, height: 900 }); await p.waitForTimeout(500);
+  const kept = await view();
+  await drag(300);
+  const again = await view();
+  check(390, "a toolbar hiding keeps the view, and the next drag scrolls the page",
+    kept.pan === after.pan && again.scrolled > kept.scrolled + 200, `scrolled ${again.scrolled - kept.scrolled} px`);
   await context.close();
 }
 
