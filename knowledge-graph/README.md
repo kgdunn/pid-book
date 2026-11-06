@@ -3,7 +3,8 @@
 A graph of the design and analysis of experiments in *Process Improvement using Data*, for the
 factorial app: chapter 5, plus three design terms from chapter 7's mixed-level profile case study
 (split-plot design, coding schemes for a categorical factor, the joint F-test of a categorical
-interaction). 217 terms and 411 links of 35 kinds, grouped into 10 topics by consensus Louvain clustering.
+interaction). 217 terms and 411 links of 35 kinds, grouped into 10 topics by consensus Louvain
+clustering, six of which open into 26 sub-topics.
 
 Chapter 7's multivariate sections (batch and multivariate monitoring, soft sensors, image
 analysis, process understanding, troubleshooting, product development by model inversion) and the
@@ -14,8 +15,9 @@ experiments only; they are in the git history and in `audit/result_F.json` and `
 words on that line it comes from. The build checks every quote against the book's current text and
 stops if one no longer matches, so the graph cannot drift from the book unnoticed.
 
-Open `experimental-design-graph.html` in a browser: zoomed out it shows the topics, zooming in
-names their terms, and tapping a term shows its definition, the book's own line, and its links.
+Open `experimental-design-graph.html` in a browser: zoomed out it shows the topics; zooming in
+opens the larger ones into named sub-topics, then names their terms; tapping a term shows its
+definition, the book's own line, and its links.
 
 ## Files
 
@@ -25,7 +27,7 @@ names their terms, and tapping a term shows its definition, the book's own line,
 | `build_kg.py` | Checks `graph.yaml` against the book; writes the generated files below. |
 | `layout_kg.py` | Consensus Louvain topics and fixed positions for the map; writes the page. |
 | `template.html` | The page, without its data. |
-| `check_levels.py` | How stable the topics, and possible sub-topics, are across Louvain seeds. |
+| `check_levels.py` | How stable the topics are across Louvain seeds, and which get a second level, and why. |
 | `check_map.mjs` | Drives the map in headless Chromium at phone and tablet widths; fails on any misbehaviour. |
 | `check_anchors.py` | Checks every book link's `#anchor` on learnche.org (needs the network). |
 | `doe_kg.json`, `doe_kg_map.json` | Generated: the graph, then with topics and positions. |
@@ -65,6 +67,15 @@ same way, and repeats until all 200 runs agree. Consensus from four other seed b
 published topics at 0.95 to 0.98; the terms that still move sit between two topics (for example
 degrees of freedom, alias matrix). At 100 runs a round, a whole small topic could still flip.
 
+**The second level** is found the same way, by consensus inside each topic, and drawn only where it
+is worth reading: a topic gets sub-topics when it has at least 20 terms and two other seed batches
+reproduce its split at an adjusted Rand index of 0.8 or better. Six topics qualify (26 sub-topics);
+"Factors, coding, coefficients and steepest ascent" has 21 terms but splits differently with the seed
+(0.72), and the other three are small enough to read whole. A sub-topic is named after its most
+connected term unless `SUB_NAMES` in `layout_kg.py` gives it a better heading; the layout says when
+one of those names no longer has its term as a hub. Sub-topics are packed tightly, greedily, so a
+chain of links does not stretch them into a line.
+
 ## The accuracy review (November 2026)
 
 The first draft was written by hand from the December 2025 chapter text. Seven reviewers checked
@@ -92,9 +103,3 @@ curvature; and folding the link verbs had turned the book's "a word equals I" in
 - USES still carries 88 of the 411 links; some could be sharper.
 - A quote must sit on one source line for the mechanical check, so some are sentence fragments.
 - The chapter exercises are not covered.
-
-## Next steps
-
-1. A second level, only where a topic is large and its split is stable. Find the sub-groups by
-   consensus too: single Louvain runs inside a topic are as seed-dependent as at the top level
-   (`check_levels.py`: fractional factorials splits at a median agreement of only 0.67).

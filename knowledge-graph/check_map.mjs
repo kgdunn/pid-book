@@ -39,13 +39,16 @@ const check = (width, name, ok, detail = "") => {
 // Everything the checks read comes from the page's own globals (cy, DATA, READ).
 const state = (p) => p.evaluate(() => {
   const labels = cy.nodes(".term.lab");
-  const boxes = labels.map((n) => n.renderedBoundingBox({ includeNodes: false, includeEdges: false, includeLabels: true }));
+  const box = (n) => n.renderedBoundingBox({ includeNodes: false, includeEdges: false, includeLabels: true });
+  const hit = (a, b) => a.x1 < b.x2 && b.x1 < a.x2 && a.y1 < b.y2 && b.y1 < a.y2;
+  const boxes = labels.map(box);
+  // Topic and sub-topic names count too: a term's name must not cover them.
+  const names = cy.nodes(".topic, .subtopic, .subname").filter((n) => n.visible() && n.style("label")).map(box);
   let overlaps = 0;
-  for (let i = 0; i < boxes.length; i++)
-    for (let j = i + 1; j < boxes.length; j++) {
-      const [a, b] = [boxes[i], boxes[j]];
-      if (a.x1 < b.x2 && b.x1 < a.x2 && a.y1 < b.y2 && b.y1 < a.y2) overlaps++;
-    }
+  for (let i = 0; i < boxes.length; i++) {
+    for (let j = i + 1; j < boxes.length; j++) if (hit(boxes[i], boxes[j])) overlaps++;
+    for (const g of names) if (hit(boxes[i], g)) overlaps++;
+  }
   return {
     zoom: cy.zoom(), pan: { ...cy.pan() }, labels: labels.length, overlaps,
     font: labels.length ? parseFloat(labels[0].renderedStyle("font-size")) : 0,
@@ -61,7 +64,12 @@ async function run(browser, width, height) {
   p.on("pageerror", (e) => errors.push(e.message));
   p.on("console", (m) => m.type() === "error" && errors.push(m.text()));
   await p.route(ORIGIN, (r) => r.fulfill({ contentType: "text/html", body: html }));
-  const open = async () => { await p.goto(ORIGIN, { waitUntil: "networkidle" }); await p.waitForTimeout(600); };
+  // Wait for the map itself, not for the network to fall quiet: the font CDN can keep a connection open.
+  const open = async () => {
+    await p.goto(ORIGIN, { waitUntil: "load" });
+    await p.waitForFunction(() => typeof cy !== "undefined" && cy.nodes().length > 0, null, { timeout: 30000 });
+    await p.waitForTimeout(600);
+  };
   await open();
   const box = await (await p.$("#cy")).boundingBox();
   const at = (pos) => [box.x + pos.x, box.y + pos.y];
@@ -86,6 +94,36 @@ async function run(browser, width, height) {
   await p.mouse.click(tx, ty); await p.waitForTimeout(700);
   const topicName = await p.evaluate((i) => DATA.clusters.find((c) => c.id === i).name, big);
   check(width, "a tap opens the topic", (await p.textContent("#card h2")) === topicName);
+
+  // Inside a topic with a second level: its sub-topics are drawn, and while their names sit in their
+  // middle, they stand for their terms (no term is named).
+  const inner = await p.evaluate((i) => {
+    const subs = DATA.clusters.find((c) => c.id === i).subs;
+    const drawn = subs.filter((s) => cy.getElementById(s.id).visible()).length;
+    const gap = 62 * cy.zoom();   // TERM_GAP: the on-screen distance between neighbouring terms
+    const named = cy.nodes(".term.lab").filter((n) => n.data("topic") === i).length;
+    return { subs: subs.length, drawn, gap, named };
+  }, big);
+  check(width, "its sub-topics are drawn", inner.subs > 1 && inner.drawn === inner.subs, `${inner.drawn} of ${inner.subs}`);
+  if (inner.gap < 45) check(width, "sub-topic names stand for their terms", inner.named === 0, `${inner.named} terms named`);
+
+  // A tap inside a sub-topic, clear of its terms, opens it.
+  const spot = await p.evaluate((i) => {
+    const s = DATA.clusters.find((c) => c.id === i).subs[0];
+    const node = cy.getElementById(s.id), c = node.renderedPosition(), r = node.renderedWidth() / 2;
+    const dots = cy.nodes(".term").filter((n) => n.visible()).map((n) => n.renderedPosition());
+    for (let f = 0; f <= 0.8; f += 0.1)
+      for (let a = 0; a < 2 * Math.PI; a += Math.PI / 8) {
+        const x = c.x + f * r * Math.cos(a), y = c.y + f * r * Math.sin(a);
+        if (x > 5 && y > 5 && x < cy.width() - 5 && y < cy.height() - 5 && dots.every((d) => Math.hypot(d.x - x, d.y - y) > 16))
+          return { x, y, name: s.name };
+      }
+    return null;
+  }, big);
+  if (spot) {
+    await p.mouse.click(box.x + spot.x, box.y + spot.y); await p.waitForTimeout(700);
+    check(width, "a tap opens the sub-topic", (await p.textContent("#card h2")) === spot.name, spot.name);
+  } else check(width, "a tap opens the sub-topic", false, "no clear spot to tap");
 
   // Zooming in: labels never overlap, and grow up to their cap.
   const fonts = [];

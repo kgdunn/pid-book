@@ -157,6 +157,9 @@ const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 const terms = new Map(DATA.nodes.map(n => [n.id, n]));
 const topics = new Map(DATA.clusters.map(c => [c.id, c]));
+// Sub-topics: the second level inside the larger topics; each knows its topic.
+const subtopics = new Map(DATA.clusters.flatMap(c => (c.subs || []).map(s => [s.id, { ...s, topic: c.id }])));
+const groupOf = id => topics.get(id) || subtopics.get(id);   // a topic or a sub-topic, or undefined
 const fam = n => FAMILY[n.type] || "concept";
 const icon = (f, color) => `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="${FAMILIES[f][2]}" fill="${color}"/></svg>`;
 const esc = s => s.replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
@@ -167,7 +170,7 @@ const bookUrl = n => {
 const linksOf = id => DATA.edges.filter(e => e.source === id || e.target === id);
 
 document.getElementById("stats").textContent =
-  `${DATA.nodes.length} terms · ${DATA.edges.length} links · ${DATA.clusters.length} topics`;
+  `${DATA.nodes.length} terms · ${DATA.edges.length} links · ${DATA.clusters.length} topics, ${subtopics.size} sub-topics`;
 // Kinds of term hidden from the map, remembered in this browser. The selected term always stays visible.
 const hidden = new Set();
 try { for (const k of JSON.parse(localStorage.getItem("edg-hidden") || "[]")) if (k in FAMILIES) hidden.add(k); } catch {}
@@ -181,8 +184,13 @@ const drawLegend = () => {
 const elements = [
   ...DATA.clusters.map(c => ({ group: "nodes", classes: "topic", position: { x: c.x, y: c.y },
     data: { id: c.id, label: c.short, olabel: `${c.short}\n${c.size} terms`, d: 2 * c.r } })),
+  ...[...subtopics.values()].map(s => ({ group: "nodes", classes: "subtopic", position: { x: s.x, y: s.y },
+    data: { id: s.id, label: s.name, d: 2 * s.r } })),
+  // The same names as markers of their own, drawn above terms and links while the names sit mid-circle.
+  ...[...subtopics.values()].map(s => ({ group: "nodes", classes: "subname", position: { x: s.x, y: s.y },
+    data: { id: `${s.id}-name`, label: s.name, w: 1.6 * s.r } })),
   ...DATA.nodes.map(n => ({ group: "nodes", classes: `term fam-${fam(n)}`, position: { x: n.x, y: n.y },
-    data: { id: n.id, label: n.name, rank: n.rank, topic: n.cluster, fam: fam(n) } })),
+    data: { id: n.id, label: n.name, rank: n.rank, topic: n.cluster, sub: n.sub, fam: fam(n) } })),
   ...DATA.edges.map((e, i) => ({ group: "edges", data: { id: `l${i}`, source: e.source, target: e.target },
     classes: terms.get(e.source).cluster === terms.get(e.target).cluster ? "link" : "link cross" })),
   ...DATA.cluster_links.map((e, i) => ({ group: "edges", classes: "between", data: { id: `b${i}`, source: e.a, target: e.b, n: e.n } })),
@@ -193,7 +201,8 @@ const cy = cytoscape({ container: document.getElementById("cy"), elements, layou
 let selected = null;   // a term id, a topic id, or null for the overview
 let labelsOn = true;   // term names on the map; with them off, only the selected term is named
 try { labelsOn = localStorage.getItem("edg-labels") !== "off"; } catch {}
-const DETAIL_GAP = 26;   // on-screen distance between terms at which they appear
+const DETAIL_GAP = 22;   // on-screen distance between terms at which they appear
+const SUB_LABEL_GAP = 45;   // ... and at which sub-topic names move to their edge, and their terms are named
 
 // An on-screen size: `base` where the terms appear, then growing more slowly than the map as you zoom in.
 function grow(z, base, power, max) {
@@ -205,6 +214,7 @@ const sizes = z => ({ font: grow(z, 11, 0.25, 19), dot: grow(z, 7, 0.5, 22), lin
 function sheet(z) {
   const px = v => v / z;                 // screen pixels to drawing units
   const overview = TERM_GAP * z < DETAIL_GAP;
+  const middle = !overview && TERM_GAP * z < SUB_LABEL_GAP;   // sub-topics named, their terms not yet
   const { font, dot, line } = sizes(z);
   const size = px(dot);
   const famRules = Object.entries(FAMILIES).map(([k, [, shape]]) =>
@@ -222,6 +232,21 @@ function sheet(z) {
       "text-background-color": css("--bubble"), "text-background-opacity": overview ? 0.92 : 0,
       "text-background-padding": px(3), "text-background-shape": "roundrectangle" } },
     { selector: ".topic.picked", style: { "border-width": px(2.5), "border-color": css("--accent") } },
+    // Between the topics and the terms: sub-topics, named in their middle; zoom on and the names move to their edge.
+    { selector: ".subtopic", style: { display: overview ? "none" : "element", shape: "ellipse", width: "data(d)",
+      height: "data(d)", "background-color": css("--bubble"), "background-opacity": 0.5, "border-width": px(1),
+      "border-style": "dashed", "border-color": css("--line"), "z-index": 1, events: "no", label: middle ? "" : "data(label)",
+      "font-family": "IBM Plex Sans Condensed, Arial Narrow, sans-serif", "font-weight": 600,
+      color: middle ? css("--fg") : css("--muted"), "font-size": px(middle ? 12.5 : grow(z, 11, 0.3, 15)),
+      "text-wrap": "wrap", "text-max-width": middle ? "data(d)" : px(180), "text-valign": middle ? "center" : "top",
+      "text-margin-y": middle ? 0 : px(-3), "text-background-color": css("--bubble"),
+      "text-background-opacity": middle ? 0.92 : 0, "text-background-padding": px(2), "text-background-shape": "roundrectangle" } },
+    { selector: ".subtopic.picked", style: { "border-width": px(2.5), "border-style": "solid", "border-color": css("--accent") } },
+    { selector: ".subname", style: { display: middle ? "element" : "none", width: 1, height: 1, "background-opacity": 0,
+      "z-index": 40, events: "no", label: "data(label)", "font-family": "IBM Plex Sans Condensed, Arial Narrow, sans-serif",
+      "font-weight": 600, color: css("--fg"), "font-size": px(12.5), "text-wrap": "wrap", "text-max-width": "data(w)",
+      "text-valign": "center", "text-background-color": css("--bubble"), "text-background-opacity": 0.92,
+      "text-background-padding": px(2), "text-background-shape": "roundrectangle" } },
     // Zoomed out, the topics alone: their terms appear once there is room to tell them apart.
     { selector: ".term", style: { display: overview ? "none" : "element", width: size, height: size, "z-index": 10, label: "",
       "border-width": 0 } },
@@ -234,8 +259,8 @@ function sheet(z) {
       "font-weight": 600, "font-size": px(font * 1.12), "z-index": 30 } },
     { selector: ".term.nb", style: { "z-index": 20 } },
     { selector: ".link", style: { display: overview ? "none" : "element", width: px(line), "line-color": css("--muted"),
-      "curve-style": "straight", "z-index": 5, opacity: 0.55 } },
-    { selector: ".link.cross", style: { opacity: 0.25 } },   // links between topics: present, but behind the topic's own
+      "curve-style": "straight", "z-index": 5, opacity: middle ? 0.3 : 0.55 } },
+    { selector: ".link.cross", style: { opacity: middle ? 0.12 : 0.25 } },   // links between topics: present, but behind the topic's own
     { selector: ".link.hl", style: { display: "element", width: px(line * 2), "line-color": css("--accent"), "target-arrow-shape": "triangle",
       "target-arrow-color": css("--accent"), "arrow-scale": 0.9, opacity: 1, "z-index": 15 } },
     { selector: ".between", style: { display: overview ? "element" : "none", "curve-style": "straight", "z-index": 1,
@@ -270,6 +295,7 @@ function placeLabels(z) {
       const sel = n.hasClass("sel"), forced = sel || (labelsOn && n.hasClass("nb"));
       if (!sel && !labelsOn) return;
       if (!forced && n.data("rank") >= shown) return;
+      if (!forced && n.data("sub") && gap < SUB_LABEL_GAP) return;   // the sub-topic's name stands for its terms
       const p = n.renderedPosition();
       if (p.x < -160 || p.x > W + 160 || p.y < -160 || p.y > H + 160) return;
       candidates.push({ n, p, sel, forced, order: sel ? -2 : forced ? -1 : n.data("rank") });
@@ -294,7 +320,9 @@ function placeLabels(z) {
 // The first pass estimates label sizes; once they are drawn, their real boxes settle any overlap it missed.
 let placed = [];
 function settleOverlaps() {
-  const kept = [];
+  // Topic and sub-topic names are placed first: term names give way to them.
+  const kept = cy.nodes(".topic, .subtopic, .subname").filter(n => n.visible() && n.style("label"))
+    .map(n => n.renderedBoundingBox({ includeNodes: false, includeEdges: false, includeLabels: true }));
   for (const c of placed) {
     const b = c.n.renderedBoundingBox({ includeNodes: false, includeEdges: false, includeLabels: true });
     if (!c.forced && kept.some(o => b.x1 < o.x2 && o.x1 < b.x2 && b.y1 < o.y2 && o.y1 < b.y2)) c.n.removeClass("lab");
@@ -325,7 +353,7 @@ function highlight(id) {
       near.edges(".link").addClass("hl");
       cy.nodes(".term").not(near.nodes()).addClass("dim");
       cy.edges(".link").not(near.edges()).addClass("dim");
-    } else if (id && topics.has(id)) {
+    } else if (id && groupOf(id)) {
       cy.getElementById(id).addClass("picked");
     }
     applyHidden();
@@ -340,8 +368,12 @@ function move(id, animate) {
     const z = Math.min(cy.maxZoom(), Math.max(cy.zoom(), 72 / TERM_GAP));   // close enough to read its neighbours
     const pan = { x: cy.width() / 2 - p.x * z, y: cy.height() * 0.45 - p.y * z };
     cy.stop(); cy.animate({ zoom: z, pan }, { duration });
-  } else if (id && topics.has(id)) {
-    cy.stop(); cy.animate({ fit: { eles: cy.getElementById(id), padding: 12 } }, { duration });
+  } else if (id && groupOf(id)) {
+    // Fit the topic, but come close enough for its terms to show: on a phone a large topic's edge is cropped.
+    const node = cy.getElementById(id), p = node.position(), d = node.width();
+    const fit = Math.min((cy.width() - 24) / d, (cy.height() - 24) / d);
+    const z = Math.min(cy.maxZoom(), Math.max(fit, (DETAIL_GAP / TERM_GAP) * 1.08));
+    cy.stop(); cy.animate({ zoom: z, pan: { x: cy.width() / 2 - p.x * z, y: cy.height() / 2 - p.y * z } }, { duration });
   } else {
     cy.stop(); cy.animate({ fit: { eles: cy.nodes(".topic"), padding: 14 } }, { duration });
   }
@@ -358,7 +390,7 @@ function setLimits() {
 
 // ---------- the card and the chips
 function chipFor(id) {
-  if (topics.has(id)) { const c = topics.get(id);
+  if (groupOf(id)) { const c = groupOf(id);
     return `<button class="chip" type="button" data-id="${id}">${esc(c.name)} <small>${c.size}</small></button>`; }
   const n = terms.get(id);
   return `<button class="chip" type="button" data-id="${id}">${icon(fam(n), css(`--f-${fam(n)}`))}${esc(n.name)}</button>`;
@@ -379,28 +411,31 @@ function render() {
       const [rel, other] = e.source === selected ? [read(e.type, 0), e.target] : [read(e.type, 1), e.source];
       groups.set(rel, [...(groups.get(rel) || []), other]);
     }
-    links.innerHTML = group("Topic", [n.cluster]) + [...groups].map(([rel, ids]) => group(rel, ids)).join("");
+    links.innerHTML = group("Topic", [n.cluster]) + (n.sub ? group("Sub-topic", [n.sub]) : "") + [...groups].map(([rel, ids]) => group(rel, ids)).join("");
     strip.innerHTML = `<b>${esc(n.name)}</b> · ${esc(n.definition)}`;
-  } else if (selected && topics.has(selected)) {
-    const c = topics.get(selected);
-    const members = DATA.nodes.filter(n => n.cluster === c.id).sort((a, b) => a.rank - b.rank).map(n => n.id);
+  } else if (selected && groupOf(selected)) {
+    const c = groupOf(selected), isSub = subtopics.has(selected);
+    const members = DATA.nodes.filter(n => (isSub ? n.sub : n.cluster) === c.id)
+      .sort((a, b) => b.degree - a.degree || a.name.localeCompare(b.name)).map(n => n.id);
     const near = DATA.cluster_links.filter(l => l.a === c.id || l.b === c.id).sort((a, b) => b.n - a.n).map(l => (l.a === c.id ? l.b : l.a));
     card.style.removeProperty("--fam");
-    card.innerHTML = `<span class="type">Topic</span><h2>${esc(c.name)}</h2>
+    card.innerHTML = `<span class="type">${isSub ? `Sub-topic of ${esc(topics.get(c.topic).short)}` : "Topic"}</span><h2>${esc(c.name)}</h2>
       <p>${c.size} terms. The most connected are ${members.slice(0, 3).map(id => esc(terms.get(id).name).toLowerCase()).join(", ")}.</p>`;
-    links.innerHTML = group("Terms, most connected first", members) + group("Linked topics, most links first", near);
+    links.innerHTML = isSub ? group("Terms, most connected first", members) + group("Topic", [c.topic])
+      : group("Sub-topics", (c.subs || []).map(s => s.id)) + group("Terms, most connected first", members)
+        + group("Linked topics, most links first", near);
     strip.innerHTML = `<b>${esc(c.name)}</b> · zoom in or tap a term`;
   } else {
     card.style.removeProperty("--fam");
     card.innerHTML = `<span class="type">Overview</span><h2>${DATA.clusters.length} topics</h2>
-      <p>The terms fall into groups of closely linked ideas. Tap a topic, or zoom in, to see its terms; the most connected terms are named first.</p>`;
+      <p>The terms fall into groups of closely linked ideas. Tap a topic, or zoom in: the larger topics open into sub-topics, then into terms, the most connected named first.</p>`;
     links.innerHTML = group("Topics, largest first", DATA.clusters.map(c => c.id));
     strip.innerHTML = `<b>All topics</b> · pinch or scroll to zoom, tap a topic to open it`;
   }
 }
 
 function go(id, { animate = true, hash = true } = {}) {
-  if (id && !terms.has(id) && !topics.has(id)) id = null;
+  if (id && !terms.has(id) && !groupOf(id)) id = null;
   selected = id;
   highlight(id);
   render();
@@ -411,9 +446,11 @@ const fromHash = () => location.hash.slice(1).replaceAll("-", "_");
 
 cy.on("tap", "node.term", ev => go(ev.target.id()));
 cy.on("tap", ev => {
-  if (ev.target !== cy) return;
+  if (ev.target !== cy && !ev.target.isEdge()) return;   // a tap on a link line counts as a tap on what lies under it
   const { x, y } = ev.position;
-  const hit = DATA.clusters.find(c => Math.hypot(x - c.x, y - c.y) <= c.r);
+  const inside = c => Math.hypot(x - c.x, y - c.y) <= c.r;
+  const overview = TERM_GAP * cy.zoom() < DETAIL_GAP;   // sub-topics are hidden there
+  const hit = (!overview && [...subtopics.values()].find(inside)) || DATA.clusters.find(inside);
   if (hit && hit.id !== selected) go(hit.id);
 });
 document.getElementById("links").addEventListener("click", ev => {
