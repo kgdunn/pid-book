@@ -1,4 +1,5 @@
 <title>Experimental Design Concept Graph</title>
+<script>/* the kept colour mode, before the page paints */ try { const m = localStorage.getItem("edg-mode"); if (m === "light" || m === "dark") document.documentElement.dataset.theme = m; } catch {}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -17,6 +18,12 @@
   --bg: #12171d; --panel: #1a2129; --fg: #e4e9ee; --muted: #94a3b1; --line: #384552; --accent: #79aef0; --bubble: #222c36;
   --f-design: #79aef0; --f-method: #4fc7b4; --f-concept: #a4b2c0; --f-guide: #f0965a; --f-context: #c39ae8; color-scheme: dark }
 body { background: var(--bg); color: var(--fg); font: 15px/1.5 var(--body); }
+.top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.mode { flex: none; padding: 6px; border: none; background: none; color: var(--muted); line-height: 0; cursor: pointer; }
+.mode:hover, .mode:focus-visible { color: var(--fg); }
+.mode svg { display: none; width: 24px; height: 24px; }
+:root:not([data-mode]) .mode [data-for="auto"], :root[data-mode="auto"] .mode [data-for="auto"],
+:root[data-mode="light"] .mode [data-for="light"], :root[data-mode="dark"] .mode [data-for="dark"] { display: block; }
 .wrap { max-width: 980px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 20px 40px; display: grid;
   grid-template-columns: minmax(0, 1fr); gap: 14px; }
@@ -110,7 +117,15 @@ footer { color: var(--muted); font-size: .8rem; }
 
 <div class="wrap">
   <header>
-    <h1>Experimental Design Concept Graph</h1>
+    <div class="top">
+      <h1>Experimental Design Concept Graph</h1>
+      <!-- Light, dark, or the system's, in turn: its icon shows the mode now. -->
+      <button type="button" id="mode" class="mode" title="light/dark" aria-label="Colour mode: the system's">
+        <svg data-for="auto" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3.5a8.5 8.5 0 0 0 0 17z" fill="currentColor"/></svg>
+        <svg data-for="light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></g></svg>
+        <svg data-for="dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a6.8 6.8 0 0 0 10.7 10.7z" fill="currentColor"/></svg>
+      </button>
+    </div>
     <p class="sub">How the ideas of designed experiments link, in <em>Process Improvement using Data</em>.</p>
     <button type="button" class="howlink" id="howlink">How this map was made</button>
   </header>
@@ -208,12 +223,12 @@ const drawLegend = () => {
 // ---------- the map
 const elements = [
   ...DATA.clusters.map(c => ({ group: "nodes", classes: "topic", position: { x: c.x, y: c.y },
-    data: { id: c.id, label: c.short, olabel: `${c.short}\n${c.size} terms`, d: 2 * c.r } })),
+    data: { id: c.id, label: c.short, olabel: `${c.short}\n[${c.size}]`, d: 2 * c.r } })),
   ...[...subtopics.values()].map(s => ({ group: "nodes", classes: "subtopic", position: { x: s.x, y: s.y },
     data: { id: s.id, label: s.name, d: 2 * s.r } })),
   // The same names as markers of their own, drawn above terms and links while the names sit mid-circle.
   ...[...subtopics.values()].map(s => ({ group: "nodes", classes: "subname", position: { x: s.x, y: s.y },
-    data: { id: `${s.id}-name`, label: s.name, w: 1.6 * s.r } })),
+    data: { id: `${s.id}-name`, label: `${s.name}\n[${s.size}]`, w: 1.6 * s.r } })),
   ...DATA.nodes.map(n => ({ group: "nodes", classes: `term fam-${fam(n)}`, position: { x: n.x, y: n.y },
     data: { id: n.id, label: n.name, rank: n.rank, topic: n.cluster, sub: n.sub, fam: fam(n) } })),
   ...DATA.edges.map((e, i) => ({ group: "edges", data: { id: `l${i}`, source: e.source, target: e.target },
@@ -226,7 +241,26 @@ const cy = cytoscape({ container: document.getElementById("cy"), elements, layou
 let selected = null;   // a term id, a topic id, or null for the overview
 let labelsOn = true;   // term names on the map; with them off, only the selected term is named
 try { labelsOn = localStorage.getItem("edg-labels") !== "off"; } catch {}
-const DETAIL_GAP = 22;   // on-screen distance between terms at which they appear
+// The colour mode: the system's, then the opposite of what it shows, then the other; kept in this browser.
+const systemDark = matchMedia("(prefers-color-scheme: dark)");
+function applyMode(mode) {
+  const root = document.documentElement;
+  root.dataset.mode = mode;
+  if (mode === "auto") delete root.dataset.theme;
+  else root.dataset.theme = mode;   // the map redraws in its colours (the observer below)
+  document.getElementById("mode").setAttribute("aria-label",
+    `Colour mode: ${{ auto: "the system's", light: "light", dark: "dark" }[mode]}`);
+}
+document.getElementById("mode").addEventListener("click", () => {
+  const order = systemDark.matches ? ["auto", "light", "dark"] : ["auto", "dark", "light"];
+  const mode = order[(order.indexOf(document.documentElement.dataset.mode || "auto") + 1) % order.length];
+  try { if (mode === "auto") localStorage.removeItem("edg-mode"); else localStorage.setItem("edg-mode", mode); } catch {}
+  applyMode(mode);
+});
+let savedMode = null;
+try { savedMode = localStorage.getItem("edg-mode"); } catch {}
+applyMode(savedMode === "light" || savedMode === "dark" ? savedMode : "auto");
+const DETAIL_GAP = 19;   // on-screen distance between terms at which they, and the sub-topics, appear
 const SUB_LABEL_GAP = 45;   // ... and at which sub-topic names move to their edge, and their terms are named
 
 // An on-screen size: `base` where the terms appear, then growing more slowly than the map as you zoom in.

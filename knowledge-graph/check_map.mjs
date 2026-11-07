@@ -195,6 +195,23 @@ async function run(browser, width, height) {
         (await p.getAttribute('#legend button[data-fam="concept"]', "aria-pressed")) === "false");
   await p.click('#legend button[data-fam="concept"]');
 
+  // Each topic and sub-topic shows its number of terms, in square brackets on a second line.
+  const counted = await p.evaluate(() => DATA.clusters.every((c) => cy.getElementById(c.id).data("olabel") === `${c.short}\n[${c.size}]`
+    && (c.subs || []).every((s) => cy.getElementById(`${s.id}-name`).data("label") === `${s.name}\n[${s.size}]`)));
+  check(width, "topics and sub-topics show their number of terms", counted);
+
+  // The colour mode: three presses go through light, dark and back to the system's (dark here); the map
+  // redraws in the page's colours, and a chosen mode is kept.
+  const look = () => p.evaluate(() => ({ theme: document.documentElement.dataset.theme || "auto",
+    text: cy.nodes(".topic")[0].style("color") }));
+  const modes = [await look()];
+  for (let i = 0; i < 3; i++) { await p.click("#mode"); await p.waitForTimeout(200); modes.push(await look()); }
+  check(width, "the mode switch goes light, dark, then the system's",
+        modes.map((m) => m.theme).join(" ") === "auto light dark auto", modes.map((m) => m.theme).join(" "));
+  check(width, "the map redraws in the chosen mode", modes[1].text !== modes[2].text && modes[2].text === modes[3].text);
+  await p.click("#mode"); await open();
+  check(width, "the colour mode is kept", (await look()).theme === "light");
+
   check(width, "no script errors", errors.length === 0, errors.join(" | "));
   await context.close();
 }
