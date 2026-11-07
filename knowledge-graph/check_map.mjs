@@ -160,9 +160,15 @@ async function run(browser, width, height) {
   check(width, "labels grow as you zoom in", fonts.every((f, i) => i === 0 || f > fonts[i - 1] || f >= 19),
         fonts.map((f) => f.toFixed(1)).join(" -> "));
 
-  // A tap on a term opens it and lights up its links.
-  const term = await p.evaluate(() => cy.nodes(".term").filter((n) => n.visible() && n.renderedPosition().x > 40
-    && n.renderedPosition().x < cy.width() - 40 && n.renderedPosition().y > 40 && n.renderedPosition().y < cy.height() - 40)[0].id());
+  // A tap on a term opens it and lights up its links. Zoomed this deep, the view may hold no term: bring the nearest to its middle.
+  const term = await p.evaluate(() => {
+    const mid = { x: cy.width() / 2, y: cy.height() / 2 };
+    const d = (n) => Math.hypot(n.renderedPosition().x - mid.x, n.renderedPosition().y - mid.y);
+    const near = cy.nodes(".term").filter((n) => n.visible()).sort((a, b) => d(a) - d(b))[0];
+    cy.center(near);
+    return near.id();
+  });
+  await p.waitForTimeout(300);
   const [ux, uy] = at(await p.evaluate((i) => cy.getElementById(i).renderedPosition(), term));
   await p.mouse.click(ux, uy); await p.waitForTimeout(700);
   const lit = await p.evaluate((i) => ({ hl: cy.edges(".link.hl").length, degree: cy.getElementById(i).connectedEdges(".link").length,
@@ -173,11 +179,11 @@ async function run(browser, width, height) {
   check(width, "its card quotes the book, not its source file", (await p.textContent("#card blockquote")).trim().length > 0 && !card.includes(".rst"));
 
   // The term-name switch: off names only the selected term, and is remembered.
-  await p.click("#labels"); await p.waitForTimeout(300);
+  await p.click(".switch.names"); await p.waitForTimeout(300);
   check(width, "names off: only the selected term is named", (await state(p)).labels === 1);
   await open();
-  check(width, "names off is remembered", (await p.getAttribute("#labels", "aria-pressed")) === "false");
-  await p.click("#labels");
+  check(width, "names off is remembered", !(await p.isChecked("#labels")));
+  await p.click(".switch.names");
 
   // The kind switches: hiding concepts removes them and their links, keeps a selected one, is remembered.
   await p.click('.chip[data-id="c0"]'); await p.waitForTimeout(700);
@@ -194,6 +200,97 @@ async function run(browser, width, height) {
   check(width, "hidden kinds are remembered",
         (await p.getAttribute('#legend button[data-fam="concept"]', "aria-pressed")) === "false");
   await p.click('#legend button[data-fam="concept"]');
+
+  // Each topic and sub-topic shows its number of terms, in square brackets on a second line.
+  const counted = await p.evaluate(() => DATA.clusters.every((c) => cy.getElementById(c.id).data("olabel") === `${c.short}\n[${c.size}]`
+    && (c.subs || []).every((s) => cy.getElementById(`${s.id}-name`).data("label") === `${s.name}\n[${s.size}]`)));
+  check(width, "topics and sub-topics show their number of terms", counted);
+
+  // The link-label switch: beside the search, off at first; on, it labels the selected term's drawn links, and is kept.
+  const [find, names, flip] = await Promise.all([".search input", ".switch.names", ".switch.verbs"].map((s) => p.locator(s).boundingBox()));
+  check(width, "term names, then link labels, on one row", Math.abs(names.y - flip.y) < 2 && names.x + names.width <= flip.x);
+  check(width, width > 600 ? "the switches sit right of the search" : "on a phone, the switches sit below the search",
+        width > 600 ? names.x >= find.x + find.width && names.y < find.y + find.height : names.y >= find.y + find.height);
+  check(width, "term names start on", await p.isChecked("#labels"));
+  check(width, "zoom and fit stay below the map",
+        (await p.locator(".controls button").evaluateAll((bs) => bs.map((b) => b.id))).join(" ") === "zin zout home");
+  // ... each label solid whatever the opacity of its line, and set apart from the term names: italic, in the accent colour.
+  const labelled = () => p.evaluate(() => { const ink = cy.edges(".link.hl")[0].style("line-color");
+    return cy.edges(".link").filter((e) => e.visible() && e.style("source-label"))
+      .map((e) => e.hasClass("hl") && e.style("source-label") === e.data("verb") && e.style("target-arrow-shape") === "triangle"
+        && e.style("opacity") === "1" && e.style("color") === ink && e.style("font-style") === "italic"); });
+  await p.evaluate(() => { location.hash = "full-factorial"; }); await p.waitForTimeout(700);
+  check(width, "link labels start off", !(await p.isChecked("#verbs")) && (await labelled()).length === 0);
+  await p.click(".switch.verbs"); await p.waitForTimeout(300);
+  // A label that would land on a term or another label is held back (class mute) until zooming in makes room.
+  const marked = await labelled();
+  const [drawn, held] = await p.evaluate(() => { const lit = cy.edges(".link.hl").filter((e) => e.visible());
+    return [lit.length, lit.filter((e) => e.hasClass("mute")).length]; });
+  check(width, "on, the selected term's links read their verbs, or are held back",
+        marked.length > 0 && marked.length + held === drawn && marked.every(Boolean), `${marked.filter(Boolean).length} + ${held} of ${drawn}`);
+  await p.click("#zin"); await p.waitForTimeout(500);
+  check(width, "zooming in makes room for more link labels", (await labelled()).length >= marked.length);
+  await open();
+  check(width, "link labels are remembered", await p.isChecked("#verbs"));
+  await p.click(".switch.verbs");
+
+  // The deepest zoom sets the closest terms far apart.
+  check(width, "the deepest zoom sets the closest terms at least 360 px apart",
+        (await p.evaluate(() => 62 * cy.maxZoom())) >= 360);
+
+  // The colour mode: three presses go through light, dark and back to the system's (dark here); the map
+  // redraws in the page's colours, and a chosen mode is kept.
+  const look = () => p.evaluate(() => ({ theme: document.documentElement.dataset.theme || "auto",
+    text: cy.nodes(".topic")[0].style("color") }));
+  const modes = [await look()];
+  for (let i = 0; i < 3; i++) { await p.click("#mode"); await p.waitForTimeout(200); modes.push(await look()); }
+  check(width, "the mode switch goes light, dark, then the system's",
+        modes.map((m) => m.theme).join(" ") === "auto light dark auto", modes.map((m) => m.theme).join(" "));
+  check(width, "the map redraws in the chosen mode", modes[1].text !== modes[2].text && modes[2].text === modes[3].text);
+  await p.click("#mode"); await open();
+  check(width, "the colour mode is kept", (await look()).theme === "light");
+
+  // With link labels on, a label whose middle is taken slides along its line; every label stays clear of both terms.
+  await p.evaluate(() => { location.hash = "full-factorial"; }); await p.waitForTimeout(700);
+  if (!(await p.isChecked("#verbs"))) await p.click(".switch.verbs");
+  await p.evaluate(() => cy.zoom({ level: cy.zoom() * 0.7, renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } }));
+  await p.waitForTimeout(400);
+  const spots = await p.evaluate(() => cy.edges(".link").filter((e) => e.visible() && !e.hasClass("dim") && !e.hasClass("mute"))
+    .map((e) => { const s = e.source().renderedPosition(), t = e.target().renderedPosition();
+      return (e.data("at") * cy.zoom() + e.source().renderedWidth() / 2) / Math.hypot(t.x - s.x, t.y - s.y); }));
+  check(width, "link labels sit on their lines, one moved off a taken middle",
+        spots.length > 0 && spots.every((k) => k > 0.15 && k < 0.85) && spots.some((k) => Math.abs(k - 0.5) > 0.05),
+        spots.map((k) => k.toFixed(2)).join(" "));
+  await p.click(".switch.verbs");
+
+  // The mouse on a link reads it as a sentence below the map; moved off, the strip says what it said before.
+  await p.evaluate(() => { location.hash = ""; location.hash = "full-factorial"; }); await p.waitForTimeout(700);
+  const stripText = await p.textContent("#striptext"), link = await p.evaluate(() => (() => { const name = (n) => n.data("label"), box = cy.container().getBoundingClientRect();
+    const mid = (x) => { const s = x.source().renderedPosition(), t = x.target().renderedPosition();
+      return { x: (s.x + t.x) / 2, y: (s.y + t.y) / 2, len: Math.hypot(t.x - s.x, t.y - s.y) }; };
+    const inView = (m) => m.x > 20 && m.x < cy.width() - 20 && m.y > 20 && m.y < cy.height() - 20;
+    const e = cy.edges(".link.hl").filter((x) => x.visible() && inView(mid(x))).max((x) => mid(x).len).ele, m = mid(e);
+    return { said: `${name(e.source())} ${e.data("verb")} ${name(e.target())}`, x: box.left + m.x, y: box.top + m.y }; })());
+  await p.mouse.move(link.x, link.y); await p.waitForTimeout(200);
+  check(width, "the mouse on a link reads it below the map", (await p.textContent("#striptext")) === link.said, link.said);
+  const cyBox = await (await p.$("#cy")).boundingBox();
+  await p.mouse.move(cyBox.x + 4, cyBox.y + 4); await p.waitForTimeout(200);
+  check(width, "and moved off, the strip is back", (await p.textContent("#striptext")) === stripText);
+
+  // A term dragged with the mouse moves, to uncover a link label under it; the map stays, and it is not a tap.
+  await p.evaluate(() => { location.hash = "full-factorial"; }); await p.waitForTimeout(700);
+  const moving = await p.evaluate(() => (() => { const inside = (q) => q.x > 60 && q.x < cy.width() - 60 && q.y > 60 && q.y < cy.height() - 60;
+    return cy.nodes(".term.nb").filter((n) => n.visible() && inside(n.renderedPosition()))[0].id(); })());
+  const where = () => p.evaluate((i) => ({ at: cy.getElementById(i).position(), pan: JSON.stringify(cy.pan()), z: cy.zoom() }), moving);
+  const was = await where();
+  const [mx, my] = at(await p.evaluate((i) => cy.getElementById(i).renderedPosition(), moving));
+  await p.mouse.move(mx, my); await p.mouse.down(); await p.mouse.move(mx + 60, my + 40, { steps: 8 }); await p.mouse.up();
+  await p.waitForTimeout(300);
+  const now = await where();
+  check(width, "a term dragged with the mouse moves, and the map stays",
+        Math.abs((now.at.x - was.at.x) * was.z - 60) < 6 && Math.abs((now.at.y - was.at.y) * was.z - 40) < 6 && now.pan === was.pan,
+        `moved ${((now.at.x - was.at.x) * was.z).toFixed(0)}, ${((now.at.y - was.at.y) * was.z).toFixed(0)} px`);
+  check(width, "a drag is not a tap", (await p.textContent("#card h2")) === "Full factorial");
 
   check(width, "no script errors", errors.length === 0, errors.join(" | "));
   await context.close();
@@ -246,6 +343,44 @@ async function fingerScrolls(browser) {
   await touch("touchEnd", []);
   await p.waitForTimeout(600);
   check(390, "spreading two fingers zooms in", (await view()).zoom > moved.zoom * 1.5);
+  // A finger that moves at once scrolls the page past a term; held still first, it drags the term instead.
+  await p.evaluate(() => { window.scrollTo(0, 0); location.hash = "full-factorial"; }); await p.waitForTimeout(800);
+  const term = await p.evaluate(() => (() => { const inside = (q) => q.x > 60 && q.x < cy.width() - 60 && q.y > 60 && q.y < cy.height() - 60;
+    return cy.nodes(".term.nb").filter((n) => n.visible() && inside(n.renderedPosition()))[0].id(); })());
+  const spot = async () => { const b = await (await p.$("#cy")).boundingBox();
+    const r = await p.evaluate((i) => cy.getElementById(i).renderedPosition(), term); return [b.x + r.x, b.y + r.y]; };
+  const place = () => p.evaluate((i) => ({ at: cy.getElementById(i).position(), z: cy.zoom(), scrolled: scrollY,
+    title: document.querySelector("#card h2").textContent }), term);
+  const first = await place();
+  let [tx, ty] = await spot();
+  await touch("touchStart", [{ x: tx, y: ty, id: 0 }]);
+  for (let k = 1; k <= 10; k++) await touch("touchMove", [{ x: tx, y: ty - 15 * k, id: 0 }]);
+  await touch("touchEnd", []); await p.waitForTimeout(800);
+  const swiped = await place();
+  check(390, "a quick swipe on a term scrolls the page and leaves the term",
+        swiped.scrolled > first.scrolled + 50 && swiped.at.x === first.at.x && swiped.at.y === first.at.y);
+  await p.evaluate(() => window.scrollTo(0, 0)); await p.waitForTimeout(300);
+  [tx, ty] = await spot();
+  await touch("touchStart", [{ x: tx, y: ty, id: 0 }]); await p.waitForTimeout(700);
+  for (let k = 1; k <= 6; k++) await touch("touchMove", [{ x: tx + 10 * k, y: ty, id: 0 }]);
+  const told = await p.textContent(".map-hint, .hint");
+  await touch("touchEnd", []); await p.waitForTimeout(600);
+  const dragged = await place();
+  check(390, "a term held still, then dragged, follows the finger and the page stays",
+        Math.abs((dragged.at.x - first.at.x) * first.z - 60) < 9 && dragged.scrolled === 0 && dragged.title === first.title,
+        `moved ${((dragged.at.x - first.at.x) * first.z).toFixed(0)} px, scrolled ${dragged.scrolled}`);
+  check(390, "the hint says the held term can be dragged", told === "Drag to move this term", told);
+  // A tap on one of the selected term's links reads it below the map, and keeps the term selected.
+  await p.evaluate(() => { window.scrollTo(0, 0); }); await p.waitForTimeout(300);
+  const tapped = await p.evaluate(() => (() => { const name = (n) => n.data("label"), box = cy.container().getBoundingClientRect();
+    const mid = (x) => { const s = x.source().renderedPosition(), t = x.target().renderedPosition();
+      return { x: (s.x + t.x) / 2, y: (s.y + t.y) / 2, len: Math.hypot(t.x - s.x, t.y - s.y) }; };
+    const inView = (m) => m.x > 20 && m.x < cy.width() - 20 && m.y > 20 && m.y < cy.height() - 20;
+    const e = cy.edges(".link.hl").filter((x) => x.visible() && inView(mid(x))).max((x) => mid(x).len).ele, m = mid(e);
+    return { said: `${name(e.source())} ${e.data("verb")} ${name(e.target())}`, x: box.left + m.x, y: box.top + m.y }; })());
+  await touch("touchStart", [{ x: tapped.x, y: tapped.y, id: 0 }]); await touch("touchEnd", []); await p.waitForTimeout(400);
+  check(390, "a tap on a link of the selected term reads it, and keeps the term",
+        (await p.textContent("#striptext")) === tapped.said && (await p.textContent("#card h2")) === "Full factorial", tapped.said);
   check(390, "no console errors from touch", errors.length === 0, errors.join(" | "));
   await context.close();
 }
