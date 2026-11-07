@@ -250,6 +250,21 @@ async function run(browser, width, height) {
   await p.click("#mode"); await open();
   check(width, "the colour mode is kept", (await look()).theme === "light");
 
+  // A term dragged with the mouse moves, to uncover a link label under it; the map stays, and it is not a tap.
+  await p.evaluate(() => { location.hash = "full-factorial"; }); await p.waitForTimeout(700);
+  const moving = await p.evaluate(() => (() => { const inside = (q) => q.x > 60 && q.x < cy.width() - 60 && q.y > 60 && q.y < cy.height() - 60;
+    return cy.nodes(".term.nb").filter((n) => n.visible() && inside(n.renderedPosition()))[0].id(); })());
+  const where = () => p.evaluate((i) => ({ at: cy.getElementById(i).position(), pan: JSON.stringify(cy.pan()), z: cy.zoom() }), moving);
+  const was = await where();
+  const [mx, my] = at(await p.evaluate((i) => cy.getElementById(i).renderedPosition(), moving));
+  await p.mouse.move(mx, my); await p.mouse.down(); await p.mouse.move(mx + 60, my + 40, { steps: 8 }); await p.mouse.up();
+  await p.waitForTimeout(300);
+  const now = await where();
+  check(width, "a term dragged with the mouse moves, and the map stays",
+        Math.abs((now.at.x - was.at.x) * was.z - 60) < 6 && Math.abs((now.at.y - was.at.y) * was.z - 40) < 6 && now.pan === was.pan,
+        `moved ${((now.at.x - was.at.x) * was.z).toFixed(0)}, ${((now.at.y - was.at.y) * was.z).toFixed(0)} px`);
+  check(width, "a drag is not a tap", (await p.textContent("#card h2")) === "Full factorial");
+
   check(width, "no script errors", errors.length === 0, errors.join(" | "));
   await context.close();
 }
@@ -301,6 +316,33 @@ async function fingerScrolls(browser) {
   await touch("touchEnd", []);
   await p.waitForTimeout(600);
   check(390, "spreading two fingers zooms in", (await view()).zoom > moved.zoom * 1.5);
+  // A finger that moves at once scrolls the page past a term; held still first, it drags the term instead.
+  await p.evaluate(() => { window.scrollTo(0, 0); location.hash = "full-factorial"; }); await p.waitForTimeout(800);
+  const term = await p.evaluate(() => (() => { const inside = (q) => q.x > 60 && q.x < cy.width() - 60 && q.y > 60 && q.y < cy.height() - 60;
+    return cy.nodes(".term.nb").filter((n) => n.visible() && inside(n.renderedPosition()))[0].id(); })());
+  const spot = async () => { const b = await (await p.$("#cy")).boundingBox();
+    const r = await p.evaluate((i) => cy.getElementById(i).renderedPosition(), term); return [b.x + r.x, b.y + r.y]; };
+  const place = () => p.evaluate((i) => ({ at: cy.getElementById(i).position(), z: cy.zoom(), scrolled: scrollY,
+    title: document.querySelector("#card h2").textContent }), term);
+  const first = await place();
+  let [tx, ty] = await spot();
+  await touch("touchStart", [{ x: tx, y: ty, id: 0 }]);
+  for (let k = 1; k <= 10; k++) await touch("touchMove", [{ x: tx, y: ty - 15 * k, id: 0 }]);
+  await touch("touchEnd", []); await p.waitForTimeout(800);
+  const swiped = await place();
+  check(390, "a quick swipe on a term scrolls the page and leaves the term",
+        swiped.scrolled > first.scrolled + 50 && swiped.at.x === first.at.x && swiped.at.y === first.at.y);
+  await p.evaluate(() => window.scrollTo(0, 0)); await p.waitForTimeout(300);
+  [tx, ty] = await spot();
+  await touch("touchStart", [{ x: tx, y: ty, id: 0 }]); await p.waitForTimeout(700);
+  for (let k = 1; k <= 6; k++) await touch("touchMove", [{ x: tx + 10 * k, y: ty, id: 0 }]);
+  const told = await p.textContent(".map-hint, .hint");
+  await touch("touchEnd", []); await p.waitForTimeout(600);
+  const dragged = await place();
+  check(390, "a term held still, then dragged, follows the finger and the page stays",
+        Math.abs((dragged.at.x - first.at.x) * first.z - 60) < 9 && dragged.scrolled === 0 && dragged.title === first.title,
+        `moved ${((dragged.at.x - first.at.x) * first.z).toFixed(0)} px, scrolled ${dragged.scrolled}`);
+  check(390, "the hint says the held term can be dragged", told === "Drag to move this term", told);
   check(390, "no console errors from touch", errors.length === 0, errors.join(" | "));
   await context.close();
 }
