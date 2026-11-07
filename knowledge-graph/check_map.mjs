@@ -160,9 +160,15 @@ async function run(browser, width, height) {
   check(width, "labels grow as you zoom in", fonts.every((f, i) => i === 0 || f > fonts[i - 1] || f >= 19),
         fonts.map((f) => f.toFixed(1)).join(" -> "));
 
-  // A tap on a term opens it and lights up its links.
-  const term = await p.evaluate(() => cy.nodes(".term").filter((n) => n.visible() && n.renderedPosition().x > 40
-    && n.renderedPosition().x < cy.width() - 40 && n.renderedPosition().y > 40 && n.renderedPosition().y < cy.height() - 40)[0].id());
+  // A tap on a term opens it and lights up its links. Zoomed this deep, the view may hold no term: bring the nearest to its middle.
+  const term = await p.evaluate(() => {
+    const mid = { x: cy.width() / 2, y: cy.height() / 2 };
+    const d = (n) => Math.hypot(n.renderedPosition().x - mid.x, n.renderedPosition().y - mid.y);
+    const near = cy.nodes(".term").filter((n) => n.visible()).sort((a, b) => d(a) - d(b))[0];
+    cy.center(near);
+    return near.id();
+  });
+  await p.waitForTimeout(300);
   const [ux, uy] = at(await p.evaluate((i) => cy.getElementById(i).renderedPosition(), term));
   await p.mouse.click(ux, uy); await p.waitForTimeout(700);
   const lit = await p.evaluate((i) => ({ hl: cy.edges(".link.hl").length, degree: cy.getElementById(i).connectedEdges(".link").length,
@@ -199,6 +205,26 @@ async function run(browser, width, height) {
   const counted = await p.evaluate(() => DATA.clusters.every((c) => cy.getElementById(c.id).data("olabel") === `${c.short}\n[${c.size}]`
     && (c.subs || []).every((s) => cy.getElementById(`${s.id}-name`).data("label") === `${s.name}\n[${s.size}]`)));
   check(width, "topics and sub-topics show their number of terms", counted);
+
+  // The link-label switch: beside the search, off at first; on, it labels the selected term's drawn links, and is kept.
+  const [find, flip] = await Promise.all([".search input", ".switch"].map((s) => p.locator(s).boundingBox()));
+  check(width, "the link-label switch sits right of the search", flip.x >= find.x + find.width
+    && flip.y < find.y + find.height && find.y < flip.y + flip.height);
+  const labelled = () => p.evaluate(() => cy.edges(".link").filter((e) => e.visible() && e.style("label"))
+    .map((e) => e.hasClass("hl") && e.style("label") === e.data("verb") && e.style("target-arrow-shape") === "triangle"));
+  await p.evaluate(() => { location.hash = "full-factorial"; }); await p.waitForTimeout(700);
+  check(width, "link labels start off", !(await p.isChecked("#verbs")) && (await labelled()).length === 0);
+  await p.click(".switch"); await p.waitForTimeout(300);
+  const marked = await labelled(), drawn = await p.evaluate(() => cy.edges(".link.hl").filter((e) => e.visible()).length);
+  check(width, "on, the selected term's links read their verbs", marked.length === drawn && drawn > 0 && marked.every(Boolean),
+        `${marked.filter(Boolean).length} of ${drawn}`);
+  await open();
+  check(width, "link labels are remembered", await p.isChecked("#verbs"));
+  await p.click(".switch");
+
+  // The deepest zoom sets the closest terms far apart.
+  check(width, "the deepest zoom sets the closest terms at least 360 px apart",
+        (await p.evaluate(() => 62 * cy.maxZoom())) >= 360);
 
   // The colour mode: three presses go through light, dark and back to the system's (dark here); the map
   // redraws in the page's colours, and a chosen mode is kept.
