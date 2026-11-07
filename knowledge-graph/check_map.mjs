@@ -214,11 +214,11 @@ async function run(browser, width, height) {
   check(width, "term names start on", await p.isChecked("#labels"));
   check(width, "zoom and fit stay below the map",
         (await p.locator(".controls button").evaluateAll((bs) => bs.map((b) => b.id))).join(" ") === "zin zout home");
-  // ... each label solid and in the term names' colour, whatever the opacity of the line it sits on.
-  const labelled = () => p.evaluate(() => { const ink = cy.nodes(".term.lab")[0].style("color");
+  // ... each label solid whatever the opacity of its line, and set apart from the term names: italic, in the accent colour.
+  const labelled = () => p.evaluate(() => { const ink = cy.edges(".link.hl")[0].style("line-color");
     return cy.edges(".link").filter((e) => e.visible() && e.style("label"))
       .map((e) => e.hasClass("hl") && e.style("label") === e.data("verb") && e.style("target-arrow-shape") === "triangle"
-        && e.style("opacity") === "1" && e.style("color") === ink); });
+        && e.style("opacity") === "1" && e.style("color") === ink && e.style("font-style") === "italic"); });
   await p.evaluate(() => { location.hash = "full-factorial"; }); await p.waitForTimeout(700);
   check(width, "link labels start off", !(await p.isChecked("#verbs")) && (await labelled()).length === 0);
   await p.click(".switch.verbs"); await p.waitForTimeout(300);
