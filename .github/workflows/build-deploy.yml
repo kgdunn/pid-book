@@ -70,16 +70,49 @@ jobs:
           PID_BOOK_GC_CODE: ${{ vars.GOATCOUNTER_CODE || 'learnche-pid' }}
         run: uv run make html
 
+      # TeX Live is about 800 MB of packages (669 MB of them texlive-fonts-extra) from the runner's
+      # Ubuntu mirror, which can crawl: on 2026-11-06 two builds hit the 45-minute limit while
+      # downloading them. apt keeps the package files it fetches in an archive directory, so that
+      # directory is kept in the Actions cache: a later build installs from it and downloads only
+      # what is missing or newer. The cache is saved again only when its files change (a TeX Live
+      # update), named by their list, and files no longer in the archive are pruned first.
+      - name: Name the TeX Live cache after the runner's image
+        id: texlive-key
+        run: echo "prefix=texlive-debs-${ImageOS:-unknown}-" >> "$GITHUB_OUTPUT"
+
+      - name: Restore the TeX Live packages
+        id: texlive-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/texlive-debs
+          key: ${{ steps.texlive-key.outputs.prefix }}
+          restore-keys: ${{ steps.texlive-key.outputs.prefix }}
+
       - name: Install TeX Live
+        id: texlive
         run: |
+          mkdir -p ~/texlive-debs/partial
+          apt_cache=(-o Dir::Cache::Archives="$HOME/texlive-debs" -o APT::Keep-Downloaded-Packages=true)
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
+          sudo apt-get install -y --no-install-recommends "${apt_cache[@]}" \
             texlive-latex-recommended \
             texlive-latex-extra \
             texlive-fonts-recommended \
             texlive-fonts-extra \
             texlive-xetex \
             latexmk
+          sudo apt-get autoclean "${apt_cache[@]}"
+          sudo chown -R "$USER" ~/texlive-debs
+          echo "files=$(ls ~/texlive-debs/*.deb | xargs -n1 basename | sha256sum | cut -c1-16)" >> "$GITHUB_OUTPUT"
+
+      - name: Save the TeX Live packages
+        if: >-
+          steps.texlive-restore.outputs.cache-matched-key !=
+          format('{0}{1}', steps.texlive-key.outputs.prefix, steps.texlive.outputs.files)
+        uses: actions/cache/save@v4
+        with:
+          path: ~/texlive-debs
+          key: ${{ steps.texlive-key.outputs.prefix }}${{ steps.texlive.outputs.files }}
 
       - name: Build PDF
         # Sidestep the xdg-open step at the end of the `latexpdf` target,
