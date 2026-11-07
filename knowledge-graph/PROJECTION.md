@@ -3,7 +3,9 @@
 `project_text.py candidates` has read a text that is not this book and listed, in
 `projections/NAME/candidates.json`, the places where it meets the graph. Your job is to read each
 candidate and say what the text actually says about it. The graph is `graph.yaml`: each term has a
-`definition`, and each link reads as a sentence, `source VERB target`.
+`definition`, and each link reads as a sentence, `source VERB target`. `projections/graph-terms.txt`
+lists every term on one line (id, name, other names, definition): check it before calling anything
+new or an alias.
 
 The text is usually someone else's copyright. Quote it only as a short citation, at most 25 words,
 copied exactly; never paraphrase it into the graph, and never copy more than you need.
@@ -41,7 +43,9 @@ copied exactly; never paraphrase it into the graph, and never copy more than you
 ```
 
 - `kind`: `definition`, `link`, `pair` or `unknown`; `item`: the term id, the link, the pair, or
-  the phrase, as in `candidates.json`.
+  the phrase, as in `candidates.json`. For `new_term` and `alias`, name the idea as a singular,
+  lowercase noun phrase ("region of interest"), so that the same idea found in two texts is one item;
+  a new term may come from any sentence of the text, not only from `unknown[]`.
 - `quote`: copied exactly from the sentence you judged (spacing aside); `project_text.py verify`
   drops any verdict whose quote is not in the text, word for word.
 - `note`: why, in one sentence. For `missing_link`, start it with the link, `[a, VERB, b]`. For

@@ -12,6 +12,8 @@ verify      Reads reviews.json, the reviewers' verdicts on those candidates (PRO
             dropped and listed.
 report      Writes report.md from the verified verdicts: the links the text supports, the places it
             disagrees with the graph, and the few terms that are truly new.
+unify       Merges the verified verdicts of several projections into projections/review.md: each item
+            once, with every place that supports it, for one review.
 
 Run, from this folder:
   pdftotext book.pdf projections/NAME/text.txt
@@ -152,6 +154,10 @@ def candidates(folder: Path, pages: str | None) -> None:
         "unknown": unknown_phrases(sentences),
     }
     (folder / "candidates.json").write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
+    # Every term in one line each, for reviewers who judge an alias or a new term against the whole graph.
+    index = [f"{n['id']} | {n['name']} | {', '.join(n.get('aliases') or [])} | {n['definition']}" for n in graph["nodes"]]
+    (folder.parent / "graph-terms.txt").write_text("id | name | other names | definition\n" + "\n".join(index) + "\n",
+                                                   encoding="utf-8")
     print(f"{len(sentences)} sentences; {len(found)} of {len(named)} terms named; "
           f"{len(links)} of {len(graph['edges'])} links with sentences to read; "
           f"{len(unlinked)} unlinked pairs named together at least twice; {len(out['unknown'])} phrases to judge")
@@ -238,18 +244,48 @@ def report(folder: Path) -> None:
     print("wrote", folder / "report.md", "|", "; ".join(f"{t}: {len(b)}" for t, b in sections))
 
 
+def unify(folders: list[Path]) -> None:
+    """One list for a single review: every verified verdict of every projection, grouped by item, most cited first."""
+    groups: dict[tuple, list[dict]] = {}
+    for folder in folders:
+        for v in json.loads((folder / "verified.json").read_text(encoding="utf-8")):
+            item = v["item"] if v["kind"] != "unknown" else v["item"].lower()
+            key = (v["kind"], v["verdict"], json.dumps(item))
+            groups.setdefault(key, []).append({**v, "source": folder.name})
+    order = ["new_term", "differs", "contradicts", "missing_link", "alias", "supports"]
+    title = {"new_term": "New terms", "differs": "Definitions that differ", "contradicts": "Links contradicted",
+             "missing_link": "Links the graph is missing", "alias": "Other names for existing terms",
+             "supports": "Links supported"}
+    lines = [f"# One review: {len(folders)} projections, {sum(map(len, groups.values()))} verdicts", "",
+             "Each item once, with every place that supports it. Decide each: accept, reword, or reject.", ""]
+    for verdict in order:
+        items = sorted(((k, vs) for k, vs in groups.items() if k[1] == verdict), key=lambda kv: -len(kv[1]))
+        lines += [f"## {title[verdict]} ({len(items)})", ""]
+        for (_, _, item), vs in items:
+            lines.append(f"- [ ] **{', '.join(json.loads(item)) if item.startswith('[') else json.loads(item)}**"
+                         f" ({len(vs)} place{'s' if len(vs) > 1 else ''})")
+            for v in vs:
+                lines.append(f"  - {v['source']}, {v['page']}: {v.get('note', '')} *\"{v['quote']}\"*")
+        lines.append("")
+    out = folders[0].parent / "review.md"
+    out.write_text("\n".join(lines), encoding="utf-8")
+    print("wrote", out, "|", "; ".join(f"{title[o]}: {sum(1 for k in groups if k[1] == o)}" for o in order))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    parser.add_argument("step", choices=["candidates", "verify", "report"])
-    parser.add_argument("folder", type=Path, help="a folder of projections/ holding text.txt")
+    parser.add_argument("step", choices=["candidates", "verify", "report", "unify"])
+    parser.add_argument("folder", type=Path, nargs="+", help="a folder of projections/ holding text.txt (unify: several)")
     parser.add_argument("--pages", help="the PDF pages to read, for example 18-45 (default: all)")
     args = parser.parse_args()
-    if args.step == "candidates":
-        candidates(args.folder, args.pages)
+    if args.step == "unify":
+        unify(args.folder)
+    elif args.step == "candidates":
+        candidates(args.folder[0], args.pages)
     elif args.step == "verify":
-        verify(args.folder)
+        verify(args.folder[0])
     else:
-        report(args.folder)
+        report(args.folder[0])
 
 
 if __name__ == "__main__":
