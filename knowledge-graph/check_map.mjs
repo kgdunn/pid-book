@@ -216,8 +216,8 @@ async function run(browser, width, height) {
         (await p.locator(".controls button").evaluateAll((bs) => bs.map((b) => b.id))).join(" ") === "zin zout home");
   // ... each label solid whatever the opacity of its line, and set apart from the term names: italic, in the accent colour.
   const labelled = () => p.evaluate(() => { const ink = cy.edges(".link.hl")[0].style("line-color");
-    return cy.edges(".link").filter((e) => e.visible() && e.style("label"))
-      .map((e) => e.hasClass("hl") && e.style("label") === e.data("verb") && e.style("target-arrow-shape") === "triangle"
+    return cy.edges(".link").filter((e) => e.visible() && e.style("source-label"))
+      .map((e) => e.hasClass("hl") && e.style("source-label") === e.data("verb") && e.style("target-arrow-shape") === "triangle"
         && e.style("opacity") === "1" && e.style("color") === ink && e.style("font-style") === "italic"); });
   await p.evaluate(() => { location.hash = "full-factorial"; }); await p.waitForTimeout(700);
   check(width, "link labels start off", !(await p.isChecked("#verbs")) && (await labelled()).length === 0);
@@ -249,6 +249,33 @@ async function run(browser, width, height) {
   check(width, "the map redraws in the chosen mode", modes[1].text !== modes[2].text && modes[2].text === modes[3].text);
   await p.click("#mode"); await open();
   check(width, "the colour mode is kept", (await look()).theme === "light");
+
+  // With link labels on, a label whose middle is taken slides along its line; every label stays clear of both terms.
+  await p.evaluate(() => { location.hash = "full-factorial"; }); await p.waitForTimeout(700);
+  if (!(await p.isChecked("#verbs"))) await p.click(".switch.verbs");
+  await p.evaluate(() => cy.zoom({ level: cy.zoom() * 0.7, renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } }));
+  await p.waitForTimeout(400);
+  const spots = await p.evaluate(() => cy.edges(".link").filter((e) => e.visible() && !e.hasClass("dim") && !e.hasClass("mute"))
+    .map((e) => { const s = e.source().renderedPosition(), t = e.target().renderedPosition();
+      return (e.data("at") * cy.zoom() + e.source().renderedWidth() / 2) / Math.hypot(t.x - s.x, t.y - s.y); }));
+  check(width, "link labels sit on their lines, one moved off a taken middle",
+        spots.length > 0 && spots.every((k) => k > 0.15 && k < 0.85) && spots.some((k) => Math.abs(k - 0.5) > 0.05),
+        spots.map((k) => k.toFixed(2)).join(" "));
+  await p.click(".switch.verbs");
+
+  // The mouse on a link reads it as a sentence below the map; moved off, the strip says what it said before.
+  await p.evaluate(() => { location.hash = ""; location.hash = "full-factorial"; }); await p.waitForTimeout(700);
+  const stripText = await p.textContent("#striptext"), link = await p.evaluate(() => (() => { const name = (n) => n.data("label"), box = cy.container().getBoundingClientRect();
+    const mid = (x) => { const s = x.source().renderedPosition(), t = x.target().renderedPosition();
+      return { x: (s.x + t.x) / 2, y: (s.y + t.y) / 2, len: Math.hypot(t.x - s.x, t.y - s.y) }; };
+    const inView = (m) => m.x > 20 && m.x < cy.width() - 20 && m.y > 20 && m.y < cy.height() - 20;
+    const e = cy.edges(".link.hl").filter((x) => x.visible() && inView(mid(x))).max((x) => mid(x).len).ele, m = mid(e);
+    return { said: `${name(e.source())} ${e.data("verb")} ${name(e.target())}`, x: box.left + m.x, y: box.top + m.y }; })());
+  await p.mouse.move(link.x, link.y); await p.waitForTimeout(200);
+  check(width, "the mouse on a link reads it below the map", (await p.textContent("#striptext")) === link.said, link.said);
+  const cyBox = await (await p.$("#cy")).boundingBox();
+  await p.mouse.move(cyBox.x + 4, cyBox.y + 4); await p.waitForTimeout(200);
+  check(width, "and moved off, the strip is back", (await p.textContent("#striptext")) === stripText);
 
   // A term dragged with the mouse moves, to uncover a link label under it; the map stays, and it is not a tap.
   await p.evaluate(() => { location.hash = "full-factorial"; }); await p.waitForTimeout(700);
@@ -343,6 +370,17 @@ async function fingerScrolls(browser) {
         Math.abs((dragged.at.x - first.at.x) * first.z - 60) < 9 && dragged.scrolled === 0 && dragged.title === first.title,
         `moved ${((dragged.at.x - first.at.x) * first.z).toFixed(0)} px, scrolled ${dragged.scrolled}`);
   check(390, "the hint says the held term can be dragged", told === "Drag to move this term", told);
+  // A tap on one of the selected term's links reads it below the map, and keeps the term selected.
+  await p.evaluate(() => { window.scrollTo(0, 0); }); await p.waitForTimeout(300);
+  const tapped = await p.evaluate(() => (() => { const name = (n) => n.data("label"), box = cy.container().getBoundingClientRect();
+    const mid = (x) => { const s = x.source().renderedPosition(), t = x.target().renderedPosition();
+      return { x: (s.x + t.x) / 2, y: (s.y + t.y) / 2, len: Math.hypot(t.x - s.x, t.y - s.y) }; };
+    const inView = (m) => m.x > 20 && m.x < cy.width() - 20 && m.y > 20 && m.y < cy.height() - 20;
+    const e = cy.edges(".link.hl").filter((x) => x.visible() && inView(mid(x))).max((x) => mid(x).len).ele, m = mid(e);
+    return { said: `${name(e.source())} ${e.data("verb")} ${name(e.target())}`, x: box.left + m.x, y: box.top + m.y }; })());
+  await touch("touchStart", [{ x: tapped.x, y: tapped.y, id: 0 }]); await touch("touchEnd", []); await p.waitForTimeout(400);
+  check(390, "a tap on a link of the selected term reads it, and keeps the term",
+        (await p.textContent("#striptext")) === tapped.said && (await p.textContent("#card h2")) === "Full factorial", tapped.said);
   check(390, "no console errors from touch", errors.length === 0, errors.join(" | "));
   await context.close();
 }
