@@ -214,14 +214,22 @@ async function run(browser, width, height) {
   check(width, "term names start on", await p.isChecked("#labels"));
   check(width, "zoom and fit stay below the map",
         (await p.locator(".controls button").evaluateAll((bs) => bs.map((b) => b.id))).join(" ") === "zin zout home");
-  const labelled = () => p.evaluate(() => cy.edges(".link").filter((e) => e.visible() && e.style("label"))
-    .map((e) => e.hasClass("hl") && e.style("label") === e.data("verb") && e.style("target-arrow-shape") === "triangle"));
+  // ... each label solid and in the term names' colour, whatever the opacity of the line it sits on.
+  const labelled = () => p.evaluate(() => { const ink = cy.nodes(".term.lab")[0].style("color");
+    return cy.edges(".link").filter((e) => e.visible() && e.style("label"))
+      .map((e) => e.hasClass("hl") && e.style("label") === e.data("verb") && e.style("target-arrow-shape") === "triangle"
+        && e.style("opacity") === "1" && e.style("color") === ink); });
   await p.evaluate(() => { location.hash = "full-factorial"; }); await p.waitForTimeout(700);
   check(width, "link labels start off", !(await p.isChecked("#verbs")) && (await labelled()).length === 0);
   await p.click(".switch.verbs"); await p.waitForTimeout(300);
-  const marked = await labelled(), drawn = await p.evaluate(() => cy.edges(".link.hl").filter((e) => e.visible()).length);
-  check(width, "on, the selected term's links read their verbs", marked.length === drawn && drawn > 0 && marked.every(Boolean),
-        `${marked.filter(Boolean).length} of ${drawn}`);
+  // A label that would land on a term or another label is held back (class mute) until zooming in makes room.
+  const marked = await labelled();
+  const [drawn, held] = await p.evaluate(() => { const lit = cy.edges(".link.hl").filter((e) => e.visible());
+    return [lit.length, lit.filter((e) => e.hasClass("mute")).length]; });
+  check(width, "on, the selected term's links read their verbs, or are held back",
+        marked.length > 0 && marked.length + held === drawn && marked.every(Boolean), `${marked.filter(Boolean).length} + ${held} of ${drawn}`);
+  await p.click("#zin"); await p.waitForTimeout(500);
+  check(width, "zooming in makes room for more link labels", (await labelled()).length >= marked.length);
   await open();
   check(width, "link labels are remembered", await p.isChecked("#verbs"));
   await p.click(".switch.verbs");
