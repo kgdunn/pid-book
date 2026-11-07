@@ -32,6 +32,7 @@ h1 { font: 600 1.6rem/1.15 var(--display); margin: 0; text-wrap: balance; }
 .sub { color: var(--muted); margin: 0; font-size: .9rem; }
 /* The search, narrower, with the link-label switch in the space beside it. */
 .find { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 20px; }
+.view { display: flex; flex-wrap: wrap; gap: 0 18px; }
 .search { position: relative; flex: 1 1 200px; max-width: 420px; }
 .switch { position: relative; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; cursor: pointer;
   white-space: nowrap; font-size: .92rem; }
@@ -60,8 +61,6 @@ h1 { font: 600 1.6rem/1.15 var(--display); margin: 0; text-wrap: balance; }
 .controls button { width: 40px; height: 40px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel); color: var(--fg);
   font: 500 1.15rem var(--body); cursor: pointer; display: grid; place-items: center; }
 .controls button svg { width: 18px; height: 18px; }
-.controls button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
-.controls #labels { font: 600 .95rem var(--display); }
 .strip { flex: 1; display: flex; align-items: center; gap: 10px; background: var(--panel); border: 1px solid var(--line);
   border-radius: 6px; padding: 6px 8px 6px 10px; font-size: .86rem; min-width: 0; }
 .strip span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
@@ -148,7 +147,10 @@ footer { color: var(--muted); font-size: .8rem; }
       <input id="q" type="search" autocomplete="off" placeholder="aliasing, CCD, foldover..." aria-controls="results">
       <div class="results" id="results" role="listbox" hidden></div>
     </div>
-    <label class="switch"><input type="checkbox" id="verbs"><span class="track" aria-hidden="true"></span>Link labels</label>
+    <div class="view" role="group" aria-label="What the map shows">
+      <label class="switch names"><input type="checkbox" id="labels" checked><span class="track" aria-hidden="true"></span>Term names</label>
+      <label class="switch verbs"><input type="checkbox" id="verbs"><span class="track" aria-hidden="true"></span>Link labels</label>
+    </div>
   </div>
 
   <div class="mapbox">
@@ -157,7 +159,6 @@ footer { color: var(--muted); font-size: .8rem; }
   <div class="mapbar">
     <div class="strip" id="strip"><span id="striptext"></span><button type="button" id="details">Details</button></div>
     <div class="controls">
-      <button type="button" id="labels" aria-pressed="true" aria-label="Show term names" title="Show term names">Aa</button>
       <button type="button" id="zin" aria-label="Zoom in">+</button>
       <button type="button" id="zout" aria-label="Zoom out">&minus;</button>
       <button type="button" id="home" aria-label="Show all topics">
@@ -599,14 +600,13 @@ document.getElementById("legend").addEventListener("click", ev => {
   document.querySelector(`#legend button[data-fam="${k}"]`).focus();   // keep the keyboard where it was
   cy.batch(applyHidden); refresh(true);
 });
-const labelsButton = document.getElementById("labels");
-const showLabelState = () => labelsButton.setAttribute("aria-pressed", String(labelsOn));
-labelsButton.addEventListener("click", () => {
-  labelsOn = !labelsOn;
+const labelsSwitch = document.getElementById("labels");
+labelsSwitch.checked = labelsOn;
+labelsSwitch.addEventListener("change", () => {
+  labelsOn = labelsSwitch.checked;
   try { localStorage.setItem("edg-labels", labelsOn ? "on" : "off"); } catch {}
-  showLabelState(); refresh(true);
+  refresh(true);
 });
-showLabelState();
 const verbsSwitch = document.getElementById("verbs");
 verbsSwitch.checked = verbsOn;
 verbsSwitch.addEventListener("change", () => {

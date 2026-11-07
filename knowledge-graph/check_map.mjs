@@ -179,11 +179,11 @@ async function run(browser, width, height) {
   check(width, "its card quotes the book, not its source file", (await p.textContent("#card blockquote")).trim().length > 0 && !card.includes(".rst"));
 
   // The term-name switch: off names only the selected term, and is remembered.
-  await p.click("#labels"); await p.waitForTimeout(300);
+  await p.click(".switch.names"); await p.waitForTimeout(300);
   check(width, "names off: only the selected term is named", (await state(p)).labels === 1);
   await open();
-  check(width, "names off is remembered", (await p.getAttribute("#labels", "aria-pressed")) === "false");
-  await p.click("#labels");
+  check(width, "names off is remembered", !(await p.isChecked("#labels")));
+  await p.click(".switch.names");
 
   // The kind switches: hiding concepts removes them and their links, keeps a selected one, is remembered.
   await p.click('.chip[data-id="c0"]'); await p.waitForTimeout(700);
@@ -207,20 +207,24 @@ async function run(browser, width, height) {
   check(width, "topics and sub-topics show their number of terms", counted);
 
   // The link-label switch: beside the search, off at first; on, it labels the selected term's drawn links, and is kept.
-  const [find, flip] = await Promise.all([".search input", ".switch"].map((s) => p.locator(s).boundingBox()));
-  check(width, "the link-label switch sits right of the search", flip.x >= find.x + find.width
-    && flip.y < find.y + find.height && find.y < flip.y + flip.height);
+  const [find, names, flip] = await Promise.all([".search input", ".switch.names", ".switch.verbs"].map((s) => p.locator(s).boundingBox()));
+  check(width, "term names, then link labels, on one row", Math.abs(names.y - flip.y) < 2 && names.x + names.width <= flip.x);
+  check(width, width > 600 ? "the switches sit right of the search" : "on a phone, the switches sit below the search",
+        width > 600 ? names.x >= find.x + find.width && names.y < find.y + find.height : names.y >= find.y + find.height);
+  check(width, "term names start on", await p.isChecked("#labels"));
+  check(width, "zoom and fit stay below the map",
+        (await p.locator(".controls button").evaluateAll((bs) => bs.map((b) => b.id))).join(" ") === "zin zout home");
   const labelled = () => p.evaluate(() => cy.edges(".link").filter((e) => e.visible() && e.style("label"))
     .map((e) => e.hasClass("hl") && e.style("label") === e.data("verb") && e.style("target-arrow-shape") === "triangle"));
   await p.evaluate(() => { location.hash = "full-factorial"; }); await p.waitForTimeout(700);
   check(width, "link labels start off", !(await p.isChecked("#verbs")) && (await labelled()).length === 0);
-  await p.click(".switch"); await p.waitForTimeout(300);
+  await p.click(".switch.verbs"); await p.waitForTimeout(300);
   const marked = await labelled(), drawn = await p.evaluate(() => cy.edges(".link.hl").filter((e) => e.visible()).length);
   check(width, "on, the selected term's links read their verbs", marked.length === drawn && drawn > 0 && marked.every(Boolean),
         `${marked.filter(Boolean).length} of ${drawn}`);
   await open();
   check(width, "link labels are remembered", await p.isChecked("#verbs"));
-  await p.click(".switch");
+  await p.click(".switch.verbs");
 
   // The deepest zoom sets the closest terms far apart.
   check(width, "the deepest zoom sets the closest terms at least 360 px apart",
