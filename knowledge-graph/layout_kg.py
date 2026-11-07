@@ -1,8 +1,8 @@
 """Cluster the DOE graph with Louvain and fix every node's position, for a zoomable map.
 
 Reads doe_kg.json, writes doe_kg_map.json: each node gains a cluster, x, y and degree, plus the
-clusters (name, centre, radius) and the number of links between each pair of clusters. Then
-writes experimental-design-graph.html: template.html with that data inlined.
+clusters (name, centre, radius) and the number of links between each pair of clusters. That is the
+data factori.al's map draws (process-improve's web/map/graph.json); the map's page lives there only.
 Run with: uv run --no-project --with networkx==3.4.2 --with numpy==2.5.3 python -I layout_kg.py
 (--no-project keeps uv out of the book's own environment, which has neither package.)
 """
@@ -365,8 +365,6 @@ def main() -> None:
     }
     payload = json.dumps(data, separators=(",", ":"))
     (HERE / "doe_kg_map.json").write_text(payload, encoding="utf-8")
-    page = (HERE / "template.html").read_text(encoding="utf-8").replace("__DATA__", payload)
-    (HERE / "experimental-design-graph.html").write_text(page, encoding="utf-8")
 
     q = nx.community.modularity(g, communities, weight="weight")
     print(f"{len(clusters)} clusters, modularity {q:.3f}")

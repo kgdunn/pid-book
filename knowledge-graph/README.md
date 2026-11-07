@@ -15,9 +15,12 @@ experiments only; they are in the git history and in `audit/result_F.json` and `
 words on that line it comes from. The build checks every quote against the book's current text and
 stops if one no longer matches, so the graph cannot drift from the book unnoticed.
 
-Open `experimental-design-graph.html` in a browser: zoomed out it shows the topics; zooming in
-opens the larger ones into named sub-topics, then names their terms; tapping a term shows its
-definition, the book's own line, and its links.
+The map is drawn by the factorial app, at <https://factori.al/map/>: zoomed out it shows the
+topics; zooming in opens the larger ones into named sub-topics, then names their terms; tapping a
+term shows its definition, the book's own line, and its links. This folder holds the data; the
+map's page (`web/map/index.html` and `web/map.js` in
+[process-improve](https://github.com/kgdunn/process-improve/tree/main/web)) is its only viewer, so a
+change to how the map looks is made there, once.
 
 ## Files
 
@@ -25,14 +28,11 @@ definition, the book's own line, and its links.
 |---|---|
 | `graph.yaml` | **The source.** Terms (with their evidence) and links, one per line: `[source, VERB, target, evidence]`. |
 | `build_kg.py` | Checks `graph.yaml` against the book; writes the generated files below. |
-| `layout_kg.py` | Consensus Louvain topics and fixed positions for the map; writes the page. |
-| `template.html` | The page, without its data. |
+| `layout_kg.py` | Consensus Louvain topics and fixed positions for the map; writes `doe_kg_map.json`. |
 | `check_levels.py` | How stable the topics are across Louvain seeds, and which get a second level, and why. |
-| `check_map.mjs` | Drives the map in headless Chromium at phone and tablet widths; fails on any misbehaviour. |
 | `check_anchors.py` | Checks every book link's `#anchor` on learnche.org (needs the network). |
-| `doe_kg.json`, `doe_kg_map.json` | Generated: the graph, then with topics and positions. |
+| `doe_kg.json`, `doe_kg_map.json` | Generated: the graph, then with topics and positions (the data the map draws). |
 | `doe_kg.cypher` | Generated: the graph as Cypher, for an empty Neo4j database. |
-| `experimental-design-graph.html` | Generated: the page with its data inlined. |
 | `audit/` | The November 2026 accuracy review, and the one-off scripts that reshaped the graph. |
 
 ## Rebuild
@@ -52,9 +52,24 @@ topic's layout on a sorted graph.
 Then check the result:
 
 ```bash
-node check_map.mjs                       # the map, in headless Chromium (needs Playwright)
 python3 check_anchors.py                 # the book links on learnche.org
 uv run --no-project --with networkx==3.4.2 --with numpy==2.5.3 python -I check_levels.py doe_kg_map.json
+```
+
+## Publish to the map
+
+Once a change here is merged, copy `doe_kg_map.json` into process-improve as `web/map/graph.json`,
+stamped with the pid-book commit it came from (the app's tests require the stamp), then open a
+pull request there; its tests drive the map in Chromium on a phone and a desktop:
+
+```bash
+python3 -c 'import json, subprocess, sys
+data = json.load(open("doe_kg_map.json"))
+commit = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+source = {"repository": "kgdunn/pid-book", "path": "knowledge-graph/doe_kg_map.json", "commit": commit,
+          "note": "Built and checked against the book there (build_kg.py, layout_kg.py); copy it again to update."}
+json.dump({"source": source, **data}, open(sys.argv[1], "w"), separators=(",", ":"))' \
+  path/to/process-improve/web/map/graph.json
 ```
 
 ## When the book changes

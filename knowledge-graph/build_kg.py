@@ -35,7 +35,7 @@ CHAPTERS = ["data-visualization", "univariate-review", "process-monitoring", "le
             "design-analysis-experiments", "latent-variable-modelling", "product-development-product-improvement"]
 TYPES = {"Concept", "Method", "DesignType", "Property", "Criterion", "Plot", "Phase", "Guideline", "Diagnostic",
          "Example", "Question", "Reference"}
-# Each verb reads "source VERB target"; template.html says how each reads in both directions.
+# Each verb reads "source VERB target"; the map (process-improve's web/map.js, READ) says how each reads both ways.
 VERBS = {
     "IS_A", "PART_OF", "HAS_PROPERTY", "USES", "REQUIRES", "JUSTIFIES", "ESTIMATES", "MEASURES", "SHOWS",
     "LOCATES", "TESTS", "CAUSES", "ENABLES", "LIMITS", "PREVENTS", "KEEPS", "REMEDIED_BY", "INDICATES",
