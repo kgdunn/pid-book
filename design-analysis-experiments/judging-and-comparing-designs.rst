@@ -268,6 +268,18 @@ warning to keep for later: the raw criteria scale with the number of runs :math:
 cannot be used to compare designs of different size. We undo that scaling below. For the same
 reason, the base design cannot be compared with either five-run design.
 
+The raw criteria scale with the spread of the runs as well as with their number. For the base
+design, multiplying every coded setting by :math:`c > 1` multiplies the linear column of
+:math:`\mathbf{X}` by :math:`c` and the squared column by :math:`c^2`, so :math:`D` grows by a
+factor of :math:`(c \cdot c^2)^2 = c^6`, :math:`A` falls and :math:`E` rises, while the design
+keeps its shape. This
+:index:`scale sensitivity <pair: scale sensitivity of optimality criteria; experiments>` means two
+designs can be compared only when they cover the same region, in the same coded units, as the two
+five-run designs here do. Recoding both designs in the same way leaves the ratio of their :math:`D`
+values unchanged, for the reason shown for :ref:`categorical codings <DOE-categorical-factors>`, and
+leaves :math:`G` and :math:`I` unchanged over the recoded region, but it can reorder the two designs
+on :math:`A` and :math:`E`.
+
 The fair comparison is between the two five-run designs, and here the criteria start to help make a
 decision. Adding the two extreme points maximises :math:`D` (16 versus 12 when adding two replicate
 centre points): spreading runs to the boundary gives more joint information on the coefficient
@@ -644,6 +656,15 @@ effects. That is what *minimally aliased* names. The price is carried by the qua
 whose rows are not zero. The :ref:`omnibus comparison <DOE-omnibus-comparison>` reports the largest
 absolute entry of :math:`\mathbf{A}` for each design, so this bias sits in the same table as the
 variance it trades against.
+
+The shift in the coefficients carries into every prediction. At a point where the kept and omitted
+terms take the values :math:`\mathbf{x}_1` and :math:`\mathbf{x}_2`, the expected prediction
+misses the true response by the :index:`bias error <pair: bias error; experiments>`
+:math:`(\mathbf{x}_1^T\mathbf{A} - \mathbf{x}_2^T)\,\boldsymbol{\beta}_2`. The mean squared error
+of the prediction is its variance,
+:math:`\sigma^2\,\mathbf{x}_1^T(\mathbf{X}_1^T\mathbf{X}_1)^{-1}\mathbf{x}_1`, plus the square of
+this bias. Replicating every run of the design lowers the variance but leaves :math:`\mathbf{A}`,
+and so the bias error, unchanged.
 
 .. _DOE-statistical-power:
 

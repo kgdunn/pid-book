@@ -98,6 +98,15 @@ The :math:`ABC` contrast is the exception. By construction batch 1 is the four r
 
 Another way to view this problem is that the first batch of materials and the second batch of materials can be represented by a new variable, called :math:`D` with value of :math:`D_{-} =` batch 1 and :math:`D_{+} =` batch 2. We will show next that we must consider this new factor to be generated from the other three: **D = ABC**.
 
+Representing the batch by the single column **D = ABC** relies on an
+:index:`additive block effect <pair: additive block effect; experiments>`: the batch raises or lowers
+every response in its block by the same amount (:math:`g` in batch 1, :math:`h` in batch 2), whatever
+the settings of **A**, **B** and **C**, so the block does not interact with the factors. If the
+impurity in batch 2 also changed how strongly **A** acts, that change is an interaction of **A** with
+**D**, and since **AD = A** :math:`\times` **ABC = BC**, it is confounded with the **BC** interaction.
+A large **BC** estimate from this blocked design can then be the batch changing the effect of **A**,
+rather than an interaction between **B** and **C**.
+
 We will also address the case when there are more than two blocks in the next section on the :ref:`use of generators <DOE-generators>`. For example, what should we do if we have to run a :math:`2^3` factorial but with only enough material for 2 experiments at a time?
 
 

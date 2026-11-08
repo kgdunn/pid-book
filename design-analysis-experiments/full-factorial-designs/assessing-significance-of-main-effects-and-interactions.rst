@@ -129,6 +129,10 @@ Applying this to the :math:`2^4` example above, reusing the ``effects`` computed
 The pseudo standard error is :math:`\text{PSE} = 1.31`, so the margin of error is :math:`\text{ME} = 3.37`. Five effects exceed it, **A**, **C**, **D**, **AC** and **AD**, exactly the five the eye picked from the Pareto plot. The simultaneous margin of error is :math:`\text{SME} = 6.85`: **A**, **D**, **AC** and **AD** clear even that stricter bar, while **C** (:math:`|c_C| = 4.9`) sits between the two margins, significant individually but not once we allow for having scanned all fifteen effects.
 
 The :index:`half-normal plot <pair: half-normal plot; experiments>` shows the same judgement graphically, and is the plot JMP, Minitab and Stat-Ease draw for unreplicated designs. Order the effects by absolute value and plot them against the quantiles of the half-normal distribution at the plotting positions :math:`(i - 0.5)/m`. Noise effects fall along a straight line through the origin; the real effects break away to the upper right.
+A :index:`normal probability plot of effects <pair: normal probability plot of effects; experiments>`,
+which some software draws instead, plots the signed effects against normal quantiles. The real
+effects then leave the line of noise effects at both ends, positive ones at the upper right and
+negative ones at the lower left. The half-normal plot folds those two ends into one corner.
 
 .. code-block:: python
 
@@ -242,6 +246,14 @@ Refitting the model after removing nonsignificant effects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 After having established which effects are significant, we can exclude the nonsignificant effects and increase the degrees of freedom. (We do not have to recalculate the model parameters -- why?) The residuals will be nonzero now, so we can then estimate the noise standard deviation, :math:`S_E`, and apply all the tools from least squares modelling to assess the residuals. Plots of the residuals in experimental order, against fitted values, q-q plots and all the other assessment tools from earlier are used, as usual.
+
+A :ref:`fan shape <LS-non-constant-error-variance>` in the residuals against the fitted values,
+with the noise growing as the response grows, points to a
+:index:`response transformation <pair: response transformation; experiments>`:
+fitting the model to a function of the response, such as :math:`\log y`, instead of :math:`y`.
+When the noise standard deviation grows in proportion to the response, the log scale makes the
+noise variance nearly constant. If the factors also act by scaling the response, their effects
+multiply on the original scale and add on the log scale, so the model needs fewer interaction terms.
 
 As an example, consider a :math:`2^4` factorial (16 runs) where the response values in standard order were :math:`y = [71, 61, 90, 82, 68, 61, 87, 80, 61, 50, 89, 83, 59, 51, 85, 78]`. Assessing the 15 effects with a Pareto plot, or with :ref:`Lenth's method <DOE-lenth-method>`, identifies **A**, **B**, **D** and **BD** as the significant ones. Now, omitting the nonsignificant effects, there are only five parameters to estimate, including the intercept, so the noise variance is estimated as :math:`S_E^2 = \dfrac{39}{16-5} = 3.55`, with 11 degrees of freedom. The :math:`S_E(b_i)` value for all coefficients, except the intercept, is :math:`\sqrt{\dfrac{S_E^2}{16}} = 0.471`, and the critical :math:`t`-value at the 95% level is ``qt(0.975, df=11)`` = 2.2. So the confidence intervals can be calculated to confirm that these are indeed significant effects. The same yardstick, :math:`2.2 \times 0.471 = 1.04`, is also exceeded by one of the omitted effects, :math:`b_C = -1.125`.
 

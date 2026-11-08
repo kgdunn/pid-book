@@ -346,6 +346,89 @@ An :math:`F`-ratio near 3 there carries a :math:`p`-value of about 0.27, which g
 doubt the model. The test needs both replicated points (to get :math:`\text{SS}_\text{PE}`) and
 more distinct design points than parameters (to leave some :math:`\text{df}_\text{LOF}`).
 
+Splitting a sum of squares into parts, each with its own degrees of freedom, extends the
+:ref:`analysis of variance table <LS-ANOVA-table>` of the least squares chapter, which divided the
+total sum of squares into a regression row and a residual row. An
+:index:`analysis of variance <pair: analysis of variance; experiments>` of a designed experiment
+splits the residual row into lack of fit and pure error when some runs are replicated, and splits
+the regression row into one row per group of terms, such as the main effects, the interactions,
+the quadratic terms or the blocks. Each group's mean square, its sum of squares divided by its
+degrees of freedom, is compared with the residual mean square by an :math:`F` ratio, which shows
+whether that group explains more variation than noise would. In an orthogonal design, such as a
+full factorial, a group's sum of squares does not depend on which other groups are fitted, so the
+group rows add up to the regression row.
+
+Each :math:`F` ratio in such a table is an
+:index:`extra sum of squares test <pair: extra sum of squares test; experiments>`, which judges a
+group of terms at once rather than one coefficient at a time. It compares two models, one
+containing the other. The terms that the larger model adds lower the residual sum of squares, and
+the test asks whether they lower it by more than noise would:
+
+.. math::
+
+	F = \frac{\left(\text{SS}_\text{E,small} - \text{SS}_\text{E,large}\right) / q}
+	        {\text{SS}_\text{E,large} / \text{df}_\text{large}}
+
+on :math:`q` and :math:`\text{df}_\text{large}` degrees of freedom, where :math:`q` is the number of
+added terms and :math:`\text{df}_\text{large}` is the residual degrees of freedom of the larger model.
+
+The least squares chapter's :math:`F`-statistic, the regression mean square over the residual mean
+square, is this test with the intercept alone as the smaller model. The lack-of-fit test is this
+test with a larger model that gives each distinct factor combination its own mean, so that its
+residual sum of squares is :math:`\text{SS}_\text{PE}`. The same test checks whether both quadratic
+terms of a :ref:`central composite design <DOE_central_composite_designs>` are needed, or whether
+the several coefficients of an :ref:`interaction with a categorical factor
+<APPS_mixed_level_profile_case_study>` are all zero.
+
+.. _DOE-RSM-canonical-analysis:
+
+Classifying the flat point of a quadratic model, in any number of factors
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The point where a fitted quadratic model is flat is not necessarily an optimum. Setting every
+first derivative of the quadratic model to zero locates that point, which is called the model's
+:index:`stationary point <pair: stationary point; experiments>`.
+A stationary point can be a maximum, a minimum, or a *saddle point*, where the predicted response
+rises in some directions away from it and falls in others. Writing the model as
+:math:`\hat{y} = b_0 + \mathbf{x}^T\mathbf{b} + \mathbf{x}^T\mathbf{B}\mathbf{x}`, where
+:math:`\mathbf{b}` holds the linear coefficients and the symmetric matrix :math:`\mathbf{B}` holds
+each :math:`b_{ii}` on its diagonal and :math:`b_{ij}/2` in positions :math:`(i, j)` and
+:math:`(j, i)`, the stationary point is :math:`\mathbf{x}_s = -\frac{1}{2}\mathbf{B}^{-1}\mathbf{b}`.
+
+:index:`Canonical analysis <pair: canonical analysis; experiments>` of a quadratic model says
+which of these the stationary point is. It moves the origin to the stationary point and turns
+the factor axes onto the eigenvectors of :math:`\mathbf{B}`, so that every cross-product term
+drops out of the model:
+
+.. math::
+
+	\hat{y} = \hat{y}_s + \lambda_1 w_1^2 + \lambda_2 w_2^2 + \cdots + \lambda_k w_k^2
+
+Here :math:`\hat{y}_s` is the predicted response at the stationary point, :math:`w_i` is the
+distance from it along the :math:`i`-th new axis, and :math:`\lambda_i` is the matching eigenvalue
+of :math:`\mathbf{B}`. Every :math:`\lambda_i` negative means a maximum, every one positive a
+minimum, and mixed signs a saddle point. An eigenvalue much smaller in size than the others marks
+a *ridge*: a direction along which the predicted response hardly changes. For the bioreactor model
+of the :ref:`response surface example <DOE-RSM>` both eigenvalues are negative, so its stationary
+point, the point read off the contour plot, is a maximum. It lies beyond the axial points, where
+the model extrapolates, and the :ref:`next design <DOE-multi-response-optimization>` is centred on it.
+
+What canonical analysis adds to a contour plot, or to a numerical optimizer, is a description of
+the shape of the fitted surface that holds in any number of factors. With more than two factors a
+contour plot shows two of them at a time, with the rest held fixed, and an optimizer returns one
+point without saying how the response changes around it. The eigenvalues say whether the surface
+has a peak, a trough or a saddle, and a ridge shows the directions in which the factors can be
+moved, for example to lower cost or simplify operation, with little change in the response.
+
+Canonical analysis describes the fitted surface around the stationary point, so it is most
+informative when that point lies inside the region of interest, the factor ranges over which the
+model is meant to hold. When the stationary point is a saddle, or lies far outside that region,
+where the model is extrapolating, :index:`ridge analysis <pair: ridge analysis; experiments>`
+complements canonical analysis. Ridge analysis finds the settings of highest (or lowest)
+predicted response from a quadratic model on spheres of increasing radius about the design
+centre, which shows how the best predicted response changes as the settings move further from
+the runs. For a first-order model the same path is the straight path of steepest ascent.
+
 .. _DOE-box-behnken-designs:
 
 Box-Behnken designs
@@ -513,7 +596,7 @@ The general approach for response surface modelling
 
 		y = b_0 + b_1x_1 + b_2 x_2	+ \ldots + b_{12}x_1x_2 + \ldots + b_{11}x_1^2 + b_{22}x_2^2 +  \ldots
 
-#.	Draw contour plots of this estimated response surface (all data analysis software packages have contour plotting functions) and determine where to place your sequential experiments. You can also find the model's optimum analytically by taking derivatives of the model function.
+#.	Draw contour plots of this estimated response surface (all data analysis software packages have contour plotting functions) and determine where to place your sequential experiments. You can also find the model's :ref:`stationary point <DOE-RSM-canonical-analysis>` analytically by taking derivatives of the model function. It can be a maximum, a minimum or a saddle point, and canonical analysis tells which.
 
 
 .. sidebar:: What is the response variable when optimizing more than one outcome?
