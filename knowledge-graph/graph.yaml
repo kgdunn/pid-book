@@ -3,7 +3,7 @@
 # Links read as sentences, "source VERB target"; the verbs allowed are listed in build_kg.py.
 
 # The book's commit this graph was last checked against: build_kg.py follows each citation from it.
-checked_against: 60ab13110906032c781cd5327c5afcc8566893ae
+checked_against: 6b3d6510eae187c806278a7fbcb61c703f7e3feb
 
 nodes:
 - id: experiment
@@ -257,11 +257,13 @@ nodes:
 - id: null_hypothesis
   name: Null hypothesis
   type: Concept
-  definition: The assumption that there is no difference between A and B.
+  definition: "The statement a test takes as true until the data give evidence against it; for A versus B, that
+    there is no difference between them."
   aliases: []
   book_label: DOE-randomization
   evidence: design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:196
-  quote: We do this because the null hypothesis is that there is no difference between A and B.
+  quote: "We do this because the null hypothesis, the statement a test takes as true until the data give evidence
+    against it, is that there is no difference between A and B."
 - id: statistical_significance
   name: Statistical significance
   type: Concept
@@ -282,14 +284,15 @@ nodes:
 - id: cost
   name: Changing one single variable at a time
   type: Method
-  definition: 'Changing one factor at a time: an inefficient way to experiment that can stop at a suboptimal point.'
+  definition: "Changing one factor at a time, in a search or a fixed design: interactions go unestimated, effects
+    are less precise than a factorial's, and a search can stop at a suboptimal point."
   aliases:
   - COST
   - OFAT
   - one factor at a time
   book_label: DOE-COST-approach
   evidence: design-analysis-experiments/changing-one-single-variable-at-a-time.rst:25
-  quote: is not an efficient way for experimentation. Note that OFAT is an alternative name for COST
+  quote: "is not an efficient way for experimentation. Note that OFAT is an alternative name for COST"
 - id: false_optimum
   name: False optimum
   type: Concept
@@ -312,36 +315,37 @@ nodes:
 - id: designed_experiment
   name: Designed experiment
   type: Concept
-  definition: A planned set of runs that changes multiple factors simultaneously, learning about a system efficiently,
-    often in fewer runs than COST, and not depending on which factor is changed first.
+  definition: "A planned set of runs; with several factors it changes them simultaneously, often needing fewer runs
+    than COST, and gives the same result whatever the run order."
   aliases:
   - DOE
   - design of experiments
   - experimental design
   book_label: DOE-COST-approach
   evidence: design-analysis-experiments/changing-one-single-variable-at-a-time.rst:52
-  quote: Designed experiments are always run in random order -- as we will presently see -- and we will get the
-    same result, no matter the order.
+  quote: "Designed experiments are always run in random order -- as we will presently see -- and we will get the
+    same result, no matter the order."
 - id: full_factorial
   name: Full factorial
   type: DesignType
-  definition: 'Every combination of the factors'' two levels: 2^k runs for k factors.'
+  definition: "Every combination of the factors' levels. At two levels per factor, 2^k runs for k factors."
   aliases:
   - 2^k factorial
   - two-level factorial
   book_label: DOE-two-level-factorials
-  evidence: design-analysis-experiments/full-factorial-designs/index.rst:19
-  quote: In this section we consider the case when these factors are at two levels.
+  evidence: design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:25
+  quote: "the :math:`2` refers to the number of levels for each factor"
 - id: coding
   name: Coding
   type: Concept
-  definition: 'Centering and scaling a factor: (value - center)/(range/2), so low is -1 and high is +1.'
+  definition: "Centering and scaling a factor; the standard form is (value - center)/(range/2), so low is -1 and
+    high is +1."
   aliases:
   - coded units
   - centering and scaling
   book_label: DOE-analysis-by-least-squares
   evidence: design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:28
-  quote: 'It is standard practice to represent the data from designed experiments in a centered and scaled form:'
+  quote: "It is standard practice to represent the data from designed experiments in a centered and scaled form:"
 - id: standard_order
   name: Standard order
   type: Concept
@@ -434,13 +438,14 @@ nodes:
 - id: orthogonality
   name: Orthogonality
   type: Property
-  definition: The columns of X are mutually orthogonal, so X'X has zeros off the diagonal and each coefficient can
-    be calculated and interpreted separately.
+  definition: "The columns of X are mutually orthogonal, so X'X is diagonal and each coefficient is estimated and
+    interpreted separately. Quadratic columns, which correlate with the intercept, are checked for
+    orthogonality after centring."
   aliases:
   - orthogonal design
   book_label: DOE_orthogonality
   evidence: design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:92
-  quote: 'matrix has only zeros on the off-diagonals: it indicates that matrix'
+  quote: "matrix has only zeros on the off-diagonals: it indicates that matrix"
 - id: intercept
   name: Intercept
   type: Concept
@@ -454,14 +459,15 @@ nodes:
 - id: coefficient
   name: Coefficient
   type: Concept
-  definition: The change in y for a one-unit change in a coded factor, that is, over half its range.
+  definition: "A parameter of the fitted model, one per term; for a coded factor's main effect it is the change in y
+    per coded unit, over half the factor's range."
   aliases:
   - parameter
   - slope
   - Effect over half the range
   book_label: DOE-analysis-by-least-squares
   evidence: design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:98
-  quote: They are the same, as long as we are careful to interpret them as the change over
+  quote: "They are the same, as long as we are careful to interpret them as the change over"
 - id: hierarchy_rule
   name: Keep the parent main effects
   type: Guideline
@@ -491,12 +497,12 @@ nodes:
 - id: degrees_of_freedom
   name: Degrees of freedom
   type: Concept
-  definition: Runs minus estimated parameters; needed to estimate the standard error.
+  definition: "For the residual, runs minus estimated parameters: the spare runs that estimate the noise standard
+    deviation. Pure error and lack of fit split this count between them."
   aliases: []
   book_label: DOE-replicate_points
   evidence: design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:185
-  quote: If there are more experiments than parameters to be estimated, then we have extra degrees of freedom. Having
-    degrees of freedom implies we can calculate the standard error,
+  quote: "If there are more experiments than parameters to be estimated, then we have extra degrees of freedom."
 - id: replicate
   name: Replicate
   type: Concept
@@ -529,13 +535,23 @@ nodes:
 - id: standard_error
   name: Standard error
   type: Concept
-  definition: S_E, the noise estimate from replicate runs, residual degrees of freedom or external data; in a coded
-    orthogonal design a coefficient's is S_E(b) = sqrt(S_E^2 / sum x^2).
+  definition: "The spread of an estimate such as a coefficient: its estimated standard deviation. In a coded
+    orthogonal design, S_E(b) = sqrt(S_E^2 / sum x^2), with S_E the estimated noise standard deviation."
   aliases: []
   book_label: DOE-replicate_points
-  evidence: design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:12
-  quote: The third uses the standard error, and becomes available once replicate runs, center points, or an external
-    estimate of the noise supply some degrees of freedom.
+  evidence: design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:187
+  quote: "the standard error for coefficient :math:`b_i` is :math:`S_E(b_i) = \\sqrt{\\mathcal{V}\\left(b_i\\right)}
+    = \\sqrt{\\dfrac{S_E^2}{\\sum{x_i^2}}}`"
+- id: noise_standard_deviation
+  name: Noise standard deviation
+  type: Concept
+  definition: "The run-to-run scatter of the response with every factor held fixed, sigma; its estimate S_E comes
+    from replicate runs, residual degrees of freedom or external data."
+  aliases: []
+  book_label: DOE-replicate_points
+  evidence: design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:6
+  quote: "There are no degrees of freedom left to estimate the noise standard deviation, the run-to-run scatter of
+    the response when every factor is held fixed."
 - id: pareto_plot
   name: Pareto plot
   type: Plot
@@ -605,12 +621,12 @@ nodes:
 - id: fractional_factorial
   name: Fractional factorial
   type: DesignType
-  definition: 'A fraction of a full factorial: 2^(k-p) runs for k factors.'
+  definition: "A fraction of a full factorial's runs. At two levels per factor, 2^(k-p) runs for k factors."
   aliases:
   - 2^(k-p) design
   book_label: DOE-fractional-factorials
   evidence: design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst:6
-  quote: In general, we can run a :math:`2^{k-p}` fractional factorial.
+  quote: "In general, we can run a :math:`2^{k-p}` fractional factorial."
 - id: half_fraction
   name: Half fraction
   type: DesignType
@@ -879,13 +895,14 @@ nodes:
 - id: rsm
   name: Response surface methods
   type: Method
-  definition: A sequential way to move a process towards its optimum by fitting and climbing local models.
+  definition: "A sequence of local empirical models of the response surface, fitted to explore how the factors
+    affect the response and to move the process towards its optimum."
   aliases:
   - RSM
   - response surface methodology
   book_label: DOE-RSM
-  evidence: design-analysis-experiments/response-surface-methods.rst:285
-  quote: We achieved this by building successive least squares models that approximate the underlying surface.
+  evidence: design-analysis-experiments/response-surface-methods.rst:18
+  quote: "RSM is a way to explore the effect of operating conditions (the factors) on the response variable"
 - id: response_surface
   name: Response surface
   type: Concept
@@ -897,15 +914,15 @@ nodes:
 - id: steepest_ascent
   name: Steepest ascent
   type: Method
-  definition: 'Move all factors together in proportion to their main-effect coefficients, in coded units: delta
-    x_i = (b_i / b_A) delta x_A. Valid only while interactions are negligible.'
+  definition: "Move all factors in proportion to their main-effect coefficients, in coded units: delta x_i = (b_i /
+    b_A) delta x_A. Useful while main effects are large compared with interactions, curvature and noise."
   aliases:
   - path of steepest ascent
   - Steepest descent
   book_label: DOE-RSM
   evidence: design-analysis-experiments/response-surface-methods.rst:494
-  quote: This simple ratio is the gradient of the *first-order* (planar) part of the model, so it points along the
-    steepest ascent only while the interaction terms are negligible.
+  quote: "it is a useful direction to climb while the main effects are large compared with the two-factor
+    interactions, the curvature and the noise"
 - id: step_size
   name: Step size
   type: Concept
@@ -944,12 +961,13 @@ nodes:
 - id: quadratic_model
   name: Quadratic model
   type: Concept
-  definition: A model with squared terms such as b_TT x_T^2, to describe curvature.
+  definition: "Outside mixtures, a model with squared terms such as b_TT x_T^2, to describe curvature. A mixture's
+    second-order Scheffe model has none: they fold into its cross-products."
   aliases:
   - second-order model
   book_label: DOE_central_composite_designs
-  evidence: design-analysis-experiments/response-surface-methods.rst:241
-  quote: The way to accommodate for that is to add quadratic terms to the estimate model.
+  evidence: design-analysis-experiments/mixture-experiments.rst:67
+  quote: "the pure quadratics add nothing and must be left out."
 - id: ccd
   name: Central composite design
   type: DesignType
@@ -962,14 +980,13 @@ nodes:
 - id: axial_point
   name: Axial point
   type: Concept
-  definition: 'A CCD run with one factor off-center and the rest at 0: about 1.4 coded units out for 2 factors,
-    1.7 for 3 (rotatable); face-centred designs use ±1.'
+  definition: "Outside mixture designs, a central composite design run with one factor off-centre and the rest at 0:
+    about 1.4 coded units out for 2 factors, 1.7 for 3 (rotatable); ±1 face-centred."
   aliases:
   - star point
   book_label: DOE_central_composite_designs
   evidence: design-analysis-experiments/response-surface-methods.rst:249
-  quote: Rules for higher numbers of factors, and the reasoning behind the 1.4 and 1.7 unit step size can be found,
-    for example in the textbook by Box, Hunter and Hunter.
+  quote: "coded units away from the center for a 2 factor system"
 - id: box_behnken
   name: Box-Behnken design
   type: DesignType
@@ -990,11 +1007,12 @@ nodes:
 - id: optimum
   name: Optimum
   type: Concept
-  definition: The settings with the best response. The surface is flat there.
+  definition: "The allowed settings with the best response. The surface is flat at an optimum inside the region, but
+    need not be at one on a constraint."
   aliases: []
   book_label: DOE-RSM
   evidence: design-analysis-experiments/response-surface-methods.rst:227
-  quote: recall that the first derivative is zero at an optimum, implying the surface flattens out
+  quote: "An optimum on a constraint, at the edge of that region, need not be flat"
 - id: plateau
   name: Response levels off
   type: Diagnostic
@@ -1156,13 +1174,14 @@ nodes:
 - id: constraint
   name: Constraint
   type: Concept
-  definition: A region where the process may not operate, for safety or physical reasons.
+  definition: "A limit on which factor settings may be run, for safety, physical or practical reasons. It may slice
+    off part of the region, or bound a factor such as an ingredient proportion."
   aliases:
   - limit
   - infeasible region
   book_label: DOE-handling-constraints
-  evidence: design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:41
-  quote: The shaded region represents the constraint where we may not operate.
+  evidence: design-analysis-experiments/mixture-experiments.rst:43
+  quote: "lower or upper bounds on an ingredient cut the simplex down to a smaller region inside it"
 - id: lost_orthogonality
   name: Lost orthogonality
   type: Concept
@@ -1209,11 +1228,12 @@ nodes:
 - id: d_optimal
   name: D-optimality
   type: Criterion
-  definition: 'Maximize det(X''X): minimize the general variance of the parameters.'
+  definition: "For a fixed run count and assumed model, choose the runs that maximize det(X'X); the joint confidence
+    region of all the coefficients is then smallest."
   aliases: []
   book_label: DOE-optimal-designs
-  evidence: design-analysis-experiments/optimal-designs.rst:204
-  quote: so a large determinant means the smallest
+  evidence: design-analysis-experiments/optimal-designs.rst:203
+  quote: "confidence region for all the coefficients is an ellipsoid whose volume is proportional to"
 - id: a_optimal
   name: A-optimality
   type: Criterion
@@ -1287,12 +1307,12 @@ nodes:
 - id: simplex
   name: Simplex
   type: Concept
-  definition: The region of allowed mixture settings; for three ingredients a triangle (ternary plot) with pure
-    components at the vertices and two-ingredient blends on the edges.
+  definition: "In a mixture experiment, the region of allowed proportions: for three ingredients a triangle (ternary
+    plot), with pure components at the vertices and two-ingredient blends on the edges."
   aliases: []
   book_label: DOE-mixture-designs
   evidence: design-analysis-experiments/mixture-experiments.rst:40
-  quote: For three ingredients this is a triangle,
+  quote: "Geometrically, the allowed settings form a *simplex*. For three ingredients this is a triangle,"
 - id: ex_cost_bioreactor
   name: Bioreactor by COST
   type: Example
@@ -1394,7 +1414,7 @@ nodes:
   definition: The cheapest blend that still tastes right, with a region of high acidity excluded.
   aliases: []
   book_label: DOE-mixture-designs
-  evidence: design-analysis-experiments/mixture-experiments.rst:163
+  evidence: design-analysis-experiments/mixture-experiments.rst:164
   quote: finds a lowest-cost fruit-punch recipe that still meets a taste target, with the shaded region
 - id: ex_cell_culture
   name: Cell-culture bioreactor
@@ -1662,12 +1682,13 @@ nodes:
 - id: d_efficiency
   name: D-efficiency
   type: Criterion
-  definition: 'The determinant of X''X raised to the power 1/p and divided by the run count, as a percentage: information
-    per run. Across run counts it favours the smaller design.'
+  definition: "Absolute D-efficiency: det(X'X)^(1/p) divided by the run count, as a percentage of a hypothetical
+    orthogonal design; it favours smaller designs. Relative D-efficiency takes the D-optimal design as
+    100%."
   aliases: []
   book_label: DOE-omnibus-comparison
-  evidence: design-analysis-experiments/comparing-design-families.rst:242
-  quote: 'Let''s focus on the last row first. Recall what D-efficiency measures: it takes the determinant of'
+  evidence: design-analysis-experiments/comparing-design-families.rst:251
+  quote: "takes the D-optimal design as 100%, so it is worth checking which one a given package reports."
 - id: d_for_estimation_i_for_prediction
   name: D for estimation, I for prediction
   type: Guideline
@@ -1811,7 +1832,7 @@ nodes:
     the settings inside it, and it can be empty.
   aliases: []
   book_label: DOE-sweet-spot
-  evidence: design-analysis-experiments/multi-response-optimization.rst:478
+  evidence: design-analysis-experiments/multi-response-optimization.rst:479
   quote: The sweet spot is the set of settings meeting every specification at once. It ranks
 - id: individual_desirability
   name: Individual desirability
@@ -1820,18 +1841,19 @@ nodes:
     them whose shape the weight sets.'
   aliases: []
   book_label: DOE-desirability
-  evidence: design-analysis-experiments/multi-response-optimization.rst:481
+  evidence: design-analysis-experiments/multi-response-optimization.rst:482
   quote: Individual desirability grades one response from 0 to 1 between a pair of limits, with a
 - id: overall_desirability
   name: Overall desirability
   type: Criterion
-  definition: The geometric mean of the individual desirabilities, weighted by importances; one failed specification
-    makes it zero. Maximizing it gives a single recommended setting.
+  definition: "The geometric mean of the individual desirabilities, weighted by importances; with equal importances
+    it is Derringer and Suich's unweighted mean. One failed specification makes it zero; maximizing it
+    gives one recommended setting."
   aliases:
   - Desirability
   book_label: DOE-desirability
-  evidence: design-analysis-experiments/multi-response-optimization.rst:482
-  quote: Overall desirability is the geometric mean of
+  evidence: design-analysis-experiments/multi-response-optimization.rst:307
+  quote: "the unweighted geometric mean that Derringer and Suich proposed"
 - id: confirm_the_predicted_optimum
   name: Confirm the predicted optimum
   type: Guideline
@@ -1840,27 +1862,27 @@ nodes:
   aliases:
   - Confirmation run
   book_label: DOE-uncertainty-at-the-optimum
-  evidence: design-analysis-experiments/multi-response-optimization.rst:489
+  evidence: design-analysis-experiments/multi-response-optimization.rst:490
   quote: The recommended setting is a prediction. Report the prediction interval for each response
 - id: scheffe_model
   name: Scheffe model
   type: Concept
-  definition: 'The standard mixture model: linear blending and cross-product terms, with no intercept and no pure
-    quadratics; a positive cross-product coefficient means synergistic blending.'
+  definition: "The standard mixture model: linear blending and cross-product terms, with no intercept and no pure
+    quadratics. In this form, a positive cross-product coefficient means synergistic blending."
   aliases: []
   book_label: DOE-mixture-experiments
-  evidence: design-analysis-experiments/mixture-experiments.rst:97
-  quote: None of these has an intercept or a pure quadratic term.
+  evidence: design-analysis-experiments/mixture-experiments.rst:100
+  quote: "These readings hold in the Scheffe form"
 - id: pseudocomponent
   name: Pseudocomponent
   type: Concept
-  definition: A rescaled proportion, (a_i - L_i)/(1 - sum of L_j), that maps a lower-bounded mixture region back
-    onto a full simplex, so the same designs apply.
+  definition: "With lower bounds L_i, the rescaled proportion (a_i - L_i)/(1 - sum of L_j), which maps the
+    constrained mixture region back onto a full simplex, so the same designs apply."
   aliases:
   - Pseudocomponents
   book_label: DOE-mixture-experiments
-  evidence: design-analysis-experiments/mixture-experiments.rst:143
-  quote: the original. The same kind of design is then optimal for the constrained region as for the full
+  evidence: design-analysis-experiments/mixture-experiments.rst:145
+  quote: "the original. The same kind of design is then optimal for the constrained region as for the full"
 - id: mixture_process_variable_experiment
   name: Mixture-process variable experiment
   type: DesignType
@@ -1868,7 +1890,7 @@ nodes:
     a Scheffe model with a response-surface model, with no intercept or process-variable main effects.
   aliases: []
   book_label: DOE-mixture-experiments
-  evidence: design-analysis-experiments/mixture-experiments.rst:173
+  evidence: design-analysis-experiments/mixture-experiments.rst:174
   quote: the combined model has no intercept and no process-variable main effects.
 - id: screen_then_optimise_reactor_study
   name: Screen-then-optimise reactor study
@@ -2034,7 +2056,7 @@ edges:
 - [center_point, CAUSES, degrees_of_freedom, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:12"]
 - [center_point, KEEPS, orthogonality, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:230"]
 - [repeat_measurement, CONTRASTS_WITH, replicate, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:8"]
-- [standard_error, REQUIRES, degrees_of_freedom, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:6"]
+- [noise_standard_deviation, REQUIRES, degrees_of_freedom, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:6"]
 - [se_significance, REQUIRES, standard_error, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:12"]
 - [se_significance, USES, confidence_interval, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:185"]
 - [se_significance, USES, t_distribution, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:232"]
@@ -2170,7 +2192,7 @@ edges:
 - [mixture_design, IS_A, designed_experiment, "design-analysis-experiments/mixture-experiments.rst:17"]
 - [mixture_design, REQUIRES, mixture_constraint, "design-analysis-experiments/mixture-experiments.rst:23"]
 - [mixture_design, USES, simplex, "design-analysis-experiments/mixture-experiments.rst:40"]
-- [mixture_design, USES, d_optimal, "design-analysis-experiments/mixture-experiments.rst:162"]
+- [mixture_design, USES, d_optimal, "design-analysis-experiments/mixture-experiments.rst:163"]
 - [mixture_constraint, CONTRASTS_WITH, full_factorial, "design-analysis-experiments/mixture-experiments.rst:37"]
 - [constraint, APPLIES_TO, mixture_design, "design-analysis-experiments/mixture-experiments.rst:43"]
 - [ex_cost_bioreactor, ILLUSTRATES, cost, "design-analysis-experiments/changing-one-single-variable-at-a-time.rst:27"]
@@ -2193,7 +2215,7 @@ edges:
 - [ex_rsm_profit, ILLUSTRATES, rsm, "design-analysis-experiments/response-surface-methods.rst:285"]
 - [ex_rsm_profit, ILLUSTRATES, curvature_check, "design-analysis-experiments/response-surface-methods.rst:239"]
 - [ex_rsm_profit, ILLUSTRATES, ccd, "design-analysis-experiments/response-surface-methods.rst:257"]
-- [ex_fruit_punch, ILLUSTRATES, mixture_design, "design-analysis-experiments/mixture-experiments.rst:163"]
+- [ex_fruit_punch, ILLUSTRATES, mixture_design, "design-analysis-experiments/mixture-experiments.rst:164"]
 - [ex_cell_culture, ILLUSTRATES, fractional_factorial, "design-analysis-experiments/fractional-factorial-designs/index.rst:15"]
 - [q_narrow_factors, ANSWERED_BY, screening, "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst:13"]
 - [q_after_screening, ANSWERED_BY, phase_sequential, "design-analysis-experiments/general-approach-for-experimentation.rst:33"]
@@ -2309,17 +2331,17 @@ edges:
 - [sweet_spot, ALTERNATIVE_TO, overall_desirability, "design-analysis-experiments/multi-response-optimization.rst:258"]
 - [individual_desirability, PART_OF, overall_desirability, "design-analysis-experiments/multi-response-optimization.rst:297"]
 - [multiple_responses, REMEDIED_BY, individual_desirability, "design-analysis-experiments/multi-response-optimization.rst:25"]
-- [overall_desirability, ALTERNATIVE_TO, single_combined_response, "design-analysis-experiments/multi-response-optimization.rst:444"]
+- [overall_desirability, ALTERNATIVE_TO, single_combined_response, "design-analysis-experiments/multi-response-optimization.rst:445"]
 - [overall_desirability, ALTERNATIVE_TO, sweet_spot, "design-analysis-experiments/multi-response-optimization.rst:258"]
-- [confirm_the_predicted_optimum, APPLIES_TO, optimum, "design-analysis-experiments/multi-response-optimization.rst:416"]
+- [confirm_the_predicted_optimum, APPLIES_TO, optimum, "design-analysis-experiments/multi-response-optimization.rst:417"]
 - [overall_desirability, PRECEDES, confirm_the_predicted_optimum, "design-analysis-experiments/screen-then-optimise-study.rst:20"]
 - [mixture_design, USES, scheffe_model, "design-analysis-experiments/mixture-experiments.rst:77"]
 - [mixture_constraint, CAUSES, scheffe_model, "design-analysis-experiments/mixture-experiments.rst:48"]
 - [scheffe_model, CONTRASTS_WITH, quadratic_model, "design-analysis-experiments/mixture-experiments.rst:97"]
-- [pseudocomponent, USES, simplex, "design-analysis-experiments/mixture-experiments.rst:142"]
-- [constraint, REMEDIED_BY, pseudocomponent, "design-analysis-experiments/mixture-experiments.rst:139"]
-- [mixture_process_variable_experiment, GENERALIZES, mixture_design, "design-analysis-experiments/mixture-experiments.rst:169"]
-- [mixture_process_variable_experiment, USES, scheffe_model, "design-analysis-experiments/mixture-experiments.rst:171"]
+- [pseudocomponent, USES, simplex, "design-analysis-experiments/mixture-experiments.rst:143"]
+- [constraint, REMEDIED_BY, pseudocomponent, "design-analysis-experiments/mixture-experiments.rst:140"]
+- [mixture_process_variable_experiment, GENERALIZES, mixture_design, "design-analysis-experiments/mixture-experiments.rst:170"]
+- [mixture_process_variable_experiment, USES, scheffe_model, "design-analysis-experiments/mixture-experiments.rst:172"]
 - [effect_sparsity, JUSTIFIES, block_on_highest, "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:97"]
 - [lenth_method, APPLIES_TO, saturated_design, "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:159"]
 - [lenth_method, COMPLEMENTS, pareto_plot, "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:175"]
@@ -2352,15 +2374,15 @@ edges:
 - [lack_of_fit_test, APPLIES_TO, quadratic_model, "design-analysis-experiments/response-surface-methods.rst:299"]
 - [face_centred_central_composite_design, USES, axial_point, "design-analysis-experiments/comparing-design-families.rst:426"]
 - [face_centred_central_composite_design, CONTRASTS_WITH, box_behnken, "design-analysis-experiments/response-surface-methods.rst:455"]
-- [pseudocomponent, APPLIES_TO, simplex, "design-analysis-experiments/mixture-experiments.rst:142"]
-- [pseudocomponent, APPLIES_TO, mixture_design, "design-analysis-experiments/mixture-experiments.rst:144"]
+- [pseudocomponent, APPLIES_TO, simplex, "design-analysis-experiments/mixture-experiments.rst:143"]
+- [pseudocomponent, APPLIES_TO, mixture_design, "design-analysis-experiments/mixture-experiments.rst:145"]
 - [e_optimality, CONTRASTS_WITH, d_optimal, "design-analysis-experiments/optimal-designs.rst:230"]
 - [e_optimality, CONTRASTS_WITH, a_optimal, "design-analysis-experiments/optimal-designs.rst:230"]
 - [sweet_spot, USES, overlay_surfaces, "design-analysis-experiments/multi-response-optimization.rst:187"]
-- [sweet_spot, CONTRASTS_WITH, single_combined_response, "design-analysis-experiments/multi-response-optimization.rst:434"]
+- [sweet_spot, CONTRASTS_WITH, single_combined_response, "design-analysis-experiments/multi-response-optimization.rst:435"]
 - [multiple_responses, REMEDIED_BY, overall_desirability, "design-analysis-experiments/multi-response-optimization.rst:25"]
-- [overall_desirability, LOCATES, optimum, "design-analysis-experiments/multi-response-optimization.rst:344"]
-- [overall_desirability, CONTRASTS_WITH, single_combined_response, "design-analysis-experiments/multi-response-optimization.rst:437"]
+- [overall_desirability, LOCATES, optimum, "design-analysis-experiments/multi-response-optimization.rst:345"]
+- [overall_desirability, CONTRASTS_WITH, single_combined_response, "design-analysis-experiments/multi-response-optimization.rst:438"]
 - [lack_of_fit_test, USES, replicate, "design-analysis-experiments/response-surface-methods.rst:342"]
 - [lack_of_fit_test, TESTS, quadratic_model, "design-analysis-experiments/response-surface-methods.rst:299"]
 - [randomization, PART_OF, randomization_replication_and_blocking, "design-analysis-experiments/general-approach-for-experimentation.rst:18"]
@@ -2375,3 +2397,5 @@ edges:
 - [joint_f_test_of_a_categorical_interaction, TESTS, interaction, "product-development-product-improvement/mixed-level-profile-case-study.rst:554"]
 - [joint_f_test_of_a_categorical_interaction, USES, categorical_factor, "product-development-product-improvement/mixed-level-profile-case-study.rst:551"]
 - [joint_f_test_of_a_categorical_interaction, REQUIRES, degrees_of_freedom, "product-development-product-improvement/mixed-level-profile-case-study.rst:556"]
+- [standard_error, REQUIRES, noise_standard_deviation, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:187"]
+- [pure_error, ESTIMATES, noise_standard_deviation, "design-analysis-experiments/general-approach-for-experimentation.rst:18"]
