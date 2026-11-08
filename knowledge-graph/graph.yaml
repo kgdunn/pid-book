@@ -434,6 +434,7 @@ nodes:
   type: Concept
   definition: One row per run and one column per model term, with a column of ones for the intercept.
   aliases:
+  - table of signs
   - X matrix
   - design matrix
   book_label: DOE-analysis-by-least-squares
@@ -513,6 +514,7 @@ nodes:
   type: Concept
   definition: 'A complete repeat of a run: setup, running the experiment and measuring the result.'
   aliases:
+  - repeat run
   - genuine replicate
   - replication
   book_label: DOE-replicate_points
@@ -638,7 +640,8 @@ nodes:
   name: Half fraction
   type: DesignType
   definition: 'Half of a full factorial: 2^(k-1) runs.'
-  aliases: []
+  aliases:
+  - half replicate
   book_label: DOE-half-fractions
   evidence: design-analysis-experiments/fractional-factorial-designs/half-fractions.rst:24
   quote: So this is our half-factorial designed experiment in 3 factors, but it only requires 4 experiments as shown
@@ -647,7 +650,8 @@ nodes:
   name: Quarter fraction
   type: DesignType
   definition: 'A quarter of a full factorial: 2^(k-2) runs.'
-  aliases: []
+  aliases:
+  - quarter replicate
   book_label: DOE-highly-fractionated-designs
   evidence: design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst:6
   quote: while a :math:`2^{k-2}` design is a quarter fraction, and so on.
@@ -738,7 +742,8 @@ nodes:
   name: Identity column I
   type: Concept
   definition: The column of ones. Any factor times itself is I.
-  aliases: []
+  aliases:
+  - identity
   book_label: DOE-generators
   evidence: design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:16
   quote: A factor multiplied by itself is the identity, or intercept column
@@ -965,6 +970,7 @@ nodes:
   type: Method
   definition: Compare the model's predicted center point, b0, with the measured center point.
   aliases:
+  - overall curvature check
   - curvature contrast
   book_label: DOE-RSM
   evidence: design-analysis-experiments/response-surface-methods.rst:508
@@ -1317,6 +1323,7 @@ nodes:
   type: Concept
   definition: Mixture components cannot change independently, because sum x_i = 1.
   aliases:
+  - mixture constraint
   - mixture restriction
   book_label: DOE-mixture-designs
   evidence: design-analysis-experiments/mixture-experiments.rst:34
@@ -1630,7 +1637,8 @@ nodes:
   type: Criterion
   definition: 'Prediction variance times the run count, divided by sigma squared (SPV): it depends only on the design''s
     geometry, so replicating a design does not make it look better.'
-  aliases: []
+  aliases:
+  - variance function
   book_label: DOE-judging-and-comparing-designs
   evidence: design-analysis-experiments/judging-and-comparing-designs.rst:133
   quote: The SPV depends only on the geometry of the design. The G-optimal value is its maximum
@@ -1740,7 +1748,8 @@ nodes:
   type: Property
   definition: 'A design property: the prediction variance is the same at every point a fixed distance from the centre.
     Box-Behnken designs are rotatable or nearly rotatable.'
-  aliases: []
+  aliases:
+  - rotatable design
   book_label: DOE-box-behnken-designs
   evidence: design-analysis-experiments/response-surface-methods.rst:380
   quote: giving roughly uniform prediction variance at a
@@ -1892,6 +1901,7 @@ nodes:
   definition: "The standard mixture model: linear blending and cross-product terms, with no intercept and no pure
     quadratics. In this form, a positive cross-product coefficient means synergistic blending."
   aliases:
+  - second-order Scheffe model
   - canonical polynomial
   book_label: DOE-mixture-experiments
   evidence: design-analysis-experiments/mixture-experiments.rst:100
@@ -1902,6 +1912,7 @@ nodes:
   definition: "With lower bounds L_i, the rescaled proportion (a_i - L_i)/(1 - sum of L_j), which maps the
     constrained mixture region back onto a full simplex, so the same designs apply."
   aliases:
+  - pseudocoordinate
   - Pseudocomponents
   book_label: DOE-mixture-experiments
   evidence: design-analysis-experiments/mixture-experiments.rst:145
