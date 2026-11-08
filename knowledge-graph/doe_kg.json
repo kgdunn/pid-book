@@ -2877,28 +2877,36 @@
    "type": "PART_OF",
    "target": "experiment",
    "evidence": "design-analysis-experiments/design-analysis-experiments.rst:309",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "factor",
    "type": "PART_OF",
    "target": "experiment",
    "evidence": "design-analysis-experiments/design-analysis-experiments.rst:323",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "experiment",
    "type": "MAY_HAVE",
    "target": "objective",
    "evidence": "design-analysis-experiments/design-analysis-experiments.rst:309",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "objective",
    "type": "USES",
    "target": "response",
    "evidence": "design-analysis-experiments/design-analysis-experiments.rst:307",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "qualitative_outcome",
@@ -3149,7 +3157,9 @@
    "type": "USES",
    "target": "coding",
    "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:28",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "full_factorial",
@@ -3170,14 +3180,18 @@
    "type": "ESTIMATES",
    "target": "main_effect",
    "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:85",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "full_factorial",
    "type": "ESTIMATES",
    "target": "interaction",
    "evidence": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:63",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "operating_range",
@@ -3228,14 +3242,18 @@
    "type": "IS_HALF_OF",
    "target": "main_effect",
    "evidence": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:126",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "least_squares_model",
    "type": "ESTIMATES",
    "target": "coefficient",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:263",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "least_squares_model",
@@ -3471,21 +3489,27 @@
    "type": "CAUSES",
    "target": "confounding",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/half-fractions.rst:140",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "fractional_factorial",
    "type": "USES",
    "target": "generator",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst:63",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "fractional_factorial",
    "type": "HAS_PROPERTY",
    "target": "resolution",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst:11",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "fractional_factorial",
@@ -3747,7 +3771,9 @@
    "type": "USES",
    "target": "block_generator",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:117",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "block_generator",
@@ -3761,21 +3787,27 @@
    "type": "APPLIES_TO",
    "target": "block_generator",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:115",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "blocking",
-   "type": "CAUSES",
+   "type": "LIMITS",
    "target": "confounding",
-   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:52",
-   "also": []
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:81",
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "block",
    "type": "USES",
    "target": "randomization",
    "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:54",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "full_factorial",
@@ -3955,7 +3987,9 @@
    "type": "USES",
    "target": "axial_point",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:251",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "ccd",
@@ -4213,7 +4247,9 @@
    "type": "REQUIRES",
    "target": "specify_model",
    "evidence": "design-analysis-experiments/optimal-designs.rst:116",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "d_optimal",
@@ -4324,14 +4360,18 @@
    "type": "USES",
    "target": "simplex",
    "evidence": "design-analysis-experiments/mixture-experiments.rst:40",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
-   "source": "mixture_design",
-   "type": "USES",
-   "target": "d_optimal",
+   "source": "d_optimal",
+   "type": "SUITED_TO",
+   "target": "mixture_design",
    "evidence": "design-analysis-experiments/mixture-experiments.rst:163",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "mixture_constraint",
@@ -4345,7 +4385,9 @@
    "type": "APPLIES_TO",
    "target": "mixture_design",
    "evidence": "design-analysis-experiments/mixture-experiments.rst:43",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "ex_cost_bioreactor",
@@ -4669,7 +4711,9 @@
    "type": "ENABLES",
    "target": "keep_mirror_pairs_in_one_block",
    "evidence": "design-analysis-experiments/omars-worked-study.rst:175",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "foldover",
@@ -5037,7 +5081,9 @@
    "type": "HAS_PROPERTY",
    "target": "rotatability",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:379",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "rotatability",
@@ -5256,7 +5302,9 @@
    "type": "USES",
    "target": "pure_error",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:308",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "lack_of_fit_test",
@@ -5338,11 +5386,13 @@
    "also": []
   },
   {
-   "source": "mixture_design",
-   "type": "USES",
-   "target": "scheffe_model",
+   "source": "scheffe_model",
+   "type": "SUITED_TO",
+   "target": "mixture_design",
    "evidence": "design-analysis-experiments/mixture-experiments.rst:77",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "mixture_constraint",
@@ -5370,7 +5420,9 @@
    "type": "REMEDIED_BY",
    "target": "pseudocomponent",
    "evidence": "design-analysis-experiments/mixture-experiments.rst:140",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "mixture_process_variable_experiment",
@@ -5685,7 +5737,9 @@
    "type": "TESTS",
    "target": "quadratic_model",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:303",
-   "also": []
+   "also": [
+    "box_draper_2007"
+   ]
   },
   {
    "source": "randomization",
@@ -5955,6 +6009,13 @@
    "also": [
     "box_draper_2007"
    ]
+  },
+  {
+   "source": "mixture_constraint",
+   "type": "IS_A",
+   "target": "constraint",
+   "evidence": "design-analysis-experiments/mixture-experiments.rst:23",
+   "also": []
   }
  ]
 }
