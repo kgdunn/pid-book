@@ -19,6 +19,10 @@ The purpose of :index:`response surface methods <pair: response surface methods;
 
 Initially, when we are far away from the optimum, we will use factorial experiments. As we approach the optimum then these factorials are replaced with better designs that more closely approximate conditions at the optimum.
 
+Each set of runs covers a :index:`region of interest <pair: region of interest; experiments>`: a range
+for each factor around the current conditions, over which the local model is meant to hold.
+:ref:`Coding <DOE-analysis-by-least-squares>` maps the ends of each range to :math:`-1` and :math:`+1`.
+
 .. TODO: RSM overview figure here with COST approach superimposed
 
 Notice how it is a *sequential* approach. RSM then is a tool the describes how we should run these sequential sets of experiments. At the start of this :ref:`section on designed experiments <DOE-COST-approach>` we showed how sequential experimentation (COST) leads to sub-optimal solutions. Why are we advocating sequential experimentation now?   The difference is that here we use sequential experiments by changing *multiple factors simultaneously*, and not changing only one factor at a time.
