@@ -72,6 +72,13 @@ json.dump({"source": source, **data}, open(sys.argv[1], "w"), separators=(",", "
   path/to/process-improve/web/map/graph.json
 ```
 
+## Links another text agrees with
+
+`project_text.py` compares another book with the graph (`PROJECTION.md`). A link that a reviewed text
+also states is listed under that text in `graph.yaml`'s `corroborated`, with the text itself in
+`sources`; the text's own words stay out of this repository. `build_kg.py` checks that each listed
+link exists and gives every link an `also` list of the texts that state it, which the map can draw.
+
 ## When the book changes
 
 A paragraph added near the top of a file moves every line below it. `graph.yaml` records the book

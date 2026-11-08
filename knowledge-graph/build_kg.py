@@ -189,6 +189,10 @@ def check(graph: dict, labels: dict[str, str]) -> list[str]:
         if rest and rest[0] and book_line(rest[0]) is None:
             problems.append(f"{where}: evidence {rest[0]} does not exist")
     problems += [f"duplicate link {k}" for k, c in seen.items() if c > 1]
+    for source, links in graph.get("corroborated", {}).items():
+        if source not in graph.get("sources", {}):
+            problems.append(f"corroborated by {source}, which sources does not list")
+        problems += [f"{source} corroborates link {' '.join(link)}, which the graph lacks" for link in links if tuple(link) not in seen]
     linked = {e[0] for e in edges} | {e[2] for e in edges}
     problems += [f"term {i} has no links" for i in ids if i not in linked]
     return problems
@@ -214,8 +218,14 @@ def main() -> None:
         ref = n["book_label"]
         label, path = (None, ref[5:]) if ref.startswith("file:") else (ref, labels[ref])
         nodes.append({**n, "book_label": label, "book_file": path, "chapter": CHAPTERS.index(path.split("/")[0]) + 1})
-    edges = [{"source": s, "type": r, "target": t, "evidence": rest[0] if rest else ""} for s, r, t, *rest in graph["edges"]]
-    (HERE / "doe_kg.json").write_text(json.dumps({"nodes": nodes, "edges": edges}, indent=1), encoding="utf-8")
+    also = {}
+    for source, links in graph.get("corroborated", {}).items():
+        for link in links:
+            also.setdefault(tuple(link), []).append(source)
+    edges = [{"source": s, "type": r, "target": t, "evidence": rest[0] if rest else "", "also": also.get((s, r, t), [])}
+             for s, r, t, *rest in graph["edges"]]
+    kg = {"sources": graph.get("sources", {}), "nodes": nodes, "edges": edges}
+    (HERE / "doe_kg.json").write_text(json.dumps(kg, indent=1), encoding="utf-8")
 
     q = lambda v: "null" if v is None else json.dumps(v)
     lines = ["// Built from graph.yaml by build_kg.py. Load into an empty database.",
@@ -226,12 +236,14 @@ def main() -> None:
         lines.append(f"CREATE (:Term:{n['type']} {{{props}}});")
     for e in edges:
         lines.append(f"MATCH (a:Term {{id: {q(e['source'])}}}), (b:Term {{id: {q(e['target'])}}}) "
-                     f"CREATE (a)-[:{e['type']} {{evidence: {q(e['evidence'])}}}]->(b);")
+                     f"CREATE (a)-[:{e['type']} {{evidence: {q(e['evidence'])}, also: {q(e['also'])}}}]->(b);")
     (HERE / "doe_kg.cypher").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
     by_chapter = Counter(n["chapter"] for n in nodes)
     cited = sum(1 for e in edges if e["evidence"])
-    print(f"{len(nodes)} terms, {len(edges)} links ({cited} with evidence), {len({e['type'] for e in edges})} verbs")
+    backed = sum(1 for e in edges if e["also"])
+    print(f"{len(nodes)} terms, {len(edges)} links ({cited} with evidence, {backed} corroborated by another text), "
+          f"{len({e['type'] for e in edges})} verbs")
     print("terms by chapter:", dict(sorted(by_chapter.items())))
     print("checks passed: every quote on its line, every book reference resolves, no orphans")
 

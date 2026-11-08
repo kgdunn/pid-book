@@ -3,7 +3,7 @@
 # Links read as sentences, "source VERB target"; the verbs allowed are listed in build_kg.py.
 
 # The book's commit this graph was last checked against: build_kg.py follows each citation from it.
-checked_against: 6b3d6510eae187c806278a7fbcb61c703f7e3feb
+checked_against: f8d778a4558b53d982d13c5ab20a3f16d7d645cd
 
 nodes:
 - id: experiment
@@ -318,6 +318,7 @@ nodes:
   definition: "A planned set of runs; with several factors it changes them simultaneously, often needing fewer runs
     than COST, and gives the same result whatever the run order."
   aliases:
+  - experimental arrangement
   - DOE
   - design of experiments
   - experimental design
@@ -330,6 +331,7 @@ nodes:
   type: DesignType
   definition: "Every combination of the factors' levels. At two levels per factor, 2^k runs for k factors."
   aliases:
+  - complete factorial
   - 2^k factorial
   - two-level factorial
   book_label: DOE-two-level-factorials
@@ -385,6 +387,7 @@ nodes:
   type: Concept
   definition: When the effect of one factor depends on the level of another. Interactions are symmetric.
   aliases:
+  - factor dependence
   - interaction effect
   book_label: DOE-two-level-factorials-interaction-effects
   evidence: design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:134
@@ -420,6 +423,7 @@ nodes:
   type: Method
   definition: y = Xb + e, fitted with b = (X'X)^-1 X'y. It works even when the design was not run exactly as planned.
   aliases:
+  - least squares
   - linear model
   - regression
   book_label: DOE-analysis-by-least-squares
@@ -451,6 +455,7 @@ nodes:
   type: Concept
   definition: The model's constant b0; for a coded factorial, the average of the runs and the predicted center point.
   aliases:
+  - constant term
   - b0
   book_label: DOE-analysis-by-least-squares
   evidence: design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:104
@@ -508,6 +513,7 @@ nodes:
   type: Concept
   definition: 'A complete repeat of a run: setup, running the experiment and measuring the result.'
   aliases:
+  - genuine replicate
   - replication
   book_label: DOE-replicate_points
   evidence: design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:8
@@ -621,7 +627,8 @@ nodes:
 - id: fractional_factorial
   name: Fractional factorial
   type: DesignType
-  definition: "A fraction of a full factorial's runs. At two levels per factor, 2^(k-p) runs for k factors."
+  definition: "A fraction of a full factorial's runs, chosen systematically by generators rather than at random. At
+    two levels per factor, 2^(k-p) runs for k factors."
   aliases:
   - 2^(k-p) design
   book_label: DOE-fractional-factorials
@@ -666,6 +673,7 @@ nodes:
   type: DesignType
   definition: 'A screening design in any multiple of 4 runs from 12: 12, 16, 20, 24, ...'
   aliases:
+  - Plackett and Burman design
   - PB design
   book_label: DOE-saturated-screening-designs
   evidence: design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:181
@@ -686,6 +694,7 @@ nodes:
   type: Concept
   definition: The list of aliases of every effect in a design.
   aliases:
+  - alias pattern
   - confounding pattern
   book_label: DOE-generators
   evidence: design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:8
@@ -850,6 +859,7 @@ nodes:
   definition: 'Only a few of the many factors studied drive most of the variation in the response: the experimental
     form of the Pareto principle.'
   aliases:
+  - effect sparsity
   - effect hierarchy
   - sparsity of effects
   book_label: DOE-screening-principles
@@ -920,7 +930,7 @@ nodes:
   - path of steepest ascent
   - Steepest descent
   book_label: DOE-RSM
-  evidence: design-analysis-experiments/response-surface-methods.rst:494
+  evidence: design-analysis-experiments/response-surface-methods.rst:498
   quote: "it is a useful direction to climb while the main effects are large compared with the two-factor
     interactions, the curvature and the noise"
 - id: step_size
@@ -929,7 +939,7 @@ nodes:
   definition: Big enough to change the response in a few runs, small enough not to jump over the optimum.
   aliases: []
   book_label: DOE-RSM
-  evidence: design-analysis-experiments/response-surface-methods.rst:40
+  evidence: design-analysis-experiments/response-surface-methods.rst:44
   quote: big enough to cause a change in the response in a reasonable number of experiments, but not so big as to
     miss an optimum.
 - id: last_best_point
@@ -938,7 +948,7 @@ nodes:
   definition: When the response drops, go back to the best run and fit a new factorial around it.
   aliases: []
   book_label: DOE-RSM
-  evidence: design-analysis-experiments/response-surface-methods.rst:178
+  evidence: design-analysis-experiments/response-surface-methods.rst:182
   quote: So we return back to our *last best point*, because the surface has obviously changed, and we should refit
     our model with a new factorial in this neighbourhood
 - id: curvature
@@ -948,15 +958,16 @@ nodes:
   aliases:
   - nonlinearity
   book_label: DOE-RSM
-  evidence: design-analysis-experiments/response-surface-methods.rst:235
+  evidence: design-analysis-experiments/response-surface-methods.rst:239
   quote: An optimum exhibits curvature, so a model that only has linear terms in it will not be suitable
 - id: curvature_check
   name: Checking for curvature
   type: Method
   definition: Compare the model's predicted center point, b0, with the measured center point.
-  aliases: []
+  aliases:
+  - curvature contrast
   book_label: DOE-RSM
-  evidence: design-analysis-experiments/response-surface-methods.rst:504
+  evidence: design-analysis-experiments/response-surface-methods.rst:508
   quote: Curvature can be assessed by comparing the predicted center point, i.e. the model's intercept
 - id: quadratic_model
   name: Quadratic model
@@ -964,6 +975,8 @@ nodes:
   definition: "Outside mixtures, a model with squared terms such as b_TT x_T^2, to describe curvature. A mixture's
     second-order Scheffe model has none: they fold into its cross-products."
   aliases:
+  - second-degree equation
+  - general second-order model
   - second-order model
   book_label: DOE_central_composite_designs
   evidence: design-analysis-experiments/mixture-experiments.rst:67
@@ -973,9 +986,10 @@ nodes:
   type: DesignType
   definition: A factorial plus center points plus axial points; fits a quadratic model.
   aliases:
+  - composite design
   - CCD
   book_label: DOE_central_composite_designs
-  evidence: design-analysis-experiments/response-surface-methods.rst:506
+  evidence: design-analysis-experiments/response-surface-methods.rst:510
   quote: If there is curvature, add axial points to expand the factorial into a central composite design.
 - id: axial_point
   name: Axial point
@@ -985,7 +999,7 @@ nodes:
   aliases:
   - star point
   book_label: DOE_central_composite_designs
-  evidence: design-analysis-experiments/response-surface-methods.rst:249
+  evidence: design-analysis-experiments/response-surface-methods.rst:253
   quote: "coded units away from the center for a 2 factor system"
 - id: box_behnken
   name: Box-Behnken design
@@ -994,15 +1008,16 @@ nodes:
     suits infeasible corners but cannot be built sequentially from a factorial.
   aliases: []
   book_label: DOE-box-behnken-designs
-  evidence: design-analysis-experiments/response-surface-methods.rst:360
+  evidence: design-analysis-experiments/response-surface-methods.rst:364
   quote: 'A BBD places no runs at the cube vertices: there is no run with every'
 - id: contour_plot
   name: Contour plot
   type: Plot
   definition: Lines of equal predicted response, used to choose where to run next.
-  aliases: []
+  aliases:
+  - contour diagram
   book_label: DOE-RSM
-  evidence: design-analysis-experiments/response-surface-methods.rst:512
+  evidence: design-analysis-experiments/response-surface-methods.rst:516
   quote: Draw contour plots of this estimated response surface
 - id: optimum
   name: Optimum
@@ -1011,7 +1026,7 @@ nodes:
     need not be at one on a constraint."
   aliases: []
   book_label: DOE-RSM
-  evidence: design-analysis-experiments/response-surface-methods.rst:227
+  evidence: design-analysis-experiments/response-surface-methods.rst:231
   quote: "An optimum on a constraint, at the edge of that region, need not be flat"
 - id: plateau
   name: Response levels off
@@ -1020,7 +1035,7 @@ nodes:
   aliases:
   - Two equal steps
   book_label: DOE-RSM
-  evidence: design-analysis-experiments/response-surface-methods.rst:227
+  evidence: design-analysis-experiments/response-surface-methods.rst:231
   quote: The response variable will start to plateau, since, recall that the first derivative is zero at an optimum
 - id: overshoot
   name: Response drops
@@ -1028,7 +1043,7 @@ nodes:
   definition: 'The response falls, sometimes fast, after a step: you overshot the optimum.'
   aliases: []
   book_label: DOE-RSM
-  evidence: design-analysis-experiments/response-surface-methods.rst:231
+  evidence: design-analysis-experiments/response-surface-methods.rst:235
   quote: The response variable decreases, sometimes very rapidly, because we have overshot the optimum.
 - id: big_interactions
   name: Interactions as large as main effects
@@ -1036,7 +1051,7 @@ nodes:
   definition: Interaction terms similar to or larger than the main effects.
   aliases: []
   book_label: DOE-RSM
-  evidence: design-analysis-experiments/response-surface-methods.rst:233
+  evidence: design-analysis-experiments/response-surface-methods.rst:237
   quote: The two-factor interaction terms become similar to, or larger than, the main effect terms.
 - id: center_mismatch
   name: Center point far from prediction
@@ -1045,7 +1060,7 @@ nodes:
     compared with the model's effects.
   aliases: []
   book_label: DOE-RSM
-  evidence: design-analysis-experiments/response-surface-methods.rst:504
+  evidence: design-analysis-experiments/response-surface-methods.rst:508
   quote: A large difference in the prediction, when compared to the model's effects, indicates the response surface
     is curved.
 - id: near_optimum
@@ -1054,7 +1069,7 @@ nodes:
   definition: The region where the surface bends, so a linear model no longer points the way.
   aliases: []
   book_label: DOE-RSM
-  evidence: design-analysis-experiments/response-surface-methods.rst:235
+  evidence: design-analysis-experiments/response-surface-methods.rst:239
   quote: An optimum exhibits curvature, so a model that only has linear terms in it will not be suitable to use
     to find the direction of steepest ascent
 - id: multiple_responses
@@ -1064,7 +1079,7 @@ nodes:
   aliases:
   - multi-objective
   book_label: DOE-multi-response-optimization
-  evidence: design-analysis-experiments/response-surface-methods.rst:519
+  evidence: design-analysis-experiments/response-surface-methods.rst:523
   quote: For example we can achieve a higher production rate, but it is at the expense of more energy.
 - id: single_combined_response
   name: Combine into one response
@@ -1072,7 +1087,7 @@ nodes:
   definition: Rewrite the outcomes as one y, such as total cost or net profit.
   aliases: []
   book_label: DOE-RSM
-  evidence: design-analysis-experiments/response-surface-methods.rst:521
+  evidence: design-analysis-experiments/response-surface-methods.rst:525
   quote: One way to balance all competing objectives is to rephrase the
 - id: overlay_surfaces
   name: Overlay the response surfaces
@@ -1080,7 +1095,7 @@ nodes:
   definition: Superimpose the contours of each response so the trade-offs can be seen.
   aliases: []
   book_label: DOE-RSM
-  evidence: design-analysis-experiments/response-surface-methods.rst:523
+  evidence: design-analysis-experiments/response-surface-methods.rst:527
   quote: This is tremendously helpful when discussing and evaluating alternate operating points, because plant managers
     and operators can then visually see the trade-offs.
 - id: categorical_in_rsm
@@ -1089,7 +1104,7 @@ nodes:
   definition: Fix a categorical factor, optimize the rest, then try its other value.
   aliases: []
   book_label: DOE-RSM
-  evidence: design-analysis-experiments/response-surface-methods.rst:531
+  evidence: design-analysis-experiments/response-surface-methods.rst:535
   quote: are handled by fixing them at one or the other value, and then performing the optimization conditional
     on those selected values.
 - id: evop
@@ -1099,7 +1114,7 @@ nodes:
   aliases:
   - EVOP
   book_label: DOE-EVOP
-  evidence: design-analysis-experiments/response-surface-methods.rst:546
+  evidence: design-analysis-experiments/response-surface-methods.rst:550
   quote: EVOP is an iterative hunt for the process optimum by making small perturbations to the system.
 - id: process_drift
   name: Process drift
@@ -1107,7 +1122,7 @@ nodes:
   definition: The optimum moves as heat exchangers foul, catalyst deactivates, and raw materials change.
   aliases: []
   book_label: DOE-EVOP
-  evidence: design-analysis-experiments/response-surface-methods.rst:544
+  evidence: design-analysis-experiments/response-surface-methods.rst:548
   quote: Since the process is not constant, the optimum will gradually move away from its current operating point.
 - id: phase_screening
   name: 'Phase 1: screening'
@@ -1195,6 +1210,7 @@ nodes:
   type: DesignType
   definition: Runs chosen by a computer to optimize a criterion, for a model you specify, subject to constraints.
   aliases:
+  - alphabetic optimality
   - computer-generated design
   book_label: DOE-optimal-designs
   evidence: design-analysis-experiments/optimal-designs.rst:83
@@ -1300,7 +1316,8 @@ nodes:
   name: Proportions sum to one
   type: Concept
   definition: Mixture components cannot change independently, because sum x_i = 1.
-  aliases: []
+  aliases:
+  - mixture restriction
   book_label: DOE-mixture-designs
   evidence: design-analysis-experiments/mixture-experiments.rst:34
   quote: 'The constraint has one immediate consequence: you cannot change a single ingredient proportion'
@@ -1309,7 +1326,8 @@ nodes:
   type: Concept
   definition: "In a mixture experiment, the region of allowed proportions: for three ingredients a triangle (ternary
     plot), with pure components at the vertices and two-ingredient blends on the edges."
-  aliases: []
+  aliases:
+  - mixture space
   book_label: DOE-mixture-designs
   evidence: design-analysis-experiments/mixture-experiments.rst:40
   quote: "Geometrically, the allowed settings form a *simplex*. For three ingredients this is a triangle,"
@@ -1406,7 +1424,7 @@ nodes:
     1.6 g/L.
   aliases: []
   book_label: DOE-RSM
-  evidence: design-analysis-experiments/response-surface-methods.rst:281
+  evidence: design-analysis-experiments/response-surface-methods.rst:285
   quote: As the solid contour lines in the illustration show, we should run our next experiments roughly at
 - id: ex_fruit_punch
   name: Fruit punch mixture
@@ -1499,7 +1517,7 @@ nodes:
     1957; a reading the chapter gives on evolutionary operation.'
   aliases: []
   book_label: DOE_references
-  evidence: design-analysis-experiments/response-surface-methods.rst:550
+  evidence: design-analysis-experiments/response-surface-methods.rst:554
   quote: 'Some examples of the success of EVOP and a review paper are in these readings:'
 - id: ref_st_john_draper
   name: St. John and Draper, D-optimality (1975)
@@ -1657,7 +1675,8 @@ nodes:
   type: Concept
   definition: 'A = (X1''X1)^-1 X1''X2: how much each term left out of the model biases each fitted coefficient.
     Its main-effect rows are exactly zero for DSD and OMARS designs.'
-  aliases: []
+  aliases:
+  - bias matrix
   book_label: DOE-alias-bias
   evidence: design-analysis-experiments/judging-and-comparing-designs.rst:633
   quote: 'interaction shifts one fitted coefficient: an entry of zero leaves that coefficient'
@@ -1723,7 +1742,7 @@ nodes:
     Box-Behnken designs are rotatable or nearly rotatable.'
   aliases: []
   book_label: DOE-box-behnken-designs
-  evidence: design-analysis-experiments/response-surface-methods.rst:376
+  evidence: design-analysis-experiments/response-surface-methods.rst:380
   quote: giving roughly uniform prediction variance at a
 - id: design_based_staged_analysis
   name: Design-based staged analysis
@@ -1814,7 +1833,7 @@ nodes:
     to any model.
   aliases: []
   book_label: DOE-lack-of-fit
-  evidence: design-analysis-experiments/response-surface-methods.rst:305
+  evidence: design-analysis-experiments/response-surface-methods.rst:309
   quote: two or more runs at exactly the same factor-level combination, differ only by noise, so the spread
 - id: lack_of_fit_test
   name: Lack-of-fit test
@@ -1823,7 +1842,7 @@ nodes:
     evidence of a missing term. Needs replicated runs.
   aliases: []
   book_label: DOE-lack-of-fit
-  evidence: design-analysis-experiments/response-surface-methods.rst:304
+  evidence: design-analysis-experiments/response-surface-methods.rst:308
   quote: The idea is to split the model's residual sum of squares into two parts. Replicated runs, meaning
 - id: sweet_spot
   name: Sweet spot
@@ -1839,7 +1858,8 @@ nodes:
   type: Method
   definition: 'A score from 0 to 1 for one response: 0 at the unacceptable limit, 1 at the goal, with a ramp between
     them whose shape the weight sets.'
-  aliases: []
+  aliases:
+  - desirability function
   book_label: DOE-desirability
   evidence: design-analysis-experiments/multi-response-optimization.rst:482
   quote: Individual desirability grades one response from 0 to 1 between a pair of limits, with a
@@ -1854,12 +1874,14 @@ nodes:
   book_label: DOE-desirability
   evidence: design-analysis-experiments/multi-response-optimization.rst:307
   quote: "the unweighted geometric mean that Derringer and Suich proposed"
-- id: confirm_the_predicted_optimum
-  name: Confirm the predicted optimum
+- id: confirm_the_prediction
+  name: Confirm the prediction
   type: Guideline
-  definition: 'A recommended setting is a prediction: report the prediction interval for each response there, and
-    run confirmation runs before treating it as established.'
+  definition: 'A recommended setting, often the predicted optimum, is a prediction: report the prediction interval
+    for each response there, and confirm it with runs before treating it as established.'
   aliases:
+  - confirm the predicted optimum
+  - confirmatory run
   - Confirmation run
   book_label: DOE-uncertainty-at-the-optimum
   evidence: design-analysis-experiments/multi-response-optimization.rst:490
@@ -1869,7 +1891,8 @@ nodes:
   type: Concept
   definition: "The standard mixture model: linear blending and cross-product terms, with no intercept and no pure
     quadratics. In this form, a positive cross-product coefficient means synergistic blending."
-  aliases: []
+  aliases:
+  - canonical polynomial
   book_label: DOE-mixture-experiments
   evidence: design-analysis-experiments/mixture-experiments.rst:100
   quote: "These readings hold in the Scheffe form"
@@ -1984,6 +2007,15 @@ nodes:
   book_label: APPS_mixed_level_profile_case_study
   evidence: product-development-product-improvement/mixed-level-profile-case-study.rst:552
   quote: 'compounds. The F-test is a single joint test of all five at once: it weighs the drop in the'
+- id: region_of_interest
+  name: Region of interest
+  type: Concept
+  definition: A range for each factor around the current conditions, over which the runs are placed and the local
+    model is meant to hold.
+  aliases: []
+  book_label: DOE-RSM
+  evidence: design-analysis-experiments/response-surface-methods.rst:23
+  quote: for each factor around the current conditions, over which the local model is meant to hold.
 
 edges:
 - [experiment, PART_OF, learning_cycle, "design-analysis-experiments/why-learning-about-systems-is-important.rst:16"]
@@ -2020,7 +2052,7 @@ edges:
 - [two_group_comparison, USES, confidence_interval, "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:19"]
 - [two_group_comparison, USES, t_distribution, "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:31"]
 - [two_group_comparison, AGREES_WITH, least_squares_model, "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:169"]
-- [least_squares_model, USES, indicator_variable, "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:141"]
+- [indicator_variable, PART_OF, least_squares_model, "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:141"]
 - [confidence_interval, TESTS, statistical_significance, "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:33"]
 - [practical_significance, CONTRASTS_WITH, statistical_significance, "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:33"]
 - [practical_significance, USES, confidence_interval, "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:33"]
@@ -2044,7 +2076,7 @@ edges:
 - [two_factor_interaction, IS_A, interaction, "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:186"]
 - [three_factor_interaction, IS_A, interaction, "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:95"]
 - [coefficient, IS_HALF_OF, main_effect, "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:126"]
-- [least_squares_model, ESTIMATES, coefficient, "design-analysis-experiments/response-surface-methods.rst:259"]
+- [least_squares_model, ESTIMATES, coefficient, "design-analysis-experiments/response-surface-methods.rst:263"]
 - [least_squares_model, USES, model_matrix, "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:18"]
 - [intercept, PART_OF, least_squares_model, "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:104"]
 - [model_matrix, HAS_PROPERTY, orthogonality, "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:92"]
@@ -2119,43 +2151,43 @@ edges:
 - [block, USES, randomization, "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:54"]
 - [full_factorial, USES, blocking, "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:115"]
 - [block, USES, complementary_fraction, "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:115"]
-- [rsm, IS_A, sequential_experimentation, "design-analysis-experiments/response-surface-methods.rst:24"]
-- [rsm, SHOWS, response_surface, "design-analysis-experiments/response-surface-methods.rst:18"]
+- [rsm, IS_A, sequential_experimentation, "design-analysis-experiments/response-surface-methods.rst:28"]
+- [rsm, ESTIMATES, response_surface, "design-analysis-experiments/response-surface-methods.rst:18"]
 - [rsm, LOCATES, optimum, "design-analysis-experiments/response-surface-methods.rst:18"]
-- [rsm, USES, full_factorial, "design-analysis-experiments/response-surface-methods.rst:478"]
-- [rsm, USES, steepest_ascent, "design-analysis-experiments/response-surface-methods.rst:486"]
-- [steepest_ascent, USES, coefficient, "design-analysis-experiments/response-surface-methods.rst:138"]
-- [steepest_ascent, USES, step_size, "design-analysis-experiments/response-surface-methods.rst:496"]
-- [steepest_ascent, CONTRASTS_WITH, cost, "design-analysis-experiments/response-surface-methods.rst:24"]
-- [last_best_point, APPLIES_TO, steepest_ascent, "design-analysis-experiments/response-surface-methods.rst:500"]
-- [optimum, HAS_PROPERTY, curvature, "design-analysis-experiments/response-surface-methods.rst:235"]
-- [near_optimum, HAS_PROPERTY, curvature, "design-analysis-experiments/response-surface-methods.rst:235"]
-- [curvature_check, USES, center_point, "design-analysis-experiments/response-surface-methods.rst:504"]
-- [curvature_check, USES, intercept, "design-analysis-experiments/response-surface-methods.rst:504"]
-- [curvature_check, TESTS, curvature, "design-analysis-experiments/response-surface-methods.rst:241"]
-- [plateau, INDICATES, near_optimum, "design-analysis-experiments/response-surface-methods.rst:229"]
-- [overshoot, INDICATES, near_optimum, "design-analysis-experiments/response-surface-methods.rst:231"]
-- [big_interactions, INDICATES, near_optimum, "design-analysis-experiments/response-surface-methods.rst:233"]
-- [center_mismatch, INDICATES, curvature, "design-analysis-experiments/response-surface-methods.rst:504"]
-- [curvature, REMEDIED_BY, quadratic_model, "design-analysis-experiments/response-surface-methods.rst:241"]
-- [overshoot, REMEDIED_BY, last_best_point, "design-analysis-experiments/response-surface-methods.rst:178"]
-- [ccd, ESTIMATES, quadratic_model, "design-analysis-experiments/response-surface-methods.rst:259"]
-- [ccd, USES, axial_point, "design-analysis-experiments/response-surface-methods.rst:247"]
-- [ccd, USES, center_point, "design-analysis-experiments/response-surface-methods.rst:434"]
-- [full_factorial, CAN_AUGMENT_TO, ccd, "design-analysis-experiments/response-surface-methods.rst:247"]
-- [box_behnken, ESTIMATES, quadratic_model, "design-analysis-experiments/response-surface-methods.rst:372"]
-- [contour_plot, SHOWS, response_surface, "design-analysis-experiments/response-surface-methods.rst:512"]
-- [contour_plot, LOCATES, optimum, "design-analysis-experiments/response-surface-methods.rst:281"]
-- [multiple_responses, REMEDIED_BY, single_combined_response, "design-analysis-experiments/response-surface-methods.rst:521"]
-- [multiple_responses, REMEDIED_BY, overlay_surfaces, "design-analysis-experiments/response-surface-methods.rst:523"]
+- [full_factorial, SUITED_TO, rsm, "design-analysis-experiments/response-surface-methods.rst:482"]
+- [steepest_ascent, PART_OF, rsm, "design-analysis-experiments/response-surface-methods.rst:490"]
+- [steepest_ascent, USES, coefficient, "design-analysis-experiments/response-surface-methods.rst:142"]
+- [steepest_ascent, USES, step_size, "design-analysis-experiments/response-surface-methods.rst:500"]
+- [steepest_ascent, CONTRASTS_WITH, cost, "design-analysis-experiments/response-surface-methods.rst:28"]
+- [last_best_point, APPLIES_TO, steepest_ascent, "design-analysis-experiments/response-surface-methods.rst:504"]
+- [optimum, HAS_PROPERTY, curvature, "design-analysis-experiments/response-surface-methods.rst:239"]
+- [near_optimum, HAS_PROPERTY, curvature, "design-analysis-experiments/response-surface-methods.rst:239"]
+- [curvature_check, USES, center_point, "design-analysis-experiments/response-surface-methods.rst:508"]
+- [curvature_check, USES, intercept, "design-analysis-experiments/response-surface-methods.rst:508"]
+- [curvature_check, TESTS, curvature, "design-analysis-experiments/response-surface-methods.rst:245"]
+- [plateau, INDICATES, near_optimum, "design-analysis-experiments/response-surface-methods.rst:233"]
+- [overshoot, INDICATES, near_optimum, "design-analysis-experiments/response-surface-methods.rst:235"]
+- [big_interactions, INDICATES, near_optimum, "design-analysis-experiments/response-surface-methods.rst:237"]
+- [center_mismatch, INDICATES, curvature, "design-analysis-experiments/response-surface-methods.rst:508"]
+- [curvature, REMEDIED_BY, quadratic_model, "design-analysis-experiments/response-surface-methods.rst:245"]
+- [overshoot, REMEDIED_BY, last_best_point, "design-analysis-experiments/response-surface-methods.rst:182"]
+- [ccd, ESTIMATES, quadratic_model, "design-analysis-experiments/response-surface-methods.rst:263"]
+- [ccd, USES, axial_point, "design-analysis-experiments/response-surface-methods.rst:251"]
+- [ccd, USES, center_point, "design-analysis-experiments/response-surface-methods.rst:438"]
+- [full_factorial, CAN_AUGMENT_TO, ccd, "design-analysis-experiments/response-surface-methods.rst:251"]
+- [box_behnken, ESTIMATES, quadratic_model, "design-analysis-experiments/response-surface-methods.rst:376"]
+- [contour_plot, SHOWS, response_surface, "design-analysis-experiments/response-surface-methods.rst:516"]
+- [contour_plot, LOCATES, optimum, "design-analysis-experiments/response-surface-methods.rst:285"]
+- [multiple_responses, REMEDIED_BY, single_combined_response, "design-analysis-experiments/response-surface-methods.rst:525"]
+- [multiple_responses, REMEDIED_BY, overlay_surfaces, "design-analysis-experiments/response-surface-methods.rst:527"]
 - [overlay_surfaces, USES, contour_plot, "design-analysis-experiments/multi-response-optimization.rst:187"]
-- [categorical_in_rsm, APPLIES_TO, categorical_factor, "design-analysis-experiments/response-surface-methods.rst:531"]
-- [categorical_in_rsm, APPLIES_TO, rsm, "design-analysis-experiments/response-surface-methods.rst:531"]
-- [evop, IS_A, sequential_experimentation, "design-analysis-experiments/response-surface-methods.rst:546"]
-- [evop, LOCATES, optimum, "design-analysis-experiments/response-surface-methods.rst:544"]
+- [categorical_in_rsm, APPLIES_TO, categorical_factor, "design-analysis-experiments/response-surface-methods.rst:535"]
+- [categorical_in_rsm, APPLIES_TO, rsm, "design-analysis-experiments/response-surface-methods.rst:535"]
+- [evop, IS_A, sequential_experimentation, "design-analysis-experiments/response-surface-methods.rst:550"]
+- [evop, LOCATES, optimum, "design-analysis-experiments/response-surface-methods.rst:548"]
 - [process_drift, REMEDIED_BY, evop, "design-analysis-experiments/general-approach-for-experimentation.rst:43"]
-- [evop, USES, replicate, "design-analysis-experiments/response-surface-methods.rst:548"]
-- [process_drift, IS_A, time_effect, "design-analysis-experiments/response-surface-methods.rst:544"]
+- [evop, USES, replicate, "design-analysis-experiments/response-surface-methods.rst:552"]
+- [process_drift, IS_A, time_effect, "design-analysis-experiments/response-surface-methods.rst:548"]
 - [phase_screening, PRECEDES, phase_sequential, "design-analysis-experiments/general-approach-for-experimentation.rst:30"]
 - [phase_sequential, PRECEDES, phase_optimize, "design-analysis-experiments/general-approach-for-experimentation.rst:36"]
 - [phase_optimize, PRECEDES, phase_maintain, "design-analysis-experiments/general-approach-for-experimentation.rst:41"]
@@ -2212,23 +2244,23 @@ edges:
 - [ex_7_factor_screen, ILLUSTRATES, single_factor_foldover, "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst:14"]
 - [ex_8_factor, ILLUSTRATES, resolution_iv, "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst:14"]
 - [ex_raw_material_blocks, ILLUSTRATES, blocking, "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:54"]
-- [ex_rsm_profit, ILLUSTRATES, rsm, "design-analysis-experiments/response-surface-methods.rst:285"]
-- [ex_rsm_profit, ILLUSTRATES, curvature_check, "design-analysis-experiments/response-surface-methods.rst:239"]
-- [ex_rsm_profit, ILLUSTRATES, ccd, "design-analysis-experiments/response-surface-methods.rst:257"]
+- [ex_rsm_profit, ILLUSTRATES, rsm, "design-analysis-experiments/response-surface-methods.rst:289"]
+- [ex_rsm_profit, ILLUSTRATES, curvature_check, "design-analysis-experiments/response-surface-methods.rst:243"]
+- [ex_rsm_profit, ILLUSTRATES, ccd, "design-analysis-experiments/response-surface-methods.rst:261"]
 - [ex_fruit_punch, ILLUSTRATES, mixture_design, "design-analysis-experiments/mixture-experiments.rst:164"]
 - [ex_cell_culture, ILLUSTRATES, fractional_factorial, "design-analysis-experiments/fractional-factorial-designs/index.rst:15"]
 - [q_narrow_factors, ANSWERED_BY, screening, "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst:13"]
 - [q_after_screening, ANSWERED_BY, phase_sequential, "design-analysis-experiments/general-approach-for-experimentation.rst:33"]
-- [q_after_screening, ANSWERED_BY, rsm, "design-analysis-experiments/response-surface-methods.rst:529"]
+- [q_after_screening, ANSWERED_BY, rsm, "design-analysis-experiments/response-surface-methods.rst:533"]
 - [q_old_data, ANSWERED_BY, least_squares_model, "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst:14"]
-- [q_two_goals, ANSWERED_BY, multiple_responses, "design-analysis-experiments/response-surface-methods.rst:519"]
+- [q_two_goals, ANSWERED_BY, multiple_responses, "design-analysis-experiments/response-surface-methods.rst:523"]
 - [q_unsafe_corner, ANSWERED_BY, optimal_design, "design-analysis-experiments/optimal-designs.rst:367"]
 - [randomization, DESCRIBED_IN, ref_fisher, "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:182"]
 - [cost, DESCRIBED_IN, ref_fisher, "design-analysis-experiments/changing-one-single-variable-at-a-time.rst:25"]
 - [trade_off_table, DESCRIBED_IN, ref_bhh, "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst:51"]
 - [coefficient, CONTRASTS_WITH, ref_bhh, "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:144"]
 - [fractional_factorial, DESCRIBED_IN, ref_box_hunter_1961, "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst:36"]
-- [evop, DESCRIBED_IN, ref_box_1957, "design-analysis-experiments/response-surface-methods.rst:552"]
+- [evop, DESCRIBED_IN, ref_box_1957, "design-analysis-experiments/response-surface-methods.rst:556"]
 - [d_optimal, DESCRIBED_IN, ref_st_john_draper, "design-analysis-experiments/optimal-designs.rst:128"]
 - [dsd, DESCRIBED_IN, ref_jones_2011, "design-analysis-experiments/definitive-screening-designs.rst:23"]
 - [learning_cycle, DESCRIBED_IN, ref_bhh, "design-analysis-experiments/why-learning-about-systems-is-important.rst:12"]
@@ -2250,7 +2282,7 @@ edges:
 - [omars_trade_off_table, SHOWS, degrees_of_freedom, "design-analysis-experiments/omars-designs.rst:380"]
 - [information_matrix, USES, model_matrix, "design-analysis-experiments/optimal-designs.rst:146"]
 - [optimality_criterion, MEASURES, information_matrix, "design-analysis-experiments/optimal-designs.rst:197"]
-- [information_matrix, HAS_PROPERTY, orthogonality, "design-analysis-experiments/optimal-designs.rst:192"]
+- [information_matrix, SHOWS, orthogonality, "design-analysis-experiments/optimal-designs.rst:192"]
 - [e_optimality, IS_A, optimality_criterion, "design-analysis-experiments/optimal-designs.rst:222"]
 - [e_optimality, MEASURES, information_matrix, "design-analysis-experiments/optimal-designs.rst:222"]
 - [v_optimal, SUITED_TO, rsm, "design-analysis-experiments/optimal-designs.rst:604"]
@@ -2292,8 +2324,8 @@ edges:
 - [compare_d_efficiency_only_at_equal_run_counts, APPLIES_TO, statistical_power, "design-analysis-experiments/comparing-design-families.rst:520"]
 - [face_centred_central_composite_design, IS_A, ccd, "design-analysis-experiments/comparing-design-families.rst:425"]
 - [face_centred_central_composite_design, IS_A, omars_design, "design-analysis-experiments/omars-designs.rst:68"]
-- [box_behnken, HAS_PROPERTY, rotatability, "design-analysis-experiments/response-surface-methods.rst:375"]
-- [rotatability, APPLIES_TO, prediction_variance, "design-analysis-experiments/response-surface-methods.rst:376"]
+- [box_behnken, HAS_PROPERTY, rotatability, "design-analysis-experiments/response-surface-methods.rst:379"]
+- [rotatability, APPLIES_TO, prediction_variance, "design-analysis-experiments/response-surface-methods.rst:380"]
 - [ccd, HAS_PROPERTY, rotatability, "design-analysis-experiments/comparing-design-families.rst:427"]
 - [design_based_staged_analysis, APPLIES_TO, dsd, "design-analysis-experiments/omars-designs.rst:833"]
 - [design_based_staged_analysis, USES, effect_heredity, "design-analysis-experiments/omars-designs.rst:840"]
@@ -2320,12 +2352,12 @@ edges:
 - [pseudo_standard_error, PART_OF, lenth_method, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105"]
 - [lenth_method, SHOWS, half_normal_plot, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:131"]
 - [half_normal_plot, COMPLEMENTS, pareto_plot, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:12"]
-- [pure_error, USES, replicate, "design-analysis-experiments/response-surface-methods.rst:305"]
+- [pure_error, USES, replicate, "design-analysis-experiments/response-surface-methods.rst:309"]
 - [pure_error, USES, center_point, "design-analysis-experiments/omars-worked-study.rst:616"]
-- [pure_error, PART_OF, lack_of_fit_test, "design-analysis-experiments/response-surface-methods.rst:304"]
-- [lack_of_fit_test, USES, pure_error, "design-analysis-experiments/response-surface-methods.rst:304"]
-- [lack_of_fit_test, GENERALIZES, curvature_check, "design-analysis-experiments/response-surface-methods.rst:301"]
-- [lack_of_fit_test, REQUIRES, replicate, "design-analysis-experiments/response-surface-methods.rst:342"]
+- [pure_error, PART_OF, lack_of_fit_test, "design-analysis-experiments/response-surface-methods.rst:308"]
+- [lack_of_fit_test, USES, pure_error, "design-analysis-experiments/response-surface-methods.rst:308"]
+- [lack_of_fit_test, GENERALIZES, curvature_check, "design-analysis-experiments/response-surface-methods.rst:305"]
+- [lack_of_fit_test, REQUIRES, replicate, "design-analysis-experiments/response-surface-methods.rst:346"]
 - [multiple_responses, REMEDIED_BY, sweet_spot, "design-analysis-experiments/multi-response-optimization.rst:24"]
 - [overlay_surfaces, SHOWS, sweet_spot, "design-analysis-experiments/multi-response-optimization.rst:187"]
 - [sweet_spot, ALTERNATIVE_TO, overall_desirability, "design-analysis-experiments/multi-response-optimization.rst:258"]
@@ -2333,8 +2365,8 @@ edges:
 - [multiple_responses, REMEDIED_BY, individual_desirability, "design-analysis-experiments/multi-response-optimization.rst:25"]
 - [overall_desirability, ALTERNATIVE_TO, single_combined_response, "design-analysis-experiments/multi-response-optimization.rst:445"]
 - [overall_desirability, ALTERNATIVE_TO, sweet_spot, "design-analysis-experiments/multi-response-optimization.rst:258"]
-- [confirm_the_predicted_optimum, APPLIES_TO, optimum, "design-analysis-experiments/multi-response-optimization.rst:417"]
-- [overall_desirability, PRECEDES, confirm_the_predicted_optimum, "design-analysis-experiments/screen-then-optimise-study.rst:20"]
+- [confirm_the_prediction, APPLIES_TO, optimum, "design-analysis-experiments/multi-response-optimization.rst:417"]
+- [overall_desirability, PRECEDES, confirm_the_prediction, "design-analysis-experiments/screen-then-optimise-study.rst:20"]
 - [mixture_design, USES, scheffe_model, "design-analysis-experiments/mixture-experiments.rst:77"]
 - [mixture_constraint, CAUSES, scheffe_model, "design-analysis-experiments/mixture-experiments.rst:48"]
 - [scheffe_model, CONTRASTS_WITH, quadratic_model, "design-analysis-experiments/mixture-experiments.rst:97"]
@@ -2371,9 +2403,9 @@ edges:
 - [d_optimal, USES, information_matrix, "design-analysis-experiments/optimal-designs.rst:202"]
 - [coordinate_exchange_algorithm, CONTRASTS_WITH, exchange_algorithm, "design-analysis-experiments/optimal-designs.rst:342"]
 - [optimal_design, USES, coordinate_exchange_algorithm, "design-analysis-experiments/optimal-designs.rst:309"]
-- [lack_of_fit_test, APPLIES_TO, quadratic_model, "design-analysis-experiments/response-surface-methods.rst:299"]
+- [lack_of_fit_test, APPLIES_TO, quadratic_model, "design-analysis-experiments/response-surface-methods.rst:303"]
 - [face_centred_central_composite_design, USES, axial_point, "design-analysis-experiments/comparing-design-families.rst:426"]
-- [face_centred_central_composite_design, CONTRASTS_WITH, box_behnken, "design-analysis-experiments/response-surface-methods.rst:455"]
+- [face_centred_central_composite_design, CONTRASTS_WITH, box_behnken, "design-analysis-experiments/response-surface-methods.rst:459"]
 - [pseudocomponent, APPLIES_TO, simplex, "design-analysis-experiments/mixture-experiments.rst:143"]
 - [pseudocomponent, APPLIES_TO, mixture_design, "design-analysis-experiments/mixture-experiments.rst:145"]
 - [e_optimality, CONTRASTS_WITH, d_optimal, "design-analysis-experiments/optimal-designs.rst:230"]
@@ -2383,8 +2415,8 @@ edges:
 - [multiple_responses, REMEDIED_BY, overall_desirability, "design-analysis-experiments/multi-response-optimization.rst:25"]
 - [overall_desirability, LOCATES, optimum, "design-analysis-experiments/multi-response-optimization.rst:345"]
 - [overall_desirability, CONTRASTS_WITH, single_combined_response, "design-analysis-experiments/multi-response-optimization.rst:438"]
-- [lack_of_fit_test, USES, replicate, "design-analysis-experiments/response-surface-methods.rst:342"]
-- [lack_of_fit_test, TESTS, quadratic_model, "design-analysis-experiments/response-surface-methods.rst:299"]
+- [lack_of_fit_test, USES, replicate, "design-analysis-experiments/response-surface-methods.rst:346"]
+- [lack_of_fit_test, TESTS, quadratic_model, "design-analysis-experiments/response-surface-methods.rst:303"]
 - [randomization, PART_OF, randomization_replication_and_blocking, "design-analysis-experiments/general-approach-for-experimentation.rst:18"]
 - [replicate, PART_OF, randomization_replication_and_blocking, "design-analysis-experiments/general-approach-for-experimentation.rst:18"]
 - [blocking, PART_OF, randomization_replication_and_blocking, "design-analysis-experiments/general-approach-for-experimentation.rst:18"]
@@ -2399,3 +2431,87 @@ edges:
 - [joint_f_test_of_a_categorical_interaction, REQUIRES, degrees_of_freedom, "product-development-product-improvement/mixed-level-profile-case-study.rst:556"]
 - [standard_error, REQUIRES, noise_standard_deviation, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:187"]
 - [pure_error, ESTIMATES, noise_standard_deviation, "design-analysis-experiments/general-approach-for-experimentation.rst:18"]
+- [blocking, LIMITS, pure_error, "design-analysis-experiments/general-approach-for-experimentation.rst:18"]
+- [standard_order, CONTRASTS_WITH, randomization, "design-analysis-experiments/design-analysis-experiments-exercises.rst:651"]
+- [constraint, LIMITS, steepest_ascent, "design-analysis-experiments/response-surface-methods.rst:500"]
+- [effect_sparsity, JUSTIFIES, screening, "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:192"]
+- [mixture_constraint, CAUSES, collinearity, "design-analysis-experiments/mixture-experiments.rst:48"]
+- [pure_error, HAS_PROPERTY, degrees_of_freedom, "design-analysis-experiments/response-surface-methods.rst:329"]
+- [orthogonality, PREVENTS, correlation, "design-analysis-experiments/judging-and-comparing-designs.rst:585"]
+- [screening, USES, projectivity, "design-analysis-experiments/general-approach-for-experimentation.rst:33"]
+- [factor, CAUSES, response, "design-analysis-experiments/design-analysis-experiments.rst:298"]
+- [coefficient, HAS_PROPERTY, standard_error, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:189"]
+- [fractional_factorial, SUITED_TO, screening, "design-analysis-experiments/response-surface-methods.rst:533"]
+- [experiment, TESTS, conjecture, "design-analysis-experiments/why-learning-about-systems-is-important.rst:16"]
+- [generator, IS_A, word, "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst:63"]
+- [plackett_burman, CAN_AUGMENT_TO, full_foldover, "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:181"]
+- [plackett_burman, HAS_PROPERTY, resolution_iii, "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:181"]
+- [quadratic_model, REQUIRES, level, "design-analysis-experiments/optimal-designs.rst:254"]
+- [resolution_v, SUITED_TO, ccd, "design-analysis-experiments/comparing-design-families.rst:81"]
+- [rsm, USES, region_of_interest, "design-analysis-experiments/response-surface-methods.rst:22"]
+- [coding, USES, region_of_interest, "design-analysis-experiments/response-surface-methods.rst:24"]
+
+# Other texts that state the same link as the book: a link they corroborate is stronger. Only the source and the
+# link are recorded; the texts' own words stay out of this repository.
+sources:
+  box_draper_2007: "G. E. P. Box and N. R. Draper (2007), Response Surfaces, Mixtures, and Ridge Analyses, 2nd ed., Wiley"
+corroborated:
+  box_draper_2007:
+  - [numeric_factor, IS_A, factor]
+  - [disturbance, CAUSES, response]
+  - [indicator_variable, PART_OF, least_squares_model]
+  - [cube_plot, SHOWS, full_factorial]
+  - [least_squares_model, USES, model_matrix]
+  - [replicate, CAUSES, degrees_of_freedom]
+  - [center_point, KEEPS, orthogonality]
+  - [fractional_factorial, PART_OF, full_factorial]
+  - [half_fraction, IS_A, fractional_factorial]
+  - [half_fraction, CAN_AUGMENT_TO, full_factorial]
+  - [generator, PART_OF, defining_relation]
+  - [word, PART_OF, defining_relation]
+  - [alias_calculation, USES, defining_relation]
+  - [alias_calculation, SHOWS, alias_structure]
+  - [resolution, USES, defining_relation]
+  - [resolution_iv, IS_A, resolution]
+  - [saturated_design, HAS_PROPERTY, resolution_iii]
+  - [plackett_burman, SUITED_TO, screening]
+  - [full_foldover, IS_A, foldover]
+  - [foldover, IS_A, sequential_experimentation]
+  - [single_factor_foldover, PREVENTS, confounding]
+  - [resolution_iii, CAN_AUGMENT_TO, resolution_iv]
+  - [rsm, IS_A, sequential_experimentation]
+  - [full_factorial, SUITED_TO, rsm]
+  - [steepest_ascent, PART_OF, rsm]
+  - [steepest_ascent, USES, coefficient]
+  - [steepest_ascent, CONTRASTS_WITH, cost]
+  - [curvature_check, USES, center_point]
+  - [full_factorial, CAN_AUGMENT_TO, ccd]
+  - [contour_plot, SHOWS, response_surface]
+  - [overlay_surfaces, USES, contour_plot]
+  - [d_optimal, IS_A, optimality_criterion]
+  - [g_optimal, IS_A, optimality_criterion]
+  - [mixture_design, REQUIRES, mixture_constraint]
+  - [mirror_image_pair, PART_OF, foldover]
+  - [optimality_criterion, MEASURES, information_matrix]
+  - [information_matrix, SHOWS, orthogonality]
+  - [rotatability, APPLIES_TO, prediction_variance]
+  - [confirm_the_prediction, APPLIES_TO, optimum]
+  - [blocking, LIMITS, pure_error]
+  - [standard_order, CONTRASTS_WITH, randomization]
+  - [constraint, LIMITS, steepest_ascent]
+  - [effect_sparsity, JUSTIFIES, screening]
+  - [mixture_constraint, CAUSES, collinearity]
+  - [pure_error, HAS_PROPERTY, degrees_of_freedom]
+  - [orthogonality, PREVENTS, correlation]
+  - [screening, USES, projectivity]
+  - [factor, CAUSES, response]
+  - [coefficient, HAS_PROPERTY, standard_error]
+  - [fractional_factorial, SUITED_TO, screening]
+  - [experiment, TESTS, conjecture]
+  - [generator, IS_A, word]
+  - [plackett_burman, CAN_AUGMENT_TO, full_foldover]
+  - [plackett_burman, HAS_PROPERTY, resolution_iii]
+  - [quadratic_model, REQUIRES, level]
+  - [resolution_v, SUITED_TO, ccd]
+  - [rsm, USES, region_of_interest]
+  - [coding, USES, region_of_interest]
