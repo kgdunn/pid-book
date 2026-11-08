@@ -224,7 +224,7 @@ We determine that at run 12 the profit is :math:`y_{12}` = $ 716. But our previo
 
 One must realize that as one approaches an optimum we will find:
 
-	-	The response variable will start to plateau, since, recall that the first derivative is zero at an optimum, implying the surface flattens out, and all points, in all directions away from the optimum are worse off.
+	-	The response variable will start to plateau, since, recall that the first derivative is zero at an optimum in the interior of the operating region, implying the surface flattens out, and all points, in all directions away from the optimum are worse off. An optimum on a constraint, at the edge of that region, need not be flat, because the response can still be improving where the constraint stops further moves.
 
 	-	The response variable remains roughly constant for two consecutive jumps, because one has jumped over the optimum.
 
@@ -491,7 +491,7 @@ The general approach for response surface modelling
 
 	The path of steepest ascent is climbed. Move any one of the main effects, e.g. :math:`b_A` by a certain amount, :math:`\Delta x_A`. Then move the other effects: :math:`\Delta x_i = \frac{b_i}{b_A} \Delta x_A`. For example, :math:`\Delta x_C` is moved by :math:`\frac{b_C}{b_A} \Delta x_A`.
 
-	This simple ratio is the gradient of the *first-order* (planar) part of the model, so it points along the steepest ascent only while the interaction terms are negligible. If the two-factor interactions are similar to, or larger than, the main effects, the fitted surface is a twisted plane rather than a flat one, and the direction of steepest ascent turns as you move. In that case, do not follow the linear gradient blindly: draw the contour plot of the fitted model and read the next point off the surface, or move to a second-order design (:ref:`central composite design <DOE_central_composite_designs>`) that can describe the curvature.
+	This simple ratio is the gradient of the *first-order* (planar) part of the model, so it is a useful direction to climb while the main effects are large compared with the two-factor interactions, the curvature and the noise. If the two-factor interactions are similar to, or larger than, the main effects, the fitted surface is a twisted plane rather than a flat one, and the direction of steepest ascent turns as you move. In that case, do not follow the linear gradient blindly: draw the contour plot of the fitted model and read the next point off the surface, or move to a second-order design (:ref:`central composite design <DOE_central_composite_designs>`) that can describe the curvature.
 
 	If any of the :math:`\Delta x_i` values are too large to safely implement, then take a smaller proportional step in all factors. Recall that these are coded units, so unscale them to obtain the move amount in real-world units.
 

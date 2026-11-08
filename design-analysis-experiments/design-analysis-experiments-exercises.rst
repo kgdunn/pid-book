@@ -194,7 +194,7 @@ Exercises
 	#.	Refit the model using only the significant terms identified in the second question.
 
 		-	Explain why you don't actually have to recalculate the least squares model parameters.
-		-	Compute the standard error and confirm that the effects are indeed significant at the 95% level.
+		-	Estimate the noise standard deviation and the standard errors of the effects, and confirm that the effects are indeed significant at the 95% level.
 
 	#.	Write down the exact settings for **A**, **B**, **C**, and **D** you would provide to the graduate student running a half-fraction in 8 runs for this system.
 
@@ -257,7 +257,7 @@ Exercises
 
 		The subset matrix of :math:`\mathbf{X}_{\text{sub}}` is found by sub-sampling from the full :math:`16 \times 16` matrix; similarly for the coefficient vector :math:`\mathbf{b}`. From this we can calculate:
 
-		-	The standard error is :math:`S_E = 3.1`, which is pretty tight, considering the ranges of y-values in the data set
+		-	The noise standard deviation is estimated as :math:`S_E = 3.1`, which is pretty tight, considering the ranges of y-values in the data set
 		-	The critical :math:`t`-value for the 95% confidence level = 2.23
 		-	The variances of the parameters in the model are the diagonal of :math:`\left(\mathbf{X}^T\mathbf{X}\right)^{-1}S_E^2`, and :math:`\mathbf{X}^T\mathbf{X} = 16\mathbf{I}` because the columns are orthogonal. So :math:`S_E(b_i) = \sqrt{\dfrac{3.1^2}{16}}` = 0.78.
 		-	The confidence intervals for each of the significant effects are:
@@ -1180,13 +1180,13 @@ Exercises
 
 		that you would use to solve the equation :math:`\mathbf{b} = \left(\mathbf{X}^T \mathbf{X} \right)^{-1} \mathbf{X}^T \mathbf{y}` to obtain the parameter estimates of the model you proposed in the previous part. You must use data from all 10 experiments.
 
-	#.	How many degrees of freedom will be available to estimate the standard error and confidence intervals?
+	#.	How many degrees of freedom will be available to estimate the noise standard deviation and the confidence intervals?
 
 .. admonition:: Solution
 
 	#.	These are centerpoint (baseline) runs. They may have been run for some of the following reasons:
 
-		*	To give degrees of freedom for calculating the standard error and then confidence intervals for the slopes.
+		*	To give degrees of freedom for estimating the noise standard deviation and then confidence intervals for the slopes.
 
 		*	Trial runs, though they were not done first, so that's unlikely.
 
