@@ -30,8 +30,8 @@ NAMES = {
     "omars_design": ("DSD and OMARS", "Definitive screening and OMARS designs"),
     "statistical_significance": ("Significance tests", "Comparing two groups: significance, intervals and power"),
     "coefficient": ("Coefficients", "Coefficients, coding, standard errors and Lenth's method"),
-    "steepest_ascent": ("Steepest ascent", "The path of steepest ascent: step size, overshoot and plateau"),
-    "curvature": ("Curvature", "Curvature, center points and second-order designs"),
+    "quadratic_model": ("Second-order models", "Second-order designs, steepest ascent and the stationary point"),
+    "analysis_of_variance": ("Replicates and ANOVA", "Replicates, pure error, lack of fit and the analysis of variance"),
     "optimal_design": ("Optimal and mixture designs", "Optimal designs, constraints and mixtures"),
     "experiment": ("Causality", "Experiments, causality and happenstance data"),
 }
