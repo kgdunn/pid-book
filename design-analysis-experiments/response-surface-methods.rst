@@ -565,6 +565,50 @@ factor less its terms with another factor squared (for :math:`T` at :math:`\alph
 quadratic fails, provided the standard error comes from replicated runs or another estimate of the
 run-to-run noise that does not depend on the fitted model.
 
+Each of the two slopes is the slope of a chord, a straight line between two points placed
+symmetrically about the centre of the design. Whatever its curvature, a quadratic gives both chords
+the slope of the surface at the centre, because each squared term adds the same amount at both ends
+of a chord, and the interaction term is zero on the axial runs and averages out over the factorial runs
+at :math:`x_S = -1` and :math:`+1`. Only terms beyond the quadratic can make the two chords differ,
+and the lower panels of the figure below show this for the two third-order terms.
+
+For the bioreactor, the axial runs 16 and 14 give one chord for temperature, and the factorial
+runs, averaged at the low and at the high temperature, give the other.
+
+.. code-block:: python
+
+	import plotly.graph_objects as go
+
+	axial = rsm_ccd[(rsm_ccd["S"] == 0) & (rsm_ccd["T"] != 0)].sort_values("T")   # runs 16 and 14
+	corners = rsm_ccd[rsm_ccd["T"].abs() == 1].groupby("T")["profit"].mean()     # 8 with 10, 9 with 11
+	slope_axial = axial["profit"].diff().iloc[1] / axial["T"].diff().iloc[1]
+	slope_factorial = (corners.loc[1] - corners.loc[-1]) / 2
+	print(f"{slope_axial:.2f}, {slope_factorial:.2f}, contrast {slope_axial - slope_factorial:.2f}")
+	# 12.73, 13.25, contrast -0.52
+
+	chords = go.Figure()
+	chords.add_scatter(x=axial["T"], y=axial["profit"], mode="lines+markers", name="axial runs 16 and 14")
+	chords.add_scatter(x=[-1, 1], y=corners.values, mode="lines+markers",
+	                   name="factorial runs, averaged at each temperature")
+	chords.update_layout(xaxis_title="Coded temperature, x_T", yaxis_title="Profit [$/day]")
+	chords.show()
+
+.. figure:: ../figures/doe/third-order-contrasts.png
+	:align: center
+	:width: 750px
+	:alt: Four panels. The first shows the bioreactor's composite design with the two axial runs on the temperature axis and the four factorial runs, the two ways to measure the slope of temperature. The second plots profit against coded temperature: the chord through the axial runs and the chord through the averaged factorial runs are nearly parallel. The third adds a cubic term in temperature, and the axial chord becomes the steeper one. The fourth adds a term in temperature times substrate squared, and only the factorial chord becomes steeper.
+
+	Each factor's slope is measured twice in a composite design. (a) For temperature: from axial
+	runs 16 and 14, and from the factorial pairs 10 to 11 and 8 to 9. (b) In the bioreactor runs
+	the two chords are close to parallel, as any quadratic surface makes them. (c) A cubic term in
+	:math:`T` tilts the wider axial chord more, by :math:`(\alpha^2 - 1)\,b_{TTT}`. (d) A term in
+	:math:`x_T x_S^2` tilts only the factorial chord, whose runs sit at :math:`x_S = \pm 1`, by
+	:math:`b_{TSS}`. The cubic coefficients in (c) and (d) are illustrative. The faint curves are the
+	surface along :math:`x_S = 0` (orange) and its average over :math:`x_S = \pm 1` (blue).
+
+``third_order_contrasts`` in ``process_improve`` computes the contrast for every factor, with its
+standard error.
+
 .. code-block:: python
 
 	from process_improve.experiments import third_order_contrasts
