@@ -335,6 +335,44 @@ factorial-minus-centre difference estimated before the axial runs were made.
 	print(f"{rsm_ccd['profit'][:4].mean() - 688:.2f}, {quad_sum:.3f}")
 	# -17.75, -16.375
 
+**Checking that the fitted surface stands out from its noise**
+
+The contours of a fitted model separate one setting from another only where :math:`\hat{y}` changes
+by several of its own standard errors; smaller differences can come from the run-to-run noise
+alone. For a model with :math:`p` terms fitted to :math:`n` runs, the variance of :math:`\hat{y}`
+averaged over the runs is :math:`p\sigma^2/n`, whatever the design, because the variance at run
+:math:`i` is :math:`h_i \sigma^2` and the :doc:`leverages
+<../least-squares-modelling/outliers-discrepancy-leverage-and-influence-of-the-observations>`
+:math:`h_i` sum to :math:`p`. The check due to Box and Wetz compares the change in :math:`\hat{y}`
+over the region with the square root of this average. The bioreactor has no replicated runs, so
+:math:`s`, the square root of the residual mean square of the quadratic fit, takes the place of
+:math:`\sigma`.
+
+.. code-block:: python
+
+	from scipy import stats
+	from process_improve.experiments import analyze_experiment
+
+	rsm_analysis = analyze_experiment(rsm_ccd[["T", "S"]], rsm_ccd["profit"], model="quadratic")
+	# The average standard error of the fitted values, sqrt(p s^2 / n), with p = 6 and n = 9
+	rsm_se_fit = rsm_analysis["model_summary"]["average_fitted_variance"] ** 0.5
+	rsm_span = rsm_fit.fittedvalues.max() - rsm_fit.fittedvalues.min()
+	print(f"{rsm_se_fit:.2f}, {rsm_span:.1f}, {rsm_span / rsm_se_fit:.0f}")
+	# 1.88, 117.6, 62
+
+	# Upper limit of the 95% confidence interval for sigma, as a multiple of s (3 degrees of freedom)
+	rsm_sigma_factor = (3 / stats.chi2.ppf(0.025, 3)) ** 0.5
+	print(f"{rsm_sigma_factor:.1f}, {rsm_span / (rsm_se_fit * rsm_sigma_factor):.0f}")
+	# 3.7, 17
+
+The fitted profit changes by about 62 average standard errors across the nine runs, so the
+high-profit region that the contours of this model mark out is not an artefact of noise.
+
+That reading depends on :math:`s`, which rests on 3 degrees of freedom and also contains any lack of
+fit. Lack of fit makes :math:`s` larger and the ratio smaller. The few degrees of freedom can make
+:math:`s` smaller than :math:`\sigma`, but even at the upper limit of the :ref:`95% confidence
+interval <univariate_CI_variance>` for :math:`\sigma`, 3.7 times :math:`s`, the ratio is about 17.
+
 The final step in the response surface methodology is to plot this model's contour plot and predict where to run the next few experiments. As the solid contour lines in the illustration show, we should run our next experiments roughly at :math:`T` = 343K and :math:`S` = 1.60 g/L where the expected profit is around $736. We get those two values by eye-balling the solid contour lines, drawn from the above non-linear model. :ref:`Canonical analysis <DOE-RSM-canonical-analysis>`, described below, finds it analytically.
 
 This is not exactly where the true process optimum is, but it is close to it (the temperature of :math:`T` = 343 K is just a little lower than where the true optimum is).
@@ -550,6 +588,29 @@ lies. Of its 15.928 sum of squares, the two contrasts carry 0.803, and the direc
 takes up in the :ref:`two-block analysis <DOE-RSM-orthogonal-blocking>` carries the other 15.125.
 Checking the axes needs a standard deviation that does not come from the fitted model, such as one
 from replicated centre runs.
+
+**When the quadratic does not fit: transforming the response or a factor**
+
+A surface that a quadratic describes poorly in :math:`y` may be described well after a
+transformation of the response or of a factor. The *Box-Cox transformation* uses the powers
+:math:`y^\lambda` of the :ref:`section on model linearity <LS-model-linearity>`, written as
+:math:`(y^\lambda - 1)/\lambda` so that :math:`\lambda = 0` gives :math:`\ln y`, and chooses
+:math:`\lambda` by maximum likelihood for the model being fitted. When the factors act
+multiplicatively, :math:`y = f_1(x_1)\, f_2(x_2)`, the interaction in :math:`y` disappears in
+:math:`\ln y = \ln f_1(x_1) + \ln f_2(x_2)`, so the model needs fewer terms.
+
+The *Box-Tidwell method* transforms a factor instead: it estimates the power :math:`\alpha` for
+which the response is closest to a straight line in :math:`x^\alpha`, with :math:`x` in its own
+positive units, not coded ones. In ``process_improve``,
+``analyze_experiment(..., transform="box_cox")`` fits the model to the transformed response and
+reports :math:`\lambda` as ``box_cox_lambda`` in its ``model_summary``, and
+``process_improve.regression.box_tidwell`` estimates the power of a factor.
+
+Both transformations are monotonic. The Box-Cox form keeps the order of the responses for every
+:math:`\lambda`, and a power of a factor keeps or reverses the order of its settings. A maximum
+inside the region therefore remains a maximum after either one, and the model still needs
+curvature terms to locate it. What they can remove is curvature or interaction that comes
+from the scale on which the response or the factor is measured.
 
 .. _DOE-box-behnken-designs:
 
