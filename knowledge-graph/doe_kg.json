@@ -3611,7 +3611,7 @@
    "source": "fractional_factorial",
    "type": "CAN_BE",
    "target": "saturated_design",
-   "evidence": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:6",
+   "evidence": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:8",
    "also": []
   },
   {
