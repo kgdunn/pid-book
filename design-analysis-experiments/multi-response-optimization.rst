@@ -303,7 +303,8 @@ geometric mean of the individual values:
 	D = \left( d_1^{\,r_1} \times d_2^{\,r_2} \times \cdots \times d_k^{\,r_k} \right)^{1 / \sum r_i}
 
 The exponents :math:`r_i` are the :index:`importances <pair: importance; desirability>`, and
-they set how much each response counts relative to the others. The weight :math:`w` and the
+they set how much each response counts relative to the others. With all of them equal, :math:`D` is
+the unweighted geometric mean that Derringer and Suich proposed. The weight :math:`w` and the
 importance :math:`r` are easy to confuse, so it is worth separating them: the weight shapes
 one response's own ramp, and the importance sets how heavily that response's grade counts
 when the grades are combined.

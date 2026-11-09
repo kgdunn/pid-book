@@ -97,7 +97,8 @@ and the special-cubic model adds the three-ingredient blends,
 None of these has an intercept or a pure quadratic term. The linear coefficient :math:`\beta_i`
 is the response at the pure component :math:`x_i = 1`; a positive :math:`\beta_{ij}` means the two
 ingredients blend synergistically (the blend beats the average of the pure components), and a
-negative one means they work against each other.
+negative one means they work against each other. These readings hold in the Scheffe form: rewriting
+the model through the mixture constraint gives the same fitted surface with different coefficients.
 
 The support points of these models sit at recognisable places on the simplex. A second-order
 Scheffe model in three ingredients has six terms (three linear, three blends), and its natural

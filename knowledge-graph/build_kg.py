@@ -17,6 +17,7 @@ book's current commit, back into graph.yaml.
 """
 
 import difflib
+import importlib.util
 import json
 import re
 import subprocess
@@ -44,6 +45,13 @@ VERBS = {
     "EQUALS", "IS_HALF_OF", "MAY_HAVE",
 }
 MAX_WORDS = 32
+# Reading levels for the map, by where chapter 5 introduces a term in reading order (see levels()). The first file of
+# each later level: fractional factorials open Intermediate, optimal designs open Advanced.
+LEVEL_NAMES = {1: "Beginner", 2: "Intermediate", 3: "Advanced"}
+LEVEL_STARTS = {2: "design-analysis-experiments/fractional-factorial-designs/index.rst",
+                3: "design-analysis-experiments/optimal-designs.rst"}
+ADVANCED_SECTIONS = {"DOE-RSM-canonical-analysis", "DOE-EVOP"}  # specialised subsections inside Intermediate files
+INDEX_ENTRY = re.compile(r":index:`([^`<]+?)\s*(?:<[^>]*>)?`|^\s*(?:pair|single):\s*([^;\n]+)")
 EM_DASH = "—"
 lines_of: dict[str, list[str]] = {}
 
@@ -156,6 +164,73 @@ def write_back(graph: dict, head: str | None) -> None:
     (HERE / "graph.yaml").write_text(text, encoding="utf-8")
 
 
+def reading_order() -> list[str]:
+    """Chapter 5's files in reading order, from the book's toctree as its own code checker reads it."""
+    spec = importlib.util.spec_from_file_location("check_code_blocks", BOOK / "tools" / "check_code_blocks.py")
+    checker = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = checker  # its dataclasses resolve their annotations through sys.modules
+    spec.loader.exec_module(checker)
+    index = BOOK / "design-analysis-experiments" / "index.rst"
+    return [str(f.relative_to(BOOK)) for f in checker.chapter_files(index)]
+
+
+def introductions(order: list[str]) -> dict[str, tuple[int, int]]:
+    """The first index entry for each indexed phrase, as (file position, line) in reading order."""
+    found: dict[str, tuple[int, int]] = {}
+    for at, path in enumerate(order):
+        for number, line in enumerate((BOOK / path).read_text(encoding="utf-8").splitlines(), 1):
+            for m in INDEX_ENTRY.finditer(line):
+                found.setdefault(phrase(m[1] or m[2]), (at, number))
+    return found
+
+
+def phrase(text: str) -> str:
+    """A name compared without case or a plural s."""
+    return text.strip().lower().removesuffix("s")
+
+
+def levels(graph: dict) -> tuple[dict[str, int], dict[str, int]]:
+    """Each term's reading level (1 Beginner, 2 Intermediate, 3 Advanced) and its rank in the book's order.
+
+    1. A term starts at the level of the place chapter 5 introduces it, reading in book order: its first index
+       entry or the line the graph cites, whichever comes first. A `level` on the term overrides that when the
+       book teaches it earlier than either.
+    2. Prerequisites come first: a term that another REQUIRES is shown no later than that term.
+    3. Nothing floats alone: a term with no link to a term at its level or below moves up to the next level.
+    Each level shows every level below it.
+    """
+    order = reading_order()
+    position = {path: at for at, path in enumerate(order)}
+    entries = introductions(order)
+
+    def introduced(n: dict) -> tuple[int, int]:
+        path, _, line = n["evidence"].rpartition(":")
+        named = [entries[phrase(x)] for x in (n["name"], *n["aliases"]) if phrase(x) in entries]
+        return min([(position.get(path, len(order)), int(line)), *named])
+
+    def start(n: dict, at: tuple[int, int]) -> int:
+        if "level" in n:
+            return n["level"]
+        if n["book_label"] in ADVANCED_SECTIONS:
+            return 3
+        return 1 + sum(at[0] >= position[first] for first in LEVEL_STARTS.values())
+
+    at = {n["id"]: introduced(n) for n in graph["nodes"]}
+    level = {n["id"]: start(n, at[n["id"]]) for n in graph["nodes"]}
+    edges = [tuple(e[:3]) for e in graph["edges"]]
+    while True:
+        before = dict(level)
+        for s, r, t in edges:
+            if r == "REQUIRES" and level[t] > level[s]:
+                level[t] = level[s]
+        for i in level:
+            while level[i] < 3 and not any(level[s if t == i else t] <= level[i] for s, _, t in edges if i in (s, t)):
+                level[i] += 1
+        if level == before:
+            rank = {i: r for r, i in enumerate(sorted(at, key=lambda i: (at[i], i)), 1)}
+            return level, rank
+
+
 def check(graph: dict, labels: dict[str, str]) -> list[str]:
     """Every problem in graph.yaml, as one line each."""
     problems = []
@@ -164,6 +239,8 @@ def check(graph: dict, labels: dict[str, str]) -> list[str]:
     problems += [f"duplicate id {i}" for i, c in ids.items() if c > 1]
     for n in nodes:
         where = f"term {n['id']}"
+        if n.get("level", 1) not in LEVEL_NAMES:
+            problems.append(f"{where}: level must be one of {sorted(LEVEL_NAMES)}")
         if n["type"] not in TYPES:
             problems.append(f"{where}: unknown type {n['type']}")
         if len(n["definition"].split()) > MAX_WORDS:
@@ -189,6 +266,10 @@ def check(graph: dict, labels: dict[str, str]) -> list[str]:
         if rest and rest[0] and book_line(rest[0]) is None:
             problems.append(f"{where}: evidence {rest[0]} does not exist")
     problems += [f"duplicate link {k}" for k, c in seen.items() if c > 1]
+    for source, links in graph.get("corroborated", {}).items():
+        if source not in graph.get("sources", {}):
+            problems.append(f"corroborated by {source}, which sources does not list")
+        problems += [f"{source} corroborates link {' '.join(link)}, which the graph lacks" for link in links if tuple(link) not in seen]
     linked = {e[0] for e in edges} | {e[2] for e in edges}
     problems += [f"term {i} has no links" for i in ids if i not in linked]
     return problems
@@ -209,30 +290,42 @@ def main() -> None:
     if RELOCATE:
         write_back(graph, head)
 
+    level, rank = levels(graph)
     nodes = []
     for n in graph["nodes"]:
         ref = n["book_label"]
         label, path = (None, ref[5:]) if ref.startswith("file:") else (ref, labels[ref])
-        nodes.append({**n, "book_label": label, "book_file": path, "chapter": CHAPTERS.index(path.split("/")[0]) + 1})
-    edges = [{"source": s, "type": r, "target": t, "evidence": rest[0] if rest else ""} for s, r, t, *rest in graph["edges"]]
-    (HERE / "doe_kg.json").write_text(json.dumps({"nodes": nodes, "edges": edges}, indent=1), encoding="utf-8")
+        nodes.append({**n, "book_label": label, "book_file": path, "chapter": CHAPTERS.index(path.split("/")[0]) + 1,
+                      "level": level[n["id"]], "order": rank[n["id"]]})
+    also = {}
+    for source, links in graph.get("corroborated", {}).items():
+        for link in links:
+            also.setdefault(tuple(link), []).append(source)
+    edges = [{"source": s, "type": r, "target": t, "evidence": rest[0] if rest else "", "also": also.get((s, r, t), [])}
+             for s, r, t, *rest in graph["edges"]]
+    kg = {"sources": graph.get("sources", {}), "nodes": nodes, "edges": edges}
+    (HERE / "doe_kg.json").write_text(json.dumps(kg, indent=1), encoding="utf-8")
 
     q = lambda v: "null" if v is None else json.dumps(v)
     lines = ["// Built from graph.yaml by build_kg.py. Load into an empty database.",
              "CREATE CONSTRAINT term_id IF NOT EXISTS FOR (n:Term) REQUIRE n.id IS UNIQUE;"]
     for n in nodes:
-        props = ", ".join(f"{k}: {q(n[k])}" for k in ("id", "name", "definition", "aliases", "book_label", "book_file",
+        props = ", ".join(f"{k}: {q(n[k])}" for k in ("id", "name", "definition", "aliases", "level", "order", "book_label", "book_file",
                                                        "chapter", "evidence", "quote"))
         lines.append(f"CREATE (:Term:{n['type']} {{{props}}});")
     for e in edges:
         lines.append(f"MATCH (a:Term {{id: {q(e['source'])}}}), (b:Term {{id: {q(e['target'])}}}) "
-                     f"CREATE (a)-[:{e['type']} {{evidence: {q(e['evidence'])}}}]->(b);")
+                     f"CREATE (a)-[:{e['type']} {{evidence: {q(e['evidence'])}, also: {q(e['also'])}}}]->(b);")
     (HERE / "doe_kg.cypher").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
     by_chapter = Counter(n["chapter"] for n in nodes)
     cited = sum(1 for e in edges if e["evidence"])
-    print(f"{len(nodes)} terms, {len(edges)} links ({cited} with evidence), {len({e['type'] for e in edges})} verbs")
+    backed = sum(1 for e in edges if e["also"])
+    print(f"{len(nodes)} terms, {len(edges)} links ({cited} with evidence, {backed} corroborated by another text), "
+          f"{len({e['type'] for e in edges})} verbs")
     print("terms by chapter:", dict(sorted(by_chapter.items())))
+    by_level = Counter(n["level"] for n in nodes)
+    print("terms shown at each level:", {LEVEL_NAMES[lvl]: sum(c for k, c in by_level.items() if k <= lvl) for lvl in LEVEL_NAMES})
     print("checks passed: every quote on its line, every book reference resolves, no orphans")
 
 

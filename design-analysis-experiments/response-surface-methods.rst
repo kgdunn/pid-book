@@ -19,6 +19,11 @@ The purpose of :index:`response surface methods <pair: response surface methods;
 
 Initially, when we are far away from the optimum, we will use factorial experiments. As we approach the optimum then these factorials are replaced with better designs that more closely approximate conditions at the optimum.
 
+Each set of runs covers a :index:`region of interest <pair: region of interest; experiments>`: a range
+for each factor, or a sphere in coded units, around the current conditions, over which the local
+model is meant to hold.
+:ref:`Coding <DOE-analysis-by-least-squares>` maps the ends of each range to :math:`-1` and :math:`+1`.
+
 .. TODO: RSM overview figure here with COST approach superimposed
 
 Notice how it is a *sequential* approach. RSM then is a tool the describes how we should run these sequential sets of experiments. At the start of this :ref:`section on designed experiments <DOE-COST-approach>` we showed how sequential experimentation (COST) leads to sub-optimal solutions. Why are we advocating sequential experimentation now?   The difference is that here we use sequential experiments by changing *multiple factors simultaneously*, and not changing only one factor at a time.
@@ -248,7 +253,7 @@ We determine that at run 12 the profit is :math:`y_{12}` = $ 716. But our previo
 
 One must realize that as one approaches an optimum we will find:
 
-	-	The response variable will start to plateau, since, recall that the first derivative is zero at an optimum, implying the surface flattens out, and all points, in all directions away from the optimum are worse off.
+	-	The response variable will start to plateau, since, recall that the first derivative is zero at an optimum in the interior of the operating region, implying the surface flattens out, and all points, in all directions away from the optimum are worse off. An optimum on a constraint, at the edge of that region, need not be flat, because the response can still be improving where the constraint stops further moves.
 
 	-	The response variable remains roughly constant for two consecutive jumps, because one has jumped over the optimum.
 
@@ -446,6 +451,16 @@ with little change in the response: a longer reaction time at a lower temperatur
 give about the same conversion. The process then responds to a combination of the two, a compound
 variable, and a model written in that variable needs one factor fewer.
 
+What canonical analysis adds to a contour plot, or to a numerical optimizer, is a description of the
+fitted surface that holds in any number of factors. With more than two factors a contour plot shows
+two of them at a time, with the rest held fixed, and an optimizer returns one point without saying
+how the response changes around it; the eigenvalues say both. When the stationary point is a saddle,
+or lies far outside the region of interest,
+:index:`ridge analysis <pair: ridge analysis; experiments>` complements it: it finds the settings
+of highest (or lowest) predicted response on spheres of increasing radius about a chosen centre,
+usually the design centre, which shows how the best predicted response changes as the settings move
+away from the runs. For a first-order model that path is the path of steepest ascent.
+
 .. _DOE-RSM-orthogonal-blocking:
 
 **Running a composite design in two blocks**
@@ -555,6 +570,40 @@ missing a term (often a higher-order effect). For example, a 15-run experiment f
 An :math:`F`-ratio near 3 there carries a :math:`p`-value of about 0.27, which gives no reason to
 doubt the model. The test needs both replicated points (to get :math:`\text{SS}_\text{PE}`) and
 more distinct design points than parameters (to leave some :math:`\text{df}_\text{LOF}`).
+
+Splitting a sum of squares into parts, each with its own degrees of freedom, extends the
+:ref:`analysis of variance table <LS-ANOVA-table>` of the least squares chapter, which divided the
+total sum of squares into a regression row and a residual row. An
+:index:`analysis of variance <pair: analysis of variance; experiments>` of a designed experiment
+splits the residual row into lack of fit and pure error when some runs are replicated, and splits
+the regression row into one row per group of terms, such as the main effects, the interactions,
+the quadratic terms or the blocks. Each group's mean square, its sum of squares divided by its
+degrees of freedom, is compared with the residual mean square by an :math:`F` ratio, which shows
+whether that group explains more variation than noise would. In an orthogonal design, such as a
+full factorial, a group's sum of squares does not depend on which other groups are fitted, so the
+group rows add up to the regression row.
+
+Each :math:`F` ratio in such a table is an
+:index:`extra sum of squares test <pair: extra sum of squares test; experiments>`, which judges a
+group of terms at once rather than one coefficient at a time. It compares two models, one
+containing the other. The terms that the larger model adds lower the residual sum of squares, and
+the test asks whether they lower it by more than noise would:
+
+.. math::
+
+	F = \frac{\left(\text{SS}_\text{E,small} - \text{SS}_\text{E,large}\right) / q}
+	        {\text{SS}_\text{E,large} / \text{df}_\text{large}}
+
+on :math:`q` and :math:`\text{df}_\text{large}` degrees of freedom, where :math:`q` is the number of
+added terms and :math:`\text{df}_\text{large}` is the residual degrees of freedom of the larger model.
+
+The least squares chapter's :math:`F`-statistic, the regression mean square over the residual mean
+square, is this test with the intercept alone as the smaller model. The lack-of-fit test is this
+test with a larger model that gives each distinct factor combination its own mean, so that its
+residual sum of squares is :math:`\text{SS}_\text{PE}`. The same test checks whether both quadratic
+terms of a :ref:`central composite design <DOE_central_composite_designs>` are needed, or whether
+the several coefficients of an :ref:`interaction with a categorical factor
+<APPS_mixed_level_profile_case_study>` are all zero.
 
 The lack-of-fit test pools every direction into one number, so it does not say along which axis a
 quadratic fails. A composite design can say this, because it measures each factor's slope twice:
@@ -761,7 +810,7 @@ The general approach for response surface modelling
 
 	The path of steepest ascent is climbed. Move any one of the main effects, e.g. :math:`b_A` by a certain amount, :math:`\Delta x_A`. Then move the other effects: :math:`\Delta x_i = \frac{b_i}{b_A} \Delta x_A`. For example, :math:`\Delta x_C` is moved by :math:`\frac{b_C}{b_A} \Delta x_A`.
 
-	This simple ratio is the gradient of the *first-order* (planar) part of the model, so it points along the steepest ascent only while the interaction terms are negligible. If the two-factor interactions are similar to, or larger than, the main effects, the fitted surface is a twisted plane rather than a flat one, and the direction of steepest ascent turns as you move. In that case, do not follow the linear gradient blindly: draw the contour plot of the fitted model and read the next point off the surface, or move to a second-order design (:ref:`central composite design <DOE_central_composite_designs>`) that can describe the curvature.
+	This simple ratio is the gradient of the *first-order* (planar) part of the model, so it is a useful direction to climb while the main effects are large compared with the two-factor interactions, the curvature and the noise. If the two-factor interactions are similar to, or larger than, the main effects, the fitted surface is a twisted plane rather than a flat one, and the direction of steepest ascent turns as you move. In that case, do not follow the linear gradient blindly: draw the contour plot of the fitted model and read the next point off the surface, or move to a second-order design (:ref:`central composite design <DOE_central_composite_designs>`) that can describe the curvature.
 
 	If any of the :math:`\Delta x_i` values are too large to safely implement, then take a smaller proportional step in all factors. Recall that these are coded units, so unscale them to obtain the move amount in real-world units. The direction itself depends on the factor ranges chosen for the coding, as shown for the bioreactor in the :ref:`two-variable example <DOE-RSM-coding-and-path>`.
 
@@ -779,7 +828,7 @@ The general approach for response surface modelling
 
 		y = b_0 + b_1x_1 + b_2 x_2	+ \ldots + b_{12}x_1x_2 + \ldots + b_{11}x_1^2 + b_{22}x_2^2 +  \ldots
 
-#.	Draw contour plots of this estimated response surface (all data analysis software packages have contour plotting functions) and determine where to place your sequential experiments. You can also find the model's optimum analytically by taking derivatives of the model function.
+#.	Draw contour plots of this estimated response surface (all data analysis software packages have contour plotting functions) and determine where to place your sequential experiments. You can also find the model's :ref:`stationary point <DOE-RSM-canonical-analysis>` analytically by taking derivatives of the model function. It can be a maximum, a minimum or a saddle point, and canonical analysis tells which.
 
 
 .. sidebar:: What is the response variable when optimizing more than one outcome?

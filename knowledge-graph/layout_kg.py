@@ -28,9 +28,10 @@ NAMES = {
     "rsm": ("Response surfaces", "Response surfaces, multiple responses and evolutionary operation"),
     "information_matrix": ("Judging designs", "Judging designs: information, prediction variance and optimality"),
     "omars_design": ("DSD and OMARS", "Definitive screening and OMARS designs"),
-    "lenth_method": ("Significance", "Judging significance: Lenth's method, standard errors and t-tests"),
-    "coefficient": ("Coefficients and coding", "Factors, coding, coefficients and steepest ascent"),
-    "curvature": ("Curvature", "Curvature, center points and second-order designs"),
+    "statistical_significance": ("Significance tests", "Comparing two groups: significance, intervals and power"),
+    "coefficient": ("Coefficients", "Coefficients, coding, standard errors and Lenth's method"),
+    "quadratic_model": ("Second-order models", "Second-order designs, steepest ascent and the stationary point"),
+    "analysis_of_variance": ("Replicates and ANOVA", "Replicates, pure error, lack of fit and the analysis of variance"),
     "optimal_design": ("Optimal and mixture designs", "Optimal designs, constraints and mixtures"),
     "experiment": ("Causality", "Experiments, causality and happenstance data"),
 }

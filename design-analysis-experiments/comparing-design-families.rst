@@ -250,6 +250,36 @@ cube, since the squared columns cannot be made orthogonal to the intercept, whic
 strongest designs here sit near 30 to 40%. (A separate *relative* D-efficiency convention instead
 takes the D-optimal design as 100%, so it is worth checking which one a given package reports.)
 
+A small example shows the two conventions side by side, on three factors of its own: a
+face-centred central composite design with one centre run, and a D-optimal design with the same
+fifteen runs, both for the full quadratic model. With equal run counts, the relative D-efficiency
+of one design against the other is the ratio of their absolute D-efficiencies.
+
+.. code-block:: python
+
+	names3 = list("ABC")
+	factors3 = [Factor(name=c, low=-1, high=1) for c in names3]
+	model3 = "(A + B + C)**2 + I(A**2) + I(B**2) + I(C**2)"   # full quadratic, 10 terms
+
+	def as_frame(result):
+	    return pd.DataFrame(np.asarray(result.design[names3], float), columns=names3)
+
+	ccd3 = as_frame(generate_design(factors3, "ccd", alpha="face_centered", n_center_points=1))
+	dopt3 = as_frame(generate_design(factors3, "d_optimal", budget=len(ccd3), model_type="quadratic",
+	                                 random_state=1))
+	d_eff3 = {label: evaluate_design(d, model=model3, metric="d_efficiency")["d_efficiency"]
+	          for label, d in {"CCD": ccd3, "D-optimal": dopt3}.items()}
+	print({label: f"{value:.1f}%" for label, value in d_eff3.items()})
+	# {'CCD': '44.7%', 'D-optimal': '45.9%'}
+	print(f"CCD relative to the D-optimal design: {100 * d_eff3['CCD'] / d_eff3['D-optimal']:.1f}%")
+	# CCD relative to the D-optimal design: 97.3%
+
+On the absolute scale both designs sit near 45%, because no quadratic design on the cube reaches
+the orthogonal ceiling. On the relative scale the composite design reaches 97.3% of the best
+design that fifteen runs allow for this model. The absolute number compares designs on a fixed
+scale that no quadratic design attains; the relative number says how much a different choice of
+the same number of runs could gain.
+
 The two D rows make this concrete. The **unscaled** D-optimal information
 :math:`|\mathbf{X}^T\mathbf{X}|^{1/p}` puts the Box-Behnken design highest at :math:`14.0` and the
 thirteen-run DSD lowest at :math:`5.19`, the ranking the real-unit rows broadly agree on. Divide

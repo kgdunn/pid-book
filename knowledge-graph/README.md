@@ -72,6 +72,30 @@ json.dump({"source": source, **data}, open(sys.argv[1], "w"), separators=(",", "
   path/to/process-improve/web/map/graph.json
 ```
 
+## Reading levels
+
+The map shows the graph at three levels: Beginner, Intermediate and Advanced, each holding every level
+below it. `build_kg.py` gives each term its level (`levels()`) from where chapter 5 introduces it, reading
+the chapter in its own order (the toctree, as `tools/check_code_blocks.py` reads it):
+
+- **Beginner**: up to the two-level full factorials and their analysis.
+- **Intermediate**: from fractional factorials through blocking, response surface methods and several
+  responses.
+- **Advanced**: from optimal designs on: DSD and OMARS designs, judging designs, mixtures, the general
+  approach that ties the chapter together, and the specialised subsections on canonical analysis and EVOP.
+
+A term is introduced at its first index entry or at the line the graph cites, whichever the reader meets
+first; a `level:` on the term overrides that when the book teaches it earlier than either. A term that
+another REQUIRES is pulled down to that term's level, and a term with no link at its level moves up until it
+has one. Each term also carries its `order`, its rank in the book's order of introduction.
+
+## Links another text agrees with
+
+`project_text.py` compares another book with the graph (`PROJECTION.md`). A link that a reviewed text
+also states is listed under that text in `graph.yaml`'s `corroborated`, with the text itself in
+`sources`; the text's own words stay out of this repository. `build_kg.py` checks that each listed
+link exists and gives every link an `also` list of the texts that state it, which the map can draw.
+
 ## When the book changes
 
 A paragraph added near the top of a file moves every line below it. `graph.yaml` records the book
