@@ -3,7 +3,7 @@
 # Links read as sentences, "source VERB target"; the verbs allowed are listed in build_kg.py.
 
 # The book's commit this graph was last checked against: build_kg.py follows each citation from it.
-checked_against: 4a9e4f8a200de7acafbee4dbca3ce0d97da741ae
+checked_against: 7354baa068051887325967919b8f180a917c06c0
 
 nodes:
 - id: experiment
