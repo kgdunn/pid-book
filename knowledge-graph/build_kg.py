@@ -44,6 +44,17 @@ VERBS = {
     "EQUALS", "IS_HALF_OF", "MAY_HAVE",
 }
 MAX_WORDS = 32
+# Reading levels for the map, by the stage of chapter 5 that teaches a term (see levels()). A section not listed is
+# Advanced: the specialised designs, design evaluation, mixtures and the case studies.
+LEVEL_NAMES = {1: "Beginner", 2: "Intermediate", 3: "Advanced"}
+STAGES = {
+    1: ("why-learning-about-systems-is-important", "design-analysis-experiments.rst", "examples-of-how-designed",
+        "changing-one-single-variable-at-a-time", "general-approach-for-experimentation",
+        "experiments-with-a-single-variable-at-two-levels", "full-factorial-designs/"),
+    2: ("blocking-and-confounding-for-disturbances", "fractional-factorial-designs/", "response-surface-methods",
+        "multi-response-optimization"),
+}
+ADVANCED_SECTIONS = {"DOE-RSM-canonical-analysis", "DOE-EVOP"}  # specialised subsections of Intermediate files
 EM_DASH = "—"
 lines_of: dict[str, list[str]] = {}
 
@@ -156,6 +167,35 @@ def write_back(graph: dict, head: str | None) -> None:
     (HERE / "graph.yaml").write_text(text, encoding="utf-8")
 
 
+def levels(graph: dict) -> dict[str, int]:
+    """Each term's reading level: 1 Beginner, 2 Intermediate, 3 Advanced; each level shows every level below it.
+
+    1. A term starts at the stage of the chapter whose section the graph cites for it, or at its own `level`
+       when the graph cites a later restatement of a term the book teaches earlier.
+    2. Prerequisites come first: a term that another REQUIRES is shown no later than that term.
+    3. Nothing floats alone: a term with no link to a term at its level or below moves up to the next level.
+    """
+    def start(n: dict) -> int:
+        if "level" in n:
+            return n["level"]
+        if n["book_label"] in ADVANCED_SECTIONS:
+            return 3
+        return next((lvl for lvl, parts in STAGES.items() if any(part in n["evidence"] for part in parts)), 3)
+
+    level = {n["id"]: start(n) for n in graph["nodes"]}
+    edges = [tuple(e[:3]) for e in graph["edges"]]
+    while True:
+        before = dict(level)
+        for s, r, t in edges:
+            if r == "REQUIRES" and level[t] > level[s]:
+                level[t] = level[s]
+        for i in level:
+            while level[i] < 3 and not any(level[s if t == i else t] <= level[i] for s, _, t in edges if i in (s, t)):
+                level[i] += 1
+        if level == before:
+            return level
+
+
 def check(graph: dict, labels: dict[str, str]) -> list[str]:
     """Every problem in graph.yaml, as one line each."""
     problems = []
@@ -164,6 +204,8 @@ def check(graph: dict, labels: dict[str, str]) -> list[str]:
     problems += [f"duplicate id {i}" for i, c in ids.items() if c > 1]
     for n in nodes:
         where = f"term {n['id']}"
+        if n.get("level", 1) not in LEVEL_NAMES:
+            problems.append(f"{where}: level must be one of {sorted(LEVEL_NAMES)}")
         if n["type"] not in TYPES:
             problems.append(f"{where}: unknown type {n['type']}")
         if len(n["definition"].split()) > MAX_WORDS:
@@ -213,11 +255,13 @@ def main() -> None:
     if RELOCATE:
         write_back(graph, head)
 
+    level = levels(graph)
     nodes = []
     for n in graph["nodes"]:
         ref = n["book_label"]
         label, path = (None, ref[5:]) if ref.startswith("file:") else (ref, labels[ref])
-        nodes.append({**n, "book_label": label, "book_file": path, "chapter": CHAPTERS.index(path.split("/")[0]) + 1})
+        nodes.append({**n, "book_label": label, "book_file": path, "chapter": CHAPTERS.index(path.split("/")[0]) + 1,
+                      "level": level[n["id"]]})
     also = {}
     for source, links in graph.get("corroborated", {}).items():
         for link in links:
@@ -231,7 +275,7 @@ def main() -> None:
     lines = ["// Built from graph.yaml by build_kg.py. Load into an empty database.",
              "CREATE CONSTRAINT term_id IF NOT EXISTS FOR (n:Term) REQUIRE n.id IS UNIQUE;"]
     for n in nodes:
-        props = ", ".join(f"{k}: {q(n[k])}" for k in ("id", "name", "definition", "aliases", "book_label", "book_file",
+        props = ", ".join(f"{k}: {q(n[k])}" for k in ("id", "name", "definition", "aliases", "level", "book_label", "book_file",
                                                        "chapter", "evidence", "quote"))
         lines.append(f"CREATE (:Term:{n['type']} {{{props}}});")
     for e in edges:
@@ -245,6 +289,8 @@ def main() -> None:
     print(f"{len(nodes)} terms, {len(edges)} links ({cited} with evidence, {backed} corroborated by another text), "
           f"{len({e['type'] for e in edges})} verbs")
     print("terms by chapter:", dict(sorted(by_chapter.items())))
+    by_level = Counter(n["level"] for n in nodes)
+    print("terms shown at each level:", {LEVEL_NAMES[lvl]: sum(c for k, c in by_level.items() if k <= lvl) for lvl in LEVEL_NAMES})
     print("checks passed: every quote on its line, every book reference resolves, no orphans")
 
 

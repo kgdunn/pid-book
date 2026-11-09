@@ -421,6 +421,7 @@ nodes:
 - id: least_squares_model
   name: Least squares model
   type: Method
+  level: 1  # taught with the two-level factorials; the cited line is a later restatement
   definition: y = Xb + e, fitted with b = (X'X)^-1 X'y. It works even when the design was not run exactly as planned.
   aliases:
   - least squares
@@ -432,6 +433,7 @@ nodes:
 - id: model_matrix
   name: Model matrix X
   type: Concept
+  level: 1  # the X matrix of the two-level analysis; the cited line is a later restatement
   definition: One row per run and one column per model term, with a column of ones for the intercept.
   aliases:
   - table of signs
@@ -976,6 +978,7 @@ nodes:
 - id: quadratic_model
   name: Quadratic model
   type: Concept
+  level: 2  # fitted in response surface methods; the cited line is in the mixture section
   definition: "Outside mixtures, a model with squared terms such as b_TT x_T^2, to describe curvature. A mixture's
     second-order Scheffe model has none: they fold into its cross-products."
   aliases:
@@ -1193,6 +1196,7 @@ nodes:
 - id: constraint
   name: Constraint
   type: Concept
+  level: 2  # limits steepest ascent in response surface methods; the cited line is in the mixture section
   definition: "A limit on which runs are allowed or which results are acceptable: a bound on a factor, an unsafe combination of factors, or a response specification (a minimum purity)."
   aliases:
   - limit

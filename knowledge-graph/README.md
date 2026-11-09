@@ -72,6 +72,21 @@ json.dump({"source": source, **data}, open(sys.argv[1], "w"), separators=(",", "
   path/to/process-improve/web/map/graph.json
 ```
 
+## Reading levels
+
+The map shows the graph at three levels: Beginner, Intermediate and Advanced, each holding every level
+below it. `build_kg.py` gives each term its level (`levels()`), from the stage of chapter 5 that teaches it:
+
+- **Beginner**: why we experiment, the vocabulary, one factor at two levels, and two-level full factorials
+  with their analysis.
+- **Intermediate**: blocking, fractional factorials, response surface methods and several responses.
+- **Advanced**: everything else: judging designs, optimal, mixture, DSD and OMARS designs, canonical
+  analysis, EVOP and the case studies.
+
+A term starts at the stage of the section the graph cites for it; a `level:` on the term overrides that
+when the cited line is a later restatement of something the book teaches earlier. A term that another
+REQUIRES is pulled down to that term's level, and a term with no link at its level moves up until it has one.
+
 ## Links another text agrees with
 
 `project_text.py` compares another book with the graph (`PROJECTION.md`). A link that a reviewed text
