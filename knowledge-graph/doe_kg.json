@@ -3547,7 +3547,9 @@
    "type": "HAS_PROPERTY",
    "target": "level",
    "evidence": "design-analysis-experiments/full-factorial-designs/index.rst:19",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "categorical_factor",
@@ -3740,7 +3742,9 @@
    "type": "IS_A",
    "target": "designed_experiment",
    "evidence": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst:4",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "factorial_efficiency",
@@ -3880,7 +3884,9 @@
    "type": "PART_OF",
    "target": "least_squares_model",
    "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:104",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "model_matrix",
@@ -4134,7 +4140,9 @@
    "type": "JUSTIFIES",
    "target": "fractional_factorial",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:194",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "collinearity",
@@ -4542,7 +4550,9 @@
    "type": "TESTS",
    "target": "curvature",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:269",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "plateau",
@@ -4591,7 +4601,9 @@
    "type": "ESTIMATES",
    "target": "quadratic_model",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:297",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "ccd",
@@ -5712,7 +5724,9 @@
    "type": "HAS_PROPERTY",
    "target": "rotatability",
    "evidence": "design-analysis-experiments/comparing-design-families.rst:457",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "design_based_staged_analysis",
@@ -6654,14 +6668,18 @@
    "type": "USES",
    "target": "degrees_of_freedom",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:542",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "analysis_of_variance",
    "type": "USES",
    "target": "block",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:541",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "extra_sum_of_squares_test",
@@ -6696,7 +6714,9 @@
    "type": "APPLIES_TO",
    "target": "response",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:253",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "normal_probability_plot_of_effects",
@@ -6731,7 +6751,9 @@
    "type": "LOCATES",
    "target": "stationary_point",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:359",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "stationary_point",
@@ -6745,7 +6767,9 @@
    "type": "APPLIES_TO",
    "target": "quadratic_model",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:354",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "canonical_analysis",
@@ -6759,7 +6783,9 @@
    "type": "USES",
    "target": "stationary_point",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:360",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "ridge_analysis",
