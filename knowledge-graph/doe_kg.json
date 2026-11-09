@@ -1516,7 +1516,7 @@
     "Steepest descent"
    ],
    "book_label": "DOE-RSM",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:752",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:813",
    "quote": "it is a useful direction to climb while the main effects are large compared with the two-factor interactions, the curvature and the noise",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -1577,7 +1577,7 @@
     "curvature contrast"
    ],
    "book_label": "DOE-RSM",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:762",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:823",
    "quote": "Curvature can be assessed by comparing the predicted center point, i.e. the model's intercept",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -1612,7 +1612,7 @@
     "CCD"
    ],
    "book_label": "DOE_central_composite_designs",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:764",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:825",
    "quote": "If there is curvature, add axial points to expand the factorial into a central composite design.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -1642,7 +1642,7 @@
    "definition": "A three-level response surface design for the full quadratic model with no runs at the cube corners; suits infeasible corners but cannot be built sequentially from a factorial.",
    "aliases": [],
    "book_label": "DOE-box-behnken-designs",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:618",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:679",
    "quote": "A BBD places no runs at the cube vertices: there is no run with every",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -1658,7 +1658,7 @@
     "contour diagram"
    ],
    "book_label": "DOE-RSM",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:770",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:831",
    "quote": "Draw contour plots of this estimated response surface",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -1730,7 +1730,7 @@
    "definition": "The measured center point differs from the predicted center point, b0, by an amount that is large compared with the model's effects.",
    "aliases": [],
    "book_label": "DOE-RSM",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:762",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:823",
    "quote": "indicates the response surface is curved.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -1760,7 +1760,7 @@
     "multi-objective"
    ],
    "book_label": "DOE-multi-response-optimization",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:777",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:838",
    "quote": "For example we can achieve a higher production rate, but it is at the expense of more energy.",
    "book_file": "design-analysis-experiments/multi-response-optimization.rst",
    "chapter": 5,
@@ -1774,7 +1774,7 @@
    "definition": "Rewrite the outcomes as one y, such as total cost or net profit.",
    "aliases": [],
    "book_label": "DOE-RSM",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:779",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:840",
    "quote": "One way to balance all competing objectives is to rephrase the",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -1788,7 +1788,7 @@
    "definition": "Superimpose the contours of each response so the trade-offs can be seen.",
    "aliases": [],
    "book_label": "DOE-RSM",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:781",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:842",
    "quote": "This is tremendously helpful when discussing and evaluating alternate operating points, because plant managers and operators can then visually see the trade-offs.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -1802,7 +1802,7 @@
    "definition": "Fix a categorical factor, optimize the rest, then try its other value.",
    "aliases": [],
    "book_label": "DOE-RSM",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:789",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:850",
    "quote": "are handled by fixing them at one or the other value, and then performing the optimization conditional on those selected values.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -1818,7 +1818,7 @@
     "EVOP"
    ],
    "book_label": "DOE-EVOP",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:804",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:865",
    "quote": "EVOP is an iterative hunt for the process optimum by making small perturbations to the system.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -1832,7 +1832,7 @@
    "definition": "The optimum moves as heat exchangers foul, catalyst deactivates, and raw materials change.",
    "aliases": [],
    "book_label": "DOE-EVOP",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:802",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:863",
    "quote": "Since the process is not constant, the optimum will gradually move away from its current operating point.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -2327,7 +2327,7 @@
    "definition": "Factorials, steepest ascent and a central composite design find the profit optimum near 343 K and 1.6 g/L.",
    "aliases": [],
    "book_label": "DOE-RSM",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:343",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:381",
    "quote": "As the solid contour lines in the illustration show, we should run our next experiments roughly at",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -2483,7 +2483,7 @@
    "definition": "George Box, Evolutionary Operation: A Method for Increasing Industrial Productivity, Applied Statistics, 1957; a reading the chapter gives on evolutionary operation.",
    "aliases": [],
    "book_label": "DOE_references",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:808",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:869",
    "quote": "Some examples of the success of EVOP and a review paper are in these readings:",
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
@@ -2839,7 +2839,7 @@
     "rotatable design"
    ],
    "book_label": "DOE-box-behnken-designs",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:634",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:695",
    "quote": "giving roughly uniform prediction variance at a",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -2979,7 +2979,7 @@
    "definition": "The run-to-run variability estimated from replicated runs at identical settings, without reference to any model.",
    "aliases": [],
    "book_label": "DOE-lack-of-fit",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:496",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:534",
    "quote": "two or more runs at exactly the same factor-level combination, differ only by noise, so the spread",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -2993,7 +2993,7 @@
    "definition": "Splits the residual sum of squares into pure error and lack of fit; a large F ratio between them is evidence of a missing term. Needs replicated runs.",
    "aliases": [],
    "book_label": "DOE-lack-of-fit",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:495",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:533",
    "quote": "The idea is to split the model's residual sum of squares into two parts. Replicated runs, meaning",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -3278,7 +3278,7 @@
     "ANOVA table"
    ],
    "book_label": "DOE-lack-of-fit",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:540",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:578",
    "quote": "splits the residual row into lack of fit and pure error when some runs are replicated",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -3294,7 +3294,7 @@
     "partial F-test"
    ],
    "book_label": "DOE-lack-of-fit",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:550",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:588",
    "quote": "group of terms at once rather than one coefficient at a time.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -3357,7 +3357,7 @@
    "definition": "The settings where every first derivative of a fitted quadratic model is zero. It can be a maximum, a minimum or a saddle point, so it is not necessarily an optimum.",
    "aliases": [],
    "book_label": "DOE-RSM-canonical-analysis",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:360",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:398",
    "quote": "gives the *stationary point*",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -3371,7 +3371,7 @@
    "definition": "Rewriting a fitted quadratic model on rotated axes with no cross-products, about its stationary point or, when that is remote, a point near the design; the eigenvalues' signs show the shape.",
    "aliases": [],
    "book_label": "DOE-RSM-canonical-analysis",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:349",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:387",
    "quote": "**Canonical analysis: the shape of the fitted surface**",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -3385,7 +3385,7 @@
    "definition": "Tracing the settings of highest (or lowest) predicted response on spheres of growing radius about a chosen centre, usually the design centre; for a first-order model, the path of steepest ascent.",
    "aliases": [],
    "book_label": "DOE-RSM-canonical-analysis",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:421",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:459",
    "quote": "complements it: it finds the settings",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
@@ -4469,7 +4469,7 @@
    "source": "full_factorial",
    "type": "SUITED_TO",
    "target": "rsm",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:736",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:797",
    "also": [
     "reviewed_text_1"
    ]
@@ -4478,7 +4478,7 @@
    "source": "steepest_ascent",
    "type": "PART_OF",
    "target": "rsm",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:744",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:805",
    "also": [
     "reviewed_text_1"
    ]
@@ -4496,7 +4496,7 @@
    "source": "steepest_ascent",
    "type": "USES",
    "target": "step_size",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:584",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:622",
    "also": []
   },
   {
@@ -4512,7 +4512,7 @@
    "source": "last_best_point",
    "type": "APPLIES_TO",
    "target": "steepest_ascent",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:758",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:819",
    "also": []
   },
   {
@@ -4533,7 +4533,7 @@
    "source": "curvature_check",
    "type": "USES",
    "target": "center_point",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:592",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:630",
    "also": [
     "reviewed_text_1"
    ]
@@ -4542,7 +4542,7 @@
    "source": "curvature_check",
    "type": "USES",
    "target": "intercept",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:592",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:630",
    "also": []
   },
   {
@@ -4579,7 +4579,7 @@
    "source": "center_mismatch",
    "type": "INDICATES",
    "target": "curvature",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:762",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:823",
    "also": []
   },
   {
@@ -4618,7 +4618,7 @@
    "source": "ccd",
    "type": "USES",
    "target": "center_point",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:692",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:753",
    "also": [
     "reviewed_text_1"
    ]
@@ -4636,14 +4636,14 @@
    "source": "box_behnken",
    "type": "ESTIMATES",
    "target": "quadratic_model",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:630",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:691",
    "also": []
   },
   {
    "source": "contour_plot",
    "type": "SHOWS",
    "target": "response_surface",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:687",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:748",
    "also": [
     "reviewed_text_1"
    ]
@@ -4652,21 +4652,21 @@
    "source": "contour_plot",
    "type": "LOCATES",
    "target": "optimum",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:343",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:381",
    "also": []
   },
   {
    "source": "multiple_responses",
    "type": "REMEDIED_BY",
    "target": "single_combined_response",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:779",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:840",
    "also": []
   },
   {
    "source": "multiple_responses",
    "type": "REMEDIED_BY",
    "target": "overlay_surfaces",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:781",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:842",
    "also": []
   },
   {
@@ -4682,28 +4682,28 @@
    "source": "categorical_in_rsm",
    "type": "APPLIES_TO",
    "target": "categorical_factor",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:789",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:850",
    "also": []
   },
   {
    "source": "categorical_in_rsm",
    "type": "APPLIES_TO",
    "target": "rsm",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:789",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:850",
    "also": []
   },
   {
    "source": "evop",
    "type": "IS_A",
    "target": "sequential_experimentation",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:804",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:865",
    "also": []
   },
   {
    "source": "evop",
    "type": "LOCATES",
    "target": "optimum",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:802",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:863",
    "also": []
   },
   {
@@ -4717,14 +4717,14 @@
    "source": "evop",
    "type": "USES",
    "target": "replicate",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:806",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:867",
    "also": []
   },
   {
    "source": "process_drift",
    "type": "IS_A",
    "target": "time_effect",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:802",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:863",
    "also": []
   },
   {
@@ -5137,7 +5137,7 @@
    "source": "ex_rsm_profit",
    "type": "ILLUSTRATES",
    "target": "rsm",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:476",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:514",
    "also": []
   },
   {
@@ -5186,7 +5186,7 @@
    "source": "q_after_screening",
    "type": "ANSWERED_BY",
    "target": "rsm",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:787",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:848",
    "also": []
   },
   {
@@ -5200,7 +5200,7 @@
    "source": "q_two_goals",
    "type": "ANSWERED_BY",
    "target": "multiple_responses",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:777",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:838",
    "also": []
   },
   {
@@ -5249,7 +5249,7 @@
    "source": "evop",
    "type": "DESCRIBED_IN",
    "target": "ref_box_1957",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:810",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:871",
    "also": []
   },
   {
@@ -5705,7 +5705,7 @@
    "source": "box_behnken",
    "type": "HAS_PROPERTY",
    "target": "rotatability",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:633",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:694",
    "also": [
     "reviewed_text_1"
    ]
@@ -5714,7 +5714,7 @@
    "source": "rotatability",
    "type": "APPLIES_TO",
    "target": "prediction_variance",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:634",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:695",
    "also": [
     "reviewed_text_1"
    ]
@@ -5907,7 +5907,7 @@
    "source": "pure_error",
    "type": "USES",
    "target": "replicate",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:496",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:534",
    "also": [
     "reviewed_text_1"
    ]
@@ -5925,14 +5925,14 @@
    "source": "pure_error",
    "type": "PART_OF",
    "target": "lack_of_fit_test",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:495",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:533",
    "also": []
   },
   {
    "source": "lack_of_fit_test",
    "type": "USES",
    "target": "pure_error",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:495",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:533",
    "also": [
     "reviewed_text_1"
    ]
@@ -5941,14 +5941,14 @@
    "source": "lack_of_fit_test",
    "type": "GENERALIZES",
    "target": "curvature_check",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:492",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:530",
    "also": []
   },
   {
    "source": "lack_of_fit_test",
    "type": "REQUIRES",
    "target": "replicate",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:533",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:571",
    "also": []
   },
   {
@@ -6280,7 +6280,7 @@
    "source": "lack_of_fit_test",
    "type": "APPLIES_TO",
    "target": "quadratic_model",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:490",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:528",
    "also": []
   },
   {
@@ -6294,7 +6294,7 @@
    "source": "face_centred_central_composite_design",
    "type": "CONTRASTS_WITH",
    "target": "box_behnken",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:713",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:774",
    "also": []
   },
   {
@@ -6368,14 +6368,14 @@
    "source": "lack_of_fit_test",
    "type": "USES",
    "target": "replicate",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:533",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:571",
    "also": []
   },
   {
    "source": "lack_of_fit_test",
    "type": "TESTS",
    "target": "quadratic_model",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:490",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:528",
    "also": [
     "reviewed_text_1"
    ]
@@ -6500,7 +6500,7 @@
    "source": "constraint",
    "type": "LIMITS",
    "target": "steepest_ascent",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:754",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:815",
    "also": [
     "reviewed_text_1"
    ]
@@ -6527,7 +6527,7 @@
    "source": "pure_error",
    "type": "HAS_PROPERTY",
    "target": "degrees_of_freedom",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:516",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:554",
    "also": [
     "reviewed_text_1"
    ]
@@ -6572,7 +6572,7 @@
    "source": "fractional_factorial",
    "type": "SUITED_TO",
    "target": "screening",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:787",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:848",
    "also": [
     "reviewed_text_1"
    ]
@@ -6660,14 +6660,14 @@
    "source": "lack_of_fit_test",
    "type": "PART_OF",
    "target": "analysis_of_variance",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:540",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:578",
    "also": []
   },
   {
    "source": "analysis_of_variance",
    "type": "USES",
    "target": "degrees_of_freedom",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:543",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:581",
    "also": [
     "reviewed_text_1"
    ]
@@ -6676,7 +6676,7 @@
    "source": "analysis_of_variance",
    "type": "USES",
    "target": "block",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:542",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:580",
    "also": [
     "reviewed_text_1"
    ]
@@ -6685,14 +6685,14 @@
    "source": "extra_sum_of_squares_test",
    "type": "GENERALIZES",
    "target": "lack_of_fit_test",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:564",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:602",
    "also": []
   },
   {
    "source": "extra_sum_of_squares_test",
    "type": "GENERALIZES",
    "target": "joint_f_test_of_a_categorical_interaction",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:567",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:605",
    "also": []
   },
   {
@@ -6750,7 +6750,7 @@
    "source": "quadratic_model",
    "type": "LOCATES",
    "target": "stationary_point",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:360",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:398",
    "also": [
     "reviewed_text_1"
    ]
@@ -6759,14 +6759,14 @@
    "source": "stationary_point",
    "type": "CAN_BE",
    "target": "optimum",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:365",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:403",
    "also": []
   },
   {
    "source": "canonical_analysis",
    "type": "APPLIES_TO",
    "target": "quadratic_model",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:355",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:393",
    "also": [
     "reviewed_text_1"
    ]
@@ -6775,14 +6775,14 @@
    "source": "canonical_analysis",
    "type": "COMPLEMENTS",
    "target": "contour_plot",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:416",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:454",
    "also": []
   },
   {
    "source": "canonical_analysis",
    "type": "USES",
    "target": "stationary_point",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:361",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:399",
    "also": [
     "reviewed_text_1"
    ]
@@ -6791,21 +6791,21 @@
    "source": "ridge_analysis",
    "type": "APPLIES_TO",
    "target": "quadratic_model",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:421",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:459",
    "also": []
   },
   {
    "source": "ridge_analysis",
    "type": "GENERALIZES",
    "target": "steepest_ascent",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:424",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:462",
    "also": []
   },
   {
    "source": "ridge_analysis",
    "type": "COMPLEMENTS",
    "target": "canonical_analysis",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:421",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:459",
    "also": []
   },
   {
@@ -6847,7 +6847,7 @@
    "source": "ccd",
    "type": "USES",
    "target": "blocking",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:428",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:466",
    "also": [
     "reviewed_text_1"
    ]
@@ -6856,7 +6856,7 @@
    "source": "analysis_of_variance",
    "type": "TESTS",
    "target": "null_hypothesis",
-   "evidence": "design-analysis-experiments/response-surface-methods.rst:543",
+   "evidence": "design-analysis-experiments/response-surface-methods.rst:581",
    "also": [
     "reviewed_text_1"
    ]
