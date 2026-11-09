@@ -14,7 +14,8 @@
    "quote": "In order to learn about a system, we have to disturb it and change it. This is to ensure cause and effect.",
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 1
   },
   {
    "id": "run",
@@ -29,7 +30,8 @@
    "quote": "When we perform an experiment, we call it a run.",
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 8
   },
   {
    "id": "response",
@@ -46,7 +48,8 @@
    "quote": "An important aspect about the outcome is that it is always measurable--in some way.",
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 2
   },
   {
    "id": "qualitative_outcome",
@@ -59,7 +62,8 @@
    "quote": "A qualitative outcome might also be a description of what happened, for example,",
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 4
   },
   {
    "id": "objective",
@@ -74,7 +78,8 @@
    "quote": "which combines an outcome and the need to adjust that outcome.",
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 5
   },
   {
    "id": "factor",
@@ -90,7 +95,8 @@
    "quote": "is the thing you can change to influence the outcome.",
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 3
   },
   {
    "id": "numeric_factor",
@@ -106,7 +112,8 @@
    "quote": "Numeric factors are quantified by measuring, such as giving 15 mL of water or 30 mL of water to the plant each day.",
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 7
   },
   {
    "id": "categorical_factor",
@@ -121,7 +128,8 @@
    "quote": "Categorical factors usually take on a limited number of values.",
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 6
   },
   {
    "id": "level",
@@ -137,7 +145,8 @@
    "quote": "In this section we consider the case when these factors are at two levels.",
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 45
   },
   {
    "id": "cause_and_effect",
@@ -152,7 +161,8 @@
    "quote": "you must disturb your system, and then observe it. This is the principle of causality, or",
    "book_file": "design-analysis-experiments/why-learning-about-systems-is-important.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 16
   },
   {
    "id": "happenstance_data",
@@ -167,7 +177,8 @@
    "quote": "That is why happenstance data cannot be relied on to imply cause and effect.",
    "book_file": "design-analysis-experiments/why-learning-about-systems-is-important.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 20
   },
   {
    "id": "feedback_control",
@@ -180,7 +191,8 @@
    "quote": "Feedback control systems keep the region of operation to a small zone.",
    "book_file": "design-analysis-experiments/why-learning-about-systems-is-important.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 21
   },
   {
    "id": "correlation",
@@ -193,7 +205,8 @@
    "quote": "some observable association is usually present when there is a causal link, but the association on its own is not sufficient evidence of it.",
    "book_file": "design-analysis-experiments/why-learning-about-systems-is-important.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 23
   },
   {
    "id": "learning_cycle",
@@ -208,7 +221,8 @@
    "quote": "learning from and improving a system is an iterative process. It usually follows this cycle:",
    "book_file": "design-analysis-experiments/why-learning-about-systems-is-important.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 17
   },
   {
    "id": "conjecture",
@@ -223,7 +237,8 @@
    "quote": "Make a conjecture (hypothesis), which we believe is true.",
    "book_file": "design-analysis-experiments/why-learning-about-systems-is-important.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 18
   },
   {
    "id": "troubleshooting",
@@ -236,7 +251,8 @@
    "quote": "One of the most frequent reasons we experiment is to fix a problem with our process.",
    "book_file": "design-analysis-experiments/why-learning-about-systems-is-important.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 19
   },
   {
    "id": "disturbance",
@@ -249,7 +265,8 @@
    "quote": "Operators, ambient conditions, physical equipment, lab analyses, and time-dependent effects (catalyst deactivation, fouling), will impact the response.",
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 116
   },
   {
    "id": "controlled_disturbance",
@@ -262,7 +279,8 @@
    "quote": "in which case it isn't a disturbance anymore, as it is held constant for all experiments, and its effect cancels out.",
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 119
   },
   {
    "id": "time_effect",
@@ -277,7 +295,8 @@
    "quote": "and time-dependent effects (catalyst deactivation, fouling), will impact the response.",
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 117
   },
   {
    "id": "randomization",
@@ -292,7 +311,8 @@
    "quote": "experiments must be performed in random order to avoid any unmeasured, and uncontrolled, disturbances from impacting the system.",
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 31
   },
   {
    "id": "randomization_test",
@@ -307,7 +327,8 @@
    "quote": "Fisher's insight was to create one long vector of these outcomes",
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 35
   },
   {
    "id": "pairing",
@@ -320,7 +341,8 @@
    "quote": "pairing is when two experiments are run on the same subject and we analyze the differences in the two response values, rather than the actual response values.",
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 32
   },
   {
    "id": "two_group_comparison",
@@ -335,7 +357,8 @@
    "quote": "We first calculate a pooled variance, then a",
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 24
   },
   {
    "id": "pooled_variance",
@@ -348,7 +371,8 @@
    "quote": "which already assumes the spread at level A equals the spread at level B.",
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 28
   },
   {
    "id": "indicator_variable",
@@ -363,7 +387,8 @@
    "quote": "is an indicator variable. For example,",
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 30
   },
   {
    "id": "confidence_interval",
@@ -376,7 +401,8 @@
    "quote": "significant effect when this confidence interval does not span zero.",
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 26
   },
   {
    "id": "t_distribution",
@@ -389,7 +415,8 @@
    "quote": "from the data (rather than known), this statistic is strictly",
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 25
   },
   {
    "id": "null_hypothesis",
@@ -402,7 +429,8 @@
    "quote": "We do this because the null hypothesis, the statement a test takes as true until the data give evidence against it, is that there is no difference between A and B.",
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 36
   },
   {
    "id": "statistical_significance",
@@ -415,7 +443,8 @@
    "quote": "There are three ways to judge whether a main effect or interaction is significant.",
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 64
   },
   {
    "id": "practical_significance",
@@ -428,7 +457,8 @@
    "quote": "However, the width of this interval and how symmetrically it spans zero can cause us to come to a different,",
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 27
   },
   {
    "id": "cost",
@@ -445,7 +475,8 @@
    "quote": "is not an efficient way for experimentation. Note that OFAT is an alternative name for COST",
    "book_file": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 39
   },
   {
    "id": "false_optimum",
@@ -460,7 +491,8 @@
    "quote": "Changing one single variable at a time leads you into thinking you've reached the optimum, when all you've done in fact is trap yourself at a suboptimal solution.",
    "book_file": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 41
   },
   {
    "id": "order_dependence",
@@ -473,7 +505,8 @@
    "quote": "This is very unsatisfactory: we cannot use methods to optimize our processes that depend on the order of experiments!",
    "book_file": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 42
   },
   {
    "id": "designed_experiment",
@@ -491,7 +524,8 @@
    "quote": "Designed experiments are always run in random order -- as we will presently see -- and we will get the same result, no matter the order.",
    "book_file": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 43
   },
   {
    "id": "full_factorial",
@@ -508,7 +542,8 @@
    "quote": "the :math:`2` refers to the number of levels for each factor",
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 44
   },
   {
    "id": "coding",
@@ -524,7 +559,8 @@
    "quote": "It is standard practice to represent the data from designed experiments in a centered and scaled form:",
    "book_file": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 54
   },
   {
    "id": "standard_order",
@@ -539,7 +575,8 @@
    "quote": "which alternates the sign of the first variable the fastest and the last variable the slowest.",
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 47
   },
   {
    "id": "operating_range",
@@ -552,7 +589,8 @@
    "quote": "The general guidance is to choose the low and high values at the edges of normal operation.",
    "book_file": "design-analysis-experiments/full-factorial-designs/index.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 46
   },
   {
    "id": "cube_plot",
@@ -565,7 +603,8 @@
    "quote": "For simple systems you can visualize the design and results",
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 48
   },
   {
    "id": "main_effect",
@@ -580,7 +619,8 @@
    "quote": "The effects are considered, by convention, to be the difference from the high level to the low level.",
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 49
   },
   {
    "id": "interaction",
@@ -596,7 +636,8 @@
    "quote": "In summary, interaction means the effect of one factor depends on the level of the other factor.",
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 51
   },
   {
    "id": "two_factor_interaction",
@@ -611,7 +652,8 @@
    "quote": "What is missing is an interaction term, given by the product of temperature and substrate.",
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 52
   },
   {
    "id": "three_factor_interaction",
@@ -626,7 +668,8 @@
    "quote": "Very very seldom do three-factor interactions occur, nor are they often of practical significance.",
    "book_file": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst",
    "chapter": 5,
-   "level": 2
+   "level": 1,
+   "order": 59
   },
   {
    "id": "interaction_plot",
@@ -639,7 +682,8 @@
    "quote": "The lack of parallel lines is a clear indication of interaction.",
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 50
   },
   {
    "id": "least_squares_model",
@@ -656,7 +700,8 @@
    "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:28",
    "quote": "whether the experimental design was executed accurately or not: the least squares model always works",
    "book_file": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst",
-   "chapter": 5
+   "chapter": 5,
+   "order": 225
   },
   {
    "id": "model_matrix",
@@ -673,7 +718,8 @@
    "evidence": "design-analysis-experiments/optimal-designs.rst:147",
    "quote": "Each row is one experimental run; each column is one term in the model.",
    "book_file": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst",
-   "chapter": 5
+   "chapter": 5,
+   "order": 169
   },
   {
    "id": "orthogonality",
@@ -688,7 +734,8 @@
    "quote": "matrix has only zeros on the off-diagonals: it indicates that matrix",
    "book_file": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 55
   },
   {
    "id": "intercept",
@@ -704,7 +751,8 @@
    "quote": "Notice from the least squares equations how it is just the average of the four experimental values, even though we did not actually perform an experiment at the center.",
    "book_file": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 58
   },
   {
    "id": "coefficient",
@@ -721,7 +769,8 @@
    "quote": "They are the same, as long as we are careful to interpret them as the change over",
    "book_file": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 56
   },
   {
    "id": "hierarchy_rule",
@@ -736,7 +785,8 @@
    "quote": "Also, if you conclude the interaction term is significant, then you must also include all main factors that make up that interaction term in the model.",
    "book_file": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 81
   },
   {
    "id": "interpret_with_interaction",
@@ -749,7 +799,8 @@
    "quote": "We cannot interpret the main effects separately from the interaction effects",
    "book_file": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 82
   },
   {
    "id": "robustness",
@@ -762,7 +813,8 @@
    "quote": "This is desirable in some situations. It means we can adjust that",
    "book_file": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 83
   },
   {
    "id": "degrees_of_freedom",
@@ -775,7 +827,8 @@
    "quote": "If there are more experiments than parameters to be estimated, then we have extra degrees of freedom.",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 73
   },
   {
    "id": "replicate",
@@ -792,7 +845,8 @@
    "quote": "a complete replicate implies the entire experiment is repeated: system setup, running the experiment and measuring the result.",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 63
   },
   {
    "id": "repeat_measurement",
@@ -805,7 +859,8 @@
    "quote": "is not a true replicate. That is only an estimate of the measurement error and analytical error.",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 62
   },
   {
    "id": "center_point",
@@ -821,7 +876,8 @@
    "quote": "Note that the center point runs do not change the orthogonality of",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 75
   },
   {
    "id": "standard_error",
@@ -834,7 +890,8 @@
    "quote": "the standard error for coefficient :math:`b_i` is :math:`S_E(b_i) = \\sqrt{\\mathcal{V}\\left(b_i\\right)} = \\sqrt{\\dfrac{S_E^2}{\\sum{x_i^2}}}`",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 74
   },
   {
    "id": "noise_standard_deviation",
@@ -847,7 +904,8 @@
    "quote": "There are no degrees of freedom left to estimate the noise standard deviation, the run-to-run scatter of the response when every factor is held fixed.",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 61
   },
   {
    "id": "pareto_plot",
@@ -860,7 +918,8 @@
    "quote": "then plot as shown the absolute value of the model coefficients in sorted order, from largest magnitude to smallest, ignoring the intercept term.",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 65
   },
   {
    "id": "se_significance",
@@ -873,7 +932,8 @@
    "quote": "However, it is customary to just report the standard error next to the coefficients, so that users can apply their own level of confidence.",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 76
   },
   {
    "id": "refit",
@@ -888,7 +948,8 @@
    "quote": "After having established which effects are significant, we can exclude the nonsignificant effects and increase the degrees of freedom.",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 77
   },
   {
    "id": "residual_analysis",
@@ -903,7 +964,8 @@
    "quote": "Plots of the residuals in experimental order, against fitted values, q-q plots and all the other assessment tools from earlier are used, as usual.",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 78
   },
   {
    "id": "factorial_efficiency",
@@ -916,7 +978,8 @@
    "quote": "whereas the COST comparison uses only two, so part of the variance reduction is simply the extra runs.",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 80
   },
   {
    "id": "missing_values",
@@ -929,7 +992,8 @@
    "quote": "if the least squares model was saturated, it becomes an underdetermined system: more unknowns than equations",
    "book_file": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 224
   },
   {
    "id": "off_target_run",
@@ -942,7 +1006,8 @@
    "quote": "will not be a diagonal matrix, but it will be almost diagonal.",
    "book_file": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 223
   },
   {
    "id": "fractional_factorial",
@@ -957,7 +1022,8 @@
    "quote": "In general, we can run a :math:`2^{k-p}` fractional factorial.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/index.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 86
   },
   {
    "id": "half_fraction",
@@ -972,7 +1038,8 @@
    "quote": "So this is our half-factorial designed experiment in 3 factors, but it only requires 4 experiments as shown by the open points in the figure.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/half-fractions.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 84
   },
   {
    "id": "quarter_fraction",
@@ -987,7 +1054,8 @@
    "quote": "while a :math:`2^{k-2}` design is a quarter fraction, and so on.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 85
   },
   {
    "id": "complementary_fraction",
@@ -1000,7 +1068,8 @@
    "quote": "This complementary fraction is found by flipping the sign on the generating factor.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 96
   },
   {
    "id": "saturated_design",
@@ -1013,7 +1082,8 @@
    "quote": "is one in which the number of runs equals the number of parameters being estimated, so there are **no degrees of freedom left over**.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 108
   },
   {
    "id": "plackett_burman",
@@ -1029,7 +1099,8 @@
    "quote": "Plackett-Burman designs are screening designs that can be run in any multiple of 4",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 110
   },
   {
    "id": "confounding",
@@ -1046,7 +1117,8 @@
    "quote": "the least-squares coefficient is a sum of both these effects.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/half-fractions.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 90
   },
   {
    "id": "alias_structure",
@@ -1062,7 +1134,8 @@
    "quote": "Calculating which main effects and two-factor interactions will be confounded with each other, called the",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 91
   },
   {
    "id": "collinearity",
@@ -1075,7 +1148,8 @@
    "quote": "because one or more columns are exactly identical to another column, also known as",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/half-fractions.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 89
   },
   {
    "id": "generator",
@@ -1090,7 +1164,8 @@
    "quote": "This is called the *generating relation* for the design.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 92
   },
   {
    "id": "word",
@@ -1103,7 +1178,8 @@
    "quote": "The generator terms such as **ABD** and **ACE** are called",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 100
   },
   {
    "id": "defining_relation",
@@ -1118,7 +1194,8 @@
    "quote": "factorial design is produced by :math:`p` generators and has a defining relationship of :math:`2^p` words.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 94
   },
   {
    "id": "identity_column",
@@ -1133,7 +1210,8 @@
    "quote": "A factor multiplied by itself is the identity, or intercept column",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 93
   },
   {
    "id": "alias_calculation",
@@ -1146,7 +1224,8 @@
    "quote": "can be found quickly by multiplying the effect we are interested in by the defining relationship.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 95
   },
   {
    "id": "reassign_letters",
@@ -1159,7 +1238,8 @@
    "quote": "then just reassign the factors to the letters to achieve the \"least-worst\" confounding for your situation.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 101
   },
   {
    "id": "resolution",
@@ -1174,7 +1254,8 @@
    "quote": "of a design is given by the length of the shortest word in the defining relation.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 102
   },
   {
    "id": "resolution_iii",
@@ -1187,7 +1268,8 @@
    "quote": "Main effects are not confounded with each other.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 104
   },
   {
    "id": "resolution_iv",
@@ -1200,7 +1282,8 @@
    "quote": "Main effects are not aliased with two-factor interactions either",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 105
   },
   {
    "id": "resolution_v",
@@ -1213,7 +1296,8 @@
    "quote": "But two-factor interactions are aliased with three-factor interactions",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 106
   },
   {
    "id": "trade_off_table",
@@ -1226,7 +1310,8 @@
    "quote": "You can use the following table to visualize the trade-off between design resolution, the number of factors",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 107
   },
   {
    "id": "projectivity",
@@ -1239,7 +1324,8 @@
    "quote": "contains an embedded full factorial using a combination of any 3 factors",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 115
   },
   {
    "id": "foldover",
@@ -1252,7 +1338,8 @@
    "quote": "Now consider putting all 16 runs together and analyzing the joint results.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 111
   },
   {
    "id": "single_factor_foldover",
@@ -1267,7 +1354,8 @@
    "quote": "switching the sign of one factor will de-alias that factor's main effect, and all its associated two-factor interactions",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 113
   },
   {
    "id": "full_foldover",
@@ -1282,7 +1370,8 @@
    "quote": "Its shortest word now has four letters, so this is a",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 114
   },
   {
    "id": "sequential_experimentation",
@@ -1295,7 +1384,8 @@
    "quote": "Experiments are not a one-shot operation. They are almost always sequential, as we learn more and more about our system.",
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 112
   },
   {
    "id": "screening",
@@ -1308,7 +1398,8 @@
    "quote": "to separate out the important factors from the many potential factors.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 88
   },
   {
    "id": "effect_sparsity",
@@ -1325,7 +1416,8 @@
    "quote": "The principle of effect sparsity states that only a few of the many factors studied drive most of the variation in the response.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst",
    "chapter": 5,
-   "level": 2
+   "level": 1,
+   "order": 69
   },
   {
    "id": "blocking",
@@ -1338,7 +1430,8 @@
    "quote": "blocking is a special way of running the experiment so that the disturbance actually does affect the response, but we construct the experiment so that this effect is not misleading.",
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 118
   },
   {
    "id": "block",
@@ -1351,7 +1444,8 @@
    "quote": "The experiments within each block must be run randomly.",
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 121
   },
   {
    "id": "block_generator",
@@ -1364,7 +1458,8 @@
    "quote": "to confound the two blocks of experiments with the 3-factor interaction, **ABC**.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 97
   },
   {
    "id": "block_on_highest",
@@ -1377,7 +1472,8 @@
    "quote": "You should always confound your block effect on the highest possible interaction term.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 98
   },
   {
    "id": "rsm",
@@ -1393,7 +1489,8 @@
    "quote": "RSM is a way to explore the effect of operating conditions (the factors) on the response variable",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 126
   },
   {
    "id": "response_surface",
@@ -1406,7 +1503,8 @@
    "quote": "As we map out the unknown response surface of",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 125
   },
   {
    "id": "steepest_ascent",
@@ -1422,7 +1520,8 @@
    "quote": "it is a useful direction to climb while the main effects are large compared with the two-factor interactions, the curvature and the noise",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 123
   },
   {
    "id": "step_size",
@@ -1435,7 +1534,8 @@
    "quote": "big enough to cause a change in the response in a reasonable number of experiments, but not so big as to miss an optimum.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 128
   },
   {
    "id": "last_best_point",
@@ -1448,7 +1548,8 @@
    "quote": "So we return back to our *last best point*, because the surface has obviously changed, and we should refit our model with a new factorial in this neighbourhood",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 129
   },
   {
    "id": "curvature",
@@ -1463,7 +1564,8 @@
    "quote": "An optimum exhibits curvature, so a model that only has linear terms in it will not be suitable",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 134
   },
   {
    "id": "curvature_check",
@@ -1479,7 +1581,8 @@
    "quote": "Curvature can be assessed by comparing the predicted center point, i.e. the model's intercept",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 149
   },
   {
    "id": "quadratic_model",
@@ -1496,7 +1599,8 @@
    "evidence": "design-analysis-experiments/mixture-experiments.rst:67",
    "quote": "the pure quadratics add nothing and must be left out.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
-   "chapter": 5
+   "chapter": 5,
+   "order": 211
   },
   {
    "id": "ccd",
@@ -1512,7 +1616,8 @@
    "quote": "If there is curvature, add axial points to expand the factorial into a central composite design.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 136
   },
   {
    "id": "axial_point",
@@ -1527,7 +1632,8 @@
    "quote": "coded units away from the center for a 2 factor system",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 137
   },
   {
    "id": "box_behnken",
@@ -1540,7 +1646,8 @@
    "quote": "A BBD places no runs at the cube vertices: there is no run with every",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 146
   },
   {
    "id": "contour_plot",
@@ -1555,7 +1662,8 @@
    "quote": "Draw contour plots of this estimated response surface",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 124
   },
   {
    "id": "optimum",
@@ -1568,7 +1676,8 @@
    "quote": "An optimum on a constraint, at the edge of that region, need not be flat",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 130
   },
   {
    "id": "plateau",
@@ -1583,7 +1692,8 @@
    "quote": "The response variable will start to plateau, since, recall that the first derivative is zero at an optimum",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 131
   },
   {
    "id": "overshoot",
@@ -1596,7 +1706,8 @@
    "quote": "The response variable decreases, sometimes very rapidly, because we have overshot the optimum.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 132
   },
   {
    "id": "big_interactions",
@@ -1609,7 +1720,8 @@
    "quote": "The two-factor interaction terms become similar to, or larger than, the main effect terms.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 133
   },
   {
    "id": "center_mismatch",
@@ -1622,7 +1734,8 @@
    "quote": "A large difference in the prediction, when compared to the model's effects, indicates the response surface is curved.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 148
   },
   {
    "id": "near_optimum",
@@ -1635,7 +1748,8 @@
    "quote": "An optimum exhibits curvature, so a model that only has linear terms in it will not be suitable to use to find the direction of steepest ascent",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 135
   },
   {
    "id": "multiple_responses",
@@ -1650,7 +1764,8 @@
    "quote": "For example we can achieve a higher production rate, but it is at the expense of more energy.",
    "book_file": "design-analysis-experiments/multi-response-optimization.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 150
   },
   {
    "id": "single_combined_response",
@@ -1663,7 +1778,8 @@
    "quote": "One way to balance all competing objectives is to rephrase the",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 151
   },
   {
    "id": "overlay_surfaces",
@@ -1676,7 +1792,8 @@
    "quote": "This is tremendously helpful when discussing and evaluating alternate operating points, because plant managers and operators can then visually see the trade-offs.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 152
   },
   {
    "id": "categorical_in_rsm",
@@ -1689,7 +1806,8 @@
    "quote": "are handled by fixing them at one or the other value, and then performing the optimization conditional on those selected values.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 153
   },
   {
    "id": "evop",
@@ -1704,7 +1822,8 @@
    "quote": "EVOP is an iterative hunt for the process optimum by making small perturbations to the system.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 155
   },
   {
    "id": "process_drift",
@@ -1717,7 +1836,8 @@
    "quote": "Since the process is not constant, the optimum will gradually move away from its current operating point.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 154
   },
   {
    "id": "phase_screening",
@@ -1730,7 +1850,8 @@
    "quote": "Include as many factors into as few runs as possible. Use a saturated, resolution III design, or a Plackett and Burman design.",
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
-   "level": 1
+   "level": 3,
+   "order": 219
   },
   {
    "id": "phase_sequential",
@@ -1743,7 +1864,8 @@
    "quote": "The **second phase** is to add *sequential experiments* to the previous experiments.",
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
-   "level": 1
+   "level": 3,
+   "order": 220
   },
   {
    "id": "phase_optimize",
@@ -1756,7 +1878,8 @@
    "quote": "Once you reach the optimum, then second order effects and curvature must be added to assess the direction of the optimum.",
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
-   "level": 1
+   "level": 3,
+   "order": 221
   },
   {
    "id": "phase_maintain",
@@ -1769,7 +1892,8 @@
    "quote": "You should be always hunting for the process optimum.",
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
-   "level": 1
+   "level": 3,
+   "order": 222
   },
   {
    "id": "budget_rule",
@@ -1782,7 +1906,8 @@
    "quote": "do not spend more than 20% to 25% of your time and budget on your first group of experiments.",
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
-   "level": 2
+   "level": 3,
+   "order": 216
   },
   {
    "id": "after_the_experiment",
@@ -1795,7 +1920,8 @@
    "quote": "The best time to run an experiment is after the experiment.",
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
-   "level": 2
+   "level": 3,
+   "order": 215
   },
   {
    "id": "first_run_center",
@@ -1808,7 +1934,8 @@
    "quote": "Since the center point is not required to analyze the data, it is worth using that first run to learn about your system.",
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
-   "level": 1
+   "level": 3,
+   "order": 218
   },
   {
    "id": "constraint",
@@ -1824,7 +1951,8 @@
    "evidence": "design-analysis-experiments/mixture-experiments.rst:43",
    "quote": "lower or upper bounds on an ingredient cut the simplex down to a smaller region inside it",
    "book_file": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst",
-   "chapter": 5
+   "chapter": 5,
+   "order": 210
   },
   {
    "id": "lost_orthogonality",
@@ -1837,7 +1965,8 @@
    "quote": "We have lost orthogonality. We have also reduced the space",
    "book_file": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 226
   },
   {
    "id": "optimal_design",
@@ -1853,7 +1982,8 @@
    "quote": "select the experimental runs by optimizing some criterion,",
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 161
   },
   {
    "id": "candidate_set",
@@ -1868,7 +1998,8 @@
    "quote": "The computer enumerates every combination of factor levels that satisfies the",
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 163
   },
   {
    "id": "exchange_algorithm",
@@ -1881,7 +2012,8 @@
    "quote": "keeping the swap whenever it improves the criterion, until no",
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 175
   },
   {
    "id": "optimality_criterion",
@@ -1894,7 +2026,8 @@
    "quote": "A criterion is a single number computed from the design, and every criterion we use is built",
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 168
   },
   {
    "id": "d_optimal",
@@ -1907,7 +2040,8 @@
    "quote": "confidence region for all the coefficients is an ellipsoid whose volume is proportional to",
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 170
   },
   {
    "id": "a_optimal",
@@ -1920,7 +2054,8 @@
    "quote": "which is exactly the sum of the individual coefficient variances (the diagonal entries of",
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 171
   },
   {
    "id": "g_optimal",
@@ -1933,7 +2068,8 @@
    "quote": "G-optimality minimizes the largest prediction variance anywhere in",
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 173
   },
   {
    "id": "v_optimal",
@@ -1948,7 +2084,8 @@
    "quote": "variance over the whole region. V-optimality is the closely related criterion that averages",
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 174
   },
   {
    "id": "specify_model",
@@ -1961,7 +2098,8 @@
    "quote": "First, the user must specify the model.",
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 166
   },
   {
    "id": "augmentation",
@@ -1976,7 +2114,8 @@
    "quote": "A D-optimal augmentation finds the extra",
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 165
   },
   {
    "id": "dsd",
@@ -1991,7 +2130,8 @@
    "quote": "the same needs without an optimization step: the definitive screening design.",
    "book_file": "design-analysis-experiments/definitive-screening-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 177
   },
   {
    "id": "mixture_design",
@@ -2004,7 +2144,8 @@
    "quote": "Mixture experiments are used to optimize recipes: the factors being varied are the proportions",
    "book_file": "design-analysis-experiments/mixture-experiments.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 206
   },
   {
    "id": "mixture_constraint",
@@ -2020,7 +2161,8 @@
    "quote": "The constraint has one immediate consequence: you cannot change a single ingredient proportion",
    "book_file": "design-analysis-experiments/mixture-experiments.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 208
   },
   {
    "id": "simplex",
@@ -2035,7 +2177,8 @@
    "quote": "Geometrically, the allowed settings form a *simplex*. For three ingredients this is a triangle,",
    "book_file": "design-analysis-experiments/mixture-experiments.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 209
   },
   {
    "id": "ex_cost_bioreactor",
@@ -2048,7 +2191,8 @@
    "quote": "We're proud of ourselves because we have boosted our yield from 63% to 67%, and then from 67% to 69.7%.",
    "book_file": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 40
   },
   {
    "id": "ex_tea",
@@ -2061,7 +2205,8 @@
    "quote": "If the lady has test score values better than by random chance, then there is a reasonable claim the lady is reliable.",
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 33
   },
   {
    "id": "ex_brittleness",
@@ -2074,7 +2219,8 @@
    "quote": "degrees of freedom, would be 79.4%. See how close they agree?",
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 37
   },
   {
    "id": "ex_two_factor",
@@ -2087,7 +2233,8 @@
    "quote": "The 61.5 term in the least squares model is the expected conversion at the baseline conditions.",
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 57
   },
   {
    "id": "ex_handwashing",
@@ -2100,7 +2247,8 @@
    "quote": "The effect of warm water enhances the effect of soap. Conversely, the effect of soap is enhanced by using warm water.",
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 53
   },
   {
    "id": "ex_pollutant",
@@ -2113,7 +2261,8 @@
    "quote": "It is expected that the chemical compound and speed have a strong effect on",
    "book_file": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 60
   },
   {
    "id": "ex_yield_pressure",
@@ -2126,7 +2275,8 @@
    "quote": "However, it is the high impurity that actually causes the lower yield, not the pressure itself.",
    "book_file": "design-analysis-experiments/why-learning-about-systems-is-important.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 22
   },
   {
    "id": "ex_7_factor_screen",
@@ -2139,7 +2289,8 @@
    "quote": "falls just below the margin, so on this evidence it is a candidate rather than a confirmed effect",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 109
   },
   {
    "id": "ex_8_factor",
@@ -2152,7 +2303,8 @@
    "quote": "had as the shortest word length of 4 characters, so this would be a",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 103
   },
   {
    "id": "ex_raw_material_blocks",
@@ -2165,7 +2317,8 @@
    "quote": "the question is how to arrange the 2 sets of 4 runs so that the known, but unmeasurable disturbance from the impurity has the least effect on our results",
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 120
   },
   {
    "id": "ex_rsm_profit",
@@ -2178,7 +2331,8 @@
    "quote": "As the solid contour lines in the illustration show, we should run our next experiments roughly at",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 138
   },
   {
    "id": "ex_fruit_punch",
@@ -2191,7 +2345,8 @@
    "quote": "finds a lowest-cost fruit-punch recipe that still meets a taste target, with the shaded region",
    "book_file": "design-analysis-experiments/mixture-experiments.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 213
   },
   {
    "id": "ex_cell_culture",
@@ -2204,7 +2359,8 @@
    "quote": "It would take almost a year to collect the data at all the combinations of",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/index.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 87
   },
   {
    "id": "q_narrow_factors",
@@ -2217,7 +2373,8 @@
    "quote": "How do we narrow down the list to a more manageable size and rank their effect on melt index?",
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 9
   },
   {
    "id": "q_after_screening",
@@ -2230,7 +2387,8 @@
    "quote": "Our initial screening experiments reduced the list down to three factors of interest. Now, how do we perform the rest of the experiments?",
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
-   "level": 1
+   "level": 2,
+   "order": 10
   },
   {
    "id": "q_old_data",
@@ -2243,7 +2401,8 @@
    "quote": "What interesting results do you see in this data, and where should we operate the system",
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 11
   },
   {
    "id": "q_two_goals",
@@ -2256,7 +2415,8 @@
    "quote": "How can we determine other settings (factors) that give long shelf life but reduce the energy consumed?",
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 12
   },
   {
    "id": "q_unsafe_corner",
@@ -2269,7 +2429,8 @@
    "quote": "operating at both high temperature and pressure is unsafe. How do we plan such an experiment?",
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 13
   },
   {
    "id": "ref_fisher",
@@ -2282,7 +2443,8 @@
    "quote": "The concept of randomization was elegantly described in an example by Fisher in Chapter 2 of his book,",
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 34
   },
   {
    "id": "ref_bhh",
@@ -2297,7 +2459,8 @@
    "quote": "Chapters 5 and 6 with topics from Chapters 11, 12, 13 and 15 are the most heavily used in this chapter.",
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 14
   },
   {
    "id": "ref_box_hunter_1961",
@@ -2310,7 +2473,8 @@
    "quote": "Fractional Factorial Designs - Part I",
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 15
   },
   {
    "id": "ref_box_1957",
@@ -2323,7 +2487,8 @@
    "quote": "Some examples of the success of EVOP and a review paper are in these readings:",
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 156
   },
   {
    "id": "ref_st_john_draper",
@@ -2336,7 +2501,8 @@
    "quote": "D-Optimality for Regression Designs: A Review",
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 167
   },
   {
    "id": "ref_jones_2011",
@@ -2349,7 +2515,8 @@
    "quote": "introduced by Jones and Nachtsheim in 2011, collapses the two phases into one.",
    "book_file": "design-analysis-experiments/definitive-screening-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 178
   },
   {
    "id": "omars_design",
@@ -2362,7 +2529,8 @@
    "quote": "The defining property generalises the one that makes the DSD work: the main effects are orthogonal",
    "book_file": "design-analysis-experiments/omars-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 180
   },
   {
    "id": "conference_matrix",
@@ -2375,7 +2543,8 @@
    "quote": "of a conference matrix with a centre run added, a route to the DSD",
    "book_file": "design-analysis-experiments/definitive-screening-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 179
   },
   {
    "id": "mirror_image_pair",
@@ -2388,7 +2557,8 @@
    "quote": "Runs 3 and 4 flip sign in the main-effect columns, which is what estimates the main effects, but",
    "book_file": "design-analysis-experiments/omars-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 181
   },
   {
    "id": "estimability_frontier",
@@ -2401,7 +2571,8 @@
    "quote": "The frontier is a property of the foldover construction, not of OMARS designs as such.",
    "book_file": "design-analysis-experiments/omars-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 183
   },
   {
    "id": "omars_trade_off_table",
@@ -2414,7 +2585,8 @@
    "quote": "The OMARS trade-off table as a capability staircase. Each cell gives the largest model the",
    "book_file": "design-analysis-experiments/omars-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 184
   },
   {
    "id": "information_matrix",
@@ -2427,7 +2599,8 @@
    "quote": "It earns its name from the least squares result for the covariance of the estimated coefficients",
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 162
   },
   {
    "id": "e_optimality",
@@ -2440,7 +2613,8 @@
    "quote": "confidence ellipsoid stretches furthest. E-optimality is a minimax criterion: it forces",
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 172
   },
   {
    "id": "coordinate_exchange_algorithm",
@@ -2453,7 +2627,8 @@
    "quote": "altogether. It walks through each coordinate of each run in turn and sets it to the value that",
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 164
   },
   {
    "id": "effects_coding",
@@ -2466,7 +2641,8 @@
    "quote": "a two-level factor is exactly effects coding for the case",
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 176
   },
   {
    "id": "prediction_variance",
@@ -2479,7 +2655,8 @@
    "quote": "Read this as a product of three things. The variance of a prediction at a new point depends on",
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 190
   },
   {
    "id": "scaled_prediction_variance",
@@ -2494,7 +2671,8 @@
    "quote": "The SPV depends only on the geometry of the design. The G-optimal value is its maximum",
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 191
   },
   {
    "id": "fraction_of_design_space_plot",
@@ -2507,7 +2685,8 @@
    "quote": "therefore just the running fraction (percentiles), and the curve is the empirical cumulative",
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 194
   },
   {
    "id": "judge_separability_and_precision_separately",
@@ -2520,7 +2699,8 @@
    "quote": "A good design has to do two separate jobs well, and it helps to keep them apart in",
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 192
   },
   {
    "id": "maximum_absolute_correlation_between_model_terms",
@@ -2533,7 +2713,8 @@
    "quote": "entanglement lives) is the single tightest confounding anywhere in the design (the worst case you",
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 195
   },
   {
    "id": "variance_inflation_factor",
@@ -2546,7 +2727,8 @@
    "quote": "raises a flag past 5, and a serious one past 10.",
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 196
   },
   {
    "id": "alias_matrix",
@@ -2561,7 +2743,8 @@
    "quote": "interaction shifts one fitted coefficient: an entry of zero leaves that coefficient",
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 197
   },
   {
    "id": "statistical_power",
@@ -2574,7 +2757,8 @@
    "quote": "experimenter actually cares about: if an effect is really there, how likely are we to detect it? We",
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 199
   },
   {
    "id": "effect_size",
@@ -2587,7 +2771,8 @@
    "quote": "It needs an effect size and a significance level, gives",
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 186
   },
   {
    "id": "d_efficiency",
@@ -2600,7 +2785,8 @@
    "quote": "takes the D-optimal design as 100%, so it is worth checking which one a given package reports.",
    "book_file": "design-analysis-experiments/comparing-design-families.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 200
   },
   {
    "id": "d_for_estimation_i_for_prediction",
@@ -2613,7 +2799,8 @@
    "quote": "they frequently disagree, so choose by what you will actually do with the model. Second,",
    "book_file": "design-analysis-experiments/comparing-design-families.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 201
   },
   {
    "id": "compare_d_efficiency_only_at_equal_run_counts",
@@ -2626,7 +2813,8 @@
    "quote": "different run counts it favours the smaller design, so judge larger-versus-smaller on",
    "book_file": "design-analysis-experiments/comparing-design-families.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 202
   },
   {
    "id": "face_centred_central_composite_design",
@@ -2639,7 +2827,8 @@
    "quote": "A face-centred central composite design (CCD) keeps every run inside the factor ranges,",
    "book_file": "design-analysis-experiments/screen-then-optimise-study.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 205
   },
   {
    "id": "rotatability",
@@ -2654,7 +2843,8 @@
    "quote": "giving roughly uniform prediction variance at a",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 147
   },
   {
    "id": "design_based_staged_analysis",
@@ -2667,7 +2857,8 @@
    "quote": "clean; pool the inactive ones into the error estimate; then test for, and select among, the",
    "book_file": "design-analysis-experiments/omars-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 187
   },
   {
    "id": "effect_heredity",
@@ -2680,7 +2871,8 @@
    "quote": "range its linear effect is small, so strong heredity can drop the terms that locate the optimum, as",
    "book_file": "design-analysis-experiments/omars-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 188
   },
   {
    "id": "fake_factor",
@@ -2693,7 +2885,8 @@
    "quote": "present the fake factors pick up only noise. They give the analysis 2 degrees of freedom for error",
    "book_file": "design-analysis-experiments/screen-then-optimise-study.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 204
   },
   {
    "id": "keep_mirror_pairs_in_one_block",
@@ -2706,7 +2899,8 @@
    "quote": "block, and every main effect sums to zero within each block, whichever way the pairs are divided.",
    "book_file": "design-analysis-experiments/omars-worked-study.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 189
   },
   {
    "id": "judge_estimability_from_the_rank_of_the_model_matrix",
@@ -2719,7 +2913,8 @@
    "quote": "model. Judge estimability from the rank of the model matrix, not from the",
    "book_file": "design-analysis-experiments/omars-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 182
   },
   {
    "id": "minimum_aberration",
@@ -2732,7 +2927,8 @@
    "quote": "factors resolution alone does not decide: 95 designs reach resolution IV, and the table prints one",
    "book_file": "design-analysis-experiments/omars-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 185
   },
   {
    "id": "lenth_method",
@@ -2745,7 +2941,8 @@
    "quote": "When the design is unreplicated, so there are no degrees of freedom for a standard error, we can still place an objective cutoff",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 66
   },
   {
    "id": "pseudo_standard_error",
@@ -2758,7 +2955,8 @@
    "quote": "(PSE) is a robust estimate of the standard error of an effect.",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 68
   },
   {
    "id": "half_normal_plot",
@@ -2771,7 +2969,8 @@
    "quote": "Noise effects fall along a straight line through the origin; the real effects break away to the upper right.",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 67
   },
   {
    "id": "pure_error",
@@ -2784,7 +2983,8 @@
    "quote": "two or more runs at exactly the same factor-level combination, differ only by noise, so the spread",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 140
   },
   {
    "id": "lack_of_fit_test",
@@ -2797,7 +2997,8 @@
    "quote": "The idea is to split the model's residual sum of squares into two parts. Replicated runs, meaning",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 139
   },
   {
    "id": "sweet_spot",
@@ -2810,7 +3011,8 @@
    "quote": "The sweet spot is the set of settings meeting every specification at once. It ranks",
    "book_file": "design-analysis-experiments/multi-response-optimization.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 157
   },
   {
    "id": "individual_desirability",
@@ -2825,7 +3027,8 @@
    "quote": "Individual desirability grades one response from 0 to 1 between a pair of limits, with a",
    "book_file": "design-analysis-experiments/multi-response-optimization.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 159
   },
   {
    "id": "overall_desirability",
@@ -2840,7 +3043,8 @@
    "quote": "the unweighted geometric mean that Derringer and Suich proposed",
    "book_file": "design-analysis-experiments/multi-response-optimization.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 158
   },
   {
    "id": "confirm_the_prediction",
@@ -2857,7 +3061,8 @@
    "quote": "The recommended setting is a prediction. Report the prediction interval for each response",
    "book_file": "design-analysis-experiments/multi-response-optimization.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 160
   },
   {
    "id": "scheffe_model",
@@ -2873,7 +3078,8 @@
    "quote": "These readings hold in the Scheffe form",
    "book_file": "design-analysis-experiments/mixture-experiments.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 207
   },
   {
    "id": "pseudocomponent",
@@ -2889,7 +3095,8 @@
    "quote": "the original. The same kind of design is then optimal for the constrained region as for the full",
    "book_file": "design-analysis-experiments/mixture-experiments.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 212
   },
   {
    "id": "mixture_process_variable_experiment",
@@ -2902,7 +3109,8 @@
    "quote": "the combined model has no intercept and no process-variable main effects.",
    "book_file": "design-analysis-experiments/mixture-experiments.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 214
   },
   {
    "id": "screen_then_optimise_reactor_study",
@@ -2915,7 +3123,8 @@
    "quote": "This section runs both stages on a simulated reactor whose true behaviour is known, so the",
    "book_file": "design-analysis-experiments/screen-then-optimise-study.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 203
   },
   {
    "id": "margin_of_error",
@@ -2928,7 +3137,8 @@
    "quote": "(ME) is the individual 95% cutoff: an effect whose magnitude exceeds the ME is significant on its own.",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 70
   },
   {
    "id": "simultaneous_margin_of_error",
@@ -2941,7 +3151,8 @@
    "quote": "It is the stricter cutoff to use when scanning many effects at once.",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 71
   },
   {
    "id": "allocating_runs_between_two_levels",
@@ -2954,7 +3165,8 @@
    "quote": "The general principle is to place more runs where the variance is larger and where the runs are cheaper.",
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 29
   },
   {
    "id": "reference_distribution",
@@ -2967,7 +3179,8 @@
    "quote": "You can build the reference distribution yourself; enumerating all 24,310 splits takes under a second:",
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 38
   },
   {
    "id": "blocking_into_more_than_two_blocks",
@@ -2982,7 +3195,8 @@
    "quote": "The goal is to keep those three block contrasts away from the effects we care about, and especially away from the main effects.",
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 99
   },
   {
    "id": "randomization_replication_and_blocking",
@@ -2995,7 +3209,8 @@
    "quote": "Three principles underpin the design of any experiment: randomization, replication, and blocking.",
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
-   "level": 1
+   "level": 3,
+   "order": 217
   },
   {
    "id": "split_plot_design",
@@ -3008,7 +3223,8 @@
    "quote": "split-plot: the two hard-to-change factors are held over a block of runs (a whole plot) while the",
    "book_file": "product-development-product-improvement/mixed-level-profile-case-study.rst",
    "chapter": 7,
-   "level": 3
+   "level": 3,
+   "order": 227
   },
   {
    "id": "coding_schemes_for_a_categorical_factor",
@@ -3021,7 +3237,8 @@
    "quote": "the choice fixes what each compound coefficient means:",
    "book_file": "product-development-product-improvement/mixed-level-profile-case-study.rst",
    "chapter": 7,
-   "level": 3
+   "level": 3,
+   "order": 228
   },
   {
    "id": "joint_f_test_of_a_categorical_interaction",
@@ -3034,7 +3251,8 @@
    "quote": "compounds. The F-test is a single joint test of all five at once: it weighs the drop in the",
    "book_file": "product-development-product-improvement/mixed-level-profile-case-study.rst",
    "chapter": 7,
-   "level": 3
+   "level": 3,
+   "order": 229
   },
   {
    "id": "region_of_interest",
@@ -3047,7 +3265,8 @@
    "quote": "for each factor around the current conditions, over which the local model is meant to hold.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 127
   },
   {
    "id": "analysis_of_variance",
@@ -3063,7 +3282,8 @@
    "quote": "splits the residual row into lack of fit and pure error when some runs are replicated",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 141
   },
   {
    "id": "extra_sum_of_squares_test",
@@ -3078,7 +3298,8 @@
    "quote": "group of terms at once rather than one coefficient at a time.",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 142
   },
   {
    "id": "response_transformation",
@@ -3094,7 +3315,8 @@
    "quote": "fitting the model to a function of the response, such as :math:`\\log y`, instead of :math:`y`.",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 79
   },
   {
    "id": "normal_probability_plot_of_effects",
@@ -3109,7 +3331,8 @@
    "quote": "which some software draws instead, plots the signed effects against normal quantiles.",
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
-   "level": 1
+   "level": 1,
+   "order": 72
   },
   {
    "id": "bias_error",
@@ -3124,7 +3347,8 @@
    "quote": "misses the true response by the :index:`bias error <pair: bias error; experiments>`",
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 198
   },
   {
    "id": "stationary_point",
@@ -3137,7 +3361,8 @@
    "quote": "A stationary point can be a maximum, a minimum, or a *saddle point*",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 143
   },
   {
    "id": "canonical_analysis",
@@ -3150,7 +3375,8 @@
    "quote": "It moves the origin to the stationary point and turns",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 144
   },
   {
    "id": "ridge_analysis",
@@ -3163,7 +3389,8 @@
    "quote": "Ridge analysis finds the settings of highest (or lowest)",
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 145
   },
   {
    "id": "additive_block_effect",
@@ -3179,7 +3406,8 @@
    "quote": "every response in its block by the same amount",
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
-   "level": 2
+   "level": 2,
+   "order": 122
   },
   {
    "id": "scale_sensitivity_of_optimality_criteria",
@@ -3194,7 +3422,8 @@
    "quote": "The raw criteria scale with the spread of the runs as well as with their number.",
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
-   "level": 3
+   "level": 3,
+   "order": 193
   }
  ],
  "edges": [

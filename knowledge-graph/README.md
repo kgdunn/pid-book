@@ -75,17 +75,19 @@ json.dump({"source": source, **data}, open(sys.argv[1], "w"), separators=(",", "
 ## Reading levels
 
 The map shows the graph at three levels: Beginner, Intermediate and Advanced, each holding every level
-below it. `build_kg.py` gives each term its level (`levels()`), from the stage of chapter 5 that teaches it:
+below it. `build_kg.py` gives each term its level (`levels()`) from where chapter 5 introduces it, reading
+the chapter in its own order (the toctree, as `tools/check_code_blocks.py` reads it):
 
-- **Beginner**: why we experiment, the vocabulary, one factor at two levels, and two-level full factorials
-  with their analysis.
-- **Intermediate**: blocking, fractional factorials, response surface methods and several responses.
-- **Advanced**: everything else: judging designs, optimal, mixture, DSD and OMARS designs, canonical
-  analysis, EVOP and the case studies.
+- **Beginner**: up to the two-level full factorials and their analysis.
+- **Intermediate**: from fractional factorials through blocking, response surface methods and several
+  responses.
+- **Advanced**: from optimal designs on: DSD and OMARS designs, judging designs, mixtures, the general
+  approach that ties the chapter together, and the specialised subsections on canonical analysis and EVOP.
 
-A term starts at the stage of the section the graph cites for it; a `level:` on the term overrides that
-when the cited line is a later restatement of something the book teaches earlier. A term that another
-REQUIRES is pulled down to that term's level, and a term with no link at its level moves up until it has one.
+A term is introduced at its first index entry or at the line the graph cites, whichever the reader meets
+first; a `level:` on the term overrides that when the book teaches it earlier than either. A term that
+another REQUIRES is pulled down to that term's level, and a term with no link at its level moves up until it
+has one. Each term also carries its `order`, its rank in the book's order of introduction.
 
 ## Links another text agrees with
 

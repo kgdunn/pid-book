@@ -17,6 +17,7 @@ book's current commit, back into graph.yaml.
 """
 
 import difflib
+import importlib.util
 import json
 import re
 import subprocess
@@ -44,17 +45,13 @@ VERBS = {
     "EQUALS", "IS_HALF_OF", "MAY_HAVE",
 }
 MAX_WORDS = 32
-# Reading levels for the map, by the stage of chapter 5 that teaches a term (see levels()). A section not listed is
-# Advanced: the specialised designs, design evaluation, mixtures and the case studies.
+# Reading levels for the map, by where chapter 5 introduces a term in reading order (see levels()). The first file of
+# each later level: fractional factorials open Intermediate, optimal designs open Advanced.
 LEVEL_NAMES = {1: "Beginner", 2: "Intermediate", 3: "Advanced"}
-STAGES = {
-    1: ("why-learning-about-systems-is-important", "design-analysis-experiments.rst", "examples-of-how-designed",
-        "changing-one-single-variable-at-a-time", "general-approach-for-experimentation",
-        "experiments-with-a-single-variable-at-two-levels", "full-factorial-designs/"),
-    2: ("blocking-and-confounding-for-disturbances", "fractional-factorial-designs/", "response-surface-methods",
-        "multi-response-optimization"),
-}
-ADVANCED_SECTIONS = {"DOE-RSM-canonical-analysis", "DOE-EVOP"}  # specialised subsections of Intermediate files
+LEVEL_STARTS = {2: "design-analysis-experiments/fractional-factorial-designs/index.rst",
+                3: "design-analysis-experiments/optimal-designs.rst"}
+ADVANCED_SECTIONS = {"DOE-RSM-canonical-analysis", "DOE-EVOP"}  # specialised subsections inside Intermediate files
+INDEX_ENTRY = re.compile(r":index:`([^`<]+?)\s*(?:<[^>]*>)?`|^\s*(?:pair|single):\s*([^;\n]+)")
 EM_DASH = "—"
 lines_of: dict[str, list[str]] = {}
 
@@ -167,22 +164,59 @@ def write_back(graph: dict, head: str | None) -> None:
     (HERE / "graph.yaml").write_text(text, encoding="utf-8")
 
 
-def levels(graph: dict) -> dict[str, int]:
-    """Each term's reading level: 1 Beginner, 2 Intermediate, 3 Advanced; each level shows every level below it.
+def reading_order() -> list[str]:
+    """Chapter 5's files in reading order, from the book's toctree as its own code checker reads it."""
+    spec = importlib.util.spec_from_file_location("check_code_blocks", BOOK / "tools" / "check_code_blocks.py")
+    checker = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = checker  # its dataclasses resolve their annotations through sys.modules
+    spec.loader.exec_module(checker)
+    index = BOOK / "design-analysis-experiments" / "index.rst"
+    return [str(f.relative_to(BOOK)) for f in checker.chapter_files(index)]
 
-    1. A term starts at the stage of the chapter whose section the graph cites for it, or at its own `level`
-       when the graph cites a later restatement of a term the book teaches earlier.
+
+def introductions(order: list[str]) -> dict[str, tuple[int, int]]:
+    """The first index entry for each indexed phrase, as (file position, line) in reading order."""
+    found: dict[str, tuple[int, int]] = {}
+    for at, path in enumerate(order):
+        for number, line in enumerate((BOOK / path).read_text(encoding="utf-8").splitlines(), 1):
+            for m in INDEX_ENTRY.finditer(line):
+                found.setdefault(phrase(m[1] or m[2]), (at, number))
+    return found
+
+
+def phrase(text: str) -> str:
+    """A name compared without case or a plural s."""
+    return text.strip().lower().removesuffix("s")
+
+
+def levels(graph: dict) -> tuple[dict[str, int], dict[str, int]]:
+    """Each term's reading level (1 Beginner, 2 Intermediate, 3 Advanced) and its rank in the book's order.
+
+    1. A term starts at the level of the place chapter 5 introduces it, reading in book order: its first index
+       entry or the line the graph cites, whichever comes first. A `level` on the term overrides that when the
+       book teaches it earlier than either.
     2. Prerequisites come first: a term that another REQUIRES is shown no later than that term.
     3. Nothing floats alone: a term with no link to a term at its level or below moves up to the next level.
+    Each level shows every level below it.
     """
-    def start(n: dict) -> int:
+    order = reading_order()
+    position = {path: at for at, path in enumerate(order)}
+    entries = introductions(order)
+
+    def introduced(n: dict) -> tuple[int, int]:
+        path, _, line = n["evidence"].rpartition(":")
+        named = [entries[phrase(x)] for x in (n["name"], *n["aliases"]) if phrase(x) in entries]
+        return min([(position.get(path, len(order)), int(line)), *named])
+
+    def start(n: dict, at: tuple[int, int]) -> int:
         if "level" in n:
             return n["level"]
         if n["book_label"] in ADVANCED_SECTIONS:
             return 3
-        return next((lvl for lvl, parts in STAGES.items() if any(part in n["evidence"] for part in parts)), 3)
+        return 1 + sum(at[0] >= position[first] for first in LEVEL_STARTS.values())
 
-    level = {n["id"]: start(n) for n in graph["nodes"]}
+    at = {n["id"]: introduced(n) for n in graph["nodes"]}
+    level = {n["id"]: start(n, at[n["id"]]) for n in graph["nodes"]}
     edges = [tuple(e[:3]) for e in graph["edges"]]
     while True:
         before = dict(level)
@@ -193,7 +227,8 @@ def levels(graph: dict) -> dict[str, int]:
             while level[i] < 3 and not any(level[s if t == i else t] <= level[i] for s, _, t in edges if i in (s, t)):
                 level[i] += 1
         if level == before:
-            return level
+            rank = {i: r for r, i in enumerate(sorted(at, key=lambda i: (at[i], i)), 1)}
+            return level, rank
 
 
 def check(graph: dict, labels: dict[str, str]) -> list[str]:
@@ -255,13 +290,13 @@ def main() -> None:
     if RELOCATE:
         write_back(graph, head)
 
-    level = levels(graph)
+    level, rank = levels(graph)
     nodes = []
     for n in graph["nodes"]:
         ref = n["book_label"]
         label, path = (None, ref[5:]) if ref.startswith("file:") else (ref, labels[ref])
         nodes.append({**n, "book_label": label, "book_file": path, "chapter": CHAPTERS.index(path.split("/")[0]) + 1,
-                      "level": level[n["id"]]})
+                      "level": level[n["id"]], "order": rank[n["id"]]})
     also = {}
     for source, links in graph.get("corroborated", {}).items():
         for link in links:
@@ -275,7 +310,7 @@ def main() -> None:
     lines = ["// Built from graph.yaml by build_kg.py. Load into an empty database.",
              "CREATE CONSTRAINT term_id IF NOT EXISTS FOR (n:Term) REQUIRE n.id IS UNIQUE;"]
     for n in nodes:
-        props = ", ".join(f"{k}: {q(n[k])}" for k in ("id", "name", "definition", "aliases", "level", "book_label", "book_file",
+        props = ", ".join(f"{k}: {q(n[k])}" for k in ("id", "name", "definition", "aliases", "level", "order", "book_label", "book_file",
                                                        "chapter", "evidence", "quote"))
         lines.append(f"CREATE (:Term:{n['type']} {{{props}}});")
     for e in edges:
