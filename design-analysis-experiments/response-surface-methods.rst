@@ -20,7 +20,8 @@ The purpose of :index:`response surface methods <pair: response surface methods;
 Initially, when we are far away from the optimum, we will use factorial experiments. As we approach the optimum then these factorials are replaced with better designs that more closely approximate conditions at the optimum.
 
 Each set of runs covers a :index:`region of interest <pair: region of interest; experiments>`: a range
-for each factor around the current conditions, over which the local model is meant to hold.
+for each factor, or a sphere in coded units, around the current conditions, over which the local
+model is meant to hold.
 :ref:`Coding <DOE-analysis-by-least-squares>` maps the ends of each range to :math:`-1` and :math:`+1`.
 
 .. TODO: RSM overview figure here with COST approach superimposed
@@ -418,9 +419,9 @@ two of them at a time, with the rest held fixed, and an optimizer returns one po
 how the response changes around it; the eigenvalues say both. When the stationary point is a saddle,
 or lies far outside the region of interest,
 :index:`ridge analysis <pair: ridge analysis; experiments>` complements it: it finds the settings
-of highest (or lowest) predicted response on spheres of increasing radius about the design centre,
-which shows how the best predicted response changes as the settings move away from the runs. For a
-first-order model that path is the path of steepest ascent.
+of highest (or lowest) predicted response on spheres of increasing radius about a chosen centre,
+usually the design centre, which shows how the best predicted response changes as the settings move
+away from the runs. For a first-order model that path is the path of steepest ascent.
 
 .. _DOE-RSM-orthogonal-blocking:
 
