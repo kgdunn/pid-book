@@ -22,6 +22,8 @@ map's page (`web/map/index.html` and `web/map.js` in
 [process-improve](https://github.com/kgdunn/process-improve/tree/main/web)) is its only viewer, so a
 change to how the map looks is made there, once.
 
+To do the same with your own texts, see [`HOWTO.md`](HOWTO.md).
+
 ## Files
 
 | File | What it is |

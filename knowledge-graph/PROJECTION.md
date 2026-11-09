@@ -26,9 +26,10 @@ copied exactly; never paraphrase it into the graph, and never copy more than you
    another name for an existing term (give the term's id), and `new_term` only when all four hold:
    - the text treats it as a named idea of its own, defined or used repeatedly as a technical term;
    - it is not another name for, a special case of, or an instance of an existing term;
-   - a reader of the graph would need it to follow designed experiments, not to follow one example
-     (the subject of an example, such as a yarn or a reaction, never qualifies);
-   - it is about the design and analysis of experiments.
+   - a reader of the graph would need it to follow the graph's subject (for this book, designed
+     experiments), not to follow one example (the subject of an example, such as a yarn or a
+     reaction, never qualifies);
+   - it is about the graph's subject (for this book, the design and analysis of experiments).
 
    Expect very few, often none. When unsure, it is not new.
 
@@ -43,11 +44,12 @@ copied exactly; never paraphrase it into the graph, and never copy more than you
 ```
 
 - `kind`: `definition`, `link`, `pair` or `unknown`; `item`: the term id, the link, the pair, or
-  the phrase, as in `candidates.json`. For `new_term` and `alias`, name the idea as a singular,
-  lowercase noun phrase ("region of interest"), so that the same idea found in two texts is one item;
+  the phrase, as in `candidates.json`, except for `new_term` and `alias`: there, name the idea as a
+  singular, lowercase noun phrase ("region of interest"), so that the same idea found in two texts is one item;
   a new term may come from any sentence of the text, not only from `unknown[]`.
 - `quote`: copied exactly from the sentence you judged (spacing aside); `project_text.py verify`
   drops any verdict whose quote is not in the text, word for word.
 - `note`: why, in one sentence. For `missing_link`, start it with the link, `[a, VERB, b]`. For
   `alias`, start it with the term's id. For `new_term`, start it with a definition of at most 32
-  words, then the two links that would join it to the graph.
+  words, written in your own words and not reworded from the text's sentence, then the two links
+  that would join it to the graph.
