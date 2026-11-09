@@ -463,7 +463,7 @@
    "id": "full_factorial",
    "name": "Full factorial",
    "type": "DesignType",
-   "definition": "Every combination of the factors' levels. At two levels per factor, 2^k runs for k factors.",
+   "definition": "Every combination of the factors' levels; factors may have different numbers of levels (3 x 2 x 2 = 12 runs). At two levels each, 2^k runs for k factors.",
    "aliases": [
     "complete factorial",
     "2^k factorial",
@@ -716,7 +716,7 @@
    "id": "degrees_of_freedom",
    "name": "Degrees of freedom",
    "type": "Concept",
-   "definition": "For the residual, runs minus estimated parameters: the spare runs that estimate the noise standard deviation. Pure error and lack of fit split this count between them.",
+   "definition": "Independent values in a sum of squares. With n runs, p parameters and m distinct settings, setting i run n_i times: residual n-p equals pure error sum(n_i-1) plus lack of fit m-p.",
    "aliases": [],
    "book_label": "DOE-replicate_points",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:189",
@@ -1287,7 +1287,7 @@
    "id": "rsm",
    "name": "Response surface methods",
    "type": "Method",
-   "definition": "A sequence of local empirical models of the response surface, fitted to explore how the factors affect the response and to move the process towards its optimum.",
+   "definition": "A sequence of local empirical models of one or more responses, fitted to map how the factors affect them, to meet specifications, or to move the process towards an optimum.",
    "aliases": [
     "RSM",
     "response surface methodology"
@@ -1687,7 +1687,7 @@
    "id": "constraint",
    "name": "Constraint",
    "type": "Concept",
-   "definition": "A limit on which factor settings may be run, for safety, physical or practical reasons. It may slice off part of the region, or bound a factor such as an ingredient proportion.",
+   "definition": "A limit on which runs are allowed or which results are acceptable: a bound on a factor, an unsafe combination of factors, or a response specification (a minimum purity).",
    "aliases": [
     "limit",
     "infeasible region"
@@ -2423,7 +2423,7 @@
    "definition": "Choose D-optimality when the goal is to estimate the coefficients and I-optimality when the goal is prediction over the region; the two often disagree.",
    "aliases": [],
    "book_label": "DOE-omnibus-comparison",
-   "evidence": "design-analysis-experiments/comparing-design-families.rst:517",
+   "evidence": "design-analysis-experiments/comparing-design-families.rst:547",
    "quote": "they frequently disagree, so choose by what you will actually do with the model. Second,",
    "book_file": "design-analysis-experiments/comparing-design-families.rst",
    "chapter": 5
@@ -2435,7 +2435,7 @@
    "definition": "Across run counts, D-efficiency and scaled prediction variance favour the smaller design; compare designs of different size on unscaled prediction variance, coefficient variance, power and error df.",
    "aliases": [],
    "book_label": "DOE-omnibus-comparison",
-   "evidence": "design-analysis-experiments/comparing-design-families.rst:519",
+   "evidence": "design-analysis-experiments/comparing-design-families.rst:549",
    "quote": "different run counts it favours the smaller design, so judge larger-versus-smaller on",
    "book_file": "design-analysis-experiments/comparing-design-families.rst",
    "chapter": 5
@@ -2628,7 +2628,7 @@
    "id": "overall_desirability",
    "name": "Overall desirability",
    "type": "Criterion",
-   "definition": "The geometric mean of the individual desirabilities, weighted by importances; with equal importances it is Derringer and Suich's unweighted mean. One failed specification makes it zero; maximizing it gives one recommended setting.",
+   "definition": "One of several ways to combine responses: the importance-weighted geometric mean of the individual desirabilities (unweighted, as Derringer and Suich proposed, when importances are equal). One failed specification makes it zero.",
    "aliases": [
     "Desirability"
    ],
@@ -3085,9 +3085,9 @@
    "also": []
   },
   {
-   "source": "level",
-   "type": "PART_OF",
-   "target": "factor",
+   "source": "factor",
+   "type": "HAS_PROPERTY",
+   "target": "level",
    "evidence": "design-analysis-experiments/full-factorial-designs/index.rst:19",
    "also": []
   },
@@ -4149,7 +4149,9 @@
    "type": "USES",
    "target": "center_point",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:521",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "full_factorial",
@@ -5184,42 +5186,42 @@
    "source": "compare_d_efficiency_only_at_equal_run_counts",
    "type": "LIMITS",
    "target": "d_efficiency",
-   "evidence": "design-analysis-experiments/comparing-design-families.rst:518",
+   "evidence": "design-analysis-experiments/comparing-design-families.rst:548",
    "also": []
   },
   {
    "source": "d_for_estimation_i_for_prediction",
    "type": "APPLIES_TO",
    "target": "d_optimal",
-   "evidence": "design-analysis-experiments/comparing-design-families.rst:516",
+   "evidence": "design-analysis-experiments/comparing-design-families.rst:546",
    "also": []
   },
   {
    "source": "d_for_estimation_i_for_prediction",
    "type": "APPLIES_TO",
    "target": "v_optimal",
-   "evidence": "design-analysis-experiments/comparing-design-families.rst:516",
+   "evidence": "design-analysis-experiments/comparing-design-families.rst:546",
    "also": []
   },
   {
    "source": "compare_d_efficiency_only_at_equal_run_counts",
    "type": "LIMITS",
    "target": "scaled_prediction_variance",
-   "evidence": "design-analysis-experiments/comparing-design-families.rst:261",
+   "evidence": "design-analysis-experiments/comparing-design-families.rst:291",
    "also": []
   },
   {
    "source": "compare_d_efficiency_only_at_equal_run_counts",
    "type": "APPLIES_TO",
    "target": "statistical_power",
-   "evidence": "design-analysis-experiments/comparing-design-families.rst:520",
+   "evidence": "design-analysis-experiments/comparing-design-families.rst:550",
    "also": []
   },
   {
    "source": "face_centred_central_composite_design",
    "type": "IS_A",
    "target": "ccd",
-   "evidence": "design-analysis-experiments/comparing-design-families.rst:425",
+   "evidence": "design-analysis-experiments/comparing-design-families.rst:455",
    "also": []
   },
   {
@@ -5251,7 +5253,7 @@
    "source": "ccd",
    "type": "HAS_PROPERTY",
    "target": "rotatability",
-   "evidence": "design-analysis-experiments/comparing-design-families.rst:427",
+   "evidence": "design-analysis-experiments/comparing-design-families.rst:457",
    "also": []
   },
   {
@@ -5434,14 +5436,18 @@
    "type": "USES",
    "target": "replicate",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:309",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "pure_error",
    "type": "USES",
    "target": "center_point",
    "evidence": "design-analysis-experiments/omars-worked-study.rst:616",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "pure_error",
@@ -5552,7 +5558,9 @@
    "type": "CAUSES",
    "target": "scheffe_model",
    "evidence": "design-analysis-experiments/mixture-experiments.rst:48",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "scheffe_model",
@@ -5566,7 +5574,9 @@
    "type": "USES",
    "target": "simplex",
    "evidence": "design-analysis-experiments/mixture-experiments.rst:143",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "constraint",
@@ -5805,7 +5815,7 @@
    "source": "face_centred_central_composite_design",
    "type": "USES",
    "target": "axial_point",
-   "evidence": "design-analysis-experiments/comparing-design-families.rst:426",
+   "evidence": "design-analysis-experiments/comparing-design-families.rst:456",
    "also": []
   },
   {
@@ -5820,14 +5830,18 @@
    "type": "APPLIES_TO",
    "target": "simplex",
    "evidence": "design-analysis-experiments/mixture-experiments.rst:143",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "pseudocomponent",
    "type": "APPLIES_TO",
    "target": "mixture_design",
    "evidence": "design-analysis-experiments/mixture-experiments.rst:145",
-   "also": []
+   "also": [
+    "reviewed_text_1"
+   ]
   },
   {
    "source": "e_optimality",

@@ -3,7 +3,7 @@
 # Links read as sentences, "source VERB target"; the verbs allowed are listed in build_kg.py.
 
 # The book's commit this graph was last checked against: build_kg.py follows each citation from it.
-checked_against: 7354baa068051887325967919b8f180a917c06c0
+checked_against: 10ca728b3247b818f9650c42d5ce189a614ecc09
 
 nodes:
 - id: experiment
@@ -329,7 +329,7 @@ nodes:
 - id: full_factorial
   name: Full factorial
   type: DesignType
-  definition: "Every combination of the factors' levels. At two levels per factor, 2^k runs for k factors."
+  definition: "Every combination of the factors' levels; factors may have different numbers of levels (3 x 2 x 2 = 12 runs). At two levels each, 2^k runs for k factors."
   aliases:
   - complete factorial
   - 2^k factorial
@@ -503,8 +503,7 @@ nodes:
 - id: degrees_of_freedom
   name: Degrees of freedom
   type: Concept
-  definition: "For the residual, runs minus estimated parameters: the spare runs that estimate the noise standard
-    deviation. Pure error and lack of fit split this count between them."
+  definition: "Independent values in a sum of squares. With n runs, p parameters and m distinct settings, setting i run n_i times: residual n-p equals pure error sum(n_i-1) plus lack of fit m-p."
   aliases: []
   book_label: DOE-replicate_points
   evidence: design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:189
@@ -910,8 +909,7 @@ nodes:
 - id: rsm
   name: Response surface methods
   type: Method
-  definition: "A sequence of local empirical models of the response surface, fitted to explore how the factors
-    affect the response and to move the process towards its optimum."
+  definition: "A sequence of local empirical models of one or more responses, fitted to map how the factors affect them, to meet specifications, or to move the process towards an optimum."
   aliases:
   - RSM
   - response surface methodology
@@ -1195,8 +1193,7 @@ nodes:
 - id: constraint
   name: Constraint
   type: Concept
-  definition: "A limit on which factor settings may be run, for safety, physical or practical reasons. It may slice
-    off part of the region, or bound a factor such as an ingredient proportion."
+  definition: "A limit on which runs are allowed or which results are acceptable: a bound on a factor, an unsafe combination of factors, or a response specification (a minimum purity)."
   aliases:
   - limit
   - infeasible region
@@ -1723,7 +1720,7 @@ nodes:
     prediction over the region; the two often disagree.
   aliases: []
   book_label: DOE-omnibus-comparison
-  evidence: design-analysis-experiments/comparing-design-families.rst:517
+  evidence: design-analysis-experiments/comparing-design-families.rst:547
   quote: they frequently disagree, so choose by what you will actually do with the model. Second,
 - id: compare_d_efficiency_only_at_equal_run_counts
   name: Compare D-efficiency only at equal run counts
@@ -1732,7 +1729,7 @@ nodes:
     designs of different size on unscaled prediction variance, coefficient variance, power and error df.
   aliases: []
   book_label: DOE-omnibus-comparison
-  evidence: design-analysis-experiments/comparing-design-families.rst:519
+  evidence: design-analysis-experiments/comparing-design-families.rst:549
   quote: different run counts it favours the smaller design, so judge larger-versus-smaller on
 - id: face_centred_central_composite_design
   name: Face-centred central composite design
@@ -1875,9 +1872,7 @@ nodes:
 - id: overall_desirability
   name: Overall desirability
   type: Criterion
-  definition: "The geometric mean of the individual desirabilities, weighted by importances; with equal importances
-    it is Derringer and Suich's unweighted mean. One failed specification makes it zero; maximizing it
-    gives one recommended setting."
+  definition: "One of several ways to combine responses: the importance-weighted geometric mean of the individual desirabilities (unweighted, as Derringer and Suich proposed, when importances are equal). One failed specification makes it zero."
   aliases:
   - Desirability
   book_label: DOE-desirability
@@ -2134,7 +2129,7 @@ edges:
 - [qualitative_outcome, IS_A, response, "design-analysis-experiments/design-analysis-experiments.rst:302"]
 - [numeric_factor, IS_A, factor, "design-analysis-experiments/design-analysis-experiments.rst:323"]
 - [categorical_factor, IS_A, factor, "design-analysis-experiments/design-analysis-experiments.rst:323"]
-- [level, PART_OF, factor, "design-analysis-experiments/full-factorial-designs/index.rst:19"]
+- [factor, HAS_PROPERTY, level, "design-analysis-experiments/full-factorial-designs/index.rst:19"]
 - [categorical_factor, CONTRASTS_WITH, numeric_factor, "design-analysis-experiments/design-analysis-experiments.rst:327"]
 - [run, PART_OF, experiment, "design-analysis-experiments/design-analysis-experiments.rst:338"]
 - [designed_experiment, IS_A, experiment, "design-analysis-experiments/design-analysis-experiments.rst:274"]
@@ -2418,16 +2413,16 @@ edges:
 - [statistical_power, USES, effect_size, "design-analysis-experiments/judging-and-comparing-designs.rst:705"]
 - [effect_size, MEASURES, practical_significance, "design-analysis-experiments/judging-and-comparing-designs.rst:682"]
 - [d_efficiency, USES, d_optimal, "design-analysis-experiments/comparing-design-families.rst:242"]
-- [compare_d_efficiency_only_at_equal_run_counts, LIMITS, d_efficiency, "design-analysis-experiments/comparing-design-families.rst:518"]
-- [d_for_estimation_i_for_prediction, APPLIES_TO, d_optimal, "design-analysis-experiments/comparing-design-families.rst:516"]
-- [d_for_estimation_i_for_prediction, APPLIES_TO, v_optimal, "design-analysis-experiments/comparing-design-families.rst:516"]
-- [compare_d_efficiency_only_at_equal_run_counts, LIMITS, scaled_prediction_variance, "design-analysis-experiments/comparing-design-families.rst:261"]
-- [compare_d_efficiency_only_at_equal_run_counts, APPLIES_TO, statistical_power, "design-analysis-experiments/comparing-design-families.rst:520"]
-- [face_centred_central_composite_design, IS_A, ccd, "design-analysis-experiments/comparing-design-families.rst:425"]
+- [compare_d_efficiency_only_at_equal_run_counts, LIMITS, d_efficiency, "design-analysis-experiments/comparing-design-families.rst:548"]
+- [d_for_estimation_i_for_prediction, APPLIES_TO, d_optimal, "design-analysis-experiments/comparing-design-families.rst:546"]
+- [d_for_estimation_i_for_prediction, APPLIES_TO, v_optimal, "design-analysis-experiments/comparing-design-families.rst:546"]
+- [compare_d_efficiency_only_at_equal_run_counts, LIMITS, scaled_prediction_variance, "design-analysis-experiments/comparing-design-families.rst:291"]
+- [compare_d_efficiency_only_at_equal_run_counts, APPLIES_TO, statistical_power, "design-analysis-experiments/comparing-design-families.rst:550"]
+- [face_centred_central_composite_design, IS_A, ccd, "design-analysis-experiments/comparing-design-families.rst:455"]
 - [face_centred_central_composite_design, IS_A, omars_design, "design-analysis-experiments/omars-designs.rst:68"]
 - [box_behnken, HAS_PROPERTY, rotatability, "design-analysis-experiments/response-surface-methods.rst:462"]
 - [rotatability, APPLIES_TO, prediction_variance, "design-analysis-experiments/response-surface-methods.rst:463"]
-- [ccd, HAS_PROPERTY, rotatability, "design-analysis-experiments/comparing-design-families.rst:427"]
+- [ccd, HAS_PROPERTY, rotatability, "design-analysis-experiments/comparing-design-families.rst:457"]
 - [design_based_staged_analysis, APPLIES_TO, dsd, "design-analysis-experiments/omars-designs.rst:833"]
 - [design_based_staged_analysis, USES, effect_heredity, "design-analysis-experiments/omars-designs.rst:840"]
 - [judge_estimability_from_the_rank_of_the_model_matrix, PART_OF, design_based_staged_analysis, "design-analysis-experiments/omars-designs.rst:827"]
@@ -2505,7 +2500,7 @@ edges:
 - [coordinate_exchange_algorithm, CONTRASTS_WITH, exchange_algorithm, "design-analysis-experiments/optimal-designs.rst:342"]
 - [optimal_design, USES, coordinate_exchange_algorithm, "design-analysis-experiments/optimal-designs.rst:309"]
 - [lack_of_fit_test, APPLIES_TO, quadratic_model, "design-analysis-experiments/response-surface-methods.rst:303"]
-- [face_centred_central_composite_design, USES, axial_point, "design-analysis-experiments/comparing-design-families.rst:426"]
+- [face_centred_central_composite_design, USES, axial_point, "design-analysis-experiments/comparing-design-families.rst:456"]
 - [face_centred_central_composite_design, CONTRASTS_WITH, box_behnken, "design-analysis-experiments/response-surface-methods.rst:542"]
 - [pseudocomponent, APPLIES_TO, simplex, "design-analysis-experiments/mixture-experiments.rst:143"]
 - [pseudocomponent, APPLIES_TO, mixture_design, "design-analysis-experiments/mixture-experiments.rst:145"]
@@ -2629,6 +2624,7 @@ corroborated:
   - [steepest_ascent, CONTRASTS_WITH, cost]
   - [curvature_check, USES, center_point]
   - [ccd, USES, axial_point]
+  - [ccd, USES, center_point]
   - [full_factorial, CAN_AUGMENT_TO, ccd]
   - [contour_plot, SHOWS, response_surface]
   - [overlay_surfaces, USES, contour_plot]
@@ -2645,10 +2641,16 @@ corroborated:
   - [information_matrix, SHOWS, orthogonality]
   - [box_behnken, HAS_PROPERTY, rotatability]
   - [rotatability, APPLIES_TO, prediction_variance]
+  - [pure_error, USES, replicate]
+  - [pure_error, USES, center_point]
   - [lack_of_fit_test, USES, pure_error]
   - [confirm_the_prediction, APPLIES_TO, optimum]
   - [scheffe_model, SUITED_TO, mixture_design]
+  - [mixture_constraint, CAUSES, scheffe_model]
+  - [pseudocomponent, USES, simplex]
   - [constraint, REMEDIED_BY, pseudocomponent]
+  - [pseudocomponent, APPLIES_TO, simplex]
+  - [pseudocomponent, APPLIES_TO, mixture_design]
   - [lack_of_fit_test, TESTS, quadratic_model]
   - [blocking, LIMITS, pure_error]
   - [standard_order, CONTRASTS_WITH, randomization]
