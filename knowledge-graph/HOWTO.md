@@ -137,7 +137,7 @@ Run "python kg/layout_kg.py", then copy kg/doe_kg_map.json to viewer/map/graph.j
 Then make the viewer mine, in viewer/map.js and viewer/map/index.html:
 - The title, the heading, the line under it and the description say "SUBJECT concept map".
 - Remove what belongs to the site it came from: the canonical link, the social-card tags, the
-  "Back to Factorial" link, and the "How this map was made" guide with its link.
+  "Back to Factorial" link, the two links under the heading, and the "How this map was made" guide.
 - bookUrl() returns where a term's line can be read: BASE-URL, then the term's file path, then
   "#L" and its line number (a term's "evidence" is PATH:LINE). (Or: no such address exists, so
   remove the "Read it in the book" link.)
