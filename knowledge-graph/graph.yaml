@@ -2581,9 +2581,9 @@ edges:
 # Other texts that state the same link as the book: a link they corroborate is stronger. Only the source and the
 # link are recorded; the texts' own words stay out of this repository.
 sources:
-  box_draper_2007: "G. E. P. Box and N. R. Draper (2007), Response Surfaces, Mixtures, and Ridge Analyses, 2nd ed., Wiley"
+  reviewed_text_1: "A textbook on response surfaces, reviewed privately with project_text.py"
 corroborated:
-  box_draper_2007:
+  reviewed_text_1:
   - [response, PART_OF, experiment]
   - [factor, PART_OF, experiment]
   - [experiment, MAY_HAVE, objective]
