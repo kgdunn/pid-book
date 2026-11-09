@@ -58,11 +58,21 @@ last section lists what is specific to the book.
 
 ## What is specific to this book
 
-- `build_kg.py` lists the book's chapter folders (`CHAPTERS`) and resolves reStructuredText labels.
-  For other texts, replace the chapter list and cite files directly (`book_label: file:<path>`).
-- The reading levels (Beginner, Intermediate, Advanced) come from the order of the book's table of
-  contents. For your texts, set which file starts each level (`LEVEL_STARTS`), or drop the levels.
+Tried on a small set of unrelated notes (two Markdown files, eight terms), this is what happened:
+
+| Script | As it is | What it needed |
+|---|---|---|
+| `build_kg.py` | Stops | Two edits: the list of chapter folders (`CHAPTERS`), and the reading levels, which read this book's table of contents (`levels()`). With those it checked every quote, caught a wrong one, and followed the citations after the notes were edited. |
+| `layout_kg.py` | Stops | One edit: the topic names are written out for this book (`NAMES`). Naming each topic after its most connected term made it run. |
+| The map viewer | Draws the map | Its title, its "Read it in the book" links and its search hint still point at this book. |
+| `project_text.py` | Works unchanged | Nothing. It found the terms and links in a second text, and dropped a verdict whose quote was not in it. |
+
+Other things to know:
+
+- No script drafts the graph, and `PROJECTION.md` briefs the agent for the comparison only. For the
+  draft, give the agent `graph.yaml` as the format to follow.
 - The link verbs (`VERBS`) suit a technical subject. Change the list to suit yours.
-- The viewer's wording and colours are the app's. The graph file's shape is all it depends on.
+- The comparison only proposes a new term by itself when a phrase of two or three words is repeated
+  at least three times, or is introduced with words like "called". A reviewer can still add others.
 
 If you try this on your own texts, an issue on this repository saying where it broke is welcome.
