@@ -46,7 +46,6 @@ cp /tmp/pid-book/knowledge-graph/{build_kg.py,layout_kg.py,project_text.py,PROJE
 cp /tmp/pid-book/knowledge-graph/graph.yaml kg/example-graph.yaml
 cp -r /tmp/process-improve/web/{map.js,logic.js,style.css,favicon.svg,vendor} viewer/
 cp /tmp/process-improve/web/map/index.html viewer/map/
-echo "kg/projections/" >> .gitignore
 git add -A && git commit -m "Concept map tools"
 ```
 
@@ -152,8 +151,7 @@ http://localhost:8000/map/ and tell me about any error in its console; otherwise
 
 ### 5. Compare with another text (optional)
 
-Put the second text at `kg/projections/NAME/text.txt`. That folder is ignored by git: if the text is
-someone else's copyright, it stays out of your repository, and only your decisions go in.
+Put the second text at `kg/projections/NAME/text.txt`.
 
 ```text
 I put a second text at kg/projections/NAME/text.txt. Compare it with my graph:
@@ -181,8 +179,7 @@ Apply them to kg/graph.yaml:
 - a missing link or a new term: add it only with a line of MY texts that states it. If no line
   does, tell me, and suggest the sentence my text would need.
 
-Copy nothing from the second text into the graph. Then run the check and the layout again, and copy
-the map file to the viewer.
+Then run the check and the layout again, and copy the map file to the viewer.
 ```
 
 **Run this step twice.** The script finds a term in the second text only under a name the graph
