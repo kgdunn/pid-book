@@ -49,7 +49,7 @@ SUB_NAMES = {
     "blocking": "Randomization and blocking", "full_factorial": "Main effects and the factorial",
     "interaction": "Interactions", "cost": "One factor at a time", "half_fraction": "Half fractions",
     "orthogonality": "Least squares and orthogonality", "d_optimal": "D-optimality and efficiency",
-    "v_optimal": "Prediction variance", "optimality_criterion": "Optimality criteria",
+    "i_optimal": "Prediction variance", "optimality_criterion": "Optimality criteria",
     "variance_inflation_factor": "Correlated model terms",
     "confidence_interval": "Confidence, power and effect size", "lenth_method": "Lenth's method and effect plots",
     "two_group_comparison": "Comparing two conditions", "t_distribution": "Reference distributions",
