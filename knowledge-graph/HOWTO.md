@@ -151,30 +151,40 @@ http://localhost:8000/map/ and tell me about any error in its console; otherwise
 
 ### 5. Compare with another text (optional)
 
-Put the second text at `kg/projections/NAME/text.txt`.
+Put the second text at `kg/projections/NAME/text.txt`. For a PDF,
+`pdftotext book.pdf kg/projections/NAME/text.txt` keeps the page breaks, which the script uses to
+give each quote its page.
 
 ```text
 I put a second text at kg/projections/NAME/text.txt. Compare it with my graph:
 
-1. Run "python kg/project_text.py candidates kg/projections/NAME".
+1. Run "python kg/project_text.py candidates kg/projections/NAME" and tell me the line it prints.
 2. Judge the candidates as kg/PROJECTION.md says, with SUBJECT as the graph's subject, and write
-   kg/projections/NAME/reviews.json.
-3. Run "python kg/project_text.py verify kg/projections/NAME", then
-   "python kg/project_text.py report kg/projections/NAME".
+   kg/projections/NAME/reviews.json. Read every term, link, pair and phrase in candidates.json, and
+   write a verdict only where a sentence of the text says it. If the file is long, make two passes:
+   first "terms" and "links", then "unlinked" and "unknown".
+3. Run "python kg/project_text.py verify kg/projections/NAME". It lists each verdict it drops: copy
+   that quote again from the text, exactly, or remove the verdict. Run it until it drops none.
+4. Run "python kg/project_text.py report kg/projections/NAME".
 
-Show me kg/projections/NAME/report.md. Change nothing in kg/graph.yaml yet.
+Show me kg/projections/NAME/report.md, and name the five verdicts you are least sure of. Change
+nothing in kg/graph.yaml yet.
 ```
 
-The report lists what the second text supports, where it defines a term differently, the links your
-graph lacks, and the terms that are new. Every line carries a short quote that the `verify` step
-checked word for word. Decide each one, then:
+The report lists the definitions and links the second text agrees with, the definitions that
+differ, the links your graph lacks, the terms that are new, and other names for terms you have.
+Every line carries a short quote that the `verify` step checked word for word.
+
+Read each difference against your own text before you decide whose it is. In our second comparison,
+three of six were faults in our own graph: two wrong other names, and one word that our book used
+for two things. Decide each item, then:
 
 ```text
 Here are my decisions on kg/projections/NAME/report.md:
 - YOUR DECISIONS, one per item: accept, reword (and how), or reject
 
 Apply them to kg/graph.yaml:
-- another name for a term: add it to that term's aliases;
+- another name for a term: add it to that term's aliases, unless it is an everyday word;
 - a definition that differs: reword it as I say, within 32 words;
 - a missing link or a new term: add it only with a line of MY texts that states it. If no line
   does, tell me, and suggest the sentence my text would need.
@@ -186,6 +196,20 @@ Then run the check and the layout again, and copy the map file to the viewer.
 already knows, and another author often uses another name. So the first report holds mostly other
 names and new terms, and few links. Accept the names, apply them, and run the comparison again: the
 second report shows the links the two texts share.
+
+**For a whole book, work chapter by chapter:**
+
+- Put each chapter in its own folder: `kg/projections/NAME-01/text.txt`, and so on.
+- Run `candidates` on every chapter first. It takes seconds and needs no agent, and the line it
+  prints says how many of your terms the chapter names. Have the two chapters that name the most
+  judged, decide those, and only then run the rest: two chapters show you what to expect, and the
+  names you accept from them help every later chapter.
+- When several chapters are judged, `python kg/project_text.py unify kg/projections/NAME-*` writes
+  `kg/projections/review.md`: one list, each item once, with every place that supports it.
+- If the book has an index, save its text as `kg/projections/index.txt` and add this line to the
+  request: "kg/projections/index.txt is the book's index: judge it as kg/PROJECTION.md says." An
+  index is the author's own list of named ideas. It gave us better candidates for new terms than the
+  phrases the script collects.
 
 ## How well this works
 
@@ -199,6 +223,10 @@ The prompts were tried as written, by an agent that had only this page's prompts
   links: hence "run this step twice".
 - **Two short notes on baking (8 terms).** The scripts, edited as in step 1, checked every quote,
   caught a wrong one, and followed the citations after the notes were edited.
+- **Two chapters of a second, longer textbook (about 30,000 words), compared as in step 5.** Of 167
+  verdicts the quote check dropped none, because the agents ran the check themselves until it passed.
+  100 confirm the graph, 6 definitions differ, and the rest are other names, missing links and new
+  terms. The run also showed four faults in the search itself, since fixed: see the last list below.
 
 Steps 1 and 4 ask the agent to edit code, and are the least certain: read what it changed. In the
 trial the first versions of those two prompts left gaps the agent had to fill by guessing; the
@@ -219,5 +247,13 @@ Other things to know:
   lists to suit yours, before step 2.
 - By itself, the comparison proposes a new term only when a phrase of two or three words is repeated
   at least three times, or is introduced with words like "called". The reviewer can add others.
+- The comparison finds a term by its names, as written. So write an acronym in capitals, which is
+  then matched in capitals only ("DOE" once matched every "does"), and never give a term an everyday
+  word as another name ("limit", "effect"): every use of that word then counts as the term.
+- Where two names overlap, the one that starts first in the sentence wins. If the text writes
+  "D-optimal design" and your term is "D-optimality", the text is read as "optimal design" until
+  "D-optimal" is listed as another name.
+- A PDF's formulas do not survive as text. A quote is ordinary words from one sentence, at most 25.
+- Judging one 40-page chapter took an agent about a quarter of an hour for each of the two passes.
 
 If you try this on your own texts, an issue on this repository saying where it broke is welcome.

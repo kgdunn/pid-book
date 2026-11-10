@@ -34,6 +34,10 @@ copied exactly; never paraphrase it into the graph, and never copy more than you
 
    Expect very few, often none. When unsure, it is not new.
 
+   When the request names an index of the text, judge its entries that match no term the same way.
+   They are the author's own named ideas, so better candidates than repeated phrases, but the same
+   four conditions hold. Quote the sentence of the text that says what the entry is.
+
 ## What to write
 
 `projections/NAME/reviews.json`: a JSON list, with an entry only for `agrees`, `differs`, `supports`,
