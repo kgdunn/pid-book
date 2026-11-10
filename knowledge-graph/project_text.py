@@ -38,9 +38,11 @@ more most must no not of on one or other our such than that the their them then 
 under use used using was we were what when where which while who will with would also only same some any all
 both between however therefore thus very much many first second further given see shown shall figure figures
 table tables chapter chapters section even""".split())
-# A sentence that may say what a term is: "X is a ...", "by X we mean", "X, that is, ...".
-DEFINING = re.compile(r"\b(?:is|are) (?:a|an|the|called|defined)\b|\bwe (?:mean|call|define)\b|\bthat is\b|\bi\.e\.",
-                      re.IGNORECASE)
+# A sentence that may say what a term is: "X is a ...", "X is often called", "we may define X as", "X, that is".
+DEFINING = re.compile(
+    r"\b(?:is|are) (?:(?:also|often|sometimes|usually) )?(?:a|an|the|called|defined|termed|known as)\b"
+    r"|\bwe (?:(?:may|can|shall|will) )?(?:mean|call|define)\b|\breferred to as\b|\bthat is\b|\bi\.e\.",
+    re.IGNORECASE)
 QUOTE_WORDS = 25  # a quote stays a short citation of someone else's text, never a passage
 
 
@@ -110,7 +112,8 @@ def term_patterns(nodes: list[dict]) -> tuple[re.Pattern, list[str]]:
              if len(name) >= 4 or name.isupper()]  # "y", "X": too short to find in prose
     parts, terms = [], []
     for term, name in sorted(names, key=lambda tn: -len(tn[1])):
-        words = r"[\s-]+".join(re.escape(w) for w in re.split(r"[\s-]+", name.strip()))
+        # A PDF's text loses a superscript's caret: "2^k factorial" is also found written "2k factorial".
+        words = r"[\s-]+".join(re.escape(w).replace(r"\^", r"\^?") for w in re.split(r"[\s-]+", name.strip()))
         parts.append(f"(?P<n{len(terms)}>{words if name.isupper() else '(?i:' + words + ')'})")
         terms.append(term)
     return re.compile(r"\b(?:" + "|".join(parts) + r")(?i:s|es)?\b"), terms

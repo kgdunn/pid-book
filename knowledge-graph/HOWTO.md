@@ -223,14 +223,20 @@ The prompts were tried as written, by an agent that had only this page's prompts
   links: hence "run this step twice".
 - **Two short notes on baking (8 terms).** The scripts, edited as in step 1, checked every quote,
   caught a wrong one, and followed the citations after the notes were edited.
-- **Two chapters of a second, longer textbook (about 30,000 words), compared as in step 5.** Of 167
-  verdicts the quote check dropped none, because the agents ran the check themselves until it passed.
-  100 confirm the graph, 6 definitions differ, and the rest are other names, missing links and new
-  terms. The run also showed four faults in the search itself, since fixed: see the last list below.
+- **Two chapters of a second, longer textbook (about 30,000 words).** First with a longer brief and
+  two agents per chapter: 167 verdicts, none dropped by the quote check, 100 of them confirming the
+  graph and 6 definitions that differ. Then the step 5 prompt as it stands above, on one of the two
+  chapters, by an agent that had only the prompt and the files: 59 verdicts, none dropped, and the
+  same three definitions that differ. It proposed one new term where the longer brief proposed four;
+  the three it left out were ones we had decided against. The comparison also showed faults in the
+  search itself, since fixed: the last list below says how names are now read.
 
 Steps 1 and 4 ask the agent to edit code, and are the least certain: read what it changed. In the
 trial the first versions of those two prompts left gaps the agent had to fill by guessing; the
 prompts above name what it had to work out.
+
+The advice for a whole book, in step 5, is what we did by hand on that second textbook. Its line
+about an index has not been tried as written.
 
 ## What is specific to this book
 

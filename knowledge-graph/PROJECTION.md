@@ -12,6 +12,11 @@ copied exactly; never paraphrase it into the graph, and never copy more than you
 
 ## What to judge
 
+The lists in `candidates.json` are where to start, not all you may use: each shows a few sentences
+only (three per term, six per link, four per pair). You may judge an item from any sentence of the
+text, and give a verdict on a link or a pair of the graph that the file does not list, when the text
+states it. A term that the text describes without naming gets no verdict.
+
 1. **`terms[].defining`**: sentences where the text may say what a term is. Compare with the
    graph's definition (`graph_says`). `agrees` when the sentence says what the term is and a reader
    of both would be told the same thing; `differs` only when a reader of both would be told two
@@ -53,8 +58,10 @@ copied exactly; never paraphrase it into the graph, and never copy more than you
   singular, lowercase noun phrase ("region of interest"), so that the same idea found in two texts is one item;
   a new term may come from any sentence of the text, not only from `unknown[]`.
 - `quote`: copied exactly from the sentence you judged (spacing aside); `project_text.py verify`
-  drops any verdict whose quote is not in the text, word for word.
+  drops any verdict whose quote is not in the text, word for word. Copy the words as `text.txt` has
+  them, even where the PDF glued two together ("loworder"), and stop short of a formula: its symbols
+  do not survive as text.
 - `note`: why, in one sentence. For `missing_link`, start it with the link, `[a, VERB, b]`. For
-  `alias`, start it with the term's id. For `new_term`, start it with a definition of at most 32
+  `alias`, start it with the term's id. A `new_term` note is longer: a definition of at most 32
   words, written in your own words and not reworded from the text's sentence, then the two links
   that would join it to the graph.
