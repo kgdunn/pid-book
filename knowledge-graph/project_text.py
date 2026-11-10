@@ -99,27 +99,34 @@ def sentences_of(pages: list[tuple[str, str]]) -> list[dict]:
 # ---------- the graph's terms, found in the text
 
 
-def term_patterns(nodes: list[dict]) -> list[tuple[str, re.Pattern]]:
-    """A (term, pattern) per name and alias, longest name first: case, plural and hyphen-or-space do not matter.
+def term_patterns(nodes: list[dict]) -> tuple[re.Pattern, list[str]]:
+    """One pattern for every name and alias, and the term each stands for: plural and hyphen-or-space do not matter.
 
-    Longest first, so a sentence that says "response surface" names that term and not also "response"."""
+    A sentence is read left to right, and where two names start at the same word the longer wins: "response
+    surface" names that term and not also "response", and "D-optimality criterion" names D-optimality, which
+    starts first, before "optimality criterion". An all-capital name is an acronym and is matched as written,
+    so COST is not every "cost"; any other name is matched whatever its case."""
     names = [(n["id"], name) for n in nodes for name in [n["name"], *(n.get("aliases") or [])]
              if len(name) >= 4 or name.isupper()]  # "y", "X": too short to find in prose
-    out = []
+    parts, terms = [], []
     for term, name in sorted(names, key=lambda tn: -len(tn[1])):
-        words = [re.escape(w) for w in re.split(r"[\s-]+", name.strip())]
-        out.append((term, re.compile(r"\b" + r"[\s-]+".join(words) + r"(?:s|es)?\b", re.IGNORECASE)))
-    return out
+        words = r"[\s-]+".join(re.escape(w) for w in re.split(r"[\s-]+", name.strip()))
+        parts.append(f"(?P<n{len(terms)}>{words if name.isupper() else '(?i:' + words + ')'})")
+        terms.append(term)
+    return re.compile(r"\b(?:" + "|".join(parts) + r")(?i:s|es)?\b"), terms
 
 
-def name_terms(text: str, patterns: list[tuple[str, re.Pattern]]) -> tuple[list[str], str]:
+def name_terms(text: str, patterns: tuple[re.Pattern, list[str]]) -> tuple[list[str], str]:
     """The terms a text names, and the text with each mention blanked out."""
+    pattern, terms = patterns
     named = set()
-    for term, pattern in patterns:
-        text, n = pattern.subn(" | ", text)
-        if n:
-            named.add(term)
-    return sorted(named), text
+
+    def blank(match: re.Match) -> str:
+        named.add(terms[int(match.lastgroup[1:])])
+        return " | "
+
+    rest = pattern.sub(blank, text)
+    return sorted(named), rest
 
 
 def candidates(folder: Path, pages: str | None) -> None:
