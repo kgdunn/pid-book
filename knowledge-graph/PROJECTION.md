@@ -12,10 +12,16 @@ copied exactly; never paraphrase it into the graph, and never copy more than you
 
 ## What to judge
 
+The lists in `candidates.json` are where to start, not all you may use: each shows a few sentences
+only (three per term, six per link, four per pair). You may judge an item from any sentence of the
+text, and give a verdict on a link or a pair of the graph that the file does not list, when the text
+states it. A term that the text describes without naming gets no verdict.
+
 1. **`terms[].defining`**: sentences where the text may say what a term is. Compare with the
-   graph's definition (`graph_says`). `agrees` when they are compatible; `differs` only when a reader
-   of both would be told two different things (a narrower or wider meaning, a different condition).
-   A text using a word loosely, or for something else entirely, is neither: skip it.
+   graph's definition (`graph_says`). `agrees` when the sentence says what the term is and a reader
+   of both would be told the same thing; `differs` only when a reader of both would be told two
+   different things (a narrower or wider meaning, a different condition). A sentence that only uses
+   the word, uses it loosely, or uses it for something else entirely, is neither: skip it.
 2. **`links[]`**: a graph link, with the sentences that name both its terms. `supports` when a
    sentence states the relation the link states; `contradicts` when it states something a reader
    could not hold together with the link. Two terms in one sentence is not support.
@@ -33,10 +39,14 @@ copied exactly; never paraphrase it into the graph, and never copy more than you
 
    Expect very few, often none. When unsure, it is not new.
 
+   When the request names an index of the text, judge its entries that match no term the same way.
+   They are the author's own named ideas, so better candidates than repeated phrases, but the same
+   four conditions hold. Quote the sentence of the text that says what the entry is.
+
 ## What to write
 
-`projections/NAME/reviews.json`: a JSON list, with an entry only for `supports`, `contradicts`,
-`differs`, `missing_link`, `alias` and `new_term` (skip everything else):
+`projections/NAME/reviews.json`: a JSON list, with an entry only for `agrees`, `differs`, `supports`,
+`contradicts`, `missing_link`, `alias` and `new_term` (skip everything else):
 
 ```json
 {"kind": "link", "item": ["rsm", "SHOWS", "response_surface"], "verdict": "supports",
@@ -48,8 +58,10 @@ copied exactly; never paraphrase it into the graph, and never copy more than you
   singular, lowercase noun phrase ("region of interest"), so that the same idea found in two texts is one item;
   a new term may come from any sentence of the text, not only from `unknown[]`.
 - `quote`: copied exactly from the sentence you judged (spacing aside); `project_text.py verify`
-  drops any verdict whose quote is not in the text, word for word.
+  drops any verdict whose quote is not in the text, word for word. Copy the words as `text.txt` has
+  them, even where the PDF glued two together ("loworder"), and stop short of a formula: its symbols
+  do not survive as text.
 - `note`: why, in one sentence. For `missing_link`, start it with the link, `[a, VERB, b]`. For
-  `alias`, start it with the term's id. For `new_term`, start it with a definition of at most 32
+  `alias`, start it with the term's id. A `new_term` note is longer: a definition of at most 32
   words, written in your own words and not reworded from the text's sentence, then the two links
   that would join it to the graph.

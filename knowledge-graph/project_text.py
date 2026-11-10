@@ -10,8 +10,8 @@ candidates  Reads the text (a PDF's text from pdftotext, pages split by form fee
 verify      Reads reviews.json, the reviewers' verdicts on those candidates (PROJECTION.md is their brief),
             and checks every quote word for word against the text; a verdict whose quote is not there is
             dropped and listed.
-report      Writes report.md from the verified verdicts: the links the text supports, the places it
-            disagrees with the graph, and the few terms that are truly new.
+report      Writes report.md from the verified verdicts: the definitions and links the text supports, the
+            places it disagrees with the graph, and the few terms that are truly new.
 unify       Merges the verified verdicts of several projections into projections/review.md: each item
             once, with every place that supports it, for one review.
 
@@ -26,6 +26,7 @@ Run, from this folder:
 import argparse
 import json
 import re
+import unicodedata
 from collections import Counter
 from pathlib import Path
 
@@ -37,27 +38,49 @@ more most must no not of on one or other our such than that the their them then 
 under use used using was we were what when where which while who will with would also only same some any all
 both between however therefore thus very much many first second further given see shown shall figure figures
 table tables chapter chapters section even""".split())
-# A sentence that may say what a term is: "X is a ...", "by X we mean", "X, that is, ...".
-DEFINING = re.compile(r"\b(?:is|are) (?:a|an|the|called|defined)\b|\bwe (?:mean|call|define)\b|\bthat is\b|\bi\.e\.",
-                      re.IGNORECASE)
+# A sentence that may say what a term is: "X is a ...", "X is often called", "we may define X as", "X, that is".
+DEFINING = re.compile(
+    r"\b(?:is|are) (?:(?:also|often|sometimes|usually) )?(?:a|an|the|called|defined|termed|known as)\b"
+    r"|\bwe (?:(?:may|can|shall|will) )?(?:mean|call|define)\b|\breferred to as\b|\bthat is\b|\bi\.e\.",
+    re.IGNORECASE)
 QUOTE_WORDS = 25  # a quote stays a short citation of someone else's text, never a passage
 
 
 # ---------- the text, as sentences with their page
 
+# Typesetting that hides a name from a search for it: a PDF's "coefficient" may hold the one-character ligature
+# for "fi", its "Box-Behnken" an en dash and its "Lenth's" a curly quote. NFKC unfolds the ligatures; the table
+# does the rest.
+PLAIN = str.maketrans({"\u2013": "-", "\u2014": "-", "\u2212": "-", "\u2018": "'", "\u2019": "'",
+                       "\u201c": '"', "\u201d": '"'})
+
+
+def plain(text: str) -> str:
+    """The text in plain letters, with the control characters a PDF leaves where it drew a symbol turned to spaces."""
+    text = unicodedata.normalize("NFKC", text).translate(PLAIN)
+    return re.sub(r"[\x00-\x08\x0b\x0e-\x1f]", " ", text)
+
 
 def read_pages(folder: Path, pages: str | None) -> list[tuple[str, str]]:
     """Return (page label, text) for each page: the printed page number when the page shows one."""
-    raw = (folder / "text.txt").read_text(encoding="utf-8").split("\f")
+    raw = plain((folder / "text.txt").read_text(encoding="utf-8")).split("\f")
     first, last = (int(p) for p in pages.split("-")) if pages else (1, len(raw))
+    kept = {i: [line.strip() for line in raw[i - 1].splitlines() if line.strip()] for i in range(first, last + 1)}
+    # The printed number is the PDF's page plus a constant. Each page votes with the numbers at its head and foot, so
+    # a page that shows none (a full-page figure), or shows another number first (a chapter's), still gets its own.
+    votes = Counter(int(line) - i for i, lines in kept.items() for line in {*lines[:2], *lines[-1:]} if line.isdigit())
+    shift, voters = votes.most_common(1)[0] if votes else (0, 0)
     out = []
-    for index in range(first, last + 1):
-        lines = [line.strip() for line in raw[index - 1].splitlines() if line.strip()]
-        label = f"pdf {index}"
-        # Running heads are a short capitalised title and the page number, in either order: drop them.
+    for i, lines in kept.items():
+        number = str(i + shift)
+        label = f"p. {number}" if voters >= 2 and i + shift > 0 else f"pdf {i}"
+        # A running head is a short title and the page number, in either order: drop both.
+        if number in lines[:2]:
+            head = [line for line in lines[:2] if line != number and (len(line) >= 80 or line.endswith("."))]
+            lines = head + lines[2:]
+        elif lines and lines[-1] == number:
+            lines.pop()
         while lines and (lines[0].isdigit() or (lines[0].isupper() and len(lines[0]) < 80)):
-            if lines[0].isdigit():
-                label = f"p. {lines[0]}"
             lines.pop(0)
         out.append((label, "\n".join(lines)))
     return out
@@ -78,27 +101,35 @@ def sentences_of(pages: list[tuple[str, str]]) -> list[dict]:
 # ---------- the graph's terms, found in the text
 
 
-def term_patterns(nodes: list[dict]) -> list[tuple[str, re.Pattern]]:
-    """A (term, pattern) per name and alias, longest name first: case, plural and hyphen-or-space do not matter.
+def term_patterns(nodes: list[dict]) -> tuple[re.Pattern, list[str]]:
+    """One pattern for every name and alias, and the term each stands for: plural and hyphen-or-space do not matter.
 
-    Longest first, so a sentence that says "response surface" names that term and not also "response"."""
+    A sentence is read left to right, and where two names start at the same word the longer wins: "response
+    surface" names that term and not also "response", and "D-optimality criterion" names D-optimality, which
+    starts first, before "optimality criterion". An all-capital name is an acronym and is matched as written,
+    so COST is not every "cost"; any other name is matched whatever its case."""
     names = [(n["id"], name) for n in nodes for name in [n["name"], *(n.get("aliases") or [])]
              if len(name) >= 4 or name.isupper()]  # "y", "X": too short to find in prose
-    out = []
+    parts, terms = [], []
     for term, name in sorted(names, key=lambda tn: -len(tn[1])):
-        words = [re.escape(w) for w in re.split(r"[\s-]+", name.strip())]
-        out.append((term, re.compile(r"\b" + r"[\s-]+".join(words) + r"(?:s|es)?\b", re.IGNORECASE)))
-    return out
+        # A PDF's text loses a superscript's caret: "2^k factorial" is also found written "2k factorial".
+        words = r"[\s-]+".join(re.escape(w).replace(r"\^", r"\^?") for w in re.split(r"[\s-]+", name.strip()))
+        parts.append(f"(?P<n{len(terms)}>{words if name.isupper() else '(?i:' + words + ')'})")
+        terms.append(term)
+    return re.compile(r"\b(?:" + "|".join(parts) + r")(?i:s|es)?\b"), terms
 
 
-def name_terms(text: str, patterns: list[tuple[str, re.Pattern]]) -> tuple[list[str], str]:
+def name_terms(text: str, patterns: tuple[re.Pattern, list[str]]) -> tuple[list[str], str]:
     """The terms a text names, and the text with each mention blanked out."""
+    pattern, terms = patterns
     named = set()
-    for term, pattern in patterns:
-        text, n = pattern.subn(" | ", text)
-        if n:
-            named.add(term)
-    return sorted(named), text
+
+    def blank(match: re.Match) -> str:
+        named.add(terms[int(match.lastgroup[1:])])
+        return " | "
+
+    rest = pattern.sub(blank, text)
+    return sorted(named), rest
 
 
 def candidates(folder: Path, pages: str | None) -> None:
@@ -194,7 +225,7 @@ def unknown_phrases(sentences: list[dict]) -> list[dict]:
 
 
 def squash(text: str) -> str:
-    return re.sub(r"\s+", " ", re.sub(r"(\w)-\s*\n\s*(\w)", r"\1\2", text)).strip().lower()
+    return re.sub(r"\s+", " ", re.sub(r"(\w)-\s*\n\s*(\w)", r"\1\2", plain(text))).strip().lower()
 
 
 def verify(folder: Path) -> None:
@@ -228,6 +259,7 @@ def report(folder: Path) -> None:
 
     head = "| Item | Page | The text says | Note |\n|---|---|---|---|"
     sections = [
+        ("Definitions the text agrees with", rows("definition", "agrees")),
         ("Links the text supports", rows("link", "supports")),
         ("Links the text contradicts", rows("link", "contradicts")),
         ("Definitions that differ", rows("definition", "differs")),
@@ -252,10 +284,10 @@ def unify(folders: list[Path]) -> None:
             item = v["item"] if v["kind"] != "unknown" else v["item"].lower()
             key = (v["kind"], v["verdict"], json.dumps(item))
             groups.setdefault(key, []).append({**v, "source": folder.name})
-    order = ["new_term", "differs", "contradicts", "missing_link", "alias", "supports"]
+    order = ["new_term", "differs", "contradicts", "missing_link", "alias", "supports", "agrees"]
     title = {"new_term": "New terms", "differs": "Definitions that differ", "contradicts": "Links contradicted",
              "missing_link": "Links the graph is missing", "alias": "Other names for existing terms",
-             "supports": "Links supported"}
+             "supports": "Links supported", "agrees": "Definitions agreed with"}
     lines = [f"# One review: {len(folders)} projections, {sum(map(len, groups.values()))} verdicts", "",
              "Each item once, with every place that supports it. Decide each: accept, reword, or reject.", ""]
     for verdict in order:
