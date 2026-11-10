@@ -5,9 +5,9 @@ Assessing significance of main effects and interactions
 
 When there are no :index:`replicate points <pair: replicates; experiments>`, then the number of parameters to estimate from a full factorial is :math:`2^k` from the :math:`2^k` observations. There are no degrees of freedom left to estimate the noise standard deviation, the run-to-run scatter of the response when every factor is held fixed. Its estimate is written :math:`S_E`, which the :ref:`least squares section <standard-error-section>` calls the model's standard error. Without :math:`S_E` the main effects and interactions have no standard errors (the estimated standard deviation of each one), and so no confidence intervals.
 
-The noise standard deviation can be estimated if complete replicates are available. However, a complete replicate is onerous, because a complete replicate implies the entire experiment is repeated: system setup, running the experiment and measuring the result. Taking two samples from one actual experiment and measuring :math:`y` twice is not a true replicate. That is only an estimate of the measurement error and analytical error.
+The noise standard deviation can be estimated if replicates are available. A replicate is one run repeated in full: system setup, running the experiment and measuring the result, which is why replicates are onerous. Taking two samples from one actual experiment and measuring :math:`y` twice is not a true replicate. That is only an estimate of the measurement error and analytical error. Other texts also call one complete pass through all the runs of a design a replicate; in this book a replicate is a single run, and a design that is run twice has every run replicated.
 
-Furthermore, there are better ways to spend our experimental budget than running complete replicate experiments -- see the section on :ref:`screening designs <DOE-saturated-screening-designs>` later on. Only later in the overall experimental procedure should we run replicate experiments as a verification step and to assess the statistical significance of effects.
+Furthermore, there are better ways to spend our experimental budget than replicating every run -- see the section on :ref:`screening designs <DOE-saturated-screening-designs>` later on. Only later in the overall experimental procedure should we run replicate experiments as a verification step and to assess the statistical significance of effects.
 
 There are three ways to judge whether a main effect or interaction is significant. The first two need no replicate runs: a Pareto plot ranks the effects, and :ref:`Lenth's method <DOE-lenth-method>`, together with the half-normal plot, adds an objective cutoff to that ranking. The third uses each effect's standard error, and becomes available once replicate runs, center points, or an external estimate of the noise supply some degrees of freedom.
 
@@ -175,7 +175,7 @@ Standard errors of the effects, from replicate runs or an external dataset
 
 .. note:: It is often better to spend your experimental budget screening for additional factors rather than replicating experiments.
 
-If a duplicate run exists at every combination of the factorial, then the noise standard deviation can be estimated directly:
+If every run of the factorial has been replicated once, then the noise standard deviation can be estimated directly:
 
 	-	Let :math:`y_{i,1}` and :math:`y_{i,2}` be the two response values for each of the :math:`i^\text{th}` runs, where :math:`i=1, 2, \ldots, 2^k`.
 	-	The mean response for the :math:`i^\text{th}` run is :math:`\overline{y}_i = 0.5\,y_{i,1} + 0.5\,y_{i,2}`.
@@ -184,7 +184,7 @@ If a duplicate run exists at every combination of the factorial, then the noise 
 	-	Pooling these :math:`2^k` single-degree-of-freedom estimates means *averaging* them, giving :math:`\widehat{\sigma}^2 = S_E^2 = \dfrac{1}{2^k}\displaystyle\sum_{i=1}^{2^k}{s_i^2} = \dfrac{1}{2^{k+1}}\displaystyle\sum_{i=1}^{2^k}{d_i^2}`, on :math:`2^k` degrees of freedom.
 	-	Each coefficient's ratio :math:`b_i / S_E(b_i)` is then :math:`t`-distributed on those :math:`2^k` degrees of freedom, which is what makes the confidence interval and significance test possible.
 
-The noise standard deviation can be estimated in a similar way if more than one duplicate run is performed. Note that a full replicate is expensive: as discussed in the :ref:`screening designs <DOE-saturated-screening-designs>` section, it is often more productive to spend those extra runs on additional factors than on repeating existing runs.
+The noise standard deviation can be estimated in a similar way if each run has more than one replicate. Note that replicating every run is expensive: as discussed in the :ref:`screening designs <DOE-saturated-screening-designs>` section, it is often more productive to spend those extra runs on additional factors than on replicating existing runs.
 
 If there are more experiments than parameters to be estimated, then we have extra degrees of freedom. Having degrees of freedom implies we can estimate the noise standard deviation, :math:`S_E`. Once :math:`S_E` has been found, we can also calculate the standard error for each model coefficient, and then confidence intervals can be constructed for each main effect and interaction. And because the model matrix is orthogonal, the confidence interval for each effect is independent of the other. This is because the variance-covariance matrix of the estimates is :math:`\mathcal{V}\left(\mathbf{b}\right) = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}S_E^2`, and the off-diagonal elements in :math:`\mathbf{X}^T\mathbf{X}` are zero, so the estimates are uncorrelated. The confidence interval for each coefficient is then :math:`b_i \pm c_t \sqrt{\mathcal{V}(b_i)}`.
 

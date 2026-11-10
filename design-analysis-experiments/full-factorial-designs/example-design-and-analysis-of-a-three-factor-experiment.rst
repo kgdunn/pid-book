@@ -129,7 +129,7 @@ Learning notes:
 
 	*	The chemical compound could be coded either as (chemical P = :math:`-1`, chemical Q = :math:`+1`) or (chemical P = :math:`+1`, chemical Q = :math:`-1`). The interpretation of the :math:`x_C` coefficient is the same, regardless of the coding.
 
- 	*	Just the tabulation of the raw data gives us some interpretation of the results. Why?  Since the variables are manipulated independently, we can just look at the relationship of each factor to :math:`y`, without considering the others.  It is expected that the chemical compound and speed have a strong effect on :math:`y`, but we can also see the **chemical** :math:`\times` **speed** interaction. You can see this last interpretation by writing out the full :math:`\mathbf{X}` design matrix and comparing the bold column, associated with the :math:`b_\text{CS}` term, with the :math:`y` column.
+ 	*	Just the tabulation of the raw data gives us some interpretation of the results. Why?  Since the variables are manipulated independently, we can just look at the relationship of each factor to :math:`y`, without considering the others.  It is expected that the chemical compound and speed have a strong effect on :math:`y`, but we can also see the **chemical** :math:`\times` **speed** interaction. You can see this last interpretation by writing out the full model matrix :math:`\mathbf{X}` and comparing the bold column, associated with the :math:`b_\text{CS}` term, with the :math:`y` column.
 
 .. rubric:: A note about magnitude of effects
 

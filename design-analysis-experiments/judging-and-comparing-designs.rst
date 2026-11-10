@@ -432,7 +432,7 @@ shape. What to read off it:
     *   the **right end** (:math:`f \to 1`): the worst SPV in the region, which is the
         G-optimal value, usually at a corner;
     *   the **overall height**: lower is more precise everywhere, and the area under the
-        curve is essentially the V-/I-optimal (average) value;
+        curve is essentially the I-optimal (average) value;
     *   the **flatness**: a flat curve means uniform precision across the whole region,
         which is the response-surface ideal: you predict equally well everywhere. A
         curve that ramps up sharply at the right predicts well in the middle but poorly
@@ -469,7 +469,7 @@ The thirteen-run OMARS curve sits *below* the nine-run DSD curve for roughly the
 quarters of the region: it has lower best-case, median, and average prediction variance.
 But the two curves **cross** near :math:`f \approx 0.73`, and the thirteen-run OMARS curve then
 rises well above: its worst-case prediction variance is noticeably higher. This crossing is the
-practical tension between V- (average) and G- (worst-case) optimality, and it has a physical cause:
+practical tension between I- (average) and G- (worst-case) optimality, and it has a physical cause:
 the larger design here places fewer runs out near the edge of the region, so prediction there
 behaves like mild extrapolation. The reading is concrete: if you care about prediction on
 average across the space (typical optimization work), prefer the larger design; if you must
