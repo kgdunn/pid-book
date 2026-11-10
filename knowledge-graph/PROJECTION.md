@@ -13,9 +13,10 @@ copied exactly; never paraphrase it into the graph, and never copy more than you
 ## What to judge
 
 1. **`terms[].defining`**: sentences where the text may say what a term is. Compare with the
-   graph's definition (`graph_says`). `agrees` when they are compatible; `differs` only when a reader
-   of both would be told two different things (a narrower or wider meaning, a different condition).
-   A text using a word loosely, or for something else entirely, is neither: skip it.
+   graph's definition (`graph_says`). `agrees` when the sentence says what the term is and a reader
+   of both would be told the same thing; `differs` only when a reader of both would be told two
+   different things (a narrower or wider meaning, a different condition). A sentence that only uses
+   the word, uses it loosely, or uses it for something else entirely, is neither: skip it.
 2. **`links[]`**: a graph link, with the sentences that name both its terms. `supports` when a
    sentence states the relation the link states; `contradicts` when it states something a reader
    could not hold together with the link. Two terms in one sentence is not support.
@@ -35,8 +36,8 @@ copied exactly; never paraphrase it into the graph, and never copy more than you
 
 ## What to write
 
-`projections/NAME/reviews.json`: a JSON list, with an entry only for `supports`, `contradicts`,
-`differs`, `missing_link`, `alias` and `new_term` (skip everything else):
+`projections/NAME/reviews.json`: a JSON list, with an entry only for `agrees`, `differs`, `supports`,
+`contradicts`, `missing_link`, `alias` and `new_term` (skip everything else):
 
 ```json
 {"kind": "link", "item": ["rsm", "SHOWS", "response_surface"], "verdict": "supports",
