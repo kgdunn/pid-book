@@ -22,6 +22,8 @@ Initially, when we are far away from the optimum, we will use factorial experime
 Each set of runs covers a :index:`region of interest <pair: region of interest; experiments>`: a range
 for each factor, or a sphere in coded units, around the current conditions, over which the local
 model is meant to hold.
+When :ref:`constraints <DOE-handling-constraints>` rule out some combinations of factor settings,
+they limit the region, and what remains is still called the region of interest.
 :ref:`Coding <DOE-analysis-by-least-squares>` maps the ends of each range to :math:`-1` and :math:`+1`.
 
 .. TODO: RSM overview figure here with COST approach superimposed

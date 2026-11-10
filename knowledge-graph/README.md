@@ -3,7 +3,7 @@
 A graph of the design and analysis of experiments in *Process Improvement using Data*, for the
 factorial app: chapter 5, plus three design terms from chapter 7's mixed-level profile case study
 (split-plot design, coding schemes for a categorical factor, the joint F-test of a categorical
-interaction). 217 terms and 411 links of 35 kinds, grouped into 10 topics by consensus Louvain
+interaction). 231 terms and 468 links of 35 kinds, grouped into 11 topics by consensus Louvain
 clustering, six of which open into 26 sub-topics.
 
 Chapter 7's multivariate sections (batch and multivariate monitoring, soft sensors, image
@@ -128,8 +128,7 @@ degrees of freedom, alias matrix). At 100 runs a round, a whole small topic coul
 **The second level** is found the same way, by consensus inside each topic, and drawn only where it
 is worth reading: a topic gets sub-topics when it has at least 20 terms and two other seed batches
 reproduce its split at an adjusted Rand index of 0.8 or better. Six topics qualify (26 sub-topics);
-"Factors, coding, coefficients and steepest ascent" has 21 terms but splits differently with the seed
-(0.72), and the other three are small enough to read whole. A sub-topic is named after its most
+the other five have fewer than 20 terms and are read whole. A sub-topic is named after its most
 connected term unless `SUB_NAMES` in `layout_kg.py` gives it a better heading; the layout says when
 one of those names no longer has its term as a hub. Sub-topics are packed tightly, greedily, so a
 chain of links does not stretch them into a line.
@@ -158,6 +157,6 @@ curvature; and folding the link verbs had turned the book's "a word equals I" in
 
 ## Known limits
 
-- USES still carries 88 of the 411 links; some could be sharper.
+- USES still carries 95 of the 468 links; some could be sharper.
 - A quote must sit on one source line for the mechanical check, so some are sentence fragments.
 - The chapter exercises are not covered.
