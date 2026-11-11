@@ -3,8 +3,8 @@
 A graph of the design and analysis of experiments in *Process Improvement using Data*, for the
 factorial app: chapter 5, plus three design terms from chapter 7's mixed-level profile case study
 (split-plot design, coding schemes for a categorical factor, the joint F-test of a categorical
-interaction). 231 terms and 468 links of 35 kinds, grouped into 11 topics by consensus Louvain
-clustering, six of which open into 26 sub-topics.
+interaction). 237 terms and 489 links of 35 kinds, grouped into 13 topics by consensus Louvain
+clustering, three of which open into 13 sub-topics.
 
 Chapter 7's multivariate sections (batch and multivariate monitoring, soft sensors, image
 analysis, process understanding, troubleshooting, product development by model inversion) and the
@@ -127,8 +127,9 @@ degrees of freedom, alias matrix). At 100 runs a round, a whole small topic coul
 
 **The second level** is found the same way, by consensus inside each topic, and drawn only where it
 is worth reading: a topic gets sub-topics when it has at least 20 terms and two other seed batches
-reproduce its split at an adjusted Rand index of 0.8 or better. Six topics qualify (26 sub-topics);
-the other five have fewer than 20 terms and are read whole. A sub-topic is named after its most
+reproduce its split at an adjusted Rand index of 0.8 or better. Three topics qualify (13 sub-topics);
+"Fractional factorials, aliasing, resolution and screening" has 30 terms but splits differently with
+the seed (0.76), and the other nine have fewer than 20 terms and are read whole. A sub-topic is named after its most
 connected term unless `SUB_NAMES` in `layout_kg.py` gives it a better heading; the layout says when
 one of those names no longer has its term as a hub. Sub-topics are packed tightly, greedily, so a
 chain of links does not stretch them into a line.
@@ -157,6 +158,6 @@ curvature; and folding the link verbs had turned the book's "a word equals I" in
 
 ## Known limits
 
-- USES still carries 95 of the 468 links; some could be sharper.
+- USES still carries 97 of the 489 links; some could be sharper.
 - A quote must sit on one source line for the mechanical check, so some are sentence fragments.
 - The chapter exercises are not covered.
