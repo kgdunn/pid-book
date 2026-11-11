@@ -146,7 +146,7 @@ Finding the factors that matter, in seventeen runs
 
 A definitive screening design with fake factors tests each main effect against an error estimate
 that no quadratic or interaction effect can bias. The smallest definitive screening design for six factors
-has 13 runs, a conference matrix of order 6, its mirror image and a centre run, and leaves no
+has 13 runs, a conference matrix of order 6, its sign-flipped copy and a centre run, and leaves no
 column for a fake factor. Asking for 17 runs builds
 the design from a conference matrix of order 8 instead, and the two columns that no factor is
 assigned to are the *fake factors*. The foldover makes every main-effect column, the fake ones

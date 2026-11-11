@@ -167,12 +167,12 @@ Building the campaign
 	coded = design.design[names].to_numpy(float)
 	print(design.metadata["model_rank"], design.metadata["expected_error_df"])   # 15 12
 
-The 27 runs are thirteen half-rows, their thirteen mirror images, and one centre run. The two
+The 27 runs are thirteen half-rows, their thirteen sign-flipped copies, and one centre run. The two
 parallel runs are weeks apart, so anything that differs between them, a new lot of feed medium
 in this study, moves the titer of every batch in the second parallel run. Each parallel run is
 therefore a *block*, a group of runs that share conditions the study does not control, and the
 design is run in two blocks. The shift between them must not be confused with a factor effect,
-and a foldover makes that easy to arrange: keep each half-row with its mirror image in the same
+and a foldover makes that easy to arrange: keep each half-row with its sign-flipped copy in the same
 block, and every main effect sums to zero within each block, whichever way the pairs are divided.
 
 .. code-block:: python
@@ -186,7 +186,7 @@ block, and every main effect sums to zero within each block, whichever way the p
 	    j = next(k for k in rows if k not in seen and k != i and np.allclose(coded[k], -coded[i]))
 	    pairs.append((i, j))
 	    seen.update((i, j))
-	print(len(pairs), int(is_centre.sum()))   # 13 mirror pairs, 1 centre run
+	print(len(pairs), int(is_centre.sum()))   # 13 foldover pairs, 1 centre run
 
 The second-order columns do not sum to zero within a block, so the split of the thirteen pairs into
 seven and six is chosen to keep the block indicator as nearly uncorrelated with the quadratics and
@@ -258,7 +258,7 @@ with room to spare.
 	fill. The heavy line is the change from the first parallel run to the second, and with it
 	the change of feed-medium lot. The outlined columns, runs 6, 12, 22 and 26, are the centre
 	runs, two in each parallel run and spread through its order. The pair split keeps each
-	mirror pair in one parallel run, which the grid does not show.
+	foldover pair in one parallel run, which the grid does not show.
 
 Running it
 ~~~~~~~~~~~~
@@ -315,7 +315,7 @@ The shift between the parallel runs
 The centre points suggest the second parallel run gave lower titers, but four points on two
 degrees of freedom cannot say so with any confidence. The design as a whole can. A least-squares
 fit of log titer on a parallel-run indicator and the four main effects estimates the shift from
-all thirty runs, and because whole mirror pairs were kept together, the main effects and the
+all thirty runs, and because whole foldover pairs were kept together, the main effects and the
 parallel-run indicator are exactly orthogonal, so neither steals from the other.
 
 .. code-block:: python
@@ -362,7 +362,7 @@ estimate of 0.1470 is within one standard error of the average of 0.09574, and t
 effect that varies with the settings stays in the residuals of the analysis.
 
 This is the practical reason to build a block into a design rather than to hope a few
-replicates will reveal one afterwards. Keeping each mirror pair within one block is the scheme
+replicates will reveal one afterwards. Keeping each foldover pair within one block is the scheme
 Jones and Nachtsheim (2016) proposed for definitive screening designs, and it makes the blocks
 orthogonal to the main effects. Núñez Ares and Goos (2023), cited in :ref:`the introduction to
 OMARS designs <DOE-omars-designs>`, do not keep every pair together: they arrange the blocks to be
@@ -854,8 +854,8 @@ against the replicate noise alone.
 	  - A foldover with one centre run fits the full model from :math:`k^2 + k + 1 = 21` runs;
 	    27 runs is the ``Full df=12`` cell (:ref:`estimability frontier
 	    <DOE-omars-estimability-frontier>`)
-	* - Mirror pairs kept in one block leave the block orthogonal to every main effect
-	  - A run and its mirror image differ only in sign (:ref:`mirror-image pairs
+	* - Foldover pairs kept in one block leave the block orthogonal to every main effect
+	  - The two runs of a foldover pair differ only in sign (:ref:`foldover pairs
 	    <DOE-omars-estimability-frontier>`)
 	* - The feed-rate estimate is the same, 0.1018, in all three fits
 	  - Main effects are orthogonal to every second-order term (:ref:`OMARS designs

@@ -245,7 +245,7 @@ def check(graph: dict, labels: dict[str, str]) -> list[str]:
             problems.append(f"{where}: unknown type {n['type']}")
         if len(n["definition"].split()) > MAX_WORDS:
             problems.append(f"{where}: definition longer than {MAX_WORDS} words")
-        hidden = n.get("found_as") or []  # names other texts use: searched and matched, never shown
+        hidden = n.get("found_as") or []  # names other texts use: searched, matched, listed apart
         if any(EM_DASH in s for s in (n["name"], n["definition"], *n["aliases"], *hidden)):
             problems.append(f"{where}: em-dash")
         shown = {x.lower() for x in (n["name"], *n["aliases"])}

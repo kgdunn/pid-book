@@ -32,7 +32,7 @@ due to Xiao, Lin, and Bai (2012). A conference
 matrix :math:`\mathbf{C}` of order :math:`m` is an :math:`m \times m` matrix with zeros on the
 diagonal and :math:`\pm 1` off it, whose columns are orthogonal:
 :math:`\mathbf{C}^T\mathbf{C} = (m-1)\mathbf{I}`. The design stacks :math:`\mathbf{C}`, its
-mirror image :math:`-\mathbf{C}`, and a row of zeros:
+sign-flipped copy :math:`-\mathbf{C}`, and a row of zeros:
 
 .. math::
 
@@ -46,7 +46,7 @@ negate a run, flipping the sign of every factor at once, which is exactly what t
 :math:`-\mathbf{C}` block does. A main effect, being linear in a single factor, reverses sign.
 The intercept, a quadratic :math:`x_i^2`, and a two-factor interaction :math:`x_i x_j` (where
 both factors flip together, so the product is unchanged) all stay exactly as they were. So when
-a run is added to its negated mirror, every product between a main-effect column and a
+a run is added to its negated copy, every product between a main-effect column and a
 second-order column cancels between the two halves, while the second-order columns reproduce
 themselves identically. The consequences are:
 
@@ -107,14 +107,14 @@ them, in the browser.
 
     # generate_design returns the runs in randomized execution order. Reorder them into
     # the construction pattern [C; -C; 0] so the foldover structure is visible: the rows
-    # whose first non-zero entry is +1 form C, their sign-flipped mirrors form -C, and the
+    # whose first non-zero entry is +1 form C, their sign-flipped copies form -C, and the
     # all-zero row is the centre run.
     levels = dsd.design[dsd.factor_names].to_numpy(dtype=float)
     top = [i for i, r in enumerate(levels) if r.any() and r[r != 0][0] > 0]
-    mirror = [next(j for j, s in enumerate(levels) if np.array_equal(s, -levels[i]))
-              for i in top]
+    flipped = [next(j for j, s in enumerate(levels) if np.array_equal(s, -levels[i]))
+               for i in top]
     centre = [i for i, r in enumerate(levels) if not r.any()]
-    matrix = levels[top + mirror + centre]
+    matrix = levels[top + flipped + centre]
 
     fig = go.Figure(go.Heatmap(
         z=matrix, x=dsd.factor_names, zmid=0, showscale=False,
@@ -129,9 +129,9 @@ Reading the figure top to bottom, there is a light interpretation worth
 making now, leaving the mechanics to the construction above and the quantitative comparison to
 the :ref:`next sections <DOE-omars-designs>`:
 
-    *   The runs come in *mirror-image pairs*. The lower block is the upper block with every
+    *   The runs come in *foldover pairs*. The lower block is the upper block with every
         sign flipped (each blue cell becomes vermillion and the reverse): this is the
-        :math:`-\mathbf{C}` half folded under the :math:`\mathbf{C}` half. That mirror symmetry
+        :math:`-\mathbf{C}` half folded under the :math:`\mathbf{C}` half. That symmetry
         is the foldover, and it is what buys the clean, unaliased main effects.
 
     *   A single *centre run* sits at the bottom, every factor at :math:`0` (all grey). It
@@ -150,7 +150,7 @@ the :ref:`next sections <DOE-omars-designs>`:
 
     The run matrix of a six-factor definitive screening design (13 runs), shown in construction
     order. The top block is a conference matrix :math:`\mathbf{C}`; the middle block is its
-    sign-flipped mirror :math:`-\mathbf{C}`; the final row is the centre run. Colours are the
+    sign-flipped copy :math:`-\mathbf{C}`; the final row is the centre run. Colours are the
     coded levels :math:`-1` (blue), :math:`0` (grey), and :math:`+1` (vermillion), using the
     colourblind-safe Okabe-Ito palette.
 
