@@ -139,11 +139,11 @@ then adds a centre run:
 	\qquad N = 2h + 1
 
 A row of :math:`\mathbf{H}` and its sign-flipped copy are a
-:index:`mirror-image pair <pair: mirror-image pair; experiments>`. This construction is behind
+:index:`foldover pair <pair: foldover pair; experiments>`. This construction is behind
 most of the OMARS catalogue and the :ref:`definitive screening design
 <DOE-definitive-screening-designs>`, where :math:`\mathbf{H}` is a conference matrix.
 
-A mirror-image pair gives *identical* values in every second-order column, since
+A foldover pair gives *identical* values in every second-order column, since
 :math:`(-x_i)^2 = x_i^2` and :math:`(-x_i)(-x_j) = x_i x_j`. Five runs in two factors show it:
 
 .. code-block:: text
@@ -255,7 +255,7 @@ determinant of the information matrix.
 
 The frontier is a property of the foldover construction, not of OMARS designs as such. The
 nineteen-run design below, found by computer search, is not a foldover (only six of its eighteen
-non-centre runs form mirror-image pairs), yet its main effects are orthogonal to each other and to
+non-centre runs form foldover pairs), yet its main effects are orthogonal to each other and to
 every second-order column, and it estimates the full model. It visits the middle levels of its
 factors unequally often, which makes it what Goos (2025) calls a *non-uniform-precision* OMARS
 design: its main effects are estimated with different precision.
