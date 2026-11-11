@@ -245,8 +245,11 @@ def check(graph: dict, labels: dict[str, str]) -> list[str]:
             problems.append(f"{where}: unknown type {n['type']}")
         if len(n["definition"].split()) > MAX_WORDS:
             problems.append(f"{where}: definition longer than {MAX_WORDS} words")
-        if any(EM_DASH in s for s in (n["name"], n["definition"], *n["aliases"])):
+        hidden = n.get("found_as") or []  # names other texts use: searched and matched, never shown
+        if any(EM_DASH in s for s in (n["name"], n["definition"], *n["aliases"], *hidden)):
             problems.append(f"{where}: em-dash")
+        shown = {x.lower() for x in (n["name"], *n["aliases"])}
+        problems += [f"{where}: found_as repeats a shown name, {x}" for x in hidden if x.lower() in shown]
         ref = n["book_label"]
         if ref.startswith("file:") and not (BOOK / ref[5:]).is_file() or not ref.startswith("file:") and ref not in labels:
             problems.append(f"{where}: book reference {ref} does not resolve")
@@ -295,8 +298,8 @@ def main() -> None:
     for n in graph["nodes"]:
         ref = n["book_label"]
         label, path = (None, ref[5:]) if ref.startswith("file:") else (ref, labels[ref])
-        nodes.append({**n, "book_label": label, "book_file": path, "chapter": CHAPTERS.index(path.split("/")[0]) + 1,
-                      "level": level[n["id"]], "order": rank[n["id"]]})
+        nodes.append({**n, "found_as": n.get("found_as") or [], "book_label": label, "book_file": path,
+                      "chapter": CHAPTERS.index(path.split("/")[0]) + 1, "level": level[n["id"]], "order": rank[n["id"]]})
     also = {}
     for source, links in graph.get("corroborated", {}).items():
         for link in links:
@@ -310,7 +313,7 @@ def main() -> None:
     lines = ["// Built from graph.yaml by build_kg.py. Load into an empty database.",
              "CREATE CONSTRAINT term_id IF NOT EXISTS FOR (n:Term) REQUIRE n.id IS UNIQUE;"]
     for n in nodes:
-        props = ", ".join(f"{k}: {q(n[k])}" for k in ("id", "name", "definition", "aliases", "level", "order", "book_label", "book_file",
+        props = ", ".join(f"{k}: {q(n[k])}" for k in ("id", "name", "definition", "aliases", "found_as", "level", "order", "book_label", "book_file",
                                                        "chapter", "evidence", "quote"))
         lines.append(f"CREATE (:Term:{n['type']} {{{props}}});")
     for e in edges:

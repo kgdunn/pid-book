@@ -184,7 +184,8 @@ Here are my decisions on kg/projections/NAME/report.md:
 - YOUR DECISIONS, one per item: accept, reword (and how), or reject
 
 Apply them to kg/graph.yaml:
-- another name for a term: add it to that term's aliases, unless it is an everyday word;
+- another name for a term: add it to that term's found_as (a list beside aliases: searched, never
+  shown), or to its aliases if my own texts use the name too. Never an everyday word;
 - a definition that differs: reword it as I say, within 32 words;
 - a missing link or a new term: add it only with a line of MY texts that states it. If no line
   does, tell me, and suggest the sentence my text would need.
