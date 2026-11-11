@@ -521,6 +521,19 @@ These are three ways of writing the same model, and neither the D-optimal nor th
 design depends on which one is used. The :math:`-1 / +1` coding used throughout this chapter for
 a two-level factor is exactly effects coding for the case :math:`L = 2`.
 
+Under effects coding a factor with :math:`L` levels has :math:`L - 1` columns, :math:`e_1` to
+:math:`e_{L-1}`. Each level but one is marked by a :math:`1` in its own column, and the remaining
+level, here the last, is coded :math:`-1` in every column, so each column sums to zero over the
+levels. With one row per level, the columns for :math:`L = 3` and :math:`L = 4` are
+
+.. math::
+
+    L = 3: \quad
+    \begin{bmatrix} 1 & 0 \\ 0 & 1 \\ -1 & -1 \end{bmatrix},
+    \qquad
+    L = 4: \quad
+    \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \\ -1 & -1 & -1 \end{bmatrix}.
+
 To see that the coding does not change the chosen design, take a factor at four levels and, for
 clarity, a design with one run at each level, fitting only the four level means. Dropping the
 intercept makes the model matrix the four level indicators, :math:`\mathbf{X} = \mathbf{I}_4`, so

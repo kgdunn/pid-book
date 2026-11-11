@@ -287,7 +287,7 @@ replicated centre runs, ``analyze_experiment(..., analysis_type="curvature_test"
 
 We will not go into too much detail about :index:`central composite designs`, other than to show what they look like for the case of 2 and 3 variables. These designs take an existing orthogonal factorial and augment it with axial points. This is great, because we can start off with an ordinary factorial and always come back later to add the terms to account for nonlinearity.
 
-The :index:`axial points <pair: axial points; experiments>` are placed :math:`4^{0.25} = \sqrt{2} \approx 1.4` coded units away from the center for a 2 factor system, and :math:`8^{0.25} = 1.7` units away for a :math:`k=3` factor system. Rules for higher numbers of factors, and the reasoning behind the 1.4 and 1.7 unit step size can be found, for example in the textbook by Box, Hunter and Hunter.
+The :index:`axial points <pair: axial points; experiments>` are placed :math:`4^{0.25} = \sqrt{2} \approx 1.4` coded units away from the center for a 2 factor system, and :math:`8^{0.25} = 1.7` units away for a :math:`k=3` factor system. Rules for higher numbers of factors, and the reasoning behind the 1.4 and 1.7 unit step size can be found, for example in the textbook by Box, Hunter and Hunter. These distances reach beyond the :math:`-1` to :math:`+1` range of each factor, so the region of interest decides whether they can be used: when a factor cannot go beyond its range, the axial points are placed on the faces of the cube instead, at 1 coded unit (the face-centred central composite design).
 
 .. image:: ../figures/doe/central-composite-design.png
 	:align: left
@@ -587,9 +587,10 @@ group rows add up to the regression row.
 
 Each :math:`F` ratio in such a table is an
 :index:`extra sum of squares test <pair: extra sum of squares test; experiments>`, which judges a
-group of terms at once rather than one coefficient at a time. It compares two models, one
-containing the other. The terms that the larger model adds lower the residual sum of squares, and
-the test asks whether they lower it by more than noise would:
+group of terms at once rather than one coefficient at a time. Other texts call it the
+:index:`general regression significance test <pair: general regression significance test; experiments>`.
+It compares two models, one containing the other. The terms that the larger model adds lower the
+residual sum of squares, and the test asks whether they lower it by more than noise would:
 
 .. math::
 

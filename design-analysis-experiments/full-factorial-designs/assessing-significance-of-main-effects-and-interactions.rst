@@ -170,6 +170,8 @@ The same result is available directly from ``process_improve``. Note that ``anal
 
 The pseudo-standard-error cutoff is from :index:`Lenth <single: Lenth, Russell>` (1989), "`Quick and Easy Analysis of Unreplicated Factorials <https://doi.org/10.1080/00401706.1989.10488595>`_", *Technometrics*, **31**, 469-473. The half-normal plot of effects is due to :index:`Daniel <single: Daniel, Cuthbert>` (1959), "`Use of Half-Normal Plots in Interpreting Factorial Two-Level Experiments <https://doi.org/10.1080/00401706.1959.10489866>`_", *Technometrics*, **1**, 311-341.
 
+A :index:`conditional inference chart <pair: conditional inference chart; experiments>` is a further aid for an unreplicated two-level design, beside the Pareto plot and Lenth's method. Each assumed value of the noise standard deviation fixes the standard error of the effects, and the chart draws limits at plus and minus two standard errors for a range of such values. The effect estimates outside the limits at one assumed value would be judged significant there, so the chart shows how the conclusion depends on that value.
+
 Standard errors of the effects, from replicate runs or an external dataset
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -185,6 +187,8 @@ If every run of the factorial has been replicated once, then the noise standard 
 	-	Each coefficient's ratio :math:`b_i / S_E(b_i)` is then :math:`t`-distributed on those :math:`2^k` degrees of freedom, which is what makes the confidence interval and significance test possible.
 
 The noise standard deviation can be estimated in a similar way if each run has more than one replicate. Note that replicating every run is expensive: as discussed in the :ref:`screening designs <DOE-saturated-screening-designs>` section, it is often more productive to spend those extra runs on additional factors than on replicating existing runs.
+
+A factor can change the spread of the response and not only its average. This is called a :index:`dispersion effect <pair: dispersion effect; experiments>`, and with replicated runs it shows as the replicates scattering more at one level of the factor than at the other.
 
 If there are more experiments than parameters to be estimated, then we have extra degrees of freedom. Having degrees of freedom implies we can estimate the noise standard deviation, :math:`S_E`. Once :math:`S_E` has been found, we can also calculate the standard error for each model coefficient, and then confidence intervals can be constructed for each main effect and interaction. And because the model matrix is orthogonal, the confidence interval for each effect is independent of the other. This is because the variance-covariance matrix of the estimates is :math:`\mathcal{V}\left(\mathbf{b}\right) = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}S_E^2`, and the off-diagonal elements in :math:`\mathbf{X}^T\mathbf{X}` are zero, so the estimates are uncorrelated. The confidence interval for each coefficient is then :math:`b_i \pm c_t \sqrt{\mathcal{V}(b_i)}`.
 

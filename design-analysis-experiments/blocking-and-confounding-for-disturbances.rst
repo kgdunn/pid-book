@@ -80,7 +80,7 @@ If the raw material has a significant effect on the response variable, then we w
 
 But the small loss due to this confusion of effects, is the gain that we can still estimate the main effects and two-factor interactions without bias, provided the effect of the disturbance is constant. Let's see how we get this result by denoting :math:`\widetilde{y}_i` as a :math:`y` response from the first batch of materials and let :math:`\mathring{y}_i` denote a response from the second batch.
 
-Each estimate is the corresponding column of :math:`\pm 1` signs applied to the responses. Writing :math:`\widetilde{y}` for a batch 1 response and :math:`\mathring{y}` for a batch 2 response, the seven contrasts are:
+Each estimate is the corresponding column of :math:`\pm 1` signs applied to the responses. A :index:`contrast <pair: contrast; experiments>` is a weighted sum of the responses in which the weights add to zero. Each main effect and each interaction of a two-level factorial is a contrast, with weights from its column of plus and minus signs, which holds as many plus signs as minus signs. Writing :math:`\widetilde{y}` for a batch 1 response and :math:`\mathring{y}` for a batch 2 response, the seven contrasts are:
 
 	.. math::
 

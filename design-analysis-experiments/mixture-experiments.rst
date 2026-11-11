@@ -102,8 +102,10 @@ the model through the mixture constraint gives the same fitted surface with diff
 
 The support points of these models sit at recognisable places on the simplex. A second-order
 Scheffe model in three ingredients has six terms (three linear, three blends), and its natural
-runs are the three pure-component vertices and the three edge midpoints. The overall centroid is
-a common extra run, held back to check the fit.
+runs are the three pure-component vertices and the three edge midpoints. These six runs are the
+:index:`simplex-lattice design` for a second-order model in three ingredients. The overall
+centroid is a common extra run, held back to check the fit. Adding it gives seven runs, the
+:index:`simplex-centroid design` in three ingredients.
 
 .. code-block:: python
 
