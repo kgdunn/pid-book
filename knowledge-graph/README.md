@@ -28,7 +28,7 @@ To do the same with your own texts, see [`HOWTO.md`](HOWTO.md).
 
 | File | What it is |
 |---|---|
-| `graph.yaml` | **The source.** Terms (with their evidence) and links, one per line: `[source, VERB, target, evidence]`. |
+| `graph.yaml` | **The source.** Terms (with their evidence) and links, one per line: `[source, VERB, target, evidence]`. A term's `aliases` are other names the book uses, shown on the map; its `found_as` are names other texts use, searched and matched but never shown. |
 | `build_kg.py` | Checks `graph.yaml` against the book; writes the generated files below. |
 | `layout_kg.py` | Consensus Louvain topics and fixed positions for the map; writes `doe_kg_map.json`. |
 | `check_levels.py` | How stable the topics are across Louvain seeds, and which get a second level, and why. |

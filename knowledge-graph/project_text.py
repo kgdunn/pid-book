@@ -108,7 +108,8 @@ def term_patterns(nodes: list[dict]) -> tuple[re.Pattern, list[str]]:
     surface" names that term and not also "response", and "D-optimality criterion" names D-optimality, which
     starts first, before "optimality criterion". An all-capital name is an acronym and is matched as written,
     so COST is not every "cost"; any other name is matched whatever its case."""
-    names = [(n["id"], name) for n in nodes for name in [n["name"], *(n.get("aliases") or [])]
+    names = [(n["id"], name) for n in nodes
+             for name in [n["name"], *(n.get("aliases") or []), *(n.get("found_as") or [])]  # found_as: others' names
              if len(name) >= 4 or name.isupper()]  # "y", "X": too short to find in prose
     parts, terms = [], []
     for term, name in sorted(names, key=lambda tn: -len(tn[1])):
@@ -186,7 +187,10 @@ def candidates(folder: Path, pages: str | None) -> None:
     }
     (folder / "candidates.json").write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
     # Every term in one line each, for reviewers who judge an alias or a new term against the whole graph.
-    index = [f"{n['id']} | {n['name']} | {', '.join(n.get('aliases') or [])} | {n['definition']}" for n in graph["nodes"]]
+    index = []
+    for n in graph["nodes"]:
+        others = ", ".join((n.get("aliases") or []) + (n.get("found_as") or []))
+        index.append(f"{n['id']} | {n['name']} | {others} | {n['definition']}")
     (folder.parent / "graph-terms.txt").write_text("id | name | other names | definition\n" + "\n".join(index) + "\n",
                                                    encoding="utf-8")
     print(f"{len(sentences)} sentences; {len(found)} of {len(named)} terms named; "

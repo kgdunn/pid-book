@@ -20,6 +20,8 @@ nodes:
   definition: 'One experiment in a set: eight experiments are eight runs.'
   aliases:
   - experimental run
+  found_as:
+  - treatment combination
   book_label: file:design-analysis-experiments/design-analysis-experiments.rst
   evidence: design-analysis-experiments/design-analysis-experiments.rst:338
   quote: When we perform an experiment, we call it a run.
@@ -46,8 +48,7 @@ nodes:
   name: Objective
   type: Concept
   definition: 'An outcome together with what you want of it: maximize, minimize, or keep the same.'
-  aliases:
-  - goal
+  aliases: []
   book_label: file:design-analysis-experiments/design-analysis-experiments.rst
   evidence: design-analysis-experiments/design-analysis-experiments.rst:307
   quote: which combines an outcome and the need to adjust that outcome.
@@ -57,7 +58,6 @@ nodes:
   definition: The thing you can change to influence the outcome.
   aliases:
   - variable
-  - input
   book_label: file:design-analysis-experiments/design-analysis-experiments.rst
   evidence: design-analysis-experiments/design-analysis-experiments.rst:298
   quote: is the thing you can change to influence the outcome.
@@ -159,7 +159,8 @@ nodes:
   type: Concept
   definition: 'A variable that affects y but is not of interest: operators, ambient conditions, equipment, lab analyses,
     time.'
-  aliases: []
+  aliases:
+  - nuisance variable
   book_label: DOE_blocking_section
   evidence: design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:14
   quote: Operators, ambient conditions, physical equipment, lab analyses, and time-dependent effects (catalyst deactivation,
@@ -334,6 +335,8 @@ nodes:
   - complete factorial
   - 2^k factorial
   - two-level factorial
+  found_as:
+  - factorial design
   book_label: DOE-two-level-factorials
   evidence: design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:25
   quote: "the :math:`2` refers to the number of levels for each factor"
@@ -345,6 +348,8 @@ nodes:
   aliases:
   - coded units
   - centering and scaling
+  found_as:
+  - coded variable
   book_label: DOE-analysis-by-least-squares
   evidence: design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:28
   quote: "It is standard practice to represent the data from designed experiments in a centered and scaled form:"
@@ -354,6 +359,8 @@ nodes:
   definition: Writing runs with the first factor's sign alternating fastest and the last slowest.
   aliases:
   - Yates order
+  found_as:
+  - Yates's order
   book_label: DOE-two-level-factorials
   evidence: design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:25
   quote: which alternates the sign of the first variable the fastest and the last variable the slowest.
@@ -377,8 +384,7 @@ nodes:
   name: Main effect
   type: Concept
   definition: The average change in y when a factor moves from its low to its high level.
-  aliases:
-  - effect
+  aliases: []
   book_label: DOE-two-level-factorials-main-effects
   evidence: design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:79
   quote: The effects are considered, by convention, to be the difference from the high level to the low level.
@@ -415,6 +421,8 @@ nodes:
   type: Plot
   definition: The response against one factor, a line per level of another; lines that are not parallel show interaction.
   aliases: []
+  found_as:
+  - interaction graph
   book_label: DOE-two-level-factorials-interaction-effects
   evidence: design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:186
   quote: The lack of parallel lines is a clear indication of interaction.
@@ -438,6 +446,8 @@ nodes:
   aliases:
   - table of signs
   - X matrix
+  found_as:
+  - table of plus and minus signs
   book_label: DOE-analysis-by-least-squares
   evidence: design-analysis-experiments/optimal-designs.rst:147
   quote: Each row is one experimental run; each column is one term in the model.
@@ -537,6 +547,7 @@ nodes:
   aliases:
   - centre point
   - baseline run
+  - center run
   book_label: DOE-replicate_points
   evidence: design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:234
   quote: Note that the center point runs do not change the orthogonality of
@@ -566,6 +577,8 @@ nodes:
   definition: Absolute coefficients in sorted order, intercept left out; significance judged by eye. Needs coded
     factors.
   aliases: []
+  found_as:
+  - Pareto chart
   book_label: DOE-Pareto-plot
   evidence: design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:26
   quote: then plot as shown the absolute value of the model coefficients in sorted order, from largest magnitude
@@ -811,6 +824,8 @@ nodes:
   type: Property
   definition: A design of resolution R contains a full factorial in any R - 1 factors.
   aliases: []
+  found_as:
+  - design projection
   book_label: file:design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst
   evidence: design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst:62
   quote: contains an embedded full factorial using a combination of any 3 factors
@@ -1003,6 +1018,7 @@ nodes:
     about 1.4 coded units out for 2 factors, 1.7 for 3 (rotatable); ±1 face-centred."
   aliases:
   - star point
+  - axial run
   book_label: DOE_central_composite_designs
   evidence: design-analysis-experiments/response-surface-methods.rst:290
   quote: "coded units away from the center for a 2 factor system"
@@ -1196,7 +1212,6 @@ nodes:
   level: 2  # limits steepest ascent in response surface methods; the cited line is in the mixture section
   definition: "A limit on which runs are allowed or which results are acceptable: a bound on a factor, an unsafe combination of factors, or a response specification (a minimum purity)."
   aliases:
-  - limit
   - infeasible region
   book_label: DOE-handling-constraints
   evidence: design-analysis-experiments/mixture-experiments.rst:43
@@ -1233,7 +1248,8 @@ nodes:
   type: Method
   definition: 'Point exchange: repeatedly swap a design run for a candidate point while the criterion improves;
     it reaches only a local optimum, so it is restarted many times.'
-  aliases: []
+  aliases:
+  - point exchange algorithm
   book_label: DOE-exchange-algorithms
   evidence: design-analysis-experiments/optimal-designs.rst:302
   quote: keeping the swap whenever it improves the criterion, until no
@@ -1251,6 +1267,9 @@ nodes:
   definition: "For a fixed run count and assumed model, choose the runs that maximize det(X'X); the joint confidence
     region of all the coefficients is then smallest."
   aliases: []
+  found_as:
+  - D-optimal
+  - D-criterion
   book_label: DOE-optimal-designs
   evidence: design-analysis-experiments/optimal-designs.rst:203
   quote: "confidence region for all the coefficients is an ellipsoid whose volume is proportional to"
@@ -1259,6 +1278,8 @@ nodes:
   type: Criterion
   definition: 'Minimize trace((X''X)^-1): the average variance of the parameters.'
   aliases: []
+  found_as:
+  - A-optimal
   book_label: DOE-optimal-designs
   evidence: design-analysis-experiments/optimal-designs.rst:212
   quote: which is exactly the sum of the individual coefficient variances (the diagonal entries of
@@ -1267,6 +1288,8 @@ nodes:
   type: Criterion
   definition: Minimize the maximum variance of the predictions.
   aliases: []
+  found_as:
+  - G-optimal
   book_label: DOE-optimal-designs
   evidence: design-analysis-experiments/optimal-designs.rst:234
   quote: G-optimality minimizes the largest prediction variance anywhere in
@@ -1563,6 +1586,9 @@ nodes:
   definition: A run and its sign-flipped copy in a foldover. The pair has identical values in every second-order
     column, so it separates main effects but adds no distinct second-order row.
   aliases: []
+  found_as:
+  - fold-over pair
+  - foldover pair
   book_label: DOE-omars-estimability-frontier
   evidence: design-analysis-experiments/omars-designs.rst:158
   quote: Runs 3 and 4 flip sign in the main-effect columns, which is what estimates the main effects, but
@@ -1644,7 +1670,8 @@ nodes:
   type: Plot
   definition: SPV values at many points in the region, sorted and plotted against the fraction of the region they
     cover; a low, flat curve means precise, uniform prediction (FDS plot).
-  aliases: []
+  aliases:
+  - FDS plot
   book_label: DOE-fds-plot
   evidence: design-analysis-experiments/judging-and-comparing-designs.rst:419
   quote: therefore just the running fraction (percentiles), and the curve is the empirical cumulative
@@ -1737,6 +1764,9 @@ nodes:
   definition: A central composite design with its axial runs at plus or minus 1, so every run stays inside the factor
     ranges and each factor takes three levels.
   aliases: []
+  found_as:
+  - face-centered central composite design
+  - face-centered cube
   book_label: DOE-screen-then-optimise-study
   evidence: design-analysis-experiments/screen-then-optimise-study.rst:209
   quote: A face-centred central composite design (CCD) keeps every run inside the factor ranges,
@@ -1820,6 +1850,8 @@ nodes:
   definition: 'A robust estimate of an effect''s standard error: 1.5 times the median absolute effect, taken over
     the effects small enough to be plausibly noise (PSE).'
   aliases: []
+  found_as:
+  - pseudostandard error
   book_label: DOE-lenth-method
   evidence: design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105
   quote: (PSE) is a robust estimate of the standard error of an effect.
@@ -1838,6 +1870,8 @@ nodes:
   definition: The run-to-run variability estimated from replicated runs at identical settings, without reference
     to any model.
   aliases: []
+  found_as:
+  - internal estimate of error
   book_label: DOE-lack-of-fit
   evidence: design-analysis-experiments/response-surface-methods.rst:536
   quote: two or more runs at exactly the same factor-level combination, differ only by noise, so the spread
@@ -1847,6 +1881,8 @@ nodes:
   definition: Splits the residual sum of squares into pure error and lack of fit; a large F ratio between them is
     evidence of a missing term. Needs replicated runs.
   aliases: []
+  found_as:
+  - lack of fit
   book_label: DOE-lack-of-fit
   evidence: design-analysis-experiments/response-surface-methods.rst:535
   quote: The idea is to split the model's residual sum of squares into two parts. Replicated runs, meaning
@@ -1898,6 +1934,7 @@ nodes:
   aliases:
   - second-order Scheffe model
   - canonical polynomial
+  - quadratic mixture model
   book_label: DOE-mixture-experiments
   evidence: design-analysis-experiments/mixture-experiments.rst:100
   quote: "These readings hold in the Scheffe form"
@@ -2017,7 +2054,9 @@ nodes:
   name: Region of interest
   type: Concept
   definition: "The part of the factor space, around the current conditions, where the local model is meant to hold: a range per factor or a sphere in coded units, less whatever constraints exclude."
-  aliases: []
+  aliases:
+  - design region
+  - experimental region
   book_label: DOE-RSM
   evidence: design-analysis-experiments/response-surface-methods.rst:23
   quote: "or a sphere in coded units, around the current conditions, over which the local"
@@ -2037,6 +2076,8 @@ nodes:
   definition: "An F-test of a group of terms: the drop in residual sum of squares when they are added, per added term, divided by the larger model's residual mean square."
   aliases:
   - partial F-test
+  found_as:
+  - general regression significance test
   book_label: DOE-lack-of-fit
   evidence: design-analysis-experiments/response-surface-methods.rst:590
   quote: "group of terms at once rather than one coefficient at a time."
@@ -2125,14 +2166,13 @@ nodes:
   definition: "Minimize the average prediction variance over the whole region; the criterion to choose when the model will be used to predict."
   aliases:
   - IV-optimality
+  found_as:
   - I-optimal
   - I-criterion
   - IV criterion
-  - Q criterion
   book_label: DOE-optimal-designs
   evidence: design-analysis-experiments/optimal-designs.rst:235
   quote: "I-optimality (also called *IV-optimality*) minimizes the *average* prediction"
-
 edges:
 - [experiment, PART_OF, learning_cycle, "design-analysis-experiments/why-learning-about-systems-is-important.rst:16"]
 - [conjecture, PART_OF, learning_cycle, "design-analysis-experiments/why-learning-about-systems-is-important.rst:14"]
