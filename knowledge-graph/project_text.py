@@ -187,8 +187,10 @@ def candidates(folder: Path, pages: str | None) -> None:
     }
     (folder / "candidates.json").write_text(json.dumps(out, indent=1, ensure_ascii=False), encoding="utf-8")
     # Every term in one line each, for reviewers who judge an alias or a new term against the whole graph.
-    index = [f"{n['id']} | {n['name']} | {', '.join((n.get('aliases') or []) + (n.get('found_as') or []))} | {n['definition']}"
-             for n in graph["nodes"]]
+    index = []
+    for n in graph["nodes"]:
+        others = ", ".join((n.get("aliases") or []) + (n.get("found_as") or []))
+        index.append(f"{n['id']} | {n['name']} | {others} | {n['definition']}")
     (folder.parent / "graph-terms.txt").write_text("id | name | other names | definition\n" + "\n".join(index) + "\n",
                                                    encoding="utf-8")
     print(f"{len(sentences)} sentences; {len(found)} of {len(named)} terms named; "
