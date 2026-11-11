@@ -46,8 +46,8 @@ VERBS = {
 }
 MAX_WORDS = 32
 # Reading levels for the map, by where chapter 5 introduces a term in reading order (see levels()). The first file of
-# each later level: fractional factorials open Intermediate, optimal designs open Advanced.
-LEVEL_NAMES = {1: "Beginner", 2: "Intermediate", 3: "Advanced"}
+# each later level: fractional factorials open Intermediate, optimal designs open Adventurous.
+LEVEL_NAMES = {1: "Beginner", 2: "Intermediate", 3: "Adventurous"}
 LEVEL_STARTS = {2: "design-analysis-experiments/fractional-factorial-designs/index.rst",
                 3: "design-analysis-experiments/optimal-designs.rst"}
 ADVANCED_SECTIONS = {"DOE-RSM-canonical-analysis", "DOE-EVOP"}  # specialised subsections inside Intermediate files
@@ -190,7 +190,7 @@ def phrase(text: str) -> str:
 
 
 def levels(graph: dict) -> tuple[dict[str, int], dict[str, int]]:
-    """Each term's reading level (1 Beginner, 2 Intermediate, 3 Advanced) and its rank in the book's order.
+    """Each term's reading level (1 Beginner, 2 Intermediate, 3 Adventurous) and its rank in the book's order.
 
     1. A term starts at the level of the place chapter 5 introduces it, reading in book order: its first index
        entry or the line the graph cites, whichever comes first. A `level` on the term overrides that when the

@@ -76,14 +76,14 @@ json.dump({"source": source, **data}, open(sys.argv[1], "w"), separators=(",", "
 
 ## Reading levels
 
-The map shows the graph at three levels: Beginner, Intermediate and Advanced, each holding every level
+The map shows the graph at three levels: Beginner, Intermediate and Adventurous, each holding every level
 below it. `build_kg.py` gives each term its level (`levels()`) from where chapter 5 introduces it, reading
 the chapter in its own order (the toctree, as `tools/check_code_blocks.py` reads it):
 
 - **Beginner**: up to the two-level full factorials and their analysis.
 - **Intermediate**: from fractional factorials through blocking, response surface methods and several
   responses.
-- **Advanced**: from optimal designs on: DSD and OMARS designs, judging designs, mixtures, the general
+- **Adventurous**: from optimal designs on: DSD and OMARS designs, judging designs, mixtures, the general
   approach that ties the chapter together, and the specialised subsections on canonical analysis and EVOP.
 
 A term is introduced at its first index entry or at the line the graph cites, whichever the reader meets
