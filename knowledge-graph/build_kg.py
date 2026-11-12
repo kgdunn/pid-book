@@ -269,10 +269,14 @@ def check(graph: dict, labels: dict[str, str]) -> list[str]:
         if rest and rest[0] and book_line(rest[0]) is None:
             problems.append(f"{where}: evidence {rest[0]} does not exist")
     problems += [f"duplicate link {k}" for k, c in seen.items() if c > 1]
-    for source, links in graph.get("corroborated", {}).items():
+    for source, items in graph.get("corroborated", {}).items():   # a link the text also states, or a term it defines as the book does
         if source not in graph.get("sources", {}):
             problems.append(f"corroborated by {source}, which sources does not list")
-        problems += [f"{source} corroborates link {' '.join(link)}, which the graph lacks" for link in links if tuple(link) not in seen]
+        problems += [f"{source} corroborates term {item}, which the graph lacks" for item in items if isinstance(item, str) and item not in ids]
+        problems += [f"{source} corroborates link {' '.join(item)}, which the graph lacks"
+                     for item in items if not isinstance(item, str) and tuple(item) not in seen]
+        repeats = Counter(item if isinstance(item, str) else tuple(item) for item in items)
+        problems += [f"{source} lists {k} more than once" for k, c in repeats.items() if c > 1]
     linked = {e[0] for e in edges} | {e[2] for e in edges}
     problems += [f"term {i} has no links" for i in ids if i not in linked]
     return problems
@@ -294,16 +298,17 @@ def main() -> None:
         write_back(graph, head)
 
     level, rank = levels(graph)
+    also = {}                                                      # a term's id, or a link's three parts: the texts that back it
+    for source, items in graph.get("corroborated", {}).items():
+        for item in items:
+            also.setdefault(item if isinstance(item, str) else tuple(item), []).append(source)
     nodes = []
     for n in graph["nodes"]:
         ref = n["book_label"]
         label, path = (None, ref[5:]) if ref.startswith("file:") else (ref, labels[ref])
         nodes.append({**n, "found_as": n.get("found_as") or [], "book_label": label, "book_file": path,
-                      "chapter": CHAPTERS.index(path.split("/")[0]) + 1, "level": level[n["id"]], "order": rank[n["id"]]})
-    also = {}
-    for source, links in graph.get("corroborated", {}).items():
-        for link in links:
-            also.setdefault(tuple(link), []).append(source)
+                      "chapter": CHAPTERS.index(path.split("/")[0]) + 1, "level": level[n["id"]], "order": rank[n["id"]],
+                      "also": also.get(n["id"], [])})
     edges = [{"source": s, "type": r, "target": t, "evidence": rest[0] if rest else "", "also": also.get((s, r, t), [])}
              for s, r, t, *rest in graph["edges"]]
     kg = {"sources": graph.get("sources", {}), "nodes": nodes, "edges": edges}
@@ -314,7 +319,7 @@ def main() -> None:
              "CREATE CONSTRAINT term_id IF NOT EXISTS FOR (n:Term) REQUIRE n.id IS UNIQUE;"]
     for n in nodes:
         props = ", ".join(f"{k}: {q(n[k])}" for k in ("id", "name", "definition", "aliases", "found_as", "level", "order", "book_label", "book_file",
-                                                       "chapter", "evidence", "quote"))
+                                                       "chapter", "evidence", "quote", "also"))
         lines.append(f"CREATE (:Term:{n['type']} {{{props}}});")
     for e in edges:
         lines.append(f"MATCH (a:Term {{id: {q(e['source'])}}}), (b:Term {{id: {q(e['target'])}}}) "
@@ -326,6 +331,9 @@ def main() -> None:
     backed = sum(1 for e in edges if e["also"])
     print(f"{len(nodes)} terms, {len(edges)} links ({cited} with evidence, {backed} corroborated by another text), "
           f"{len({e['type'] for e in edges})} verbs")
+    for source in graph.get("sources", {}):
+        print(f"  {source}: also states {sum(1 for e in edges if source in e['also'])} links, "
+              f"defines {sum(1 for n in nodes if source in n['also'])} terms as the book does")
     print("terms by chapter:", dict(sorted(by_chapter.items())))
     by_level = Counter(n["level"] for n in nodes)
     print("terms shown at each level:", {LEVEL_NAMES[lvl]: sum(c for k, c in by_level.items() if k <= lvl) for lvl in LEVEL_NAMES})
