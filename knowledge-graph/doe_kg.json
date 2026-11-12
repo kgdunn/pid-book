@@ -5376,7 +5376,7 @@
   },
   {
    "source": "full_factorial",
-   "type": "USES",
+   "type": "MAY_HAVE",
    "target": "blocking",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:115",
    "also": [
@@ -6556,12 +6556,10 @@
   },
   {
    "source": "fraction_of_design_space_plot",
-   "type": "SHOWS",
+   "type": "COMPLEMENTS",
    "target": "i_optimal",
-   "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:435",
-   "also": [
-    "reviewed_text_2"
-   ]
+   "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:393",
+   "also": []
   },
   {
    "source": "judge_separability_and_precision_separately",
@@ -7470,10 +7468,10 @@
    ]
   },
   {
-   "source": "split_plot_design",
-   "type": "IS_A",
-   "target": "optimal_design",
-   "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:111",
+   "source": "optimal_design",
+   "type": "SUITED_TO",
+   "target": "split_plot_design",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:61",
    "also": []
   },
   {
