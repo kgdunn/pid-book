@@ -54,10 +54,12 @@
     "response variable",
     "y"
    ],
+   "found_as": [
+    "dependent variable"
+   ],
    "book_label": null,
    "evidence": "design-analysis-experiments/design-analysis-experiments.rst:300",
    "quote": "An important aspect about the outcome is that it is always measurable--in some way.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
    "level": 1,
@@ -106,10 +108,13 @@
    "aliases": [
     "variable"
    ],
+   "found_as": [
+    "design factor",
+    "design parameter"
+   ],
    "book_label": null,
    "evidence": "design-analysis-experiments/design-analysis-experiments.rst:298",
    "quote": "is the thing you can change to influence the outcome.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
    "level": 1,
@@ -310,10 +315,12 @@
    "aliases": [
     "nuisance variable"
    ],
+   "found_as": [
+    "nuisance factor"
+   ],
    "book_label": "DOE_blocking_section",
    "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:14",
    "quote": "Operators, ambient conditions, physical equipment, lab analyses, and time-dependent effects (catalyst deactivation, fouling), will impact the response.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
    "level": 2,
@@ -328,10 +335,12 @@
    "type": "Concept",
    "definition": "A disturbance held constant for all runs, so its effect cancels out.",
    "aliases": [],
+   "found_as": [
+    "held-constant factor"
+   ],
    "book_label": "DOE_blocking_section",
    "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:20",
    "quote": "in which case it isn't a disturbance anymore, as it is held constant for all experiments, and its effect cancels out.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
    "level": 2,
@@ -402,10 +411,13 @@
    "type": "Method",
    "definition": "Running two experiments on the same subject and analysing their difference, so a shared disturbance cancels.",
    "aliases": [],
+   "found_as": [
+    "paired comparison design",
+    "paired t-test"
+   ],
    "book_label": "DOE_expts_with_single_variable",
    "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:16",
    "quote": "pairing is when two experiments are run on the same subject and we analyze the differences in the two response values, rather than the actual response values.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 2,
@@ -422,10 +434,13 @@
    "aliases": [
     "A versus B test"
    ],
+   "found_as": [
+    "pooled t-test",
+    "two-sample t-test"
+   ],
    "book_label": "DOE_expts_with_single_variable",
    "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:19",
    "quote": "We first calculate a pooled variance, then a",
-   "found_as": [],
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
@@ -438,10 +453,12 @@
    "type": "Concept",
    "definition": "A combined variance estimate from two groups, used in the z-value for their difference.",
    "aliases": [],
+   "found_as": [
+    "pooled estimate of variance"
+   ],
    "book_label": "DOE_expts_with_single_variable",
    "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:40",
    "quote": "which already assumes the spread at level A equals the spread at level B.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
@@ -472,10 +489,12 @@
    "type": "Concept",
    "definition": "A range for an effect; the effect is statistically significant when the interval does not span zero.",
    "aliases": [],
+   "found_as": [
+    "CI"
+   ],
    "book_label": "DOE_expts_with_single_variable",
    "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:33",
    "quote": "significant effect when this confidence interval does not span zero.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
@@ -542,10 +561,12 @@
    "type": "Concept",
    "definition": "Whether an effect is large enough to matter, judged from the interval's width and the process variance.",
    "aliases": [],
+   "found_as": [
+    "engineering significance"
+   ],
    "book_label": "DOE_expts_with_single_variable",
    "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:33",
    "quote": "However, the width of this interval and how symmetrically it spans zero can cause us to come to a different,",
-   "found_as": [],
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
@@ -619,10 +640,12 @@
     "design of experiments",
     "experimental design"
    ],
+   "found_as": [
+    "statistical design"
+   ],
    "book_label": "DOE-COST-approach",
    "evidence": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst:52",
    "quote": "Designed experiments are always run in random order -- as we will presently see -- and we will get the same result, no matter the order.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst",
    "chapter": 5,
    "level": 1,
@@ -640,7 +663,8 @@
     "two-level factorial"
    ],
    "found_as": [
-    "factorial design"
+    "factorial design",
+    "factorial experiment"
    ],
    "book_label": "DOE-two-level-factorials",
    "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:25",
@@ -759,10 +783,12 @@
     "factor dependence",
     "interaction effect"
    ],
+   "found_as": [
+    "nonadditivity"
+   ],
    "book_label": "DOE-two-level-factorials-interaction-effects",
    "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:134",
    "quote": "In summary, interaction means the effect of one factor depends on the level of the other factor.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
    "level": 1,
@@ -842,10 +868,12 @@
     "linear model",
     "regression"
    ],
+   "found_as": [
+    "linear statistical model"
+   ],
    "book_label": "DOE-analysis-by-least-squares",
    "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:28",
    "quote": "whether the experimental design was executed accurately or not: the least squares model always works",
-   "found_as": [],
    "book_file": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst",
    "chapter": 5,
    "order": 233,
@@ -947,10 +975,12 @@
    "aliases": [
     "model hierarchy"
    ],
+   "found_as": [
+    "hierarchy principle"
+   ],
    "book_label": null,
    "evidence": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst:16",
    "quote": "Also, if you conclude the interaction term is significant, then you must also include all main factors that make up that interaction term in the model.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst",
    "chapter": 5,
    "level": 1,
@@ -1039,10 +1069,13 @@
    "type": "Concept",
    "definition": "Measuring one sample twice; it estimates only measurement error and is not a true replicate.",
    "aliases": [],
+   "found_as": [
+    "duplicate measurement",
+    "repeated measurement"
+   ],
    "book_label": "DOE-replicate_points",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:8",
    "quote": "is not a true replicate. That is only an estimate of the measurement error and analytical error.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
@@ -1165,10 +1198,13 @@
    "aliases": [
     "residual plots"
    ],
+   "found_as": [
+    "analysis of residuals",
+    "plot of residuals"
+   ],
    "book_label": "DOE-replicate_points",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:252",
    "quote": "Plots of the residuals in experimental order, against fitted values, q-q plots and all the other assessment tools from earlier are used, as usual.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
@@ -1199,10 +1235,13 @@
    "type": "Concept",
    "definition": "Responses lost from some runs. Main effects can often still be estimated; if the least squares model was saturated, drop higher-order interaction terms to get a square system.",
    "aliases": [],
+   "found_as": [
+    "missing observation",
+    "missing value"
+   ],
    "book_label": null,
    "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:26",
    "quote": "if the least squares model was saturated, it becomes an underdetermined system: more unknowns than equations",
-   "found_as": [],
    "book_file": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst",
    "chapter": 5,
    "level": 3,
@@ -1235,10 +1274,13 @@
    "aliases": [
     "2^(k-p) design"
    ],
+   "found_as": [
+    "regular fraction",
+    "fractional replication"
+   ],
    "book_label": "DOE-fractional-factorials",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst:6",
    "quote": "In general, we can run a :math:`2^{k-p}` fractional factorial.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/fractional-factorial-designs/index.rst",
    "chapter": 5,
    "level": 2,
@@ -1293,10 +1335,12 @@
    "type": "DesignType",
    "definition": "The other half of a full factorial, made by flipping the sign of the generator.",
    "aliases": [],
+   "found_as": [
+    "alternate fraction"
+   ],
    "book_label": "DOE-generators",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:106",
    "quote": "This complementary fraction is found by flipping the sign on the generating factor.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
    "level": 2,
@@ -1352,10 +1396,12 @@
     "Alias",
     "aliasing"
    ],
+   "found_as": [
+    "confounded"
+   ],
    "book_label": "DOE-half-fractions",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/half-fractions.rst:138",
    "quote": "the least-squares coefficient is a sum of both these effects.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/fractional-factorial-designs/half-fractions.rst",
    "chapter": 5,
    "level": 2,
@@ -1373,10 +1419,12 @@
     "alias pattern",
     "confounding pattern"
    ],
+   "found_as": [
+    "alias relationship"
+   ],
    "book_label": "DOE-generators",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:8",
    "quote": "Calculating which main effects and two-factor interactions will be confounded with each other, called the",
-   "found_as": [],
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
    "level": 2,
@@ -1409,10 +1457,12 @@
    "aliases": [
     "generating relation"
    ],
+   "found_as": [
+    "design generator"
+   ],
    "book_label": "DOE-generators",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:14",
    "quote": "This is called the *generating relation* for the design.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
    "level": 2,
@@ -1608,7 +1658,8 @@
    "definition": "A design of resolution R contains a full factorial in any R - 1 factors.",
    "aliases": [],
    "found_as": [
-    "design projection"
+    "design projection",
+    "projection property"
    ],
    "book_label": null,
    "evidence": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst:62",
@@ -1625,10 +1676,12 @@
    "type": "Method",
    "definition": "Running a second fraction with signs switched, then analysing both fractions together.",
    "aliases": [],
+   "found_as": [
+    "fold over"
+   ],
    "book_label": "DOE-foldover-designs",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst:18",
    "quote": "Now consider putting all 16 runs together and analyzing the joint results.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst",
    "chapter": 5,
    "level": 2,
@@ -1645,10 +1698,12 @@
    "aliases": [
     "switch one sign"
    ],
+   "found_as": [
+    "single-factor fold over"
+   ],
    "book_label": "DOE-foldover-designs",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst:20",
    "quote": "switching the sign of one factor will de-alias that factor's main effect, and all its associated two-factor interactions",
-   "found_as": [],
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst",
    "chapter": 5,
    "level": 2,
@@ -1665,10 +1720,12 @@
    "aliases": [
     "switch all signs"
    ],
+   "found_as": [
+    "full fold over"
+   ],
    "book_label": "DOE-foldover-designs",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst:34",
    "quote": "Its shortest word now has four letters, so this is a",
-   "found_as": [],
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst",
    "chapter": 5,
    "level": 2,
@@ -1683,10 +1740,12 @@
    "type": "Concept",
    "definition": "Experiments are run in stages, each designed from what the last one revealed.",
    "aliases": [],
+   "found_as": [
+    "sequential approach"
+   ],
    "book_label": "DOE-general-approach",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst:10",
    "quote": "Experiments are not a one-shot operation. They are almost always sequential, as we learn more and more about our system.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
    "level": 2,
@@ -1827,10 +1886,12 @@
    "type": "Concept",
    "definition": "The unknown surface of y over the factors' space.",
    "aliases": [],
+   "found_as": [
+    "response function"
+   ],
    "book_label": "DOE-RSM",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:18",
    "quote": "As we map out the unknown response surface of",
-   "found_as": [],
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
@@ -1921,10 +1982,12 @@
     "overall curvature check",
     "curvature contrast"
    ],
+   "found_as": [
+    "test for curvature"
+   ],
    "book_label": "DOE-RSM",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:826",
    "quote": "Curvature can be assessed by comparing the predicted center point, i.e. the model's intercept",
-   "found_as": [],
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
@@ -1942,10 +2005,12 @@
     "general second-order model",
     "second-order model"
    ],
+   "found_as": [
+    "second-order response surface model"
+   ],
    "book_label": "DOE_central_composite_designs",
    "evidence": "design-analysis-experiments/mixture-experiments.rst:67",
    "quote": "the pure quadratics add nothing and must be left out.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "order": 217,
@@ -2139,10 +2204,12 @@
    "aliases": [
     "multi-objective"
    ],
+   "found_as": [
+    "multiple response optimization"
+   ],
    "book_label": "DOE-multi-response-optimization",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:841",
    "quote": "For example we can achieve a higher production rate, but it is at the expense of more energy.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/multi-response-optimization.rst",
    "chapter": 5,
    "level": 2,
@@ -2173,10 +2240,12 @@
    "type": "Method",
    "definition": "Superimpose the contours of each response so the trade-offs can be seen.",
    "aliases": [],
+   "found_as": [
+    "overlay plot"
+   ],
    "book_label": "DOE-RSM",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:845",
    "quote": "This is tremendously helpful when discussing and evaluating alternate operating points, because plant managers and operators can then visually see the trade-offs.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
@@ -2273,10 +2342,12 @@
    "type": "Phase",
    "definition": "Explore the response surface of the important factors, then add curvature terms near the optimum.",
    "aliases": [],
+   "found_as": [
+    "optimization experiment"
+   ],
    "book_label": "DOE-general-approach",
    "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:39",
    "quote": "Once you reach the optimum, then second order effects and curvature must be added to assess the direction of the optimum.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
    "level": 3,
@@ -2392,10 +2463,12 @@
     "alphabetic optimality",
     "computer-generated design"
    ],
+   "found_as": [
+    "custom design"
+   ],
    "book_label": "DOE-optimal-designs",
    "evidence": "design-analysis-experiments/optimal-designs.rst:83",
    "quote": "select the experimental runs by optimizing some criterion,",
-   "found_as": [],
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
@@ -2432,10 +2505,12 @@
    "aliases": [
     "point exchange algorithm"
    ],
+   "found_as": [
+    "point exchange method"
+   ],
    "book_label": "DOE-exchange-algorithms",
    "evidence": "design-analysis-experiments/optimal-designs.rst:302",
    "quote": "keeping the swap whenever it improves the criterion, until no",
-   "found_as": [],
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
@@ -2450,10 +2525,12 @@
    "type": "Concept",
    "definition": "The quantity an optimal design optimizes, such as the determinant of X'X.",
    "aliases": [],
+   "found_as": [
+    "design criterion"
+   ],
    "book_label": "DOE-optimal-designs",
    "evidence": "design-analysis-experiments/optimal-designs.rst:135",
    "quote": "A criterion is a single number computed from the design, and every criterion we use is built",
-   "found_as": [],
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
@@ -2600,7 +2677,9 @@
    "name": "Mixture design",
    "type": "DesignType",
    "definition": "A design for components whose proportions add to 100%.",
-   "aliases": [],
+   "aliases": [
+    "mixture experiment"
+   ],
    "book_label": "DOE-mixture-designs",
    "evidence": "design-analysis-experiments/mixture-experiments.rst:14",
    "quote": "Mixture experiments are used to optimize recipes: the factors being varied are the proportions",
@@ -3157,10 +3236,12 @@
    "type": "Method",
    "definition": "An optimal-design search with no candidate set: it sets each coordinate of each run in turn to the value that most improves the criterion, cycling until nothing improves.",
    "aliases": [],
+   "found_as": [
+    "coordinate exchange method"
+   ],
    "book_label": "DOE-exchange-algorithms",
    "evidence": "design-analysis-experiments/optimal-designs.rst:306",
    "quote": "altogether. It walks through each coordinate of each run in turn and sets it to the value that",
-   "found_as": [],
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
@@ -3317,10 +3398,12 @@
    "type": "Criterion",
    "definition": "The probability that the test on a coefficient is significant when the effect really has a stated size, at a stated significance level; it needs residual degrees of freedom.",
    "aliases": [],
+   "found_as": [
+    "power of the test"
+   ],
    "book_label": "DOE-statistical-power",
    "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:680",
    "quote": "experimenter actually cares about: if an effect is really there, how likely are we to detect it? We",
-   "found_as": [],
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
    "level": 3,
@@ -3349,10 +3432,12 @@
    "type": "Criterion",
    "definition": "Absolute D-efficiency: det(X'X)^(1/p) divided by the run count, as a percentage of a hypothetical orthogonal design; it favours smaller designs. Relative D-efficiency takes the D-optimal design as 100%.",
    "aliases": [],
+   "found_as": [
+    "D-efficient"
+   ],
    "book_label": "DOE-omnibus-comparison",
    "evidence": "design-analysis-experiments/comparing-design-families.rst:251",
    "quote": "takes the D-optimal design as 100%, so it is worth checking which one a given package reports.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/comparing-design-families.rst",
    "chapter": 5,
    "level": 3,
@@ -3456,10 +3541,12 @@
    "type": "Concept",
    "definition": "Strong heredity admits an interaction only if both parent main effects are active; weak heredity needs one. It can drop terms that locate an optimum near the centre.",
    "aliases": [],
+   "found_as": [
+    "heredity"
+   ],
    "book_label": "DOE-analysing-economical-designs",
    "evidence": "design-analysis-experiments/omars-designs.rst:851",
    "quote": "range its linear effect is small, so strong heredity can drop the terms that locate the optimum, as",
-   "found_as": [],
    "book_file": "design-analysis-experiments/omars-designs.rst",
    "chapter": 5,
    "level": 3,
@@ -3578,10 +3665,12 @@
    "type": "Plot",
    "definition": "Absolute effects plotted against half-normal quantiles: noise effects fall on a straight line through the origin, and the real effects break away to the upper right.",
    "aliases": [],
+   "found_as": [
+    "half-normal probability plot"
+   ],
    "book_label": "DOE-lenth-method",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:131",
    "quote": "Noise effects fall along a straight line through the origin; the real effects break away to the upper right.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
@@ -3597,7 +3686,8 @@
    "definition": "The run-to-run variability estimated from replicated runs at identical settings, without reference to any model.",
    "aliases": [],
    "found_as": [
-    "internal estimate of error"
+    "internal estimate of error",
+    "pure experimental error"
    ],
    "book_label": "DOE-lack-of-fit",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:536",
@@ -3696,10 +3786,13 @@
     "confirmatory run",
     "Confirmation run"
    ],
+   "found_as": [
+    "confirmation experiment",
+    "confirmation testing"
+   ],
    "book_label": "DOE-uncertainty-at-the-optimum",
    "evidence": "design-analysis-experiments/multi-response-optimization.rst:536",
    "quote": "The recommended setting is a prediction. Report the prediction interval for each response",
-   "found_as": [],
    "book_file": "design-analysis-experiments/multi-response-optimization.rst",
    "chapter": 5,
    "level": 2,
@@ -3841,10 +3934,12 @@
    "type": "Concept",
    "definition": "The histogram of the difference in averages over every possible split of the results into groups A and B, against which the observed difference is judged.",
    "aliases": [],
+   "found_as": [
+    "randomization distribution"
+   ],
    "book_label": "DOE-randomization",
    "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:202",
    "quote": "You can build the reference distribution yourself; enumerating all 24,310 splits takes under a second:",
-   "found_as": [],
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
@@ -3875,10 +3970,12 @@
    "type": "Guideline",
    "definition": "Three principles that underpin the design of any experiment: randomize against unmeasured disturbances, replicate to estimate the noise, block to absorb known nuisance variation.",
    "aliases": [],
+   "found_as": [
+    "three basic principles of experimental design"
+   ],
    "book_label": "DOE-general-approach",
    "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:18",
    "quote": "Three principles underpin the design of any experiment: randomization, replication, and blocking.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
    "level": 3,
@@ -3891,10 +3988,12 @@
    "type": "DesignType",
    "definition": "Hard-to-change factors are held over a block of consecutive runs, a whole plot, while easy-to-change factors are reset within it, because full randomization is impractical.",
    "aliases": [],
+   "found_as": [
+    "split-plot experiment"
+   ],
    "book_label": "APPS_mixed_level_profile_case_study",
    "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:62",
    "quote": "split-plot: the two hard-to-change factors are held over a block of runs (a whole plot) while the",
-   "found_as": [],
    "book_file": "product-development-product-improvement/mixed-level-profile-case-study.rst",
    "chapter": 7,
    "level": 3,
@@ -3942,10 +4041,14 @@
     "design region",
     "experimental region"
    ],
+   "found_as": [
+    "region of experimentation",
+    "design space",
+    "region of exploration"
+   ],
    "book_label": "DOE-RSM",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:23",
    "quote": "or a sphere in coded units, around the current conditions, over which the local",
-   "found_as": [],
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
@@ -3984,10 +4087,12 @@
     "partial F-test",
     "general regression significance test"
    ],
+   "found_as": [
+    "extra sum of squares method"
+   ],
    "book_label": "DOE-lack-of-fit",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:590",
    "quote": "group of terms at once rather than one coefficient at a time.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
@@ -4005,10 +4110,12 @@
     "transforming the response",
     "log transformation"
    ],
+   "found_as": [
+    "data transformation"
+   ],
    "book_label": "DOE-replicate_points",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:257",
    "quote": "fitting the model to a function of the response, such as :math:`\\log y`, instead of :math:`y`.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
@@ -4025,10 +4132,12 @@
    "aliases": [
     "normal plot of effects"
    ],
+   "found_as": [
+    "normal probability plot of the effect estimates"
+   ],
    "book_label": "DOE-lenth-method",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:133",
    "quote": "which some software draws instead, plots the signed effects against normal quantiles.",
-   "found_as": [],
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
@@ -4116,10 +4225,12 @@
     "block additivity",
     "no block-by-factor interaction"
    ],
+   "found_as": [
+    "additivity of the randomized block model"
+   ],
    "book_label": "DOE-Blocking-and-confounding",
    "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:103",
    "quote": "every response in its block by the same amount",
-   "found_as": [],
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
    "level": 2,
@@ -4171,7 +4282,8 @@
    "found_as": [
     "I-optimal",
     "I-criterion",
-    "IV criterion"
+    "IV criterion",
+    "integrated variance criterion"
    ],
    "book_label": "DOE-optimal-designs",
    "evidence": "design-analysis-experiments/optimal-designs.rst:235",
@@ -4504,7 +4616,7 @@
   },
   {
    "source": "pairing",
-   "type": "PREVENTS",
+   "type": "LIMITS",
    "target": "disturbance",
    "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:14",
    "also": []
