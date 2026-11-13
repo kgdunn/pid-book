@@ -3215,7 +3215,7 @@
    ],
    "book_label": "DOE-judging-and-comparing-designs",
    "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:133",
-   "quote": "The SPV depends only on the geometry of the design. The G-optimal value is its maximum",
+   "quote": "The SPV depends only on the geometry of the design. The G-criterion is its maximum",
    "found_as": [],
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
@@ -4511,9 +4511,9 @@
   },
   {
    "source": "blocking",
-   "type": "PREVENTS",
+   "type": "LIMITS",
    "target": "disturbance",
-   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:16",
+   "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:18",
    "also": [
     "reviewed_text_2"
    ]
@@ -5885,7 +5885,7 @@
    "source": "v_optimal",
    "type": "IS_A",
    "target": "optimality_criterion",
-   "evidence": "design-analysis-experiments/optimal-designs.rst:120",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:233",
    "also": []
   },
   {
@@ -6549,7 +6549,7 @@
   },
   {
    "source": "fraction_of_design_space_plot",
-   "type": "SHOWS",
+   "type": "COMPLEMENTS",
    "target": "g_optimal",
    "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:433",
    "also": []

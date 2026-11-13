@@ -130,8 +130,8 @@ is the :index:`scaled prediction variance <pair: scaled prediction variance; exp
     \text{SPV}(\mathbf{x}) = N\, \mathbf{x}_m(\mathbf{x})^T \mathbf{M}^{-1} \mathbf{x}_m(\mathbf{x})
                            = \frac{N\,\text{Var}\big(\widehat{y}(\mathbf{x})\big)}{\sigma^2}
 
-The SPV depends only on the geometry of the design. The G-optimal value is its maximum
-over the region, and the I-optimal value is its average over the region (V-optimality is the
+The SPV depends only on the geometry of the design. The G-criterion is its maximum
+over the region, and the I-criterion is its average over the region (V-optimality is the
 same average taken over a chosen set of points rather than over the whole region).
 
 A worked example: augmenting a small design
@@ -430,9 +430,9 @@ shape. What to read off it:
         centre;
     *   the **median** (:math:`f = 0.5`): the typical precision you will experience;
     *   the **right end** (:math:`f \to 1`): the worst SPV in the region, which is the
-        G-optimal value, usually at a corner;
+        G-criterion, usually at a corner;
     *   the **overall height**: lower is more precise everywhere, and the area under the
-        curve is essentially the I-optimal (average) value;
+        curve is essentially the I-criterion (the average);
     *   the **flatness**: a flat curve means uniform precision across the whole region,
         which is the response-surface ideal: you predict equally well everywhere. A
         curve that ramps up sharply at the right predicts well in the middle but poorly

@@ -1664,7 +1664,7 @@ nodes:
   - variance function
   book_label: DOE-judging-and-comparing-designs
   evidence: design-analysis-experiments/judging-and-comparing-designs.rst:133
-  quote: The SPV depends only on the geometry of the design. The G-optimal value is its maximum
+  quote: The SPV depends only on the geometry of the design. The G-criterion is its maximum
 - id: fraction_of_design_space_plot
   name: Fraction-of-design-space plot
   type: Plot
@@ -2249,7 +2249,7 @@ edges:
 - [randomization_test, TESTS, null_hypothesis, "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:196"]
 - [randomization_test, AGREES_WITH, t_distribution, "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:200"]
 - [pairing, PREVENTS, disturbance, "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:14"]
-- [blocking, PREVENTS, disturbance, "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:16"]
+- [blocking, LIMITS, disturbance, "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:18"]
 - [pairing, IS_A, blocking, "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:14"]
 - [two_group_comparison, USES, pooled_variance, "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:19"]
 - [two_group_comparison, USES, confidence_interval, "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:19"]
@@ -2415,7 +2415,7 @@ edges:
 - [d_optimal, IS_A, optimality_criterion, "design-analysis-experiments/optimal-designs.rst:120"]
 - [a_optimal, IS_A, optimality_criterion, "design-analysis-experiments/optimal-designs.rst:120"]
 - [g_optimal, IS_A, optimality_criterion, "design-analysis-experiments/optimal-designs.rst:120"]
-- [v_optimal, IS_A, optimality_criterion, "design-analysis-experiments/optimal-designs.rst:120"]
+- [v_optimal, IS_A, optimality_criterion, "design-analysis-experiments/optimal-designs.rst:233"]
 - [d_optimal, USES, model_matrix, "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:51"]
 - [full_factorial, HAS_PROPERTY, d_optimal, "design-analysis-experiments/optimal-designs.rst:121"]
 - [augmentation, USES, d_optimal, "design-analysis-experiments/optimal-designs.rst:456"]
@@ -2505,7 +2505,7 @@ edges:
 - [i_optimal, USES, scaled_prediction_variance, "design-analysis-experiments/judging-and-comparing-designs.rst:133"]
 - [v_optimal, USES, scaled_prediction_variance, "design-analysis-experiments/judging-and-comparing-designs.rst:134"]
 - [fraction_of_design_space_plot, SHOWS, scaled_prediction_variance, "design-analysis-experiments/judging-and-comparing-designs.rst:398"]
-- [fraction_of_design_space_plot, SHOWS, g_optimal, "design-analysis-experiments/judging-and-comparing-designs.rst:433"]
+- [fraction_of_design_space_plot, COMPLEMENTS, g_optimal, "design-analysis-experiments/judging-and-comparing-designs.rst:433"]
 - [fraction_of_design_space_plot, COMPLEMENTS, i_optimal, "design-analysis-experiments/judging-and-comparing-designs.rst:393"]
 - [judge_separability_and_precision_separately, USES, maximum_absolute_correlation_between_model_terms, "design-analysis-experiments/judging-and-comparing-designs.rst:553"]
 - [judge_separability_and_precision_separately, USES, optimality_criterion, "design-analysis-experiments/judging-and-comparing-designs.rst:518"]
@@ -2842,7 +2842,7 @@ corroborated:
   - [randomization, PREVENTS, disturbance]
   - [randomization, JUSTIFIES, t_distribution]
   - [randomization_test, AGREES_WITH, t_distribution]
-  - [blocking, PREVENTS, disturbance]
+  - [blocking, LIMITS, disturbance]
   - [pairing, IS_A, blocking]
   - [confidence_interval, TESTS, statistical_significance]
   - [cost, CANNOT_SHOW, interaction]

@@ -117,8 +117,8 @@ There are two things to notice. First, the user must specify the model. This fee
 extra burden, but it is no different from a factorial or a central composite design, where
 the model is simply *implicit* in the template. An optimal design only makes the assumption
 explicit. Second, "optimize a criterion" presumes we have agreed on a criterion. The usual
-ones carry single-letter names, A-, D-, G- and V-optimality, and a full :math:`2^k` factorial
-turns out to be A-, D-, G- and V-optimal all at once for the main-effects-and-interactions
+ones carry single-letter names, A-, D-, G- and I-optimality, and a full :math:`2^k` factorial
+turns out to be A-, D-, G- and I-optimal all at once for the main-effects-and-interactions
 model. To say what those letters mean, and why they can disagree for the economical designs of
 the :ref:`next two sections <DOE-definitive-screening-designs>`, we need the information matrix,
 which is the subject of the next subsection.
@@ -282,7 +282,7 @@ For this design those summaries are easy to read off. The D-criterion is
 :math:`\det(\mathbf{M}) = 4`. The A-criterion is
 :math:`\text{trace}(\mathbf{M}^{-1}) = 1.0 + 0.5 + 1.5 = 3.0`, the sum of the three coefficient
 variances. The E-criterion is the smallest eigenvalue of :math:`\mathbf{M}`, here about
-:math:`0.44`. The prediction-based G- and V-criteria need the prediction variance, which we develop
+:math:`0.44`. The prediction-based G- and I-criteria need the prediction variance, which we develop
 in :ref:`Judging and comparing designs <DOE-judging-and-comparing-designs>`. We also return to this
 very design there: in :ref:`Judging and comparing designs <DOE-judging-and-comparing-designs>` we
 add two more runs to it and watch every one of these numbers change, which is the starting point for
