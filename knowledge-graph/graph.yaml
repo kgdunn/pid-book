@@ -2352,7 +2352,7 @@ edges:
 - [block_on_highest, APPLIES_TO, block_generator, "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:115"]
 - [blocking, LIMITS, confounding, "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:81"]
 - [block, USES, randomization, "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:54"]
-- [full_factorial, USES, blocking, "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:115"]
+- [full_factorial, MAY_HAVE, blocking, "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:115"]
 - [block, USES, complementary_fraction, "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:115"]
 - [rsm, IS_A, sequential_experimentation, "design-analysis-experiments/response-surface-methods.rst:31"]
 - [rsm, ESTIMATES, response_surface, "design-analysis-experiments/response-surface-methods.rst:18"]
@@ -2506,7 +2506,7 @@ edges:
 - [v_optimal, USES, scaled_prediction_variance, "design-analysis-experiments/judging-and-comparing-designs.rst:134"]
 - [fraction_of_design_space_plot, SHOWS, scaled_prediction_variance, "design-analysis-experiments/judging-and-comparing-designs.rst:398"]
 - [fraction_of_design_space_plot, SHOWS, g_optimal, "design-analysis-experiments/judging-and-comparing-designs.rst:433"]
-- [fraction_of_design_space_plot, SHOWS, i_optimal, "design-analysis-experiments/judging-and-comparing-designs.rst:435"]
+- [fraction_of_design_space_plot, COMPLEMENTS, i_optimal, "design-analysis-experiments/judging-and-comparing-designs.rst:393"]
 - [judge_separability_and_precision_separately, USES, maximum_absolute_correlation_between_model_terms, "design-analysis-experiments/judging-and-comparing-designs.rst:553"]
 - [judge_separability_and_precision_separately, USES, optimality_criterion, "design-analysis-experiments/judging-and-comparing-designs.rst:518"]
 - [cost, ILLUSTRATES, judge_separability_and_precision_separately, "design-analysis-experiments/judging-and-comparing-designs.rst:564"]
@@ -2626,7 +2626,7 @@ edges:
 - [replicate, PART_OF, randomization_replication_and_blocking, "design-analysis-experiments/general-approach-for-experimentation.rst:18"]
 - [blocking, PART_OF, randomization_replication_and_blocking, "design-analysis-experiments/general-approach-for-experimentation.rst:18"]
 - [split_plot_design, LIMITS, randomization, "product-development-product-improvement/mixed-level-profile-case-study.rst:61"]
-- [split_plot_design, IS_A, optimal_design, "product-development-product-improvement/mixed-level-profile-case-study.rst:111"]
+- [optimal_design, SUITED_TO, split_plot_design, "design-analysis-experiments/optimal-designs.rst:61"]
 - [split_plot_design, USES, factor, "product-development-product-improvement/mixed-level-profile-case-study.rst:63"]
 - [coding_schemes_for_a_categorical_factor, APPLIES_TO, categorical_factor, "product-development-product-improvement/mixed-level-profile-case-study.rst:409"]
 - [coding_schemes_for_a_categorical_factor, USES, indicator_variable, "product-development-product-improvement/mixed-level-profile-case-study.rst:346"]
@@ -2716,6 +2716,7 @@ edges:
 # link are recorded; the texts' own words stay out of this repository.
 sources:
   reviewed_text_1: "A textbook on response surfaces, reviewed privately with project_text.py"
+  reviewed_text_2: "A general textbook on designed experiments, reviewed privately with project_text.py"
 corroborated:
   reviewed_text_1:
   - [response, PART_OF, experiment]
@@ -2825,3 +2826,272 @@ corroborated:
   - [ccd, MAY_HAVE, blocking]
   - [analysis_of_variance, TESTS, null_hypothesis]
   - [least_squares_model, ESTIMATES, quadratic_model]
+  reviewed_text_2:
+  - [experiment, SHOWS, cause_and_effect]
+  - [response, PART_OF, experiment]
+  - [factor, PART_OF, experiment]
+  - [experiment, MAY_HAVE, objective]
+  - [numeric_factor, IS_A, factor]
+  - [categorical_factor, IS_A, factor]
+  - [factor, HAS_PROPERTY, level]
+  - [categorical_factor, CONTRASTS_WITH, numeric_factor]
+  - [run, PART_OF, experiment]
+  - [designed_experiment, IS_A, experiment]
+  - [designed_experiment, USES, randomization]
+  - [disturbance, CAUSES, response]
+  - [randomization, PREVENTS, disturbance]
+  - [randomization, JUSTIFIES, t_distribution]
+  - [randomization_test, AGREES_WITH, t_distribution]
+  - [blocking, PREVENTS, disturbance]
+  - [pairing, IS_A, blocking]
+  - [confidence_interval, TESTS, statistical_significance]
+  - [cost, CANNOT_SHOW, interaction]
+  - [full_factorial, IS_A, designed_experiment]
+  - [full_factorial, HAS_PROPERTY, orthogonality]
+  - [full_factorial, USES, coding]
+  - [full_factorial, USES, randomization]
+  - [full_factorial, ESTIMATES, main_effect]
+  - [full_factorial, ESTIMATES, interaction]
+  - [interaction_plot, SHOWS, interaction]
+  - [two_factor_interaction, IS_A, interaction]
+  - [three_factor_interaction, IS_A, interaction]
+  - [coefficient, IS_HALF_OF, main_effect]
+  - [least_squares_model, ESTIMATES, coefficient]
+  - [least_squares_model, USES, model_matrix]
+  - [intercept, PART_OF, least_squares_model]
+  - [model_matrix, MAY_HAVE, orthogonality]
+  - [coding, ENABLES, coefficient]
+  - [hierarchy_rule, APPLIES_TO, interaction]
+  - [replicate, CAUSES, degrees_of_freedom]
+  - [center_point, CAUSES, degrees_of_freedom]
+  - [center_point, KEEPS, orthogonality]
+  - [repeat_measurement, CONTRASTS_WITH, replicate]
+  - [missing_values, REMEDIED_BY, least_squares_model]
+  - [fractional_factorial, PART_OF, full_factorial]
+  - [half_fraction, IS_A, fractional_factorial]
+  - [quarter_fraction, IS_A, fractional_factorial]
+  - [fractional_factorial, CAN_BE, saturated_design]
+  - [half_fraction, CAN_AUGMENT_TO, full_factorial]
+  - [fractional_factorial, CAUSES, confounding]
+  - [fractional_factorial, USES, generator]
+  - [fractional_factorial, HAS_PROPERTY, resolution]
+  - [effect_sparsity, JUSTIFIES, fractional_factorial]
+  - [alias_structure, SHOWS, confounding]
+  - [generator, PART_OF, defining_relation]
+  - [word, PART_OF, defining_relation]
+  - [word, EQUALS, identity_column]
+  - [resolution, USES, defining_relation]
+  - [resolution, MEASURES, alias_structure]
+  - [resolution_iii, IS_A, resolution]
+  - [resolution_iv, IS_A, resolution]
+  - [resolution_v, IS_A, resolution]
+  - [resolution_iii, SUITED_TO, screening]
+  - [plackett_burman, CONTRASTS_WITH, fractional_factorial]
+  - [resolution_iii, CAN_AUGMENT_TO, resolution_iv]
+  - [blocking, USES, block]
+  - [blocking, LIMITS, confounding]
+  - [block, USES, randomization]
+  - [full_factorial, MAY_HAVE, blocking]
+  - [rsm, ESTIMATES, response_surface]
+  - [rsm, LOCATES, optimum]
+  - [steepest_ascent, USES, coefficient]
+  - [steepest_ascent, USES, step_size]
+  - [optimum, HAS_PROPERTY, curvature]
+  - [curvature_check, USES, center_point]
+  - [curvature_check, TESTS, curvature]
+  - [center_mismatch, INDICATES, curvature]
+  - [curvature, REMEDIED_BY, quadratic_model]
+  - [ccd, ESTIMATES, quadratic_model]
+  - [ccd, USES, axial_point]
+  - [ccd, USES, center_point]
+  - [full_factorial, CAN_AUGMENT_TO, ccd]
+  - [contour_plot, SHOWS, response_surface]
+  - [contour_plot, LOCATES, optimum]
+  - [evop, LOCATES, optimum]
+  - [constraint, REMEDIED_BY, optimal_design]
+  - [optimal_design, USES, candidate_set]
+  - [optimal_design, USES, optimality_criterion]
+  - [d_optimal, IS_A, optimality_criterion]
+  - [g_optimal, IS_A, optimality_criterion]
+  - [d_optimal, USES, model_matrix]
+  - [full_factorial, HAS_PROPERTY, d_optimal]
+  - [dsd, SUITED_TO, screening]
+  - [ex_raw_material_blocks, ILLUSTRATES, blocking]
+  - [dsd, USES, conference_matrix]
+  - [i_optimal, USES, prediction_variance]
+  - [coordinate_exchange_algorithm, CONTRASTS_WITH, candidate_set]
+  - [g_optimal, USES, prediction_variance]
+  - [scaled_prediction_variance, USES, prediction_variance]
+  - [g_optimal, USES, scaled_prediction_variance]
+  - [alias_matrix, MEASURES, confounding]
+  - [statistical_power, REQUIRES, degrees_of_freedom]
+  - [d_efficiency, USES, d_optimal]
+  - [face_centred_central_composite_design, IS_A, ccd]
+  - [box_behnken, HAS_PROPERTY, rotatability]
+  - [rotatability, APPLIES_TO, prediction_variance]
+  - [ccd, HAS_PROPERTY, rotatability]
+  - [minimum_aberration, USES, resolution]
+  - [minimum_aberration, MEASURES, word]
+  - [lenth_method, USES, pseudo_standard_error]
+  - [pseudo_standard_error, PART_OF, lenth_method]
+  - [pure_error, USES, replicate]
+  - [pure_error, USES, center_point]
+  - [pure_error, PART_OF, lack_of_fit_test]
+  - [lack_of_fit_test, USES, pure_error]
+  - [individual_desirability, PART_OF, overall_desirability]
+  - [pseudocomponent, USES, simplex]
+  - [constraint, REMEDIED_BY, pseudocomponent]
+  - [minimum_aberration, APPLIES_TO, generator]
+  - [lenth_method, USES, t_distribution]
+  - [margin_of_error, USES, t_distribution]
+  - [i_optimal, CONTRASTS_WITH, d_optimal]
+  - [optimal_design, USES, coordinate_exchange_algorithm]
+  - [face_centred_central_composite_design, USES, axial_point]
+  - [pseudocomponent, APPLIES_TO, simplex]
+  - [lack_of_fit_test, USES, replicate]
+  - [split_plot_design, LIMITS, randomization]
+  - [split_plot_design, USES, factor]
+  - [pure_error, HAS_PROPERTY, degrees_of_freedom]
+  - [orthogonality, PREVENTS, correlation]
+  - [factor, CAUSES, response]
+  - [coefficient, HAS_PROPERTY, standard_error]
+  - [fractional_factorial, SUITED_TO, screening]
+  - [experiment, TESTS, conjecture]
+  - [generator, IS_A, word]
+  - [plackett_burman, HAS_PROPERTY, resolution_iii]
+  - [quadratic_model, REQUIRES, level]
+  - [ccd, USES, resolution_v]
+  - [rsm, USES, region_of_interest]
+  - [lack_of_fit_test, PART_OF, analysis_of_variance]
+  - [analysis_of_variance, USES, degrees_of_freedom]
+  - [analysis_of_variance, MAY_HAVE, block]
+  - [residual_analysis, INDICATES, response_transformation]
+  - [response_transformation, APPLIES_TO, response]
+  - [normal_probability_plot_of_effects, ALTERNATIVE_TO, half_normal_plot]
+  - [quadratic_model, LOCATES, stationary_point]
+  - [stationary_point, CAN_BE, optimum]
+  - [canonical_analysis, COMPLEMENTS, contour_plot]
+  - [canonical_analysis, USES, stationary_point]
+  - [ccd, MAY_HAVE, blocking]
+  - [analysis_of_variance, TESTS, null_hypothesis]
+  - [least_squares_model, ESTIMATES, quadratic_model]
+  - [i_optimal, IS_A, optimality_criterion]
+  - [i_optimal, CONTRASTS_WITH, g_optimal]
+  - [constraint, LIMITS, region_of_interest]
+  - [factor, MAY_HAVE, dispersion_effect]
+  - [analysis_of_variance, TESTS, main_effect]
+  - [analysis_of_variance, TESTS, interaction]
+  - [confidence_interval, REQUIRES, degrees_of_freedom]
+  - experiment
+  - run
+  - response
+  - factor
+  - numeric_factor
+  - categorical_factor
+  - level
+  - cause_and_effect
+  - disturbance
+  - randomization
+  - randomization_test
+  - pairing
+  - confidence_interval
+  - t_distribution
+  - null_hypothesis
+  - cost
+  - full_factorial
+  - coding
+  - standard_order
+  - cube_plot
+  - main_effect
+  - interaction
+  - two_factor_interaction
+  - three_factor_interaction
+  - interaction_plot
+  - least_squares_model
+  - model_matrix
+  - orthogonality
+  - intercept
+  - coefficient
+  - hierarchy_rule
+  - robustness
+  - degrees_of_freedom
+  - replicate
+  - center_point
+  - standard_error
+  - residual_analysis
+  - missing_values
+  - fractional_factorial
+  - half_fraction
+  - quarter_fraction
+  - saturated_design
+  - plackett_burman
+  - confounding
+  - alias_structure
+  - generator
+  - word
+  - defining_relation
+  - identity_column
+  - resolution
+  - resolution_iii
+  - resolution_iv
+  - resolution_v
+  - foldover
+  - single_factor_foldover
+  - full_foldover
+  - sequential_experimentation
+  - screening
+  - blocking
+  - block
+  - rsm
+  - response_surface
+  - steepest_ascent
+  - curvature
+  - quadratic_model
+  - ccd
+  - axial_point
+  - box_behnken
+  - contour_plot
+  - multiple_responses
+  - evop
+  - constraint
+  - optimal_design
+  - candidate_set
+  - exchange_algorithm
+  - optimality_criterion
+  - d_optimal
+  - a_optimal
+  - g_optimal
+  - v_optimal
+  - dsd
+  - conference_matrix
+  - coordinate_exchange_algorithm
+  - effects_coding
+  - prediction_variance
+  - scaled_prediction_variance
+  - alias_matrix
+  - d_efficiency
+  - face_centred_central_composite_design
+  - rotatability
+  - effect_heredity
+  - minimum_aberration
+  - lenth_method
+  - pseudo_standard_error
+  - half_normal_plot
+  - pure_error
+  - lack_of_fit_test
+  - individual_desirability
+  - overall_desirability
+  - confirm_the_prediction
+  - scheffe_model
+  - pseudocomponent
+  - margin_of_error
+  - simultaneous_margin_of_error
+  - region_of_interest
+  - analysis_of_variance
+  - extra_sum_of_squares_test
+  - response_transformation
+  - normal_probability_plot_of_effects
+  - stationary_point
+  - canonical_analysis
+  - i_optimal
+  - dispersion_effect

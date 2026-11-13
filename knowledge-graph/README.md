@@ -91,12 +91,13 @@ first; a `level:` on the term overrides that when the book teaches it earlier th
 another REQUIRES is pulled down to that term's level, and a term with no link at its level moves up until it
 has one. Each term also carries its `order`, its rank in the book's order of introduction.
 
-## Links another text agrees with
+## What another text also states
 
-`project_text.py` compares another book with the graph (`PROJECTION.md`). A link that a reviewed text
-also states is listed under that text in `graph.yaml`'s `corroborated`, with the text itself in
-`sources`; the text's own words stay out of this repository. `build_kg.py` checks that each listed
-link exists and gives every link an `also` list of the texts that state it, which the map can draw.
+`project_text.py` compares another book with the graph (`PROJECTION.md`). What a reviewed text shares with
+the graph is listed under that text in `graph.yaml`'s `corroborated`, with the text itself in `sources`; the
+text's own words stay out of this repository. An entry is a link the text also states, written as the link
+is in `edges`, or the id of a term the text defines as the book does. `build_kg.py` checks that each entry
+exists and gives every link and every term an `also` list of the texts that back it, which the map draws.
 
 ## When the book changes
 

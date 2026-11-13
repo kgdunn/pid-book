@@ -1,6 +1,7 @@
 {
  "sources": {
-  "reviewed_text_1": "A textbook on response surfaces, reviewed privately with project_text.py"
+  "reviewed_text_1": "A textbook on response surfaces, reviewed privately with project_text.py",
+  "reviewed_text_2": "A general textbook on designed experiments, reviewed privately with project_text.py"
  },
  "nodes": [
   {
@@ -16,7 +17,10 @@
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
    "level": 1,
-   "order": 1
+   "order": 1,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "run",
@@ -35,7 +39,10 @@
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
    "level": 1,
-   "order": 8
+   "order": 8,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "response",
@@ -54,7 +61,10 @@
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
    "level": 1,
-   "order": 2
+   "order": 2,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "qualitative_outcome",
@@ -69,7 +79,8 @@
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
    "level": 1,
-   "order": 4
+   "order": 4,
+   "also": []
   },
   {
    "id": "objective",
@@ -84,7 +95,8 @@
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
    "level": 1,
-   "order": 5
+   "order": 5,
+   "also": []
   },
   {
    "id": "factor",
@@ -101,7 +113,10 @@
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
    "level": 1,
-   "order": 3
+   "order": 3,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "numeric_factor",
@@ -119,7 +134,10 @@
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
    "level": 1,
-   "order": 7
+   "order": 7,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "categorical_factor",
@@ -136,7 +154,10 @@
    "book_file": "design-analysis-experiments/design-analysis-experiments.rst",
    "chapter": 5,
    "level": 1,
-   "order": 6
+   "order": 6,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "level",
@@ -154,7 +175,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
    "level": 1,
-   "order": 45
+   "order": 45,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "cause_and_effect",
@@ -171,7 +195,10 @@
    "book_file": "design-analysis-experiments/why-learning-about-systems-is-important.rst",
    "chapter": 5,
    "level": 1,
-   "order": 16
+   "order": 16,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "happenstance_data",
@@ -188,7 +215,8 @@
    "book_file": "design-analysis-experiments/why-learning-about-systems-is-important.rst",
    "chapter": 5,
    "level": 1,
-   "order": 20
+   "order": 20,
+   "also": []
   },
   {
    "id": "feedback_control",
@@ -203,7 +231,8 @@
    "book_file": "design-analysis-experiments/why-learning-about-systems-is-important.rst",
    "chapter": 5,
    "level": 1,
-   "order": 21
+   "order": 21,
+   "also": []
   },
   {
    "id": "correlation",
@@ -218,7 +247,8 @@
    "book_file": "design-analysis-experiments/why-learning-about-systems-is-important.rst",
    "chapter": 5,
    "level": 1,
-   "order": 23
+   "order": 23,
+   "also": []
   },
   {
    "id": "learning_cycle",
@@ -235,7 +265,8 @@
    "book_file": "design-analysis-experiments/why-learning-about-systems-is-important.rst",
    "chapter": 5,
    "level": 1,
-   "order": 17
+   "order": 17,
+   "also": []
   },
   {
    "id": "conjecture",
@@ -252,7 +283,8 @@
    "book_file": "design-analysis-experiments/why-learning-about-systems-is-important.rst",
    "chapter": 5,
    "level": 1,
-   "order": 18
+   "order": 18,
+   "also": []
   },
   {
    "id": "troubleshooting",
@@ -267,7 +299,8 @@
    "book_file": "design-analysis-experiments/why-learning-about-systems-is-important.rst",
    "chapter": 5,
    "level": 1,
-   "order": 19
+   "order": 19,
+   "also": []
   },
   {
    "id": "disturbance",
@@ -284,7 +317,10 @@
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
    "level": 2,
-   "order": 119
+   "order": 119,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "controlled_disturbance",
@@ -299,7 +335,8 @@
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
    "level": 2,
-   "order": 122
+   "order": 122,
+   "also": []
   },
   {
    "id": "time_effect",
@@ -316,7 +353,8 @@
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
    "level": 2,
-   "order": 120
+   "order": 120,
+   "also": []
   },
   {
    "id": "randomization",
@@ -333,7 +371,10 @@
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
-   "order": 31
+   "order": 31,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "randomization_test",
@@ -350,7 +391,10 @@
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
-   "order": 35
+   "order": 35,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "pairing",
@@ -365,7 +409,10 @@
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 2,
-   "order": 32
+   "order": 32,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "two_group_comparison",
@@ -382,7 +429,8 @@
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
-   "order": 24
+   "order": 24,
+   "also": []
   },
   {
    "id": "pooled_variance",
@@ -397,7 +445,8 @@
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
-   "order": 28
+   "order": 28,
+   "also": []
   },
   {
    "id": "indicator_variable",
@@ -414,7 +463,8 @@
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
-   "order": 30
+   "order": 30,
+   "also": []
   },
   {
    "id": "confidence_interval",
@@ -429,7 +479,10 @@
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
-   "order": 26
+   "order": 26,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "t_distribution",
@@ -444,7 +497,10 @@
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
-   "order": 25
+   "order": 25,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "null_hypothesis",
@@ -459,7 +515,10 @@
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
-   "order": 36
+   "order": 36,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "statistical_significance",
@@ -474,7 +533,8 @@
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
-   "order": 64
+   "order": 64,
+   "also": []
   },
   {
    "id": "practical_significance",
@@ -489,7 +549,8 @@
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
-   "order": 27
+   "order": 27,
+   "also": []
   },
   {
    "id": "cost",
@@ -508,7 +569,10 @@
    "book_file": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst",
    "chapter": 5,
    "level": 1,
-   "order": 39
+   "order": 39,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "false_optimum",
@@ -525,7 +589,8 @@
    "book_file": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst",
    "chapter": 5,
    "level": 1,
-   "order": 41
+   "order": 41,
+   "also": []
   },
   {
    "id": "order_dependence",
@@ -540,7 +605,8 @@
    "book_file": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst",
    "chapter": 5,
    "level": 1,
-   "order": 42
+   "order": 42,
+   "also": []
   },
   {
    "id": "designed_experiment",
@@ -560,7 +626,8 @@
    "book_file": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst",
    "chapter": 5,
    "level": 1,
-   "order": 43
+   "order": 43,
+   "also": []
   },
   {
    "id": "full_factorial",
@@ -581,7 +648,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
    "level": 1,
-   "order": 44
+   "order": 44,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "coding",
@@ -601,7 +671,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst",
    "chapter": 5,
    "level": 1,
-   "order": 54
+   "order": 54,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "standard_order",
@@ -620,7 +693,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
    "level": 1,
-   "order": 47
+   "order": 47,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "operating_range",
@@ -635,7 +711,8 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/index.rst",
    "chapter": 5,
    "level": 1,
-   "order": 46
+   "order": 46,
+   "also": []
   },
   {
    "id": "cube_plot",
@@ -650,7 +727,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
    "level": 1,
-   "order": 48
+   "order": 48,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "main_effect",
@@ -665,7 +745,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
    "level": 1,
-   "order": 49
+   "order": 49,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "interaction",
@@ -683,7 +766,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
    "level": 1,
-   "order": 51
+   "order": 51,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "two_factor_interaction",
@@ -700,7 +786,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
    "level": 1,
-   "order": 52
+   "order": 52,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "three_factor_interaction",
@@ -717,7 +806,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst",
    "chapter": 5,
    "level": 1,
-   "order": 59
+   "order": 59,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "interaction_plot",
@@ -734,7 +826,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
    "level": 1,
-   "order": 50
+   "order": 50,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "least_squares_model",
@@ -753,7 +848,10 @@
    "found_as": [],
    "book_file": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst",
    "chapter": 5,
-   "order": 233
+   "order": 233,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "model_matrix",
@@ -773,7 +871,10 @@
    "quote": "Each row is one experimental run; each column is one term in the model.",
    "book_file": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst",
    "chapter": 5,
-   "order": 174
+   "order": 174,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "orthogonality",
@@ -790,7 +891,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst",
    "chapter": 5,
    "level": 1,
-   "order": 55
+   "order": 55,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "intercept",
@@ -808,7 +912,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst",
    "chapter": 5,
    "level": 1,
-   "order": 58
+   "order": 58,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "coefficient",
@@ -827,7 +934,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst",
    "chapter": 5,
    "level": 1,
-   "order": 56
+   "order": 56,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "hierarchy_rule",
@@ -844,7 +954,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst",
    "chapter": 5,
    "level": 1,
-   "order": 83
+   "order": 83,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "interpret_with_interaction",
@@ -859,7 +972,8 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst",
    "chapter": 5,
    "level": 1,
-   "order": 84
+   "order": 84,
+   "also": []
   },
   {
    "id": "robustness",
@@ -874,7 +988,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst",
    "chapter": 5,
    "level": 1,
-   "order": 85
+   "order": 85,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "degrees_of_freedom",
@@ -889,7 +1006,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 75
+   "order": 75,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "replicate",
@@ -908,7 +1028,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 63
+   "order": 63,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "repeat_measurement",
@@ -923,7 +1046,8 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 62
+   "order": 62,
+   "also": []
   },
   {
    "id": "center_point",
@@ -942,7 +1066,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 77
+   "order": 77,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "standard_error",
@@ -957,7 +1084,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 76
+   "order": 76,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "noise_standard_deviation",
@@ -972,7 +1102,8 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 61
+   "order": 61,
+   "also": []
   },
   {
    "id": "pareto_plot",
@@ -989,7 +1120,8 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 65
+   "order": 65,
+   "also": []
   },
   {
    "id": "se_significance",
@@ -1004,7 +1136,8 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 78
+   "order": 78,
+   "also": []
   },
   {
    "id": "refit",
@@ -1021,7 +1154,8 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 79
+   "order": 79,
+   "also": []
   },
   {
    "id": "residual_analysis",
@@ -1038,7 +1172,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 80
+   "order": 80,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "factorial_efficiency",
@@ -1053,7 +1190,8 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 82
+   "order": 82,
+   "also": []
   },
   {
    "id": "missing_values",
@@ -1068,7 +1206,10 @@
    "book_file": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst",
    "chapter": 5,
    "level": 3,
-   "order": 232
+   "order": 232,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "off_target_run",
@@ -1083,7 +1224,8 @@
    "book_file": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst",
    "chapter": 5,
    "level": 3,
-   "order": 231
+   "order": 231,
+   "also": []
   },
   {
    "id": "fractional_factorial",
@@ -1100,7 +1242,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/index.rst",
    "chapter": 5,
    "level": 2,
-   "order": 88
+   "order": 88,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "half_fraction",
@@ -1117,7 +1262,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/half-fractions.rst",
    "chapter": 5,
    "level": 2,
-   "order": 86
+   "order": 86,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "quarter_fraction",
@@ -1134,7 +1282,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst",
    "chapter": 5,
    "level": 2,
-   "order": 87
+   "order": 87,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "complementary_fraction",
@@ -1149,7 +1300,8 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
    "level": 2,
-   "order": 98
+   "order": 98,
+   "also": []
   },
   {
    "id": "saturated_design",
@@ -1164,7 +1316,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst",
    "chapter": 5,
    "level": 2,
-   "order": 110
+   "order": 110,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "plackett_burman",
@@ -1182,7 +1337,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst",
    "chapter": 5,
    "level": 2,
-   "order": 112
+   "order": 112,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "confounding",
@@ -1201,7 +1359,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/half-fractions.rst",
    "chapter": 5,
    "level": 2,
-   "order": 92
+   "order": 92,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "alias_structure",
@@ -1219,7 +1380,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
    "level": 2,
-   "order": 93
+   "order": 93,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "collinearity",
@@ -1234,7 +1398,8 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/half-fractions.rst",
    "chapter": 5,
    "level": 2,
-   "order": 91
+   "order": 91,
+   "also": []
   },
   {
    "id": "generator",
@@ -1251,7 +1416,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
    "level": 2,
-   "order": 94
+   "order": 94,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "word",
@@ -1266,7 +1434,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst",
    "chapter": 5,
    "level": 2,
-   "order": 102
+   "order": 102,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "defining_relation",
@@ -1283,7 +1454,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
    "level": 2,
-   "order": 96
+   "order": 96,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "identity_column",
@@ -1300,7 +1474,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
    "level": 2,
-   "order": 95
+   "order": 95,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "alias_calculation",
@@ -1315,7 +1492,8 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
    "level": 2,
-   "order": 97
+   "order": 97,
+   "also": []
   },
   {
    "id": "reassign_letters",
@@ -1330,7 +1508,8 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst",
    "chapter": 5,
    "level": 2,
-   "order": 103
+   "order": 103,
+   "also": []
   },
   {
    "id": "resolution",
@@ -1347,7 +1526,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst",
    "chapter": 5,
    "level": 2,
-   "order": 104
+   "order": 104,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "resolution_iii",
@@ -1362,7 +1544,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst",
    "chapter": 5,
    "level": 2,
-   "order": 106
+   "order": 106,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "resolution_iv",
@@ -1377,7 +1562,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst",
    "chapter": 5,
    "level": 2,
-   "order": 107
+   "order": 107,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "resolution_v",
@@ -1392,7 +1580,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst",
    "chapter": 5,
    "level": 2,
-   "order": 108
+   "order": 108,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "trade_off_table",
@@ -1407,7 +1598,8 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst",
    "chapter": 5,
    "level": 2,
-   "order": 109
+   "order": 109,
+   "also": []
   },
   {
    "id": "projectivity",
@@ -1424,7 +1616,8 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst",
    "chapter": 5,
    "level": 2,
-   "order": 118
+   "order": 118,
+   "also": []
   },
   {
    "id": "foldover",
@@ -1439,7 +1632,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst",
    "chapter": 5,
    "level": 2,
-   "order": 114
+   "order": 114,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "single_factor_foldover",
@@ -1456,7 +1652,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst",
    "chapter": 5,
    "level": 2,
-   "order": 116
+   "order": 116,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "full_foldover",
@@ -1473,7 +1672,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst",
    "chapter": 5,
    "level": 2,
-   "order": 117
+   "order": 117,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "sequential_experimentation",
@@ -1488,7 +1690,10 @@
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
    "level": 2,
-   "order": 115
+   "order": 115,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "screening",
@@ -1503,7 +1708,10 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst",
    "chapter": 5,
    "level": 2,
-   "order": 90
+   "order": 90,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "effect_sparsity",
@@ -1521,7 +1729,8 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst",
    "chapter": 5,
    "level": 1,
-   "order": 69
+   "order": 69,
+   "also": []
   },
   {
    "id": "blocking",
@@ -1536,7 +1745,10 @@
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
    "level": 2,
-   "order": 121
+   "order": 121,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "block",
@@ -1551,7 +1763,10 @@
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
    "level": 2,
-   "order": 124
+   "order": 124,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "block_generator",
@@ -1566,7 +1781,8 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
    "level": 2,
-   "order": 99
+   "order": 99,
+   "also": []
   },
   {
    "id": "block_on_highest",
@@ -1581,7 +1797,8 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
    "level": 2,
-   "order": 100
+   "order": 100,
+   "also": []
   },
   {
    "id": "rsm",
@@ -1599,7 +1816,10 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 130
+   "order": 130,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "response_surface",
@@ -1614,7 +1834,10 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 129
+   "order": 129,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "steepest_ascent",
@@ -1632,7 +1855,10 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 127
+   "order": 127,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "step_size",
@@ -1647,7 +1873,8 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 132
+   "order": 132,
+   "also": []
   },
   {
    "id": "last_best_point",
@@ -1662,7 +1889,8 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 133
+   "order": 133,
+   "also": []
   },
   {
    "id": "curvature",
@@ -1679,7 +1907,10 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 138
+   "order": 138,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "curvature_check",
@@ -1697,7 +1928,8 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 154
+   "order": 154,
+   "also": []
   },
   {
    "id": "quadratic_model",
@@ -1716,7 +1948,10 @@
    "found_as": [],
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
-   "order": 217
+   "order": 217,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "ccd",
@@ -1734,7 +1969,10 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 140
+   "order": 140,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "axial_point",
@@ -1752,7 +1990,10 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 141
+   "order": 141,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "box_behnken",
@@ -1767,7 +2008,10 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 151
+   "order": 151,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "contour_plot",
@@ -1784,7 +2028,10 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 128
+   "order": 128,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "optimum",
@@ -1799,7 +2046,8 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 134
+   "order": 134,
+   "also": []
   },
   {
    "id": "plateau",
@@ -1816,7 +2064,8 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 135
+   "order": 135,
+   "also": []
   },
   {
    "id": "overshoot",
@@ -1831,7 +2080,8 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 136
+   "order": 136,
+   "also": []
   },
   {
    "id": "big_interactions",
@@ -1846,7 +2096,8 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 137
+   "order": 137,
+   "also": []
   },
   {
    "id": "center_mismatch",
@@ -1861,7 +2112,8 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 153
+   "order": 153,
+   "also": []
   },
   {
    "id": "near_optimum",
@@ -1876,7 +2128,8 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 139
+   "order": 139,
+   "also": []
   },
   {
    "id": "multiple_responses",
@@ -1893,7 +2146,10 @@
    "book_file": "design-analysis-experiments/multi-response-optimization.rst",
    "chapter": 5,
    "level": 2,
-   "order": 155
+   "order": 155,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "single_combined_response",
@@ -1908,7 +2164,8 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 156
+   "order": 156,
+   "also": []
   },
   {
    "id": "overlay_surfaces",
@@ -1923,7 +2180,8 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 157
+   "order": 157,
+   "also": []
   },
   {
    "id": "categorical_in_rsm",
@@ -1938,7 +2196,8 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 158
+   "order": 158,
+   "also": []
   },
   {
    "id": "evop",
@@ -1955,7 +2214,10 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 3,
-   "order": 160
+   "order": 160,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "process_drift",
@@ -1970,7 +2232,8 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 3,
-   "order": 159
+   "order": 159,
+   "also": []
   },
   {
    "id": "phase_screening",
@@ -1985,7 +2248,8 @@
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
    "level": 3,
-   "order": 227
+   "order": 227,
+   "also": []
   },
   {
    "id": "phase_sequential",
@@ -2000,7 +2264,8 @@
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
    "level": 3,
-   "order": 228
+   "order": 228,
+   "also": []
   },
   {
    "id": "phase_optimize",
@@ -2015,7 +2280,8 @@
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
    "level": 3,
-   "order": 229
+   "order": 229,
+   "also": []
   },
   {
    "id": "phase_maintain",
@@ -2030,7 +2296,8 @@
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
    "level": 3,
-   "order": 230
+   "order": 230,
+   "also": []
   },
   {
    "id": "budget_rule",
@@ -2045,7 +2312,8 @@
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
    "level": 3,
-   "order": 224
+   "order": 224,
+   "also": []
   },
   {
    "id": "after_the_experiment",
@@ -2060,7 +2328,8 @@
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
    "level": 3,
-   "order": 223
+   "order": 223,
+   "also": []
   },
   {
    "id": "first_run_center",
@@ -2075,7 +2344,8 @@
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
    "level": 3,
-   "order": 226
+   "order": 226,
+   "also": []
   },
   {
    "id": "constraint",
@@ -2092,7 +2362,10 @@
    "found_as": [],
    "book_file": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst",
    "chapter": 5,
-   "order": 216
+   "order": 216,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "lost_orthogonality",
@@ -2107,7 +2380,8 @@
    "book_file": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst",
    "chapter": 5,
    "level": 3,
-   "order": 234
+   "order": 234,
+   "also": []
   },
   {
    "id": "optimal_design",
@@ -2125,7 +2399,10 @@
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 166
+   "order": 166,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "candidate_set",
@@ -2142,7 +2419,10 @@
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 168
+   "order": 168,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "exchange_algorithm",
@@ -2159,7 +2439,10 @@
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 181
+   "order": 181,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "optimality_criterion",
@@ -2174,7 +2457,10 @@
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 173
+   "order": 173,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "d_optimal",
@@ -2192,7 +2478,10 @@
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 175
+   "order": 175,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "a_optimal",
@@ -2209,7 +2498,10 @@
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 176
+   "order": 176,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "g_optimal",
@@ -2226,7 +2518,10 @@
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 178
+   "order": 178,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "v_optimal",
@@ -2241,7 +2536,10 @@
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 180
+   "order": 180,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "specify_model",
@@ -2256,7 +2554,8 @@
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 171
+   "order": 171,
+   "also": []
   },
   {
    "id": "augmentation",
@@ -2273,7 +2572,8 @@
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 170
+   "order": 170,
+   "also": []
   },
   {
    "id": "dsd",
@@ -2290,7 +2590,10 @@
    "book_file": "design-analysis-experiments/definitive-screening-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 183
+   "order": 183,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "mixture_design",
@@ -2305,7 +2608,8 @@
    "book_file": "design-analysis-experiments/mixture-experiments.rst",
    "chapter": 5,
    "level": 3,
-   "order": 212
+   "order": 212,
+   "also": []
   },
   {
    "id": "mixture_constraint",
@@ -2323,7 +2627,8 @@
    "book_file": "design-analysis-experiments/mixture-experiments.rst",
    "chapter": 5,
    "level": 3,
-   "order": 214
+   "order": 214,
+   "also": []
   },
   {
    "id": "simplex",
@@ -2340,7 +2645,8 @@
    "book_file": "design-analysis-experiments/mixture-experiments.rst",
    "chapter": 5,
    "level": 3,
-   "order": 215
+   "order": 215,
+   "also": []
   },
   {
    "id": "ex_cost_bioreactor",
@@ -2355,7 +2661,8 @@
    "book_file": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst",
    "chapter": 5,
    "level": 1,
-   "order": 40
+   "order": 40,
+   "also": []
   },
   {
    "id": "ex_tea",
@@ -2370,7 +2677,8 @@
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
-   "order": 33
+   "order": 33,
+   "also": []
   },
   {
    "id": "ex_brittleness",
@@ -2385,7 +2693,8 @@
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
-   "order": 37
+   "order": 37,
+   "also": []
   },
   {
    "id": "ex_two_factor",
@@ -2400,7 +2709,8 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
    "level": 1,
-   "order": 57
+   "order": 57,
+   "also": []
   },
   {
    "id": "ex_handwashing",
@@ -2415,7 +2725,8 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst",
    "chapter": 5,
    "level": 1,
-   "order": 53
+   "order": 53,
+   "also": []
   },
   {
    "id": "ex_pollutant",
@@ -2430,7 +2741,8 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst",
    "chapter": 5,
    "level": 1,
-   "order": 60
+   "order": 60,
+   "also": []
   },
   {
    "id": "ex_yield_pressure",
@@ -2445,7 +2757,8 @@
    "book_file": "design-analysis-experiments/why-learning-about-systems-is-important.rst",
    "chapter": 5,
    "level": 1,
-   "order": 22
+   "order": 22,
+   "also": []
   },
   {
    "id": "ex_7_factor_screen",
@@ -2460,7 +2773,8 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst",
    "chapter": 5,
    "level": 2,
-   "order": 111
+   "order": 111,
+   "also": []
   },
   {
    "id": "ex_8_factor",
@@ -2475,7 +2789,8 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst",
    "chapter": 5,
    "level": 2,
-   "order": 105
+   "order": 105,
+   "also": []
   },
   {
    "id": "ex_raw_material_blocks",
@@ -2490,7 +2805,8 @@
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
    "level": 2,
-   "order": 123
+   "order": 123,
+   "also": []
   },
   {
    "id": "ex_rsm_profit",
@@ -2505,7 +2821,8 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 142
+   "order": 142,
+   "also": []
   },
   {
    "id": "ex_fruit_punch",
@@ -2520,7 +2837,8 @@
    "book_file": "design-analysis-experiments/mixture-experiments.rst",
    "chapter": 5,
    "level": 3,
-   "order": 221
+   "order": 221,
+   "also": []
   },
   {
    "id": "ex_cell_culture",
@@ -2535,7 +2853,8 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/index.rst",
    "chapter": 5,
    "level": 2,
-   "order": 89
+   "order": 89,
+   "also": []
   },
   {
    "id": "q_narrow_factors",
@@ -2550,7 +2869,8 @@
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
    "level": 2,
-   "order": 9
+   "order": 9,
+   "also": []
   },
   {
    "id": "q_after_screening",
@@ -2565,7 +2885,8 @@
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
    "level": 2,
-   "order": 10
+   "order": 10,
+   "also": []
   },
   {
    "id": "q_old_data",
@@ -2580,7 +2901,8 @@
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
    "level": 1,
-   "order": 11
+   "order": 11,
+   "also": []
   },
   {
    "id": "q_two_goals",
@@ -2595,7 +2917,8 @@
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
    "level": 2,
-   "order": 12
+   "order": 12,
+   "also": []
   },
   {
    "id": "q_unsafe_corner",
@@ -2610,7 +2933,8 @@
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
    "level": 3,
-   "order": 13
+   "order": 13,
+   "also": []
   },
   {
    "id": "ref_fisher",
@@ -2625,7 +2949,8 @@
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
    "level": 1,
-   "order": 34
+   "order": 34,
+   "also": []
   },
   {
    "id": "ref_bhh",
@@ -2642,7 +2967,8 @@
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
    "level": 1,
-   "order": 14
+   "order": 14,
+   "also": []
   },
   {
    "id": "ref_box_hunter_1961",
@@ -2657,7 +2983,8 @@
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
    "level": 2,
-   "order": 15
+   "order": 15,
+   "also": []
   },
   {
    "id": "ref_box_1957",
@@ -2672,7 +2999,8 @@
    "book_file": "design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst",
    "chapter": 5,
    "level": 3,
-   "order": 161
+   "order": 161,
+   "also": []
   },
   {
    "id": "ref_st_john_draper",
@@ -2687,7 +3015,8 @@
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 172
+   "order": 172,
+   "also": []
   },
   {
    "id": "ref_jones_2011",
@@ -2702,7 +3031,8 @@
    "book_file": "design-analysis-experiments/definitive-screening-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 184
+   "order": 184,
+   "also": []
   },
   {
    "id": "omars_design",
@@ -2717,7 +3047,8 @@
    "book_file": "design-analysis-experiments/omars-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 186
+   "order": 186,
+   "also": []
   },
   {
    "id": "conference_matrix",
@@ -2732,7 +3063,10 @@
    "book_file": "design-analysis-experiments/definitive-screening-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 185
+   "order": 185,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "mirror_image_pair",
@@ -2750,7 +3084,8 @@
    "book_file": "design-analysis-experiments/omars-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 187
+   "order": 187,
+   "also": []
   },
   {
    "id": "estimability_frontier",
@@ -2765,7 +3100,8 @@
    "book_file": "design-analysis-experiments/omars-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 189
+   "order": 189,
+   "also": []
   },
   {
    "id": "omars_trade_off_table",
@@ -2780,7 +3116,8 @@
    "book_file": "design-analysis-experiments/omars-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 190
+   "order": 190,
+   "also": []
   },
   {
    "id": "information_matrix",
@@ -2795,7 +3132,8 @@
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 167
+   "order": 167,
+   "also": []
   },
   {
    "id": "e_optimality",
@@ -2810,7 +3148,8 @@
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 177
+   "order": 177,
+   "also": []
   },
   {
    "id": "coordinate_exchange_algorithm",
@@ -2825,7 +3164,10 @@
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 169
+   "order": 169,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "effects_coding",
@@ -2840,7 +3182,10 @@
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 182
+   "order": 182,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "prediction_variance",
@@ -2855,7 +3200,10 @@
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 196
+   "order": 196,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "scaled_prediction_variance",
@@ -2872,7 +3220,10 @@
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 197
+   "order": 197,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "fraction_of_design_space_plot",
@@ -2889,7 +3240,8 @@
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 200
+   "order": 200,
+   "also": []
   },
   {
    "id": "judge_separability_and_precision_separately",
@@ -2904,7 +3256,8 @@
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 198
+   "order": 198,
+   "also": []
   },
   {
    "id": "maximum_absolute_correlation_between_model_terms",
@@ -2919,7 +3272,8 @@
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 201
+   "order": 201,
+   "also": []
   },
   {
    "id": "variance_inflation_factor",
@@ -2934,7 +3288,8 @@
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 202
+   "order": 202,
+   "also": []
   },
   {
    "id": "alias_matrix",
@@ -2951,7 +3306,10 @@
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 203
+   "order": 203,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "statistical_power",
@@ -2966,7 +3324,8 @@
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 205
+   "order": 205,
+   "also": []
   },
   {
    "id": "effect_size",
@@ -2981,7 +3340,8 @@
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 192
+   "order": 192,
+   "also": []
   },
   {
    "id": "d_efficiency",
@@ -2996,7 +3356,10 @@
    "book_file": "design-analysis-experiments/comparing-design-families.rst",
    "chapter": 5,
    "level": 3,
-   "order": 206
+   "order": 206,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "d_for_estimation_i_for_prediction",
@@ -3011,7 +3374,8 @@
    "book_file": "design-analysis-experiments/comparing-design-families.rst",
    "chapter": 5,
    "level": 3,
-   "order": 207
+   "order": 207,
+   "also": []
   },
   {
    "id": "compare_d_efficiency_only_at_equal_run_counts",
@@ -3026,7 +3390,8 @@
    "book_file": "design-analysis-experiments/comparing-design-families.rst",
    "chapter": 5,
    "level": 3,
-   "order": 208
+   "order": 208,
+   "also": []
   },
   {
    "id": "face_centred_central_composite_design",
@@ -3044,7 +3409,10 @@
    "book_file": "design-analysis-experiments/screen-then-optimise-study.rst",
    "chapter": 5,
    "level": 3,
-   "order": 211
+   "order": 211,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "rotatability",
@@ -3061,7 +3429,10 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 152
+   "order": 152,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "design_based_staged_analysis",
@@ -3076,7 +3447,8 @@
    "book_file": "design-analysis-experiments/omars-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 193
+   "order": 193,
+   "also": []
   },
   {
    "id": "effect_heredity",
@@ -3091,7 +3463,10 @@
    "book_file": "design-analysis-experiments/omars-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 194
+   "order": 194,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "fake_factor",
@@ -3106,7 +3481,8 @@
    "book_file": "design-analysis-experiments/screen-then-optimise-study.rst",
    "chapter": 5,
    "level": 3,
-   "order": 210
+   "order": 210,
+   "also": []
   },
   {
    "id": "keep_mirror_pairs_in_one_block",
@@ -3121,7 +3497,8 @@
    "book_file": "design-analysis-experiments/omars-worked-study.rst",
    "chapter": 5,
    "level": 3,
-   "order": 195
+   "order": 195,
+   "also": []
   },
   {
    "id": "judge_estimability_from_the_rank_of_the_model_matrix",
@@ -3136,7 +3513,8 @@
    "book_file": "design-analysis-experiments/omars-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 188
+   "order": 188,
+   "also": []
   },
   {
    "id": "minimum_aberration",
@@ -3151,7 +3529,10 @@
    "book_file": "design-analysis-experiments/omars-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 191
+   "order": 191,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "lenth_method",
@@ -3166,7 +3547,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 66
+   "order": 66,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "pseudo_standard_error",
@@ -3183,7 +3567,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 68
+   "order": 68,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "half_normal_plot",
@@ -3198,7 +3585,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 67
+   "order": 67,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "pure_error",
@@ -3215,7 +3605,10 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 148
+   "order": 148,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "lack_of_fit_test",
@@ -3232,7 +3625,10 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 147
+   "order": 147,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "sweet_spot",
@@ -3247,7 +3643,8 @@
    "book_file": "design-analysis-experiments/multi-response-optimization.rst",
    "chapter": 5,
    "level": 2,
-   "order": 162
+   "order": 162,
+   "also": []
   },
   {
    "id": "individual_desirability",
@@ -3264,7 +3661,10 @@
    "book_file": "design-analysis-experiments/multi-response-optimization.rst",
    "chapter": 5,
    "level": 2,
-   "order": 164
+   "order": 164,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "overall_desirability",
@@ -3281,7 +3681,10 @@
    "book_file": "design-analysis-experiments/multi-response-optimization.rst",
    "chapter": 5,
    "level": 2,
-   "order": 163
+   "order": 163,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "confirm_the_prediction",
@@ -3300,7 +3703,10 @@
    "book_file": "design-analysis-experiments/multi-response-optimization.rst",
    "chapter": 5,
    "level": 2,
-   "order": 165
+   "order": 165,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "scheffe_model",
@@ -3319,7 +3725,10 @@
    "book_file": "design-analysis-experiments/mixture-experiments.rst",
    "chapter": 5,
    "level": 3,
-   "order": 213
+   "order": 213,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "pseudocomponent",
@@ -3337,7 +3746,10 @@
    "book_file": "design-analysis-experiments/mixture-experiments.rst",
    "chapter": 5,
    "level": 3,
-   "order": 220
+   "order": 220,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "mixture_process_variable_experiment",
@@ -3352,7 +3764,8 @@
    "book_file": "design-analysis-experiments/mixture-experiments.rst",
    "chapter": 5,
    "level": 3,
-   "order": 222
+   "order": 222,
+   "also": []
   },
   {
    "id": "screen_then_optimise_reactor_study",
@@ -3367,7 +3780,8 @@
    "book_file": "design-analysis-experiments/screen-then-optimise-study.rst",
    "chapter": 5,
    "level": 3,
-   "order": 209
+   "order": 209,
+   "also": []
   },
   {
    "id": "margin_of_error",
@@ -3382,7 +3796,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 70
+   "order": 70,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "simultaneous_margin_of_error",
@@ -3397,7 +3814,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 71
+   "order": 71,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "allocating_runs_between_two_levels",
@@ -3412,7 +3832,8 @@
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
-   "order": 29
+   "order": 29,
+   "also": []
   },
   {
    "id": "reference_distribution",
@@ -3427,7 +3848,8 @@
    "book_file": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst",
    "chapter": 5,
    "level": 1,
-   "order": 38
+   "order": 38,
+   "also": []
   },
   {
    "id": "blocking_into_more_than_two_blocks",
@@ -3444,7 +3866,8 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst",
    "chapter": 5,
    "level": 2,
-   "order": 101
+   "order": 101,
+   "also": []
   },
   {
    "id": "randomization_replication_and_blocking",
@@ -3459,7 +3882,8 @@
    "book_file": "design-analysis-experiments/general-approach-for-experimentation.rst",
    "chapter": 5,
    "level": 3,
-   "order": 225
+   "order": 225,
+   "also": []
   },
   {
    "id": "split_plot_design",
@@ -3474,7 +3898,8 @@
    "book_file": "product-development-product-improvement/mixed-level-profile-case-study.rst",
    "chapter": 7,
    "level": 3,
-   "order": 235
+   "order": 235,
+   "also": []
   },
   {
    "id": "coding_schemes_for_a_categorical_factor",
@@ -3489,7 +3914,8 @@
    "book_file": "product-development-product-improvement/mixed-level-profile-case-study.rst",
    "chapter": 7,
    "level": 3,
-   "order": 236
+   "order": 236,
+   "also": []
   },
   {
    "id": "joint_f_test_of_a_categorical_interaction",
@@ -3504,7 +3930,8 @@
    "book_file": "product-development-product-improvement/mixed-level-profile-case-study.rst",
    "chapter": 7,
    "level": 3,
-   "order": 237
+   "order": 237,
+   "also": []
   },
   {
    "id": "region_of_interest",
@@ -3522,7 +3949,10 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 131
+   "order": 131,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "analysis_of_variance",
@@ -3540,7 +3970,10 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 149
+   "order": 149,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "extra_sum_of_squares_test",
@@ -3558,7 +3991,10 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 150
+   "order": 150,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "response_transformation",
@@ -3576,7 +4012,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 81
+   "order": 81,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "normal_probability_plot_of_effects",
@@ -3593,7 +4032,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 72
+   "order": 72,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "bias_error",
@@ -3610,7 +4052,8 @@
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 204
+   "order": 204,
+   "also": []
   },
   {
    "id": "stationary_point",
@@ -3625,7 +4068,10 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 3,
-   "order": 144
+   "order": 144,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "canonical_analysis",
@@ -3640,7 +4086,10 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 3,
-   "order": 143
+   "order": 143,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "ridge_analysis",
@@ -3655,7 +4104,8 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 3,
-   "order": 145
+   "order": 145,
+   "also": []
   },
   {
    "id": "additive_block_effect",
@@ -3673,7 +4123,8 @@
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
    "level": 2,
-   "order": 126
+   "order": 126,
+   "also": []
   },
   {
    "id": "scale_sensitivity_of_optimality_criteria",
@@ -3690,7 +4141,8 @@
    "book_file": "design-analysis-experiments/judging-and-comparing-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 199
+   "order": 199,
+   "also": []
   },
   {
    "id": "effect_hierarchy",
@@ -3705,7 +4157,8 @@
    "book_file": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst",
    "chapter": 5,
    "level": 2,
-   "order": 113
+   "order": 113,
+   "also": []
   },
   {
    "id": "i_optimal",
@@ -3726,7 +4179,10 @@
    "book_file": "design-analysis-experiments/optimal-designs.rst",
    "chapter": 5,
    "level": 3,
-   "order": 179
+   "order": 179,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "contrast",
@@ -3741,7 +4197,8 @@
    "book_file": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst",
    "chapter": 5,
    "level": 2,
-   "order": 125
+   "order": 125,
+   "also": []
   },
   {
    "id": "conditional_inference_chart",
@@ -3756,7 +4213,8 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 73
+   "order": 73,
+   "also": []
   },
   {
    "id": "dispersion_effect",
@@ -3771,7 +4229,10 @@
    "book_file": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst",
    "chapter": 5,
    "level": 1,
-   "order": 74
+   "order": 74,
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "orthogonal_blocking",
@@ -3786,7 +4247,8 @@
    "book_file": "design-analysis-experiments/response-surface-methods.rst",
    "chapter": 5,
    "level": 2,
-   "order": 146
+   "order": 146,
+   "also": []
   },
   {
    "id": "simplex_lattice_design",
@@ -3801,7 +4263,8 @@
    "book_file": "design-analysis-experiments/mixture-experiments.rst",
    "chapter": 5,
    "level": 3,
-   "order": 218
+   "order": 218,
+   "also": []
   },
   {
    "id": "simplex_centroid_design",
@@ -3816,7 +4279,8 @@
    "book_file": "design-analysis-experiments/mixture-experiments.rst",
    "chapter": 5,
    "level": 3,
-   "order": 219
+   "order": 219,
+   "also": []
   }
  ],
  "edges": [
@@ -3839,7 +4303,9 @@
    "type": "SHOWS",
    "target": "cause_and_effect",
    "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:63",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "happenstance_data",
@@ -3882,7 +4348,8 @@
    "target": "experiment",
    "evidence": "design-analysis-experiments/design-analysis-experiments.rst:309",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -3891,7 +4358,8 @@
    "target": "experiment",
    "evidence": "design-analysis-experiments/design-analysis-experiments.rst:323",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -3900,7 +4368,8 @@
    "target": "objective",
    "evidence": "design-analysis-experiments/design-analysis-experiments.rst:309",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -3916,7 +4385,8 @@
    "target": "factor",
    "evidence": "design-analysis-experiments/design-analysis-experiments.rst:323",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -3924,7 +4394,9 @@
    "type": "IS_A",
    "target": "factor",
    "evidence": "design-analysis-experiments/design-analysis-experiments.rst:323",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "factor",
@@ -3932,7 +4404,8 @@
    "target": "level",
    "evidence": "design-analysis-experiments/full-factorial-designs/index.rst:19",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -3940,28 +4413,36 @@
    "type": "CONTRASTS_WITH",
    "target": "numeric_factor",
    "evidence": "design-analysis-experiments/design-analysis-experiments.rst:327",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "run",
    "type": "PART_OF",
    "target": "experiment",
    "evidence": "design-analysis-experiments/design-analysis-experiments.rst:338",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "designed_experiment",
    "type": "IS_A",
    "target": "experiment",
    "evidence": "design-analysis-experiments/design-analysis-experiments.rst:274",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "designed_experiment",
    "type": "USES",
    "target": "randomization",
    "evidence": "design-analysis-experiments/changing-one-single-variable-at-a-time.rst:52",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "controlled_disturbance",
@@ -3983,7 +4464,8 @@
    "target": "response",
    "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:14",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -3991,14 +4473,18 @@
    "type": "PREVENTS",
    "target": "disturbance",
    "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:14",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "randomization",
    "type": "JUSTIFIES",
    "target": "t_distribution",
    "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:252",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "randomization_test",
@@ -4012,7 +4498,9 @@
    "type": "AGREES_WITH",
    "target": "t_distribution",
    "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:200",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "pairing",
@@ -4026,14 +4514,18 @@
    "type": "PREVENTS",
    "target": "disturbance",
    "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:16",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "pairing",
    "type": "IS_A",
    "target": "blocking",
    "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:14",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "two_group_comparison",
@@ -4077,7 +4569,9 @@
    "type": "TESTS",
    "target": "statistical_significance",
    "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:33",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "practical_significance",
@@ -4112,7 +4606,9 @@
    "type": "CANNOT_SHOW",
    "target": "interaction",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:293",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "cost",
@@ -4127,7 +4623,8 @@
    "target": "designed_experiment",
    "evidence": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst:4",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4142,7 +4639,9 @@
    "type": "HAS_PROPERTY",
    "target": "orthogonality",
    "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:92",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "full_factorial",
@@ -4157,7 +4656,8 @@
    "target": "coding",
    "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:28",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4172,7 +4672,9 @@
    "type": "USES",
    "target": "randomization",
    "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:58",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "full_factorial",
@@ -4180,7 +4682,8 @@
    "target": "main_effect",
    "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:85",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4189,7 +4692,8 @@
    "target": "interaction",
    "evidence": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:63",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4220,21 +4724,27 @@
    "type": "SHOWS",
    "target": "interaction",
    "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:186",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "two_factor_interaction",
    "type": "IS_A",
    "target": "interaction",
    "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:186",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "three_factor_interaction",
    "type": "IS_A",
    "target": "interaction",
    "evidence": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:95",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "coefficient",
@@ -4242,7 +4752,8 @@
    "target": "main_effect",
    "evidence": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:126",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4251,7 +4762,8 @@
    "target": "coefficient",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:300",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4260,7 +4772,8 @@
    "target": "model_matrix",
    "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:18",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4269,7 +4782,8 @@
    "target": "least_squares_model",
    "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:104",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4277,21 +4791,27 @@
    "type": "MAY_HAVE",
    "target": "orthogonality",
    "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:92",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "coding",
    "type": "ENABLES",
    "target": "coefficient",
    "evidence": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst:4",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "hierarchy_rule",
    "type": "APPLIES_TO",
    "target": "interaction",
    "evidence": "design-analysis-experiments/full-factorial-designs/summary-so-far.rst:16",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "interpret_with_interaction",
@@ -4313,7 +4833,8 @@
    "target": "degrees_of_freedom",
    "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:42",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4321,7 +4842,9 @@
    "type": "CAUSES",
    "target": "degrees_of_freedom",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:12",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "center_point",
@@ -4329,7 +4852,8 @@
    "target": "orthogonality",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:238",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4337,7 +4861,9 @@
    "type": "CONTRASTS_WITH",
    "target": "replicate",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:8",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "noise_standard_deviation",
@@ -4407,7 +4933,9 @@
    "type": "REMEDIED_BY",
    "target": "least_squares_model",
    "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:26",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "off_target_run",
@@ -4436,7 +4964,8 @@
    "target": "full_factorial",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/index.rst:17",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4445,7 +4974,8 @@
    "target": "fractional_factorial",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/index.rst:17",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4453,14 +4983,18 @@
    "type": "IS_A",
    "target": "fractional_factorial",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst:6",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "fractional_factorial",
    "type": "CAN_BE",
    "target": "saturated_design",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:8",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "complementary_fraction",
@@ -4475,7 +5009,8 @@
    "target": "full_factorial",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:106",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4491,7 +5026,8 @@
    "target": "confounding",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/half-fractions.rst:140",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4500,7 +5036,8 @@
    "target": "generator",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst:63",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4509,7 +5046,8 @@
    "target": "resolution",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst:11",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4525,7 +5063,8 @@
    "target": "fractional_factorial",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:194",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4540,7 +5079,9 @@
    "type": "SHOWS",
    "target": "confounding",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst:87",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "generator",
@@ -4548,7 +5089,8 @@
    "target": "defining_relation",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst:65",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4557,7 +5099,8 @@
    "target": "defining_relation",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst:75",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4565,7 +5108,9 @@
    "type": "EQUALS",
    "target": "identity_column",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst:65",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "alias_calculation",
@@ -4598,7 +5143,8 @@
    "target": "defining_relation",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst:11",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4606,14 +5152,18 @@
    "type": "MEASURES",
    "target": "alias_structure",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst:17",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "resolution_iii",
    "type": "IS_A",
    "target": "resolution",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst:21",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "resolution_iv",
@@ -4621,7 +5171,8 @@
    "target": "resolution",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst:27",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4629,14 +5180,18 @@
    "type": "IS_A",
    "target": "resolution",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst:35",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "resolution_iii",
    "type": "SUITED_TO",
    "target": "screening",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst:22",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "resolution_v",
@@ -4696,7 +5251,9 @@
    "type": "CONTRASTS_WITH",
    "target": "fractional_factorial",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:181",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "pareto_plot",
@@ -4752,7 +5309,8 @@
    "target": "resolution_iv",
    "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:32",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4767,7 +5325,9 @@
    "type": "USES",
    "target": "block",
    "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:54",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "blocking",
@@ -4800,7 +5360,8 @@
    "target": "confounding",
    "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:81",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4809,15 +5370,18 @@
    "target": "randomization",
    "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:54",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
    "source": "full_factorial",
-   "type": "USES",
+   "type": "MAY_HAVE",
    "target": "blocking",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:115",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "block",
@@ -4840,14 +5404,18 @@
    "type": "ESTIMATES",
    "target": "response_surface",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:18",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "rsm",
    "type": "LOCATES",
    "target": "optimum",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:18",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "full_factorial",
@@ -4873,7 +5441,8 @@
    "target": "coefficient",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:145",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4881,7 +5450,9 @@
    "type": "USES",
    "target": "step_size",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:625",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "steepest_ascent",
@@ -4904,7 +5475,9 @@
    "type": "HAS_PROPERTY",
    "target": "curvature",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:266",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "near_optimum",
@@ -4919,7 +5492,8 @@
    "target": "center_point",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:633",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4935,7 +5509,8 @@
    "target": "curvature",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:272",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4964,14 +5539,18 @@
    "type": "INDICATES",
    "target": "curvature",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:826",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "curvature",
    "type": "REMEDIED_BY",
    "target": "quadratic_model",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:272",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "overshoot",
@@ -4986,7 +5565,8 @@
    "target": "quadratic_model",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:300",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -4995,7 +5575,8 @@
    "target": "axial_point",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:288",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -5004,7 +5585,8 @@
    "target": "center_point",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:756",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -5013,7 +5595,8 @@
    "target": "ccd",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:288",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -5029,7 +5612,8 @@
    "target": "response_surface",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:751",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -5037,7 +5621,9 @@
    "type": "LOCATES",
    "target": "optimum",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:383",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "multiple_responses",
@@ -5088,7 +5674,9 @@
    "type": "LOCATES",
    "target": "optimum",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:866",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "process_drift",
@@ -5221,7 +5809,9 @@
    "type": "REMEDIED_BY",
    "target": "optimal_design",
    "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:51",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "optimal_design",
@@ -5235,7 +5825,9 @@
    "type": "USES",
    "target": "candidate_set",
    "evidence": "design-analysis-experiments/optimal-designs.rst:113",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "optimal_design",
@@ -5249,7 +5841,9 @@
    "type": "USES",
    "target": "optimality_criterion",
    "evidence": "design-analysis-experiments/optimal-designs.rst:83",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "optimal_design",
@@ -5266,7 +5860,8 @@
    "target": "optimality_criterion",
    "evidence": "design-analysis-experiments/optimal-designs.rst:120",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -5282,7 +5877,8 @@
    "target": "optimality_criterion",
    "evidence": "design-analysis-experiments/optimal-designs.rst:120",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -5297,14 +5893,18 @@
    "type": "USES",
    "target": "model_matrix",
    "evidence": "design-analysis-experiments/extended-topics-related-to-designed-experiments.rst:51",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "full_factorial",
    "type": "HAS_PROPERTY",
    "target": "d_optimal",
    "evidence": "design-analysis-experiments/optimal-designs.rst:121",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "augmentation",
@@ -5339,7 +5939,9 @@
    "type": "SUITED_TO",
    "target": "screening",
    "evidence": "design-analysis-experiments/omars-designs.rst:83",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "dsd",
@@ -5515,7 +6117,9 @@
    "type": "ILLUSTRATES",
    "target": "blocking",
    "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:54",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "ex_rsm_profit",
@@ -5690,7 +6294,9 @@
    "type": "USES",
    "target": "conference_matrix",
    "evidence": "design-analysis-experiments/definitive-screening-designs.rst:30",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "foldover",
@@ -5824,7 +6430,9 @@
    "type": "USES",
    "target": "prediction_variance",
    "evidence": "design-analysis-experiments/optimal-designs.rst:235",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "v_optimal",
@@ -5845,7 +6453,9 @@
    "type": "CONTRASTS_WITH",
    "target": "candidate_set",
    "evidence": "design-analysis-experiments/optimal-designs.rst:305",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "constraint",
@@ -5894,21 +6504,27 @@
    "type": "USES",
    "target": "prediction_variance",
    "evidence": "design-analysis-experiments/optimal-designs.rst:234",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "scaled_prediction_variance",
    "type": "USES",
    "target": "prediction_variance",
    "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:126",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "g_optimal",
    "type": "USES",
    "target": "scaled_prediction_variance",
    "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:133",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "i_optimal",
@@ -5940,9 +6556,9 @@
   },
   {
    "source": "fraction_of_design_space_plot",
-   "type": "SHOWS",
+   "type": "COMPLEMENTS",
    "target": "i_optimal",
-   "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:435",
+   "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:393",
    "also": []
   },
   {
@@ -5992,7 +6608,9 @@
    "type": "MEASURES",
    "target": "confounding",
    "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:628",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "alias_matrix",
@@ -6013,7 +6631,9 @@
    "type": "REQUIRES",
    "target": "degrees_of_freedom",
    "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:697",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "statistical_power",
@@ -6048,7 +6668,9 @@
    "type": "USES",
    "target": "d_optimal",
    "evidence": "design-analysis-experiments/comparing-design-families.rst:242",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "compare_d_efficiency_only_at_equal_run_counts",
@@ -6090,7 +6712,9 @@
    "type": "IS_A",
    "target": "ccd",
    "evidence": "design-analysis-experiments/comparing-design-families.rst:455",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "face_centred_central_composite_design",
@@ -6105,7 +6729,8 @@
    "target": "rotatability",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:697",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -6114,7 +6739,8 @@
    "target": "prediction_variance",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:698",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -6123,7 +6749,8 @@
    "target": "rotatability",
    "evidence": "design-analysis-experiments/comparing-design-families.rst:457",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -6229,14 +6856,18 @@
    "type": "USES",
    "target": "resolution",
    "evidence": "design-analysis-experiments/omars-designs.rst:512",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "minimum_aberration",
    "type": "MEASURES",
    "target": "word",
    "evidence": "design-analysis-experiments/omars-designs.rst:513",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "minimum_aberration",
@@ -6264,7 +6895,9 @@
    "type": "USES",
    "target": "pseudo_standard_error",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "half_normal_plot",
@@ -6285,7 +6918,9 @@
    "type": "PART_OF",
    "target": "lenth_method",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "lenth_method",
@@ -6307,7 +6942,8 @@
    "target": "replicate",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:536",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -6316,7 +6952,8 @@
    "target": "center_point",
    "evidence": "design-analysis-experiments/omars-worked-study.rst:616",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -6324,7 +6961,9 @@
    "type": "PART_OF",
    "target": "lack_of_fit_test",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:535",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "lack_of_fit_test",
@@ -6332,7 +6971,8 @@
    "target": "pure_error",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:535",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -6375,7 +7015,9 @@
    "type": "PART_OF",
    "target": "overall_desirability",
    "evidence": "design-analysis-experiments/multi-response-optimization.rst:298",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "multiple_responses",
@@ -6445,7 +7087,8 @@
    "target": "simplex",
    "evidence": "design-analysis-experiments/mixture-experiments.rst:145",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -6454,7 +7097,8 @@
    "target": "pseudocomponent",
    "evidence": "design-analysis-experiments/mixture-experiments.rst:142",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -6504,7 +7148,9 @@
    "type": "APPLIES_TO",
    "target": "generator",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/design-resolution.rst:65",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "trade_off_table",
@@ -6567,7 +7213,9 @@
    "type": "USES",
    "target": "t_distribution",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "pseudo_standard_error",
@@ -6588,7 +7236,9 @@
    "type": "USES",
    "target": "t_distribution",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "simultaneous_margin_of_error",
@@ -6651,7 +7301,9 @@
    "type": "CONTRASTS_WITH",
    "target": "d_optimal",
    "evidence": "design-analysis-experiments/optimal-designs.rst:617",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "d_optimal",
@@ -6672,7 +7324,9 @@
    "type": "USES",
    "target": "coordinate_exchange_algorithm",
    "evidence": "design-analysis-experiments/optimal-designs.rst:309",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "lack_of_fit_test",
@@ -6686,7 +7340,9 @@
    "type": "USES",
    "target": "axial_point",
    "evidence": "design-analysis-experiments/comparing-design-families.rst:456",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "face_centred_central_composite_design",
@@ -6701,7 +7357,8 @@
    "target": "simplex",
    "evidence": "design-analysis-experiments/mixture-experiments.rst:145",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -6767,7 +7424,9 @@
    "type": "USES",
    "target": "replicate",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:573",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "lack_of_fit_test",
@@ -6804,13 +7463,15 @@
    "type": "LIMITS",
    "target": "randomization",
    "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:61",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
-   "source": "split_plot_design",
-   "type": "IS_A",
-   "target": "optimal_design",
-   "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:111",
+   "source": "optimal_design",
+   "type": "SUITED_TO",
+   "target": "split_plot_design",
+   "evidence": "design-analysis-experiments/optimal-designs.rst:61",
    "also": []
   },
   {
@@ -6818,7 +7479,9 @@
    "type": "USES",
    "target": "factor",
    "evidence": "product-development-product-improvement/mixed-level-profile-case-study.rst:63",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "coding_schemes_for_a_categorical_factor",
@@ -6927,7 +7590,8 @@
    "target": "degrees_of_freedom",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:556",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -6936,7 +7600,8 @@
    "target": "correlation",
    "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:597",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -6954,7 +7619,8 @@
    "target": "response",
    "evidence": "design-analysis-experiments/design-analysis-experiments.rst:298",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -6963,7 +7629,8 @@
    "target": "standard_error",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:197",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -6972,7 +7639,8 @@
    "target": "screening",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:851",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -6981,7 +7649,8 @@
    "target": "conjecture",
    "evidence": "design-analysis-experiments/why-learning-about-systems-is-important.rst:16",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -6990,7 +7659,8 @@
    "target": "word",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/highly-fractionated-designs.rst:63",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -7008,7 +7678,8 @@
    "target": "resolution_iii",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:181",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -7017,7 +7688,8 @@
    "target": "level",
    "evidence": "design-analysis-experiments/optimal-designs.rst:254",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -7026,7 +7698,8 @@
    "target": "resolution_v",
    "evidence": "design-analysis-experiments/comparing-design-families.rst:81",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -7035,7 +7708,8 @@
    "target": "region_of_interest",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:22",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -7059,7 +7733,9 @@
    "type": "PART_OF",
    "target": "analysis_of_variance",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:580",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "analysis_of_variance",
@@ -7067,7 +7743,8 @@
    "target": "degrees_of_freedom",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:583",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -7076,7 +7753,8 @@
    "target": "block",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:582",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -7105,7 +7783,9 @@
    "type": "INDICATES",
    "target": "response_transformation",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:254",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "response_transformation",
@@ -7113,7 +7793,8 @@
    "target": "response",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:257",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -7121,7 +7802,9 @@
    "type": "ALTERNATIVE_TO",
    "target": "half_normal_plot",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:135",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "normal_probability_plot_of_effects",
@@ -7150,7 +7833,8 @@
    "target": "stationary_point",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:400",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -7158,7 +7842,9 @@
    "type": "CAN_BE",
    "target": "optimum",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:405",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "canonical_analysis",
@@ -7174,7 +7860,9 @@
    "type": "COMPLEMENTS",
    "target": "contour_plot",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:456",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "canonical_analysis",
@@ -7182,7 +7870,8 @@
    "target": "stationary_point",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:401",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -7247,7 +7936,8 @@
    "target": "blocking",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:468",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -7256,7 +7946,8 @@
    "target": "null_hypothesis",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:583",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -7265,7 +7956,8 @@
    "target": "quadratic_model",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:300",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -7280,7 +7972,9 @@
    "type": "IS_A",
    "target": "optimality_criterion",
    "evidence": "design-analysis-experiments/optimal-designs.rst:233",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "v_optimal",
@@ -7294,14 +7988,18 @@
    "type": "CONTRASTS_WITH",
    "target": "g_optimal",
    "evidence": "design-analysis-experiments/judging-and-comparing-designs.rst:472",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "constraint",
    "type": "LIMITS",
    "target": "region_of_interest",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:28",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "contrast",
@@ -7336,7 +8034,9 @@
    "type": "MAY_HAVE",
    "target": "dispersion_effect",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:191",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "dispersion_effect",
@@ -7399,14 +8099,18 @@
    "type": "TESTS",
    "target": "main_effect",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:581",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "analysis_of_variance",
    "type": "TESTS",
    "target": "interaction",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:581",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "coding",
@@ -7420,7 +8124,9 @@
    "type": "REQUIRES",
    "target": "degrees_of_freedom",
    "evidence": "design-analysis-experiments/omars-designs.rst:381",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "constraint",
