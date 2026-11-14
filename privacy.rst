@@ -25,11 +25,11 @@ What is collected
   history survives; they are never published, and nothing derived from them
   identifies a reader.
 
-The resulting aggregates (top pages, the 60-day per-page sparklines you see
+The resulting aggregates (top pages, the 180-day per-page sparklines you see
 in the sidebar, search queries, and an overview report) are **public** at
 `learnche.org/_stats/ <https://learnche.org/_stats/>`_, in keeping with the
 open spirit of this CC BY-SA 4.0 book. The same numbers are also surfaced
-inside the book itself on the :ref:`stats` page, and as the 60-day reader
+inside the book itself on the :ref:`stats` page, and as the 180-day reader
 count next to the sparkline in the sidebar of every page. Every figure covers
 complete days only, so the most recent day shown is yesterday.
 

@@ -123,11 +123,11 @@ Each value is an array of `[date, count]` pairs.
   [`README.md`](README.md#history-depth-the-window-is-a-ceiling-not-a-promise).
 * The **producer** window and the **consumer** window are independent.
   `_static/js/telemetry.js` filters this file down to `DISPLAY_DAYS`
-  (currently 60) before rendering, and separately clips to the last
+  (currently 180) before rendering, and separately clips to the last
   complete UTC day so a stale server build cannot reintroduce a
   partial day. If you change `DISPLAY_DAYS`, also update the sidebar
   heading text in `_templates/pid-sidebar-extra.html`
-  (`"Page views (60 days)"`) and the three `(last 60 days)` headings
+  (`"Page views (180 days)"`) and the three `(last 180 days)` headings
   plus body text in `stats.rst`.
 * If a page got at least one hit in the window, its entry exists.
 * If a page got **zero hits** in the window, it is **not** in the

@@ -346,7 +346,7 @@ section for the canonical talking points.
 
 ### "The sparkline shows nothing on a page that should have data."
 
-Symptoms: sidebar shows the "Page views (60 days)" heading but no
+Symptoms: sidebar shows the "Page views (180 days)" heading but no
 chart underneath, or shows no heading at all when the page does have
 hits.
 

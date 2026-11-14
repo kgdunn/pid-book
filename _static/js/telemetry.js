@@ -61,7 +61,7 @@
   //   - stats.rst                            ("(last N days)" x3 + body)
   // and the backend (365) stays the same.
   // -------------------------------------------------------------------
-  var DISPLAY_DAYS = 60;
+  var DISPLAY_DAYS = 180;
   var DISPLAY_LABEL = DISPLAY_DAYS + " days";
 
   // The newest day that can possibly be complete, in UTC. The nightly
