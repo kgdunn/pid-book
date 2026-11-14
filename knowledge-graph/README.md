@@ -47,8 +47,9 @@ uv run --no-project --with networkx==3.4.2 --with numpy==2.5.3 python -I layout_
 ```
 
 `build_kg.py` stops, listing every problem, when a quote is not on its cited line, a book label
-does not resolve, a verb is not in its list, a term has no links, a definition is over 32 words,
-or a text contains an em-dash. The layout is reproducible: Louvain runs on integer node ids and each
+does not resolve, a verb is not in its list, a term has no links, a definition is over 32 words
+(a formula, LaTeX between dollar signs, counts as one) or leaves a formula open, or a text contains
+an em-dash. The layout is reproducible: Louvain runs on integer node ids and each
 topic's layout on a sorted graph.
 
 Then check the result:

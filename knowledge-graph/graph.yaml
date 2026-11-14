@@ -353,7 +353,7 @@ nodes:
 - id: full_factorial
   name: Full factorial
   type: DesignType
-  definition: "Every combination of the factors' levels; factors may have different numbers of levels (3 x 2 x 2 = 12 runs). At two levels each, 2^k runs for k factors."
+  definition: 'Every combination of the factors'' levels; factors may have different numbers of levels ($3 \times 2 \times 2 = 12$ runs). At two levels each, $2^k$ runs for $k$ factors.'
   aliases:
   - complete factorial
   - 2^k factorial
@@ -367,8 +367,7 @@ nodes:
 - id: coding
   name: Coding
   type: Concept
-  definition: "Centering and scaling a factor; the standard form is (value - center)/(range/2), so low is -1 and
-    high is +1."
+  definition: 'Centering and scaling a factor; the standard form is $(\text{value} - \text{center})/(\text{range}/2)$, so low is $-1$ and high is $+1$.'
   aliases:
   - coded units
   - centering and scaling
@@ -427,7 +426,7 @@ nodes:
 - id: two_factor_interaction
   name: Two-factor interaction
   type: Concept
-  definition: The interaction of two factors, such as T x S.
+  definition: 'The interaction of two factors, such as $T \times S$.'
   aliases:
   - 2fi
   book_label: DOE-two-level-factorials-interaction-effects
@@ -456,7 +455,7 @@ nodes:
   name: Least squares model
   type: Method
   level: 1  # taught with the two-level factorials; the cited line is a later restatement
-  definition: y = Xb + e, fitted with b = (X'X)^-1 X'y. It works even when the design was not run exactly as planned.
+  definition: '$\mathbf{y} = \mathbf{X}\mathbf{b} + \mathbf{e}$, fitted with $\mathbf{b} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{y}$. It works even when the design was not run exactly as planned.'
   aliases:
   - least squares
   - linear model
@@ -482,9 +481,7 @@ nodes:
 - id: orthogonality
   name: Orthogonality
   type: Property
-  definition: "The columns of X are mutually orthogonal, so X'X is diagonal and each coefficient is estimated and
-    interpreted separately. Quadratic columns, which correlate with the intercept, are checked for
-    orthogonality after centring."
+  definition: 'The columns of $\mathbf{X}$ are mutually orthogonal, so $\mathbf{X}^T\mathbf{X}$ is diagonal and each coefficient is estimated and interpreted separately. Quadratic columns, which correlate with the intercept, are checked for orthogonality after centring.'
   aliases:
   - orthogonal design
   book_label: DOE_orthogonality
@@ -544,7 +541,7 @@ nodes:
 - id: degrees_of_freedom
   name: Degrees of freedom
   type: Concept
-  definition: "Independent values in a sum of squares. With n runs, p parameters and m distinct factor combinations (i-th run n_i times): residual n-p = pure error sum(n_i-1) + lack of fit m-p."
+  definition: 'Independent values in a sum of squares. With $n$ runs, $p$ parameters and $m$ distinct factor combinations ($i$-th run $n_i$ times): residual $n - p$ = pure error $\sum_i (n_i - 1)$ + lack of fit $m - p$.'
   aliases: []
   book_label: DOE-replicate_points
   evidence: design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:193
@@ -587,8 +584,7 @@ nodes:
 - id: standard_error
   name: Standard error
   type: Concept
-  definition: "The spread of an estimate such as a coefficient: its estimated standard deviation. In a coded
-    orthogonal design, S_E(b) = sqrt(S_E^2 / sum x^2), with S_E the estimated noise standard deviation."
+  definition: 'The spread of an estimate such as a coefficient: its estimated standard deviation. In a coded orthogonal design, $S_E(b) = \sqrt{S_E^2 / \sum x^2}$, with $S_E$ the estimated noise standard deviation.'
   aliases: []
   book_label: DOE-replicate_points
   evidence: design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:195
@@ -597,8 +593,7 @@ nodes:
 - id: noise_standard_deviation
   name: Noise standard deviation
   type: Concept
-  definition: "The run-to-run scatter of the response with every factor held fixed, sigma; its estimate S_E comes
-    from replicate runs, residual degrees of freedom or external data."
+  definition: 'The run-to-run scatter of the response with every factor held fixed, $\sigma$; its estimate $S_E$ comes from replicate runs, residual degrees of freedom or external data.'
   aliases: []
   book_label: DOE-replicate_points
   evidence: design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:6
@@ -619,7 +614,7 @@ nodes:
 - id: se_significance
   name: Significance from standard errors
   type: Method
-  definition: Report each effect with its standard error; it is significant when effect +/- c_t x SE excludes zero.
+  definition: 'Report each effect with its standard error; it is significant when $\text{effect} \pm c_t \times \text{SE}$ excludes zero.'
   aliases: []
   book_label: DOE-replicate_points
   evidence: design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:240
@@ -681,8 +676,7 @@ nodes:
 - id: fractional_factorial
   name: Fractional factorial
   type: DesignType
-  definition: "A fraction of a full factorial's runs, chosen systematically by generators rather than at random. At
-    two levels per factor, 2^(k-p) runs for k factors."
+  definition: 'A fraction of a full factorial''s runs, chosen systematically by generators rather than at random. At two levels per factor, $2^{k-p}$ runs for $k$ factors.'
   aliases:
   - 2^(k-p) design
   found_as:
@@ -694,7 +688,7 @@ nodes:
 - id: half_fraction
   name: Half fraction
   type: DesignType
-  definition: 'Half of a full factorial: 2^(k-1) runs.'
+  definition: 'Half of a full factorial: $2^{k-1}$ runs.'
   aliases:
   - half replicate
   book_label: DOE-half-fractions
@@ -704,7 +698,7 @@ nodes:
 - id: quarter_fraction
   name: Quarter fraction
   type: DesignType
-  definition: 'A quarter of a full factorial: 2^(k-2) runs.'
+  definition: 'A quarter of a full factorial: $2^{k-2}$ runs.'
   aliases:
   - quarter replicate
   book_label: DOE-highly-fractionated-designs
@@ -767,8 +761,7 @@ nodes:
 - id: collinearity
   name: Collinearity
   type: Concept
-  definition: A column of X equal to another column, or to a linear combination of others (perfect collinearity),
-    so X'X is singular and cannot be inverted.
+  definition: 'A column of $\mathbf{X}$ equal to another column, or to a linear combination of others (perfect collinearity), so $\mathbf{X}^T\mathbf{X}$ is singular and cannot be inverted.'
   aliases: []
   book_label: DOE-half-fractions
   evidence: design-analysis-experiments/fractional-factorial-designs/half-fractions.rst:63
@@ -776,7 +769,7 @@ nodes:
 - id: generator
   name: Generator
   type: Concept
-  definition: Assigning an extra factor to an interaction column, such as D = ABC.
+  definition: 'Assigning an extra factor to an interaction column, such as $D = ABC$.'
   aliases:
   - generating relation
   found_as:
@@ -795,7 +788,7 @@ nodes:
 - id: defining_relation
   name: Defining relation
   type: Concept
-  definition: 'All the words equal to I, found from the products of the generators: 2^p words.'
+  definition: 'All the words equal to $I$, found from the products of the generators: $2^p$ words.'
   aliases:
   - defining relationship
   book_label: DOE-generators
@@ -966,7 +959,7 @@ nodes:
 - id: block_generator
   name: Block generator
   type: Concept
-  definition: The interaction the block effect is confounded with, such as block = ABC.
+  definition: 'The interaction the block effect is confounded with, such as $\text{block} = ABC$.'
   aliases: []
   book_label: DOE-Generators-for-blocking
   evidence: design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:113
@@ -974,8 +967,7 @@ nodes:
 - id: block_on_highest
   name: Block on the highest interaction
   type: Guideline
-  definition: When splitting a 2^k factorial into two blocks, confound the block effect with the highest possible
-    interaction. With more blocks, keep all block contrasts, including products, off main effects.
+  definition: 'When splitting a $2^k$ factorial into two blocks, confound the block effect with the highest possible interaction. With more blocks, keep all block contrasts, including products, off main effects.'
   aliases: []
   book_label: DOE-Generators-for-blocking
   evidence: design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:115
@@ -1003,8 +995,7 @@ nodes:
 - id: steepest_ascent
   name: Steepest ascent
   type: Method
-  definition: "Move all factors in proportion to their main-effect coefficients, in coded units: delta x_i = (b_i /
-    b_A) delta x_A. Useful while main effects are large compared with interactions, curvature and noise."
+  definition: 'Move all factors in proportion to their main-effect coefficients, in coded units: $\Delta x_i = (b_i / b_A)\,\Delta x_A$. Useful while main effects are large compared with interactions, curvature and noise.'
   aliases:
   - path of steepest ascent
   - Steepest descent
@@ -1055,8 +1046,7 @@ nodes:
   name: Quadratic model
   type: Concept
   level: 2  # fitted in response surface methods; the cited line is in the mixture section
-  definition: "Outside mixtures, a model with squared terms such as b_TT x_T^2, to describe curvature. A mixture's
-    second-order Scheffe model has none: they fold into its cross-products."
+  definition: 'Outside mixtures, a model with squared terms such as $b_{TT}\,x_T^2$, to describe curvature. A mixture''s second-order Scheffe model has none: they fold into its cross-products.'
   aliases:
   - second-degree equation
   - general second-order model
@@ -1331,7 +1321,7 @@ nodes:
 - id: optimality_criterion
   name: Optimality criterion
   type: Concept
-  definition: The quantity an optimal design optimizes, such as the determinant of X'X.
+  definition: 'The quantity an optimal design optimizes, such as the determinant of $\mathbf{X}^T\mathbf{X}$.'
   aliases: []
   found_as:
   - design criterion
@@ -1341,25 +1331,24 @@ nodes:
 - id: d_optimal
   name: D-optimality
   type: Criterion
-  definition: "For a fixed run count and assumed model, choose the runs that maximize det(X'X); the joint confidence
-    region of all the coefficients is then smallest."
+  definition: 'For a fixed run count and assumed model, choose the runs that maximize $\det(\mathbf{X}^T\mathbf{X})$; the joint confidence region of all the coefficients is then smallest.'
   aliases: []
   found_as:
   - D-optimal
   - D-criterion
   book_label: DOE-optimal-designs
   evidence: design-analysis-experiments/optimal-designs.rst:203
-  quote: "confidence region for all the coefficients is an ellipsoid whose volume is proportional to"
+  quote: 'confidence region for all the coefficients is an ellipsoid whose volume is proportional to :math:`1/\sqrt{\det(\mathbf{M})}`'
 - id: a_optimal
   name: A-optimality
   type: Criterion
-  definition: 'Minimize trace((X''X)^-1): the average variance of the parameters.'
+  definition: 'Minimize $\text{trace}\left((\mathbf{X}^T\mathbf{X})^{-1}\right)$: the average variance of the parameters.'
   aliases: []
   found_as:
   - A-optimal
   book_label: DOE-optimal-designs
   evidence: design-analysis-experiments/optimal-designs.rst:212
-  quote: which is exactly the sum of the individual coefficient variances (the diagonal entries of
+  quote: 'minimizes :math:`\text{trace}(\mathbf{M}^{-1}) = \sum_j 1/\lambda_j`, which is exactly the sum of the individual coefficient variances (the diagonal entries of :math:`\mathbf{M}^{-1}`)'
 - id: g_optimal
   name: G-optimality
   type: Criterion
@@ -1390,8 +1379,7 @@ nodes:
 - id: augmentation
   name: Adding runs to a design
   type: Method
-  definition: Add the runs that most improve the criterion, for example most increase det(X'X), to fix or extend
-    a design.
+  definition: 'Add the runs that most improve the criterion, for example most increase $\det(\mathbf{X}^T\mathbf{X})$, to fix or extend a design.'
   aliases:
   - augmentation
   book_label: DOE-augmenting-a-design
@@ -1400,8 +1388,7 @@ nodes:
 - id: dsd
   name: Definitive screening design
   type: DesignType
-  definition: A three-level design of about 2k+1 runs, built by folding over a conference matrix plus a centre run;
-    screens main effects, clear of all second-order effects, and detects curvature.
+  definition: 'A three-level design of about $2k+1$ runs, built by folding over a conference matrix plus a centre run; screens main effects, clear of all second-order effects, and detects curvature.'
   aliases:
   - DSD
   book_label: DOE-definitive-screening-designs
@@ -1419,7 +1406,7 @@ nodes:
 - id: mixture_constraint
   name: Proportions sum to one
   type: Concept
-  definition: Mixture components cannot change independently, because sum x_i = 1.
+  definition: 'Mixture components cannot change independently, because $\sum_i x_i = 1$.'
   aliases:
   - mixture constraint
   - mixture restriction
@@ -1466,7 +1453,7 @@ nodes:
 - id: ex_two_factor
   name: Conversion vs T and S
   type: Example
-  definition: 'A 2^2 factorial in temperature and substrate: y = 61.5 - 5 x_T - 3 x_S - 0.5 x_T x_S.'
+  definition: 'A $2^2$ factorial in temperature and substrate: $y = 61.5 - 5 x_T - 3 x_S - 0.5 x_T x_S$.'
   aliases: []
   book_label: DOE-two-level-factorials
   evidence: design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:104
@@ -1483,7 +1470,7 @@ nodes:
 - id: ex_pollutant
   name: Pollutant from a molding plant
   type: Example
-  definition: A 2^3 factorial in chemical, temperature and stirring; a large chemical x speed interaction.
+  definition: 'A $2^3$ factorial in chemical, temperature and stirring; a large chemical $\times$ speed interaction.'
   aliases: []
   book_label: file:design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst
   evidence: design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:132
@@ -1499,8 +1486,7 @@ nodes:
 - id: ex_7_factor_screen
   name: Seven factors in eight runs
   type: Example
-  definition: A saturated 2^(7-4)_III design, D = AB, E = AC, F = BC, G = ABC; by Lenth's method A and C are active,
-    G a candidate to confirm.
+  definition: 'A saturated $2^{7-4}_{\text{III}}$ design, $D = AB$, $E = AC$, $F = BC$, $G = ABC$; by Lenth''s method $A$ and $C$ are active, $G$ a candidate to confirm.'
   aliases: []
   book_label: DOE-highly-fractionated-designs
   evidence: design-analysis-experiments/fractional-factorial-designs/saturated-designs-for-screening.rst:177
@@ -1508,7 +1494,7 @@ nodes:
 - id: ex_8_factor
   name: Eight factors in 16 runs
   type: Example
-  definition: A 2^(8-4) design of resolution IV.
+  definition: 'A $2^{8-4}$ design of resolution IV.'
   aliases: []
   book_label: DOE-highly-fractionated-designs
   evidence: design-analysis-experiments/fractional-factorial-designs/design-resolution.rst:14
@@ -1516,7 +1502,7 @@ nodes:
 - id: ex_raw_material_blocks
   name: Two batches of raw material
   type: Example
-  definition: A 2^3 factorial split into two blocks of 4, with the batch confounded with ABC.
+  definition: 'A $2^3$ factorial split into two blocks of 4, with the batch confounded with $ABC$.'
   aliases: []
   book_label: DOE-Blocking-and-confounding
   evidence: design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:50
@@ -1609,8 +1595,7 @@ nodes:
 - id: ref_box_hunter_1961
   name: Box and Hunter, 2^(k-p) fractional factorial designs (1961)
   type: Reference
-  definition: Box and Hunter's two-part 1961 Technometrics paper on 2^(k-p) fractional factorial designs, listed
-    in the chapter's references.
+  definition: 'Box and Hunter''s two-part 1961 Technometrics paper on $2^{k-p}$ fractional factorial designs, listed in the chapter''s references.'
   aliases: []
   book_label: DOE_references
   evidence: design-analysis-experiments/examples-of-how-designed-experiments-are-used.rst:36
@@ -1673,8 +1658,7 @@ nodes:
 - id: estimability_frontier
   name: Estimability frontier
   type: Concept
-  definition: 'The book''s name for the smallest foldover that estimates every coefficient of the full second-order
-    model jointly: N = k^2+k+1 runs, k(k-1)/2 above the parameter count.'
+  definition: 'The book''s name for the smallest foldover that estimates every coefficient of the full second-order model jointly: $N = k^2 + k + 1$ runs, $k(k-1)/2$ above the parameter count.'
   aliases: []
   book_label: DOE-omars-estimability-frontier
   evidence: design-analysis-experiments/omars-designs.rst:256
@@ -1691,8 +1675,7 @@ nodes:
 - id: information_matrix
   name: Information matrix
   type: Concept
-  definition: M = X'X, from the model matrix; sigma squared times its inverse is the variance-covariance matrix
-    of the coefficients, and every optimality criterion is a summary of M.
+  definition: '$\mathbf{M} = \mathbf{X}^T\mathbf{X}$, from the model matrix; $\sigma^2$ times its inverse is the variance-covariance matrix of the coefficients, and every optimality criterion is a summary of $\mathbf{M}$.'
   aliases: []
   book_label: DOE-optimal-designs
   evidence: design-analysis-experiments/optimal-designs.rst:168
@@ -1700,8 +1683,7 @@ nodes:
 - id: e_optimality
   name: E-optimality
   type: Criterion
-  definition: Maximize the smallest eigenvalue of X'X, strengthening the worst-estimated combination of coefficients;
-    a minimax criterion, rarely the primary one in practice.
+  definition: 'Maximize the smallest eigenvalue of $\mathbf{X}^T\mathbf{X}$, strengthening the worst-estimated combination of coefficients; a minimax criterion, rarely the primary one in practice.'
   aliases: []
   book_label: DOE-optimal-designs
   evidence: design-analysis-experiments/optimal-designs.rst:226
@@ -1720,8 +1702,7 @@ nodes:
 - id: effects_coding
   name: Effects coding
   type: Concept
-  definition: Coding an L-level categorical factor so its level effects sum to zero, each the departure from the
-    average; two-level -1/+1 coding is the case L = 2.
+  definition: 'Coding an $L$-level categorical factor so its level effects sum to zero, each the departure from the average; two-level $-1/+1$ coding is the case $L = 2$.'
   aliases: []
   book_label: DOE-categorical-factors
   evidence: design-analysis-experiments/optimal-designs.rst:522
@@ -1729,8 +1710,7 @@ nodes:
 - id: prediction_variance
   name: Prediction variance
   type: Property
-  definition: 'The variance of the fitted model''s prediction at a point: sigma squared times x'' M^-1 x. It depends
-    on where you predict, on the design''s layout, and on the noise.'
+  definition: 'The variance of the fitted model''s prediction at a point: $\sigma^2$ times $\mathbf{x}^T\mathbf{M}^{-1}\mathbf{x}$. It depends on where you predict, on the design''s layout, and on the noise.'
   aliases: []
   book_label: DOE-judging-and-comparing-designs
   evidence: design-analysis-experiments/judging-and-comparing-designs.rst:61
@@ -1738,8 +1718,7 @@ nodes:
 - id: scaled_prediction_variance
   name: Scaled prediction variance
   type: Criterion
-  definition: 'Prediction variance times the run count, divided by sigma squared (SPV): it depends only on the design''s
-    geometry, so replicating a design does not make it look better.'
+  definition: 'Prediction variance times the run count, divided by $\sigma^2$ (SPV): it depends only on the design''s geometry, so replicating a design does not make it look better.'
   aliases:
   - variance function
   book_label: DOE-judging-and-comparing-designs
@@ -1776,8 +1755,7 @@ nodes:
 - id: variance_inflation_factor
   name: Variance inflation factor
   type: Diagnostic
-  definition: 'VIF_j = 1/(1 - R_j^2): the factor by which correlation with the other model terms inflates a coefficient''s
-    variance; 1 is orthogonal, and past 5 or 10 is a flag.'
+  definition: '$\text{VIF}_j = 1/(1 - R_j^2)$: the factor by which correlation with the other model terms inflates a coefficient''s variance; 1 is orthogonal, and past 5 or 10 is a flag.'
   aliases: []
   book_label: DOE-variance-inflation-factors
   evidence: design-analysis-experiments/judging-and-comparing-designs.rst:600
@@ -1785,8 +1763,7 @@ nodes:
 - id: alias_matrix
   name: Alias matrix
   type: Concept
-  definition: 'A = (X1''X1)^-1 X1''X2: how much each term left out of the model biases each fitted coefficient.
-    Its main-effect rows are exactly zero for DSD and OMARS designs.'
+  definition: '$\mathbf{A} = (\mathbf{X}_1^T\mathbf{X}_1)^{-1}\mathbf{X}_1^T\mathbf{X}_2$: how much each term left out of the model biases each fitted coefficient. Its main-effect rows are exactly zero for DSD and OMARS designs.'
   aliases:
   - bias matrix
   book_label: DOE-alias-bias
@@ -1815,9 +1792,7 @@ nodes:
 - id: d_efficiency
   name: D-efficiency
   type: Criterion
-  definition: "Absolute D-efficiency: det(X'X)^(1/p) divided by the run count, as a percentage of a hypothetical
-    orthogonal design; it favours smaller designs. Relative D-efficiency takes the D-optimal design as
-    100%."
+  definition: 'Absolute D-efficiency: $\det(\mathbf{X}^T\mathbf{X})^{1/p}$ divided by the run count, as a percentage of a hypothetical orthogonal design; it favours smaller designs. Relative D-efficiency takes the D-optimal design as 100%.'
   aliases: []
   found_as:
   - D-efficient
@@ -2033,8 +2008,7 @@ nodes:
 - id: pseudocomponent
   name: Pseudocomponent
   type: Concept
-  definition: "With lower bounds L_i, the rescaled proportion (a_i - L_i)/(1 - sum of L_j), which maps the
-    constrained mixture region back onto a full simplex, so the same designs apply."
+  definition: 'With lower bounds $L_i$, the rescaled proportion $(a_i - L_i)/(1 - \sum_j L_j)$, which maps the constrained mixture region back onto a full simplex, so the same designs apply.'
   aliases:
   - pseudocoordinate
   - Pseudocomponents
@@ -2062,8 +2036,7 @@ nodes:
 - id: margin_of_error
   name: Margin of error
   type: Criterion
-  definition: Lenth's individual 95% cutoff, t(0.975, m/3) times the pseudo standard error; an effect whose magnitude
-    exceeds it is significant on its own.
+  definition: 'Lenth''s individual 95% cutoff, $t(0.975,\, m/3)$ times the pseudo standard error; an effect whose magnitude exceeds it is significant on its own.'
   aliases: []
   book_label: DOE-lenth-method
   evidence: design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:105
@@ -2080,8 +2053,7 @@ nodes:
 - id: allocating_runs_between_two_levels
   name: Allocating runs between two levels
   type: Guideline
-  definition: For a fixed budget, split runs in proportion to sigma divided by the square root of cost; the even
-    split is best only for equal variances and costs.
+  definition: 'For a fixed budget, split runs in proportion to $\sigma$ divided by the square root of cost; the even split is best only for equal variances and costs.'
   aliases: []
   book_label: DOE-two-level-allocation
   evidence: design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:128
@@ -2215,7 +2187,7 @@ nodes:
   - model bias
   book_label: DOE-alias-bias
   evidence: design-analysis-experiments/judging-and-comparing-designs.rst:662
-  quote: "misses the true response by the :index:`bias error <pair: bias error; experiments>`"
+  quote: 'misses the true response by the :index:`bias error <pair: bias error; experiments>` :math:`(\mathbf{x}_1^T\mathbf{A} - \mathbf{x}_2^T)\,\boldsymbol{\beta}_2`'
 - id: stationary_point
   name: Stationary point
   type: Concept

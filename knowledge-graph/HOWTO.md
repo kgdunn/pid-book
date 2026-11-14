@@ -85,12 +85,17 @@ Terms. Aim for the 30 to 40 ideas a reader most needs; fewer is fine.
 - id: lowercase with underscores. name: as the text writes it, in the singular. type: one of
   TYPES in kg/build_kg.py.
 - definition: at most 32 words, in your own words, saying only what the text says. No em-dashes.
+  A formula is LaTeX between dollar signs, in the text's own notation (`$2^{k-p}$`,
+  `$\det(\mathbf{X}^T\mathbf{X})$`): the map draws it, and it counts as one word.
 - aliases: other names the text uses for the same idea, or []. Never an everyday word (such as
   "axes"): a later step finds terms in other texts by these names.
 - book_label: "file:" and the file's path.
 - evidence: PATH:LINE, the one line that best says what the term is. quote: words copied exactly
   from that line. Where a sentence runs over several lines, cite the line that carries its key
-  words, and quote only what is on it.
+  words, and quote only what is on it. One exception: a quote that would stop just before a formula
+  on the next line takes the formula with it, as the text writes it (``:math:`...` ``), so the map
+  draws the formula and the quote does not end in mid-air. The check reads the line before and the
+  line after as well.
 
 Links.
 - One per line: [source, VERB, target, "PATH:LINE"], with a verb from VERBS in kg/build_kg.py.

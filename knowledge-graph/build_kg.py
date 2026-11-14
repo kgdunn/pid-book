@@ -45,6 +45,8 @@ VERBS = {
     "EQUALS", "IS_HALF_OF", "MAY_HAVE",
 }
 MAX_WORDS = 32
+# A formula in a definition: LaTeX between dollar signs, which the map draws (the book's own :math: role in a quote too).
+FORMULA = re.compile(r"\$[^$]+\$")
 # Reading levels for the map, by where chapter 5 introduces a term in reading order (see levels()). The first file of
 # each later level: fractional factorials open Intermediate, optimal designs open Adventurous.
 LEVEL_NAMES = {1: "Beginner", 2: "Intermediate", 3: "Adventurous"}
@@ -243,8 +245,10 @@ def check(graph: dict, labels: dict[str, str]) -> list[str]:
             problems.append(f"{where}: level must be one of {sorted(LEVEL_NAMES)}")
         if n["type"] not in TYPES:
             problems.append(f"{where}: unknown type {n['type']}")
-        if len(n["definition"].split()) > MAX_WORDS:
+        if len(FORMULA.sub("x", n["definition"]).split()) > MAX_WORDS:   # a formula counts as one word
             problems.append(f"{where}: definition longer than {MAX_WORDS} words")
+        if "$" in FORMULA.sub("", n["definition"]):
+            problems.append(f"{where}: a dollar sign in the definition opens a formula that is not closed")
         hidden = n.get("found_as") or []  # names other texts use: searched, matched, listed apart
         if any(EM_DASH in s for s in (n["name"], n["definition"], *n["aliases"], *hidden)):
             problems.append(f"{where}: em-dash")
