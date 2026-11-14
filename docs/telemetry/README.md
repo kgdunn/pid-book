@@ -73,7 +73,7 @@ self-hosting reusers.
    365-day window, but it holds only as much history as the logs do:
    the archive starts in late May 2026 (see "History depth" below) and
    reaches a full year in May 2027. The sidebar shows the most recent
-   60 days and writes that total next to the heading. Because it is
+   180 days and writes that total next to the heading. Because it is
    log-derived it counts ad-blocked readers too.
 5. **In-book stats page** — [`/pid/stats`](https://learnche.org/pid/stats)
    reads the same `sparklines.json` and shows three site-wide
@@ -104,7 +104,7 @@ year-on-year comparison needs two years on disk, so mid-2028.
 Practical consequences:
 
 * Do not describe the sparkline as "year-long" in reader-facing copy.
-  The in-book display window (`DISPLAY_DAYS`, currently 60) exists
+  The in-book display window (`DISPLAY_DAYS`, currently 180) exists
   precisely because the backing history is still short.
 * A page whose total looks low may simply predate the archive.
 * When the window looks wrong, check the log archive depth before

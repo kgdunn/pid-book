@@ -14,29 +14,6 @@ See :ref:`privacy` for what is and isn't collected.
 
 .. note::
 
-   The in-book figures show the most recent **60 days** while the
-   pipeline is still bedding in. Two server-side fixes only took
-   effect recently, so wider windows are not yet representative:
-
-   * **Real client IPs since 2026-05-24** (Apache ``mod_remoteip`` +
-     Cloudflare ``CF-Connecting-IP``). Earlier data deduplicated by
-     Cloudflare edge IPs and undercounted by ~10–50×.
-   * **Access logs retained 5 years since 2026-05-26** (logrotate
-     ``rotate 1825``). Earlier rotations purged everything after 4
-     days, so almost nothing from Feb 2022 to May 2026 exists on
-     disk.
-
-   Because of that second point, there is no year of history to show
-   yet. The backend
-   (`sparklines.json <https://learnche.org/_stats/sparklines.json>`_)
-   is configured for a rolling 365-day window, but a window can only
-   hold what the logs hold: the archive starts in late May 2026 and
-   gains one day per night, so it reaches a full year in May 2027.
-   Until then the file contains fewer days than the setting allows,
-   and the in-book display is filtered to a shorter window so a young
-   deployment doesn't look unread. Year-on-year comparisons are not
-   possible until there are two years on disk.
-
    All the figures count **complete days only**. The nightly
    aggregator runs in the small hours, so the current day is still
    being logged when it runs; publishing it would put a partial count
@@ -56,8 +33,8 @@ Summary
      the data file is reachable.</em></p>
    </div>
 
-Daily reads (last 60 days)
---------------------------
+Daily reads (last 180 days)
+---------------------------
 
 Total reads per day across the whole book. Each daily bucket
 de-duplicates by IP, so two visits from the same reader on the same day
@@ -67,10 +44,10 @@ count once.
 
    <div id="pid-stats-daily" style="width:100%; height:280px; display:none"></div>
 
-Most-read pages (last 60 days)
-------------------------------
+Most-read pages (last 180 days)
+-------------------------------
 
-The 20 pages with the most reads over the 60-day window. Page names
+The 20 pages with the most reads over the 180-day window. Page names
 are the Sphinx page identifiers (e.g. ``data-visualization/box-plots``);
 click through to read them.
 
@@ -78,10 +55,10 @@ click through to read them.
 
    <div id="pid-stats-top" style="display:none"></div>
 
-Least-read pages (last 60 days)
--------------------------------
+Least-read pages (last 180 days)
+--------------------------------
 
-The 10 pages with the *fewest* reads over the 60-day window, lowest
+The 10 pages with the *fewest* reads over the 180-day window, lowest
 first. Useful for spotting sections that may need clearer links,
 better discoverability, or a refresh.
 
