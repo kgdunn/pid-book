@@ -159,7 +159,8 @@ print('newest bucket:', newest,
   absolute numbers (because of ad-blockers). The "Events" tab should
   show search queries with `path: /search?q=...`.
 * Open any book page in a private window and confirm the sidebar
-  sparkline renders. Hover for tooltip. If the page is brand-new (no
+  sparkline renders, as wide as the sidebar. Point at it and the
+  heading reads that day's views. If the page is brand-new (no
   history yet), the heading and mount should be **hidden** — not
   showing a flat zero line.
 
@@ -366,10 +367,6 @@ curl -sf https://learnche.org/_stats/sparklines.json |
 # 3. What is the page actually asking for?
 curl -s https://learnche.org/pid/data-visualization/box-plots |
     grep 'data-page' | head -1
-
-# 4. Does ECharts load?
-curl -sf -o /dev/null -w '%{http_code}\n' https://learnche.org/pid/_static/js/echarts-min.js
-# 200 expected. 404 → the CI fetch step failed; check the workflow logs.
 ```
 
 If `data-page` is wrong, the bug is in
@@ -497,22 +494,6 @@ Update both:
 
 Then run `build-sparklines.py` once manually so the JSON keys match
 the new scheme; subsequent nightly runs are correct.
-
-### "ECharts download in CI fails."
-
-Symptom: workflow fails on `Fetch ECharts` step with `curl: (22) ...`.
-
-Causes:
-
-* jsdelivr is intermittently down. `--retry 3` mitigates; if the
-  failure persists, switch to a different CDN with the same path.
-* The pinned version was unpublished. Bump the pin to the next
-  release; verify the build still works locally.
-* GitHub Actions runner has no outbound network (rare). Re-run the
-  workflow.
-
-The `test -s` after the curl asserts the file is non-empty, so a
-silent zero-byte download is impossible.
 
 ### "GoAccess report has no entries despite the access log being non-empty."
 
@@ -644,9 +625,6 @@ their cache and pick up the new `telemetry.js`.
 * **Quarterly**: review `/etc/pid-book/bots.txt` against current
   GoAccess top-UAs. Add new bots; never delete entries (they cost
   nothing).
-* **Yearly**: bump the pinned ECharts version
-  (`echarts@5.5.1` → next stable). Test in a PR (sparkline render
-  visually unchanged) before merging.
 * **As needed**: review [`/pid/privacy`](https://learnche.org/pid/privacy)
   for accuracy any time the pipeline changes. Discrepancies between
   what the page promises and what the code does are the worst-case

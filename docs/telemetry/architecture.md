@@ -111,8 +111,8 @@ spots.
   [`README.md`](README.md#history-depth-the-window-is-a-ceiling-not-a-promise).
 * **Strength:** because it derives from server logs, it counts
   **ad-blocked readers** too. Each page shows its own trend.
-* **Output:** ECharts SVG line chart in the sidebar, lazy-loaded only
-  when a `#pid-sparkline` mount point exists.
+* **Output:** an inline SVG line chart in the sidebar, drawn by
+  `telemetry.js` where a `#pid-sparkline` mount point exists.
 * **Privacy posture:** the JSON is aggregate-only — daily unique-IP
   counts per page, no IPs, no UAs. The same nightly cron that runs
   GoAccess generates it.
@@ -132,8 +132,7 @@ spots.
 | Cloudflare Web Analytics | Requires fronting the site with Cloudflare. We don't, and shouldn't have to. |
 | Server logs only | Misses referrers, devices, in-book search — Layer B and C exist for a reason. |
 | JS-only (no logs) | Ad-blockers; Layer A is the floor that catches everyone else. |
-| Inline ECharts in `html_js_files` (always loaded) | Pays the bytes on every page even when no sparkline is shown. We lazy-load it from the sparkline render path instead. |
-| Commit ECharts as a binary blob | We did consider this. Curl'ing it at CI time from a pinned jsdelivr URL is cleaner, keeps the git history small, and lets dependabot-style scans flag updates. The drawback is build-time network dependency — acceptable for a hobby-scale book and mitigated by `--retry 3`. |
+| A charting library (ECharts, used until November 2026) | The pinned `echarts.simple` build had no tooltip, no slider and no SVG renderer, cost about 155 KB gzip on every page, and gave a chart created in a hidden container a width of 100 px until the window was resized. A sparkline is two SVG paths, so `telemetry.js` draws them and CSS sizes them. |
 | Patch Sphinx's vendored `searchtools.js` | Sphinx regenerates it on every build; we'd be fighting upstream forever. We listen on the `<input>` element from outside. |
 | Track scroll depth or click events | Too much instrumentation for the value. Pageviews + searches are enough to identify pages that need attention. |
 | Add a consent banner | Not legally required for cookieless analytics with no IP storage; banners hurt the reader experience. The Privacy page (`/pid/privacy`) is the disclosure baseline. |
@@ -191,7 +190,7 @@ We *do* defend against:
 We do **not** defend against:
 
 * **Network adversaries correlating GoatCounter requests with same-IP
-  ECharts fetches.** Theoretically de-anonymising; practically
+  `sparklines.json` fetches.** Theoretically de-anonymising; practically
   irrelevant for an open educational site.
 * **Sophisticated bot impersonation.** UA-based filters miss
   headless-Chrome-with-real-UA. Expect the first week of data to be
