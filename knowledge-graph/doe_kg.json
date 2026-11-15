@@ -8322,7 +8322,18 @@
    "type": "SHOWS",
    "target": "main_effect",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:131",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
+  },
+  {
+   "source": "half_normal_plot",
+   "type": "SHOWS",
+   "target": "interaction",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:131",
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "least_squares_model",

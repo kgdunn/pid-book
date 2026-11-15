@@ -2792,6 +2792,7 @@ edges:
 - [constraint, LIMITS, level, "design-analysis-experiments/optimal-designs.rst:106"]
 - [factor, HAS_PROPERTY, main_effect, "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:46"]
 - [half_normal_plot, SHOWS, main_effect, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:131"]
+- [half_normal_plot, SHOWS, interaction, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:131"]
 - [least_squares_model, ESTIMATES, response_surface, "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:121"]
 - [optimal_design, ALTERNATIVE_TO, ccd, "design-analysis-experiments/screen-then-optimise-study.rst:207"]
 
@@ -3214,3 +3215,5 @@ corroborated:
   - phase_optimize
   - randomization_replication_and_blocking
   - statistical_power
+  - [half_normal_plot, SHOWS, main_effect]
+  - [half_normal_plot, SHOWS, interaction]
