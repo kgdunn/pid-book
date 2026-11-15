@@ -4846,6 +4846,7 @@
    "target": "interaction",
    "evidence": "design-analysis-experiments/full-factorial-designs/using-two-levels-for-two-or-more-factors.rst:186",
    "also": [
+    "reviewed_text_1",
     "reviewed_text_2"
    ]
   },
@@ -4855,6 +4856,7 @@
    "target": "interaction",
    "evidence": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:95",
    "also": [
+    "reviewed_text_1",
     "reviewed_text_2"
    ]
   },

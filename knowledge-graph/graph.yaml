@@ -2813,6 +2813,8 @@ corroborated:
   - [full_factorial, USES, coding]
   - [full_factorial, ESTIMATES, main_effect]
   - [full_factorial, ESTIMATES, interaction]
+  - [two_factor_interaction, IS_A, interaction]
+  - [three_factor_interaction, IS_A, interaction]
   - [cube_plot, SHOWS, full_factorial]
   - [coefficient, IS_HALF_OF, main_effect]
   - [least_squares_model, ESTIMATES, coefficient]
