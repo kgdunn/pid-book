@@ -68,6 +68,9 @@ written into `<head>` by the `html-page-context` handler in
 "telemetry shipped but unconfigured" path; the build still produced
 valid HTML, the script still loaded, it just doesn't do anything.
 
+On the stats page the snippet also carries `pages`, the names of every
+page of the build. Phase 4b uses it.
+
 ## Section 1 — path normalisation
 
 ```js
@@ -270,10 +273,26 @@ function fetchStats() {
         if (!r.ok) throw new Error("sparklines.json " + r.status);
         return r.json();
       })
-      .then(function (data) { return data || {}; });
+      .then(function (data) {
+        data = data || {};
+        if (!cfg.pages) return data;
+        var book = {};
+        cfg.pages.forEach(function (name) {
+          if (Object.prototype.hasOwnProperty.call(data, name)) book[name] = data[name];
+        });
+        return book;
+      });
   return statsPromise;
 }
 ```
+
+* **Only the book's pages, on the stats page.** The file has a key for
+  every address the server answered with a 2xx. Some are not pages (a
+  redirect stub such as `/pid/index`, a mistyped link such as
+  `.../index'A=0`), and some are pages that were later removed. Where
+  `cfg.pages` is present, only the keys in it are kept, so those rows
+  do not fill the least-read table and do not count in the totals.
+  Other pages have no list and read only their own key.
 
 * **One fetch per page.** The sidebar sparkline and the stats page
   both call `fetchStats()` and share the promise.

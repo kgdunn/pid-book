@@ -86,6 +86,9 @@ Rules the consumer follows (see `renderSparkline` in
   above. If everything strips to empty, use `contents`.
 * If the key is **not** in the JSON, hide the mount. **Do not** show a
   zero-height chart, "0 hits" placeholder, or error message.
+* On the stats page, keep only the keys that are pages of the build
+  (`cfg.pages`, written by `conf.py`). The producer cannot tell a page
+  from any other address that was answered with a 2xx.
 
 ## Time-series contract
 

@@ -575,6 +575,10 @@ page list. If a new Sphinx category appears (e.g. `/_modules/`), add
 it to the filter list and re-run `build-sparklines.py` — the next
 nightly rebuild will drop it.
 
+Since 2026-11-15 the stats page lists only the keys that are pages of
+the build, so a key of this kind no longer shows there. It is still in
+`sparklines.json`.
+
 ### "Stats page shows data from a week ago, even though the cron is running."
 
 Symptom: the on-disk `/var/www/learnche.org/_stats/sparklines.json`
