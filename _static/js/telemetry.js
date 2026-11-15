@@ -166,7 +166,18 @@
           return r.json();
         })
         .then(function (data) {
-          return data || {};
+          data = data || {};
+          // The file has a key for every address the server answered. On
+          // the stats page conf.py supplies the names of the book's pages,
+          // and only those keys are kept: the others are addresses that
+          // are not pages (a redirect stub, a mistyped link) or pages that
+          // have since been removed.
+          if (!cfg.pages) return data;
+          var book = {};
+          cfg.pages.forEach(function (name) {
+            if (Object.prototype.hasOwnProperty.call(data, name)) book[name] = data[name];
+          });
+          return book;
         });
     return statsPromise;
   }
