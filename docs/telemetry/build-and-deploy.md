@@ -195,7 +195,7 @@ unaffected: `text` never sees the telemetry config.
 | File | Purpose | Modified by this feature? |
 |---|---|---|
 | [`conf.py`](../../conf.py) | Sphinx config | yes — env-var gate, `setup()`, `html_context`, `html_js_files` |
-| [`.github/workflows/build-deploy.yml`](../../.github/workflows/build-deploy.yml) | CI workflow | yes — `Build HTML` env block |
+| [`.github/workflows/build-deploy.yml`](../../.github/workflows/build-deploy.yml) | CI workflow | yes: `Build HTML` env block |
 | [`_templates/pid-sidebar-extra.html`](../../_templates/pid-sidebar-extra.html) | sidebar Jinja template | yes — sparkline mount + Privacy link |
 | [`_static/js/telemetry.js`](../../_static/js/telemetry.js) | runtime client | new file |
 | [`privacy.rst`](../../privacy.rst) | reader-facing disclosure | new file |

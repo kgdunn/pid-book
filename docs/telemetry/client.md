@@ -286,11 +286,11 @@ function fetchStats() {
   ignores `max-age` and pins the very first response forever — that
   one bit us: see the "Stats page shows data from a week ago" entry
   in [`operations.md`](operations.md).)
-* **Catch-all on errors** — network failure, malformed JSON, server
-  500 — all silently leave the block hidden. The page must not break
+* **Catch-all on errors.** A network failure, malformed JSON or a
+  server 500 all silently leave the block hidden. The page must not break
   because sparkline data was unavailable.
 
-### Phase 4c — the days to show, and the empty state
+### Phase 4c: the days to show, and the empty state
 
 ```js
 var days = displayDays(data);
@@ -312,7 +312,7 @@ if (!total) return;
   **no UI at all**: the block stays hidden. The alternative (showing a
   "0 hits" placeholder) would be misleading and visually noisy.
 
-### Phase 4d — draw
+### Phase 4d: draw
 
 ```js
 mount.innerHTML = sparkSvg(days.length, sparkPaths(values, Math.max.apply(null, values)));
