@@ -49,18 +49,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Fetch ECharts (for sidebar sparklines)
-        # Pinned official Apache ECharts build, line/bar/pie subset.
-        # ~280 KB minified / ~80 KB gzip; served from same origin so no
-        # third-party requests at runtime. The file is .gitignored.
-        if: github.event_name != 'pull_request'
-        run: |
-          mkdir -p _static/js
-          curl -fsSL --retry 3 \
-            -o _static/js/echarts-min.js \
-            https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.simple.min.js
-          test -s _static/js/echarts-min.js
-
       # Build HTML runs before the TeX Live install: the apt-get step is slow
       # and is not a prerequisite for the HTML build, so a broken HTML build
       # surfaces as a fast early signal.

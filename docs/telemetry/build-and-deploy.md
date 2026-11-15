@@ -82,36 +82,8 @@ user-controlled value into the env var.
 
 ## What the GitHub Actions workflow does
 
-Two changes in [`.github/workflows/build-deploy.yml`](../../.github/workflows/build-deploy.yml):
-
-### 1. Fetch ECharts at build time
-
-```yaml
-- name: Fetch ECharts (for sidebar sparklines)
-  if: github.event_name != 'pull_request'
-  run: |
-    mkdir -p _static/js
-    curl -fsSL --retry 3 \
-      -o _static/js/echarts-min.js \
-      https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.simple.min.js
-    test -s _static/js/echarts-min.js
-```
-
-* The URL is **pinned** to `echarts@5.5.1/dist/echarts.simple.min.js`
-  — the official "simple" build (line + bar + pie + tooltip + axes,
-  no map/3D/treemap). Roughly 280 KB minified, ~80 KB gzip.
-* `--retry 3` covers jsdelivr blips. `-fsSL` makes curl exit non-zero
-  on HTTP errors and follow redirects silently.
-* `test -s` asserts the file is non-empty. A zero-byte ECharts file
-  would silently break the sparkline render.
-* The file is **gitignored** (see `.gitignore` line 17: `_static/js/echarts-min.js`),
-  so each CI run produces it fresh.
-* `if: github.event_name != 'pull_request'` means PR builds skip the
-  fetch — they don't need it, since they don't enable telemetry
-  either. (This also avoids hitting jsdelivr from forks that don't
-  trust our CI.)
-
-### 2. Set telemetry env vars on the Build HTML step
+One change in [`.github/workflows/build-deploy.yml`](../../.github/workflows/build-deploy.yml):
+the telemetry env vars on the Build HTML step.
 
 ```yaml
 - name: Build HTML
@@ -183,11 +155,6 @@ has two telemetry-related blocks:
 
 ```sh
 # Mimic CI exactly:
-mkdir -p _static/js
-curl -fsSL --retry 3 \
-  -o _static/js/echarts-min.js \
-  https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.simple.min.js
-
 PID_BOOK_TELEMETRY=1 \
 PID_BOOK_GC_CODE=learnche-pid \
 make html
@@ -206,7 +173,6 @@ DevTools → Network and confirm there are no requests to `gc.zgo.at`.
 To clean up afterwards:
 
 ```sh
-rm -f _static/js/echarts-min.js  # gitignored, but just to be tidy
 make clean
 ```
 
@@ -229,11 +195,9 @@ unaffected: `text` never sees the telemetry config.
 | File | Purpose | Modified by this feature? |
 |---|---|---|
 | [`conf.py`](../../conf.py) | Sphinx config | yes — env-var gate, `setup()`, `html_context`, `html_js_files` |
-| [`.github/workflows/build-deploy.yml`](../../.github/workflows/build-deploy.yml) | CI workflow | yes — ECharts fetch step, `Build HTML` env block |
-| [`.gitignore`](../../.gitignore) | git ignore rules | yes — ignores `_static/js/echarts-min.js` |
+| [`.github/workflows/build-deploy.yml`](../../.github/workflows/build-deploy.yml) | CI workflow | yes: `Build HTML` env block |
 | [`_templates/pid-sidebar-extra.html`](../../_templates/pid-sidebar-extra.html) | sidebar Jinja template | yes — sparkline mount + Privacy link |
 | [`_static/js/telemetry.js`](../../_static/js/telemetry.js) | runtime client | new file |
 | [`privacy.rst`](../../privacy.rst) | reader-facing disclosure | new file |
 | [`contents.rst`](../../contents.rst) | book root | yes — adds `privacy` to hidden toctree |
 | [`CITATION.cff`](../../CITATION.cff) | citation metadata | yes — `date-released` bumped |
-| `_static/js/echarts-min.js` | ECharts bundle | new file, **gitignored**, fetched at CI time |

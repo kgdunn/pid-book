@@ -108,8 +108,8 @@ Each value is an array of `[date, count]` pairs.
 * The array is **sorted ascending by date**.
 * The array is **dense** — every day in the window where there was
   at least one hit appears exactly once. **Days with zero hits are
-  omitted.** The consumer should not assume the array length equals
-  the window length.
+  omitted.** The consumer fills them with 0 (`dense` in
+  `telemetry.js`), so that the x-axis of every chart is time.
 * The window ends at the **last complete day**, not today. The
   producer steps back `[windows] lag_days` days (default 1) from the
   current UTC date, because the nightly cron fires while the current
@@ -123,12 +123,11 @@ Each value is an array of `[date, count]` pairs.
   [`README.md`](README.md#history-depth-the-window-is-a-ceiling-not-a-promise).
 * The **producer** window and the **consumer** window are independent.
   `_static/js/telemetry.js` filters this file down to `DISPLAY_DAYS`
-  (currently 180) before rendering, and separately clips to the last
-  complete UTC day so a stale server build cannot reintroduce a
-  partial day. If you change `DISPLAY_DAYS`, also update the sidebar
+  (currently 180) before rendering, and separately clips to the day
+  before the file's `Last-Modified` so a stale server build cannot
+  reintroduce a partial day. If you change `DISPLAY_DAYS`, also update the sidebar
   heading text in `_templates/pid-sidebar-extra.html`
-  (`"Page views (180 days)"`) and the three `(last 180 days)` headings
-  plus body text in `stats.rst`.
+  (`"Page views (180 days)"`) and the body text in `stats.rst`.
 * If a page got at least one hit in the window, its entry exists.
 * If a page got **zero hits** in the window, it is **not** in the
   JSON. The consumer treats missing keys and empty arrays

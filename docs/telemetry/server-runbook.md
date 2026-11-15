@@ -588,7 +588,6 @@ E.g. reprocess a historical range:
 | Component | Where it runs | Cadence |
 |---|---|---|
 | `make html` (Sphinx) | GitHub Actions runner | every push/PR |
-| ECharts curl fetch | GitHub Actions runner | every non-PR push |
 | rsync deploy | GitHub Actions runner | every non-PR push |
 | GoatCounter pixel | reader's browser | every page load |
 | Search-event hook | reader's browser | every keystroke (debounced) |

@@ -1,8 +1,9 @@
 # Client-side: `_static/js/telemetry.js`
 
-A walkthrough of the runtime telemetry script. The file is ~220 lines
-of vanilla ES5 (no transpiler, no framework, no dependencies); this
-doc explains why each piece is the way it is.
+A walkthrough of the runtime telemetry script. The file is ~600 lines
+of vanilla ES5 (no transpiler, no framework, no dependencies: the
+charts are inline SVG that it draws itself); this doc explains why
+each piece is the way it is.
 
 The full source: [`_static/js/telemetry.js`](../../_static/js/telemetry.js).
 
@@ -14,8 +15,8 @@ parse the browser fetches it, defers execution until the document is
 ready, then runs an IIFE that decides — through a series of
 short-circuit checks — whether to do anything at all. If the answer
 is yes, it (a) injects GoatCounter's `count.js`, (b) hooks the search
-inputs, and (c) renders the sparkline by lazy-loading ECharts and
-fetching the public sparkline JSON. Anything that fails along the
+inputs, and (c) fetches the public sparkline JSON and draws the
+sidebar sparkline from it. Anything that fails along the
 way is caught silently; the script never throws into the page.
 
 ## Section 0 — short-circuit guards
@@ -229,8 +230,8 @@ anyway.
 
 ## Section 4 — sparkline render
 
-The sparkline is the only feature that can render after a network
-round trip. It works in three phases.
+The sparkline is the only feature that renders after a network round
+trip. It works in four phases.
 
 ### Phase 4a — find the mount point
 
@@ -261,11 +262,21 @@ if (!pageKey) {
 ### Phase 4b — fetch sparklines.json
 
 ```js
-fetch("/_stats/sparklines.json", { cache: "default" })
-  .then(...)
-  .catch(function () { /* leave the empty mount; do not break */ });
+var statsPromise;
+function fetchStats() {
+  statsPromise = statsPromise ||
+    fetch("/_stats/sparklines.json", { cache: "default" })
+      .then(function (r) {
+        if (!r.ok) throw new Error("sparklines.json " + r.status);
+        return r.json();
+      })
+      .then(function (data) { return data || {}; });
+  return statsPromise;
+}
 ```
 
+* **One fetch per page.** The sidebar sparkline and the stats page
+  both call `fetchStats()` and share the promise.
 * **Same-origin fetch** — `learnche.org/_stats/sparklines.json`.
   Same hostname as the book, so no CORS dance.
 * **`cache: "default"`** — the JSON is regenerated nightly. Default
@@ -275,156 +286,171 @@ fetch("/_stats/sparklines.json", { cache: "default" })
   ignores `max-age` and pins the very first response forever — that
   one bit us: see the "Stats page shows data from a week ago" entry
   in [`operations.md`](operations.md).)
-* **Catch-all on errors** — network failure, malformed JSON, server
-  500 — all silently leave the empty mount. The page must not break
+* **Catch-all on errors.** A network failure, malformed JSON or a
+  server 500 all silently leave the block hidden. The page must not break
   because sparkline data was unavailable.
 
-### Phase 4c — empty-state handling
+### Phase 4c: the days to show, and the empty state
 
 ```js
-var series = data && data[pageKey];
-if (!series || !series.length) {
-  var heading = mount.previousElementSibling;
-  if (heading && heading.tagName === "P") heading.style.display = "none";
-  mount.style.display = "none";
-  return;
-}
+var days = displayDays(data);
+var values = dense(data[pageKey], days);
+var total = values.reduce(function (a, v) { return a + v; }, 0);
+if (!total) return;
 ```
 
-A page with no historical data (e.g. a freshly added page like
-`privacy` itself) gets **no UI at all** — we hide both the mount
-and the "Page views (180 days)" heading. The alternative (showing a
-"0 hits" placeholder) would be misleading and visually noisy.
+* `displayDays(data)` lists the calendar days the UI shows, oldest
+  first: the `DISPLAY_DAYS` (180) complete days that end at the newest
+  complete day in the file, or fewer while the logs hold less history.
+  Every page is drawn over the same days, so two pages compare against
+  the same date range.
+* `dense(series, days)` gives the page's reads on each of those days.
+  The JSON omits a day without a read; `dense` fills it with 0, so the
+  x-axis is time. (Plotting only the days present would draw a page
+  that was read on 10 of 180 days as 10 evenly spaced points.)
+* A page with no reads on those days (e.g. a freshly added page) gets
+  **no UI at all**: the block stays hidden. The alternative (showing a
+  "0 hits" placeholder) would be misleading and visually noisy.
 
-### Phase 4c.5 — reader count in the heading
-
-After confirming the series is non-empty, but before any ECharts
-work, we compute the sum and write it into the sidebar heading:
+### Phase 4d: draw
 
 ```js
-var totalEl = document.getElementById("pid-sparkline-total");
+mount.innerHTML = sparkSvg(days.length, sparkPaths(values, Math.max.apply(null, values)));
 if (totalEl) {
-  var total = series.reduce(function (a, p) { return a + p[1]; }, 0);
-  totalEl.textContent = total.toLocaleString() + " reads";
+  var totalText = total.toLocaleString() + " reads";
+  totalEl.textContent = totalText;
+  onHover(mount, days.length, function (i) {
+    totalEl.textContent = i < 0 ? totalText : formatDay(days[i]) + ": " + values[i].toLocaleString();
+  });
 }
+if (block) block.style.display = "";
 ```
+
+The chart is inline SVG, built as a string by two helpers that the
+stats page shares:
+
+* `sparkPaths(values, top)` returns two `<path>` elements, the line
+  and the filled area under it. x is the day index and y is the reads
+  as a fraction of `top`, so the drawing lives in a box that is
+  `days - 1` wide and 1 high.
+* `sparkSvg(nDays, inner)` wraps them in an `<svg>` whose `viewBox` is
+  that box, with `preserveAspectRatio="none"`. CSS (`.pid-spark` in
+  `theme-extended-kgd.css`) sets `width: 100%; height: 100%`, and
+  `vector-effect: non-scaling-stroke` keeps the line 1.5 px thick
+  under the stretch.
+
+**The chart is sized by CSS, not by script.** It fills the sidebar at
+every width, including when the sidebar is a drawer that opens after
+the page has loaded, and there is no resize handler. This is the
+reason the charts are hand-drawn: a charting library measures its
+container when the chart is created, and both mounts are hidden at
+that moment (see "What was rejected and why" in
+[`architecture.md`](architecture.md)).
 
 The `<span id="pid-sparkline-total">` ships from
 `_templates/pid-sidebar-extra.html`, floated to the right of the
-"Page views (180 days)" heading. Tabular-numeric CSS keeps the digits
-aligned across pages. The `if (totalEl)` guard makes this a no-op
-when an older cached template doesn't have the span — pageview
-tracking and the sparkline still work.
-
-### Phase 4d — render
-
-```js
-loadECharts(function (echarts) {
-  if (!echarts) return;
-  // ...
-  chart = echarts.init(mount, null, { renderer: "svg" });
-  chart.setOption({
-    grid: { left: 0, right: 0, top: 2, bottom: 0 },
-    xAxis: { type: "category", show: false, data: dates },
-    yAxis: { type: "value", show: false },
-    tooltip: { trigger: "axis", formatter: ... },
-    series: [{
-      type: "line", data: values, showSymbol: false,
-      smooth: true, lineStyle: { width: 1.5 },
-      areaStyle: { opacity: 0.15 },
-    }],
-  });
-  window.addEventListener("resize", function () { chart.resize(); });
-});
-```
-
-* **SVG renderer** — sharper at small sizes than the canvas renderer
-  and prints better.
-* **No axes shown** — it's a sparkline, not a chart. The numbers come
-  from the tooltip on hover.
-* **`showSymbol: false`** — no per-point dots; the line itself is the
-  signal.
-* **Smooth + 15% area fill** — at this size the smoothing reads as
-  "trend" not "data points"; the area fill makes the trend visible
-  even when the line is one or two pixels tall.
-* **Resize handler** — needed because `sphinx_book_theme`
-  collapses/expands the sidebar on viewport changes.
-
-The `chart.init(...)` call is wrapped in `try/catch` because some
-older browsers (or unusual CSP settings) reject SVG rendering; in
-that case we silently leave the mount blank.
-
-### Phase 4e — lazy-load ECharts
-
-```js
-function loadECharts(cb) {
-  if (window.echarts) return cb(window.echarts);
-  var s = document.createElement("script");
-  s.src = "/pid/_static/js/echarts-min.js";
-  s.async = true;
-  s.onload  = function () { cb(window.echarts); };
-  s.onerror = function () { cb(null); };
-  document.head.appendChild(s);
-}
-```
-
-* ECharts is fetched **on demand**, only when a sparkline mount
-  actually exists. Pages without the mount (which is
-  every page in non-production builds, by design) never pay the
-  ~80 KB gzip download.
-* `/pid/_static/js/echarts-min.js` is a same-origin path — no
-  third-party hit at runtime. The CI workflow drops the file there
-  via the curl step (see [`build-and-deploy.md`](build-and-deploy.md)).
-* `onerror` is non-fatal: if ECharts is somehow missing we just don't
-  render the sparkline. Pageview tracking is unaffected.
+"Page views (180 days)" heading, and holds the page's total. While
+the pointer is on the chart, `onHover` puts that day's date and views
+there instead. The `if (totalEl)` guard makes this a no-op when an
+older cached template doesn't have the span.
 
 ## Section 4b — stats page (`/pid/stats`)
 
 `renderStatsPage()` runs on every page but exits immediately unless
-`#pid-stats-summary` is in the DOM. Only [`stats.rst`](../../stats.rst)
+`#pid-stats-daily` is in the DOM. Only [`stats.rst`](../../stats.rst)
 ships that mount point, so the whole function is a no-op on every
 other page.
 
-When the mount is present, the function fetches the same
-`sparklines.json` the sidebar uses and fills three widgets:
+When the mount is present, the function reads the same
+`sparklines.json` the sidebar uses and fills five mounts:
 
 | Mount point | What's rendered |
 |---|---|
-| `#pid-stats-summary` | Three "big number" cards: total reads in the window, number of pages with at least one read, number of distinct days in the data. |
-| `#pid-stats-daily` | A daily-totals line chart — sum of reads across all pages per day, smoothed, with an area fill and axis-trigger tooltip. ECharts SVG renderer; lazy-loaded via the same `loadECharts()` the sparkline uses. |
-| `#pid-stats-top` | A table of the top-20 pages by 365-day total. Each row links to `/pid/<pagename>` (with `/index` stripped, so `data-visualization/index` → `/pid/data-visualization/`). |
+| `#pid-stats-daily` | The daily totals across all pages as a line chart, with a two-handle slider on its x-axis and buttons for the last 7, 30 and 90 days. The handles select a **window** of days, shaded in the chart. |
+| `#pid-stats-summary` | Four "big number" cards for the window: reads, pages read, days, and the reads per day against the other days. |
+| `#pid-stats-movers` | The 10 pages whose reads in the window differ most from what their other days predict. |
+| `#pid-stats-top` | The 20 pages with the most reads in the window. |
+| `#pid-stats-bottom` | The 10 pages with the fewest reads in the window. |
 
-Aggregation is a single pass over `Object.keys(data)`:
+Each table row links to `/pid/<pagename>` (with `/index` stripped, so
+`data-visualization/index` → `/pid/data-visualization/`) and carries a
+sparkline of that page's daily reads over all the days, with the
+window shaded. Page names are HTML-escaped: the keys come from request
+paths, and a scraper can put anything in a path.
+
+### The chart
+
+The plot is the same stretched `sparkSvg` as the sidebar. Everything
+with text in it is HTML laid over the SVG, positioned in percent, so
+that the text keeps its shape while the drawing stretches:
+
+* gridlines and their labels (`.pid-stats-tick`), at a round step
+  from `axisStep()`;
+* month labels (`.pid-stats-months`), one at the first day of each
+  month;
+* a cursor line and a readout that follow the pointer (`onHover`).
+
+### The slider
+
+The slider is two `<input type="range">` elements laid over the
+x-axis. Each is one thumb wider than the plot, so the centre of a
+thumb sits exactly on its day. Only the thumbs take the pointer
+(`pointer-events`), because the body of one input would otherwise
+cover the thumb of the other.
 
 ```js
-pages.forEach(function (page) {
-  var series = data[page] || [];
-  var pageTotal = 0;
-  series.forEach(function (p) {
-    var date = p[0], count = p[1] | 0;
-    totalReads += count;
-    pageTotal += count;
-    dailyMap[date] = (dailyMap[date] || 0) + count;
-  });
-  if (pageTotal > 0) pageTotals.push([page, pageTotal]);
-});
-pageTotals.sort(function (a, b) { return b[1] - a[1]; });
+function selectBetweenEdges() {
+  var x = +edges[0].value;
+  var y = +edges[1].value;
+  select(Math.min(x, y), Math.max(x, y));
+}
 ```
 
-The `| 0` coerces to int (defends against a future schema change
-that emits floats). Pages whose 365-day total is zero are dropped
-from the top-N consideration but still count in `totalReads`.
+The window is whatever lies between the two thumbs, so they may cross
+and neither can block the other. Native inputs bring keyboard support
+(arrow keys) and touch support for free; `aria-valuetext` gives each
+thumb its date.
 
-Empty-state behaviour is uniform across all three widgets: if
-`sparklines.json` is missing, malformed, or empty, the summary is
-replaced with an italic "Statistics aren't available yet…" message
-and the chart + table mounts are hidden via `style.display = "none"`.
-The page never appears broken — just empty.
+### What the window is compared with
 
-CSS for the cards and table lives in
-`_static/css/theme-extended-kgd.css` under the "stats page widgets"
-section; every selector is namespaced to `.pid-stats-*` so it cannot
-leak into the rest of the book.
+`select(a, b)` recomputes everything for the days `a..b`. For each
+page:
+
+```js
+r.expected = outside ? ((p.total - r.reads) * inside) / outside : 0;
+r.change = r.reads - r.expected;
+```
+
+* `inside` is the number of days in the window, `outside` the number
+  of displayed days that are not in it.
+* `expected` is the reads the page would have had in the window at
+  the daily rate it had on the other days.
+* `change` is how far the window is from that. The changes of all the
+  pages add up to the change of the whole book, which is why ranking
+  the pages by the size of their change answers "which pages account
+  for this rise or fall".
+
+When the window is all the days there is nothing to compare with: the
+Change column and the fourth card are blank, and `#pid-stats-movers`
+asks the reader to narrow the window.
+
+The chart and the slider are built once. A move of the slider only
+shifts the shaded band and rebuilds the cards and the three tables
+(about 4 ms for 140 pages).
+
+### Empty state
+
+`stats.rst` ships `#pid-stats-daily` holding a "Statistics could not
+load" note, and the other four mounts hidden. If the script never runs
+(DNT, content blocker) the note stays. If `sparklines.json` is
+missing, malformed, or empty, the note is replaced with "Statistics
+aren't available yet…". Either way the four mounts stay hidden: the
+page never appears broken, just empty.
+
+CSS for the charts, cards and tables lives in
+`_static/css/theme-extended-kgd.css` under the "Readership charts"
+section; every selector is namespaced to `.pid-spark*` or
+`.pid-stats-*` so it cannot leak into the rest of the book.
 
 ## Section 5 — boot
 
@@ -448,14 +474,13 @@ execute until parsing is done, but `defer` doesn't fire its callback
 `readyState` check as belt-and-braces.
 
 `renderStatsPage()` runs on every page but cheaply early-returns when
-`#pid-stats-summary` is absent (which is all but the
+`#pid-stats-daily` is absent (which is all but the
 [`/pid/stats`](https://learnche.org/pid/stats) page).
 
 ## Footprint
 
-* **Wire bytes (gzip):** ~1.3 KB for `telemetry.js` itself, plus
-  GoatCounter's `count.js` (~3 KB), plus ECharts (~80 KB) **only on
-  pages with a sparkline mount**.
+* **Wire bytes (gzip):** ~8 KB for `telemetry.js` itself, plus
+  GoatCounter's `count.js` (~3 KB). There is no charting library.
 * **Cookies:** zero.
 * **localStorage / sessionStorage:** zero from the telemetry client. One
   unrelated key exists on the site, `pid:code-blocks:v1`, written by
@@ -466,19 +491,16 @@ execute until parsing is done, but `defer` doesn't fire its callback
   `gc.zgo.at/count.js`, one to `<gc>.goatcounter.com/count`. No
   third-party.
 * **Network requests with sparkline:** add one to
-  `learnche.org/_stats/sparklines.json` (same-origin, cached) and one
-  to `learnche.org/pid/_static/js/echarts-min.js` (same-origin,
-  cached).
+  `learnche.org/_stats/sparklines.json` (same-origin, cached).
 
 ## Failure modes (what happens when things break)
 
 | Failure | What happens |
 |---|---|
 | GoatCounter is down | `gcScript.onload` never fires; no pageview recorded; no error in console; no UI impact. |
-| `sparklines.json` 404 | `.catch` runs; mount stays empty; no UI impact. |
+| `sparklines.json` 404 | `.catch` runs; the sidebar block stays hidden; the stats page shows its note. |
 | `sparklines.json` malformed | Same as 404. |
-| ECharts file missing | `loadECharts` calls `cb(null)`; sparkline silently skipped. |
-| `pageKey` not in JSON | Empty-state path; heading and mount hidden. |
+| `pageKey` not in JSON | Empty-state path; the sidebar block stays hidden. |
 | Browser blocks all third-party JS | `count.js` blocked → no pageview. Sparkline still renders (same-origin). |
 | Browser has DNT enabled | Whole script returns at line 1; no pixel, no sparkline, no search hooks. |
 | User typing rapidly | Debounce coalesces into one event after 800 ms idle. |

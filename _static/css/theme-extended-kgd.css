@@ -91,11 +91,189 @@ button.copybtn:focus,
 }
 
 /* ---------------------------------------------------------------------
-   /pid/stats page widgets. Mount points are injected as raw HTML by
-   stats.rst and filled at runtime by _static/js/telemetry.js.
-   Styles are scoped to .pid-stats-* so they cannot leak into the rest
-   of the book.
+   Readership charts: the sidebar sparkline on every page, and the
+   /pid/stats page. Mount points come from _templates/pid-sidebar-extra.html
+   and stats.rst, and are filled at runtime by _static/js/telemetry.js.
+   Styles are scoped to .pid-spark* and .pid-stats-* so they cannot leak
+   into the rest of the book.
    ------------------------------------------------------------------ */
+
+/* A sparkline is drawn in day-index by 0..1 units and stretched to its
+   container here, so it fits at every width without any script. The
+   stroke keeps its width under the stretch, and is not clipped where the
+   line touches the top edge. */
+.pid-spark {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.pid-spark-line {
+    fill: none;
+    stroke: var(--pst-color-primary, #5470c6);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+}
+
+.pid-spark-area {
+    fill: var(--pst-color-primary, #5470c6);
+    fill-opacity: 0.15;
+}
+
+/* The window of days selected on the stats page. */
+.pid-spark-band {
+    fill: currentColor;
+    fill-opacity: 0.13;
+}
+
+.pid-stats-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin: 1rem 0 1.25rem;
+}
+
+.pid-stats-presets {
+    display: flex;
+    gap: 0.35rem;
+}
+
+.pid-stats-readout {
+    color: var(--pst-color-text-muted, #777);
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+}
+
+/* The plot area. --pid-thumb is the diameter of a slider thumb: larger
+   where the pointer is a finger. */
+.pid-stats-plot {
+    --pid-thumb: 18px;
+    position: relative;
+    height: 240px;
+    margin: 0 1rem 0 3.2rem;
+    touch-action: pan-y;
+}
+
+@media (pointer: coarse) {
+    .pid-stats-plot {
+        --pid-thumb: 28px;
+    }
+}
+
+.pid-stats-plot .pid-spark {
+    position: absolute;
+    inset: 0;
+}
+
+.pid-stats-tick {
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-top: 1px solid var(--pst-color-border, #ddd);
+}
+
+.pid-stats-tick span {
+    position: absolute;
+    right: 100%;
+    margin-right: 0.5rem;
+    transform: translateY(-50%);
+    color: var(--pst-color-text-muted, #777);
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.pid-stats-cursor {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid currentColor;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Two range inputs on the x-axis make the two-handle slider. Each is one
+   thumb wider than the plot, so the centre of a thumb sits exactly on its
+   day. Only the thumbs take the pointer: the rest of an input would cover
+   the thumb of the other one. */
+.pid-stats-plot input[type="range"] {
+    position: absolute;
+    left: calc(var(--pid-thumb) / -2);
+    bottom: calc(var(--pid-thumb) / -2);
+    width: calc(100% + var(--pid-thumb));
+    height: var(--pid-thumb);
+    margin: 0;
+    padding: 0;
+    background: none;
+    pointer-events: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.pid-stats-plot input[type="range"]::-webkit-slider-runnable-track {
+    height: var(--pid-thumb);
+    background: none;
+    border: 0;
+}
+
+.pid-stats-plot input[type="range"]::-moz-range-track {
+    height: var(--pid-thumb);
+    background: none;
+    border: 0;
+}
+
+.pid-stats-plot input[type="range"]::-webkit-slider-thumb {
+    width: var(--pid-thumb);
+    height: var(--pid-thumb);
+    border: 2px solid var(--pst-color-background, #fff);
+    border-radius: 50%;
+    background: var(--pst-color-primary, #5470c6);
+    cursor: ew-resize;
+    pointer-events: auto;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.pid-stats-plot input[type="range"]::-moz-range-thumb {
+    box-sizing: border-box;
+    width: var(--pid-thumb);
+    height: var(--pid-thumb);
+    border: 2px solid var(--pst-color-background, #fff);
+    border-radius: 50%;
+    background: var(--pst-color-primary, #5470c6);
+    cursor: ew-resize;
+    pointer-events: auto;
+}
+
+.pid-stats-plot input[type="range"]:focus-visible {
+    outline: none;
+}
+
+.pid-stats-plot input[type="range"]:focus-visible::-webkit-slider-thumb {
+    outline: 2px solid var(--pst-color-text-base, #222);
+    outline-offset: 1px;
+}
+
+.pid-stats-plot input[type="range"]:focus-visible::-moz-range-thumb {
+    outline: 2px solid var(--pst-color-text-base, #222);
+    outline-offset: 1px;
+}
+
+.pid-stats-months {
+    position: relative;
+    height: 1.5rem;
+    margin: 1rem 1rem 1rem 3.2rem;
+    color: var(--pst-color-text-muted, #777);
+    font-size: 0.8rem;
+}
+
+.pid-stats-months span {
+    position: absolute;
+    transform: translateX(-50%);
+}
 
 .pid-stats-summary {
     display: flex;
@@ -105,7 +283,7 @@ button.copybtn:focus,
 }
 
 .pid-stats-card {
-    flex: 1 1 180px;
+    flex: 1 1 150px;
     padding: 1rem 1.25rem;
     border: 1px solid var(--pst-color-border, #ddd);
     border-radius: 6px;
@@ -121,13 +299,16 @@ button.copybtn:focus,
 }
 
 .pid-stats-label {
-    color: #777;
+    color: var(--pst-color-text-muted, #777);
     font-size: 0.9rem;
     margin-top: 0.25rem;
 }
 
+/* Fixed layout: the Page column takes whatever the other columns leave,
+   so a table is exactly as wide as the text at every screen width. */
 .pid-stats-table {
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
     margin: 0.5rem 0 1.5rem;
 }
@@ -138,19 +319,67 @@ button.copybtn:focus,
     border-bottom: 1px solid var(--pst-color-border, #eee);
 }
 
-.pid-stats-table th.pid-stats-rank,
-.pid-stats-table td.pid-stats-rank {
-    width: 2.5rem;
+.pid-stats-table td {
+    overflow-wrap: anywhere;
+}
+
+.pid-stats-table .pid-stats-rank {
+    width: 2.8rem;
     text-align: right;
     color: #888;
     font-variant-numeric: tabular-nums;
 }
 
-.pid-stats-table th.pid-stats-count,
-.pid-stats-table td.pid-stats-count {
+.pid-stats-table .pid-stats-count {
+    width: 5rem;
     text-align: right;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
+}
+
+/* Reads and the percentage, side by side. */
+.pid-stats-table .pid-stats-change {
+    width: 8.5rem;
+}
+
+.pid-stats-table .pid-stats-change small {
+    display: inline-block;
+    min-width: 3.6rem;
+    color: var(--pst-color-text-muted, #777);
+}
+
+/* The sparkline of a table row: the page's daily reads on all the days,
+   with the window shaded. */
+.pid-stats-table .pid-stats-trend {
+    width: 10rem;
+}
+
+.pid-stats-table td.pid-stats-trend .pid-spark {
+    height: 1.5rem;
+}
+
+/* A phone: no rank column, and the percentage goes under the reads. */
+@media (max-width: 540px) {
+    .pid-stats-table th,
+    .pid-stats-table td {
+        padding: 0.4rem 0.3rem;
+    }
+
+    .pid-stats-table .pid-stats-rank {
+        display: none;
+    }
+
+    .pid-stats-table .pid-stats-trend {
+        width: 4.5rem;
+    }
+
+    .pid-stats-table .pid-stats-count {
+        width: 3.8rem;
+    }
+
+    .pid-stats-table .pid-stats-change small {
+        display: block;
+    }
 }
 
 /* ---------------------------------------------------------------------

@@ -27,9 +27,9 @@ dashboards.
 ## What ships in the repo
 
 ```
-.github/workflows/build-deploy.yml   # ECharts fetch step + telemetry env vars
-.gitignore                           # ignores _static/js/echarts-min.js
-_static/js/telemetry.js              # the entire client; ~220 lines
+.github/workflows/build-deploy.yml   # telemetry env vars
+_static/js/telemetry.js              # the entire client, charts included
+_static/css/theme-extended-kgd.css   # styles of the charts and the stats page
 _templates/pid-sidebar-extra.html    # sparkline mount, total-count, Stats + Privacy links
 conf.py                              # env-var gate + html-page-context hook
 contents.rst                         # adds privacy + stats to hidden toctree
@@ -44,9 +44,8 @@ scripts/server/bots.txt.example           # shared UA blocklist seed
 docs/telemetry/                           # everything you are reading
 ```
 
-The ECharts JS bundle (`_static/js/echarts-min.js`) is **not** in git; it
-is curl'd from jsdelivr at CI time, pinned to v5.5.1 simple build, and
-served same-origin so the runtime never touches a third-party CDN.
+The charts are inline SVG drawn by `telemetry.js`. There is no charting
+library to fetch, pin or serve.
 
 ## What ships at runtime
 
@@ -68,18 +67,19 @@ self-hosting reusers.
    custom events.
 4. **Per-page sparkline + reader count**, derived from the
    access logs by `scripts/server/build-sparklines.py` into a public
-   `sparklines.json`, rendered with a same-origin ECharts build in
-   the sidebar of every page. The backend is configured for a rolling
+   `sparklines.json`, drawn as inline SVG in the sidebar of every
+   page. The backend is configured for a rolling
    365-day window, but it holds only as much history as the logs do:
    the archive starts in late May 2026 (see "History depth" below) and
    reaches a full year in May 2027. The sidebar shows the most recent
    180 days and writes that total next to the heading. Because it is
    log-derived it counts ad-blocked readers too.
 5. **In-book stats page** — [`/pid/stats`](https://learnche.org/pid/stats)
-   reads the same `sparklines.json` and shows three site-wide
-   widgets: a summary (total reads / pages with traffic / days of
-   data), a daily totals chart across the whole book, and a top-20
-   most-read pages table. All filled by `telemetry.js` at runtime;
+   reads the same `sparklines.json`. It shows a chart of the daily
+   totals across the whole book, with a two-handle slider that selects
+   a window of days. For that window it shows a summary, the pages
+   whose reads changed most against the other days, and the most-read
+   and least-read pages. All filled by `telemetry.js` at runtime;
    empty-state hides the widgets cleanly when no data is available.
 
 ## History depth: the window is a ceiling, not a promise
@@ -141,8 +141,8 @@ running an older build of the script. Set `lag_days = 0` in
   invoked with `--anonymize-ip`; `build-sparklines.py` keeps only daily
   unique-IP counts and discards IPs after aggregation.
 * **DNT honoured.** Browser Do-Not-Track silences the pixel entirely.
-* **Same-origin.** Every JS asset (telemetry pixel, ECharts, sparklines
-  data) is served from `learnche.org`. The only third-party network
+* **Same-origin.** `telemetry.js` and the sparklines data are served
+  from `learnche.org`. The only third-party network
   call is GoatCounter's `count.js` and its tracking endpoint — both
   cookieless and IP-stripped.
 * **Open by default.** The aggregate dashboards (top pages,
@@ -156,8 +156,8 @@ docs and code make this checkable). We trust our own webserver to hold
 the raw access logs securely for their retention period (currently 5
 years, raised from 4 days on 2026-05-26 so that the readership history
 survives) and to expose only the aggregates. We do not protect against a
-network adversary correlating the GoatCounter request with the ECharts
-fetch on the same TLS connection (theoretically possible, practically
+network adversary correlating the GoatCounter request with the
+`sparklines.json` fetch from the same address (theoretically possible, practically
 irrelevant for an open educational site). We do not run our own
 bot-detection beyond UA blocklists shared between GoAccess and the
 sparkline builder; sophisticated bot impersonation will leak through

@@ -8,15 +8,13 @@
  * Four responsibilities:
  *   1. Pageview pixel via GoatCounter (loaded async).
  *   2. Search-query event capture from BOTH Sphinx and Pagefind boxes.
- *   3. Yearly pageview sparkline in the sidebar (ECharts, lazy-loaded),
- *      with the per-page total written into #pid-sparkline-total.
- *   4. The /pid/stats page: site-wide summary, daily-totals chart, and
- *      top-N table sourced from the same /_stats/sparklines.json.
+ *   3. Pageview sparkline in the sidebar, with the per-page total written
+ *      into #pid-sparkline-total.
+ *   4. The /pid/stats page: a daily-totals chart with a two-handle window
+ *      slider, and a summary and page tables that follow the window, all
+ *      sourced from the same /_stats/sparklines.json.
  *
- * The ECharts asset (`_static/js/echarts-min.js`) is fetched at build time
- * by .github/workflows/build-deploy.yml; it is NOT in git. If absent the
- * sparkline / stats charts are silently skipped — pageview/search tracking
- * still works.
+ * The charts are inline SVG drawn here; there is no charting library.
  *
  * What is collected and what is not is described at /pid/privacy.
  */
@@ -58,20 +56,22 @@
   // Change DISPLAY_DAYS in lockstep with the labels that mention "N
   // days" in:
   //   - _templates/pid-sidebar-extra.html   ("Page views (N days)")
-  //   - stats.rst                            ("(last N days)" x3 + body)
+  //   - stats.rst                            (the body text)
   // and the backend (365) stays the same.
   // -------------------------------------------------------------------
   var DISPLAY_DAYS = 180;
-  var DISPLAY_LABEL = DISPLAY_DAYS + " days";
 
-  // The newest day that can possibly be complete, in UTC. The nightly
-  // builder already stops at yesterday (lag_days), but a server still
-  // running the older script publishes a bucket for the running day
-  // holding only a few hours of traffic, which plots as a near-zero
-  // cliff at the right-hand edge. Bounding the window here keeps the
-  // charts correct regardless of which build of the script is deployed.
+  // The newest day that can possibly be complete, in UTC: the day before
+  // the data file was built. The nightly builder already stops there
+  // (lag_days), but a server still running the older script publishes a
+  // bucket for its running day holding only a few hours of traffic, which
+  // plots as a near-zero cliff at the right-hand edge. Bounding the window
+  // here keeps the charts correct whichever build of the script is
+  // deployed. fetchStats() sets `builtAt` from the file's Last-Modified;
+  // "now" stands in for a server that does not send one.
+  var builtAt = Date.now();
   function lastCompleteDate() {
-    var d = new Date();
+    var d = new Date(builtAt);
     d.setUTCDate(d.getUTCDate() - 1);
     return d.toISOString().slice(0, 10);
   }
@@ -106,14 +106,110 @@
     return d.toISOString().slice(0, 10);
   }
 
-  // Clip a series to [cutoff, anchor] inclusive. The upper bound drops
-  // the running day; an empty cutoff means no complete day was found,
-  // in which case there is nothing safe to plot.
-  function filterToWindow(series, cutoff, anchor) {
-    if (!series || !cutoff) return [];
-    return series.filter(function (p) {
-      return p[0] >= cutoff && p[0] <= anchor;
+  // The days the UI shows, oldest first: the DISPLAY_DAYS complete days
+  // that end at the anchor, or fewer while the logs hold less history
+  // than that. Empty when the file holds no complete day.
+  function displayDays(data) {
+    var anchor = globalAnchorDate(data);
+    if (!anchor) return [];
+    var first = anchor;
+    for (var page in data) {
+      var s = data[page];
+      if (s && s.length && s[0][0] < first) first = s[0][0];
+    }
+    var cutoff = cutoffDateString(anchor, DISPLAY_DAYS);
+    if (first < cutoff) first = cutoff;
+    var days = [];
+    var d = new Date(first + "T00:00:00Z");
+    while (days.length < DISPLAY_DAYS) {
+      var iso = d.toISOString().slice(0, 10);
+      days.push(iso);
+      if (iso >= anchor) break;
+      d.setUTCDate(d.getUTCDate() + 1);
+    }
+    return days;
+  }
+
+  // One page's reads on each of `days`. The JSON omits days without a
+  // read; filling them with 0 keeps the x-axis of every chart in time.
+  function dense(series, days) {
+    var at = {};
+    (series || []).forEach(function (p) {
+      at[p[0]] = p[1] | 0;
     });
+    return days.map(function (d) {
+      return at[d] || 0;
+    });
+  }
+
+  // "14 Nov" from "2026-11-14", in the reader's locale. No year: the days
+  // shown span less than one.
+  function formatDay(iso, weekday) {
+    return new Date(iso + "T00:00:00Z").toLocaleDateString(undefined, {
+      weekday: weekday ? "short" : undefined,
+      day: "numeric",
+      month: "short",
+      timeZone: "UTC",
+    });
+  }
+
+  // The data file, fetched once per page however many widgets read it.
+  // `cache: "default"` honours the server's max-age=3600.
+  var statsPromise;
+  function fetchStats() {
+    statsPromise =
+      statsPromise ||
+      fetch("/_stats/sparklines.json", { cache: "default" })
+        .then(function (r) {
+          if (!r.ok) throw new Error("sparklines.json " + r.status);
+          builtAt = Date.parse(r.headers.get("Last-Modified")) || builtAt;
+          return r.json();
+        })
+        .then(function (data) {
+          return data || {};
+        });
+    return statsPromise;
+  }
+
+  // The line and the filled area of a sparkline, as SVG paths. x is the
+  // day index and y the reads as a fraction of `top`. sparkSvg() lets CSS
+  // stretch both to the container, so a chart is the right size at every
+  // width and needs no resize handler.
+  function sparkPaths(values, top) {
+    var line = values
+      .map(function (v, i) {
+        return (i ? "L" : "M") + i + "," + (1 - v / (top || 1)).toFixed(3);
+      })
+      .join("");
+    return (
+      '<path class="pid-spark-area" d="' + line + "L" + (values.length - 1) + ',1L0,1Z"/>' +
+      '<path class="pid-spark-line" d="' + line + '"/>'
+    );
+  }
+  function sparkSvg(nDays, inner) {
+    return (
+      '<svg class="pid-spark" viewBox="0 0 ' + Math.max(nDays - 1, 1) + ' 1" ' +
+      'preserveAspectRatio="none" aria-hidden="true">' + inner + "</svg>"
+    );
+  }
+
+  // Tell `report` which day is under the pointer: its index while the
+  // pointer is over `el`, and -1 once it has left.
+  function onHover(el, nDays, report) {
+    function move(e) {
+      // Dragging a slider thumb inside `el` is not pointing at a day.
+      if (e.target.tagName === "INPUT") return report(-1);
+      var box = el.getBoundingClientRect();
+      var i = Math.round(((e.clientX - box.left) / box.width) * (nDays - 1));
+      report(Math.max(0, Math.min(nDays - 1, i)));
+    }
+    function leave() {
+      report(-1);
+    }
+    el.addEventListener("pointerdown", move);
+    el.addEventListener("pointermove", move);
+    el.addEventListener("pointerleave", leave);
+    el.addEventListener("pointercancel", leave);
   }
 
   // 1. Path normalisation: extensionless URLs, fold trailing slash and /index.
@@ -186,15 +282,15 @@
     return false;
   }
 
-  // 4. Sparkline. Lazy-loads ECharts only if the mount point exists.
-  // The sidebar template ships the whole block (heading + chart) hidden
-  // by default via `<div id="pid-sparkline-block" style="display:none">`.
-  // We only unhide it after the chart actually renders, so a blocked
-  // fetch / DNT / empty data path never leaves an orphan heading visible.
+  // 4. Sidebar sparkline. The template ships the whole block (heading +
+  // chart) hidden via `<div id="pid-sparkline-block" style="display:none">`.
+  // It is revealed only once the chart is drawn, so a blocked fetch, DNT
+  // or a page without reads never leaves an orphan heading visible.
   function renderSparkline() {
     var mount = document.getElementById("pid-sparkline");
     if (!mount) return;
     var block = document.getElementById("pid-sparkline-block");
+    var totalEl = document.getElementById("pid-sparkline-total");
     var pageKey = mount.getAttribute("data-page") || "";
     if (!pageKey) {
       // Fallback: derive from the URL when the template didn't supply one.
@@ -205,245 +301,316 @@
       if (!pageKey) pageKey = "contents";
     }
 
-    fetch("/_stats/sparklines.json", { cache: "default" })
-      .then(function (r) {
-        if (!r.ok) throw new Error("sparklines.json " + r.status);
-        return r.json();
-      })
+    fetchStats()
       .then(function (data) {
-        // The JSON holds up to 365 days; the UI shows only the most
-        // recent DISPLAY_DAYS complete days from the global anchor (so
-        // different pages compare against the same date range).
-        var anchor = globalAnchorDate(data);
-        var cutoff = cutoffDateString(anchor, DISPLAY_DAYS);
-        var series = filterToWindow(data && data[pageKey], cutoff, anchor);
-        if (!series || !series.length) {
-          // No history for this page in the display window (fresh
-          // page, content blocker tampering, or genuinely unread for
-          // DISPLAY_DAYS). Block stays hidden — nothing to do.
-          return;
-        }
-        // Write the total-reads-in-window into the sidebar heading, if
-        // its span is present (template ships it; older builds may not).
-        var totalEl = document.getElementById("pid-sparkline-total");
+        // Every page is drawn over the same days, so that two pages
+        // compare against the same date range.
+        var days = displayDays(data);
+        var values = dense(data[pageKey], days);
+        var total = values.reduce(function (a, v) {
+          return a + v;
+        }, 0);
+        // No reads for this page on those days: the block stays hidden.
+        if (!total) return;
+        mount.innerHTML = sparkSvg(days.length, sparkPaths(values, Math.max.apply(null, values)));
         if (totalEl) {
-          var total = series.reduce(function (a, p) { return a + p[1]; }, 0);
-          totalEl.textContent = total.toLocaleString() + " reads";
+          var totalText = total.toLocaleString() + " reads";
+          totalEl.textContent = totalText;
+          // While the pointer is on the chart, the heading reads that day.
+          onHover(mount, days.length, function (i) {
+            totalEl.textContent = i < 0 ? totalText : formatDay(days[i]) + ": " + values[i].toLocaleString();
+          });
         }
-        loadECharts(function (echarts) {
-          if (!echarts) return;
-          var dates = series.map(function (p) {
-            return p[0];
-          });
-          var values = series.map(function (p) {
-            return p[1];
-          });
-          var chart;
-          try {
-            chart = echarts.init(mount, null, { renderer: "svg" });
-          } catch (e) {
-            return;
-          }
-          chart.setOption({
-            grid: { left: 0, right: 0, top: 2, bottom: 0 },
-            xAxis: { type: "category", show: false, data: dates },
-            yAxis: { type: "value", show: false },
-            tooltip: {
-              trigger: "axis",
-              formatter: function (params) {
-                var p = params[0];
-                return p.name + "<br/>" + p.value + " views";
-              },
-            },
-            series: [
-              {
-                type: "line",
-                data: values,
-                showSymbol: false,
-                smooth: false,
-                lineStyle: { width: 1.5 },
-                areaStyle: { opacity: 0.15 },
-              },
-            ],
-          });
-          // Reveal the whole block now that the chart is actually drawn.
-          if (block) block.style.display = "";
-          window.addEventListener("resize", function () {
-            chart.resize();
-          });
-        });
+        if (block) block.style.display = "";
       })
       .catch(function () {
-        /* network/JSON error or content blocker: block stays hidden;
-           the page never shows an orphan "Page views" heading. */
+        /* network/JSON error or content blocker: the block stays hidden. */
       });
   }
 
-  // 4b. Stats page widgets. Run only if the /pid/stats page is loaded,
-  // detected by the presence of #pid-stats-summary in the DOM. Four
-  // mounts are filled from the same sparklines.json the sidebar uses:
-  //   #pid-stats-summary  — three big-number cards (reads, pages, days)
-  //   #pid-stats-daily    — daily-totals line chart across all pages
-  //   #pid-stats-top      — top-20 most-read pages table
-  //   #pid-stats-bottom   — bottom-10 least-read pages table
-  function renderStatsPage() {
-    var summary = document.getElementById("pid-stats-summary");
-    if (!summary) return;
-
-    var dailyMount = document.getElementById("pid-stats-daily");
-    var topMount = document.getElementById("pid-stats-top");
-    var bottomMount = document.getElementById("pid-stats-bottom");
-
-    function showEmpty(msg) {
-      // Replace whatever the page shipped (could be the "Statistics
-      // could not load" placeholder, or a previous render's content)
-      // with a JS-specific message. The chart/table mounts are already
-      // hidden by default in stats.rst — re-hide just in case.
-      summary.innerHTML =
-        '<p style="color:#777"><em>' +
-        (msg || "Statistics aren't available yet. The nightly aggregator " +
-               "may not have run, or this is a local build.") +
-        "</em></p>";
-      if (dailyMount) dailyMount.style.display = "none";
-      if (topMount) topMount.style.display = "none";
-      if (bottomMount) bottomMount.style.display = "none";
-    }
-
-    // Build a [rank, page-link, count] HTML table from an array of
-    // [pagename, count] entries already in display order.
-    function buildPageTable(entries) {
-      var rows = entries.map(function (kv, i) {
-        var page = kv[0], count = kv[1];
-        // Sphinx pagename → URL. /index suffix means the directory
-        // landing page; other pages are direct.
-        var href = "/pid/" + page.replace(/\/index$/, "/");
-        return '<tr><td class="pid-stats-rank">' + (i + 1) +
-          '</td><td><a href="' + href + '">' + page + "</a></td>" +
-          '<td class="pid-stats-count">' + count.toLocaleString() +
-          "</td></tr>";
-      }).join("");
-      return '<table class="pid-stats-table"><thead><tr>' +
-        '<th class="pid-stats-rank">#</th><th>Page</th>' +
-        '<th class="pid-stats-count">Reads</th></tr></thead>' +
-        "<tbody>" + rows + "</tbody></table>";
-    }
-
-    fetch("/_stats/sparklines.json", { cache: "default" })
-      .then(function (r) {
-        if (!r.ok) throw new Error("sparklines.json " + r.status);
-        return r.json();
-      })
-      .then(function (data) {
-        var pages = data && Object.keys(data);
-        if (!pages || !pages.length) { showEmpty(); return; }
-
-        // The JSON holds up to 365 days; the UI shows the most recent
-        // DISPLAY_DAYS complete days only. Compute the bounds once and
-        // filter every per-page series through them before aggregating,
-        // so the summary cards, the daily chart, and the top-pages
-        // table all describe exactly the same date range.
-        var anchor = globalAnchorDate(data);
-        if (!anchor) { showEmpty(); return; }
-        var cutoff = cutoffDateString(anchor, DISPLAY_DAYS);
-
-        var totalReads = 0;
-        var dailyMap = {};
-        var pageTotals = [];
-        pages.forEach(function (page) {
-          var series = filterToWindow(data[page], cutoff, anchor);
-          var pageTotal = 0;
-          series.forEach(function (p) {
-            var date = p[0], count = p[1] | 0;
-            totalReads += count;
-            pageTotal += count;
-            dailyMap[date] = (dailyMap[date] || 0) + count;
-          });
-          if (pageTotal > 0) pageTotals.push([page, pageTotal]);
-        });
-        pageTotals.sort(function (a, b) { return b[1] - a[1]; });
-        var dailyDates = Object.keys(dailyMap).sort();
-
-        // If the window has no data at all, fall back to the empty UI.
-        if (!pageTotals.length) { showEmpty(); return; }
-
-        // Summary cards.
-        summary.innerHTML =
-          '<div class="pid-stats-card"><div class="pid-stats-num">' +
-            totalReads.toLocaleString() +
-          '</div><div class="pid-stats-label">reads (' + DISPLAY_LABEL + ')</div></div>' +
-          '<div class="pid-stats-card"><div class="pid-stats-num">' +
-            pageTotals.length.toLocaleString() +
-          '</div><div class="pid-stats-label">pages with traffic</div></div>' +
-          '<div class="pid-stats-card"><div class="pid-stats-num">' +
-            dailyDates.length +
-          '</div><div class="pid-stats-label">days of data</div></div>';
-
-        // Daily totals chart. Mount is hidden by default in stats.rst
-        // (so it doesn't show a 280px-tall blank area when JS is blocked
-        // or the fetch fails); unhide after the chart actually renders.
-        if (dailyMount && dailyDates.length) {
-          loadECharts(function (echarts) {
-            if (!echarts) return;
-            var chart;
-            try { chart = echarts.init(dailyMount, null, { renderer: "svg" }); }
-            catch (e) { return; }
-            chart.setOption({
-              grid: { left: 50, right: 16, top: 16, bottom: 36 },
-              xAxis: { type: "category", data: dailyDates,
-                       axisLabel: { hideOverlap: true } },
-              yAxis: { type: "value", name: "Reads / day" },
-              tooltip: {
-                trigger: "axis",
-                formatter: function (params) {
-                  var p = params[0];
-                  return p.name + "<br/>" + p.value.toLocaleString() +
-                         " reads";
-                },
-              },
-              series: [{
-                type: "line",
-                smooth: false,
-                showSymbol: false,
-                data: dailyDates.map(function (d) { return dailyMap[d]; }),
-                lineStyle: { width: 1.5 },
-                areaStyle: { opacity: 0.15 },
-              }],
-            });
-            dailyMount.style.display = "";
-            window.addEventListener("resize", function () { chart.resize(); });
-          });
-        }
-
-        // Top-N table (most-read pages).
-        if (topMount) {
-          topMount.innerHTML = buildPageTable(pageTotals.slice(0, 20));
-          topMount.style.display = "";
-        }
-
-        // Bottom-N table (least-read pages — ascending, lowest first).
-        // Pages with zero hits never reach the JSON, so this only
-        // surfaces pages with at least one read in the window.
-        if (bottomMount) {
-          var bottom = pageTotals.slice(-10).reverse();
-          bottomMount.innerHTML = buildPageTable(bottom);
-          bottomMount.style.display = "";
-        }
-      })
-      .catch(function () { showEmpty(); });
+  // A round axis step (1, 2 or 5 times a power of ten) that puts two to
+  // five gridlines under `peak`.
+  function axisStep(peak) {
+    var rough = Math.max(peak, 1) / 5;
+    var pow = Math.pow(10, Math.floor(Math.log(rough) / Math.LN10));
+    var lead = rough / pow;
+    return Math.max(1, (lead > 5 ? 10 : lead > 2 ? 5 : lead > 1 ? 2 : 1) * pow);
   }
 
-  function loadECharts(cb) {
-    if (window.echarts) return cb(window.echarts);
-    var s = document.createElement("script");
-    s.src = "/pid/_static/js/echarts-min.js";
-    s.async = true;
-    s.onload = function () {
-      cb(window.echarts);
-    };
-    s.onerror = function () {
-      cb(null);
-    };
-    document.head.appendChild(s);
+  function escapeHtml(text) {
+    return String(text).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  // "+1,234" or "-56": a whole number that always carries its sign.
+  function signed(x) {
+    var r = Math.round(x);
+    return (r > 0 ? "+" : "") + r.toLocaleString();
+  }
+
+  // 4b. Stats page. Runs only where stats.rst put #pid-stats-daily. That
+  // mount gets the daily-totals chart with its two-handle window slider.
+  // Four more mounts describe the window the slider selects:
+  //   #pid-stats-summary  big-number cards
+  //   #pid-stats-movers   the pages whose reads changed most
+  //   #pid-stats-top      the most-read pages
+  //   #pid-stats-bottom   the least-read pages
+  function renderStatsPage() {
+    var daily = document.getElementById("pid-stats-daily");
+    if (!daily) return;
+    var mounts = {};
+    ["summary", "movers", "top", "bottom"].forEach(function (k) {
+      mounts[k] = document.getElementById("pid-stats-" + k);
+    });
+
+    function note(text) {
+      return '<p style="color:#777"><em>' + text + "</em></p>";
+    }
+    // stats.rst ships the four mounts hidden, so a page whose data never
+    // arrives shows its headings and the note in #pid-stats-daily, not
+    // empty boxes. A mount is revealed when it is first filled.
+    function fill(el, html) {
+      if (!el) return;
+      el.innerHTML = html;
+      el.style.display = "";
+    }
+    function showEmpty() {
+      daily.innerHTML = note(
+        "Statistics aren't available yet. The nightly aggregator may not have run, or this is a local build."
+      );
+    }
+
+    fetchStats()
+      .then(function (data) {
+        var days = displayDays(data);
+        var n = days.length;
+
+        // Every page with a read on those days, and the book's daily totals.
+        var site = days.map(function () {
+          return 0;
+        });
+        var pages = [];
+        Object.keys(data).forEach(function (name) {
+          var values = dense(data[name], days);
+          var total = 0;
+          values.forEach(function (v, i) {
+            total += v;
+            site[i] += v;
+          });
+          if (!total) return;
+          pages.push({
+            name: name,
+            values: values,
+            total: total,
+            spark: sparkPaths(values, Math.max.apply(null, values)),
+          });
+        });
+        if (!pages.length) {
+          showEmpty();
+          return;
+        }
+
+        // The chart. Gridlines, month labels and the slider are HTML laid
+        // over the stretched SVG, so text keeps its shape at any width.
+        var peak = Math.max.apply(null, site);
+        var step = axisStep(peak);
+        var top = Math.ceil(peak / step) * step;
+        var ticks = "";
+        for (var t = 0; t <= top; t += step) {
+          ticks +=
+            '<div class="pid-stats-tick" style="bottom:' + (t / top) * 100 + '%"><span>' +
+            t.toLocaleString() + "</span></div>";
+        }
+        var months = "";
+        days.forEach(function (iso, i) {
+          if (iso.slice(8) !== "01") return;
+          var label = new Date(iso + "T00:00:00Z").toLocaleDateString(undefined, {
+            month: "short",
+            year: iso.slice(5, 7) === "01" ? "numeric" : undefined,
+            timeZone: "UTC",
+          });
+          months += '<span style="left:' + (i / (n - 1 || 1)) * 100 + '%">' + label + "</span>";
+        });
+        var presets = [7, 30, 90]
+          .filter(function (d) {
+            return d < n;
+          })
+          .concat(n)
+          .map(function (d) {
+            return (
+              '<button type="button" class="btn btn-sm btn-outline-secondary" data-days="' + d + '">' +
+              (d < n ? d + " days" : "All") + "</button>"
+            );
+          })
+          .join("");
+        var edge = '<input type="range" min="0" max="' + (n - 1) + '" aria-label="Edge of the window of days">';
+        daily.innerHTML =
+          '<div class="pid-stats-bar"><span class="pid-stats-presets">' + presets + "</span>" +
+          '<span class="pid-stats-readout"></span></div>' +
+          '<div class="pid-stats-plot">' + ticks +
+          sparkSvg(n, '<rect class="pid-spark-band" y="0" height="1"/>' + sparkPaths(site, top)) +
+          '<div class="pid-stats-cursor" style="display:none"></div>' + edge + edge + "</div>" +
+          '<div class="pid-stats-months">' + months + "</div>";
+        daily.style.display = "";
+
+        var band = daily.querySelector(".pid-spark-band");
+        var cursor = daily.querySelector(".pid-stats-cursor");
+        var readout = daily.querySelector(".pid-stats-readout");
+        var edges = daily.querySelectorAll("input");
+        var buttons = daily.querySelectorAll("button");
+        var windowText = "";
+
+        // Describe the days a..b (indexes into `days`, inclusive) in the
+        // chart, the summary and the three tables.
+        function select(a, b) {
+          var inside = b - a + 1; // days in the window
+          var outside = n - inside; // the other days: what the window is compared with
+
+          // A day owns the half step on either side of its point.
+          var x0 = Math.max(a - 0.5, 0);
+          var x1 = Math.min(b + 0.5, n - 1);
+          band.setAttribute("x", x0);
+          band.setAttribute("width", outside ? x1 - x0 : 0);
+          var rowBand = outside
+            ? '<rect class="pid-spark-band" x="' + x0 + '" width="' + (x1 - x0) + '" y="0" height="1"/>'
+            : "";
+
+          windowText =
+            (a === b ? formatDay(days[a]) : formatDay(days[a]) + " to " + formatDay(days[b])) +
+            " (" + inside + (inside === 1 ? " day)" : " days)");
+          readout.textContent = windowText;
+          [].forEach.call(buttons, function (btn) {
+            var active = b === n - 1 && inside === +btn.getAttribute("data-days");
+            btn.classList.toggle("active", active);
+            btn.setAttribute("aria-pressed", active);
+          });
+
+          // `expected` is the reads a page would have had in the window at
+          // the daily rate it had on the other days, and `change` is how
+          // far the window is from that. The changes of all the pages add
+          // up to the change of the book.
+          var reads = 0;
+          var expected = 0;
+          var rows = pages.map(function (p) {
+            var r = { page: p, reads: 0 };
+            for (var i = a; i <= b; i++) r.reads += p.values[i];
+            r.expected = outside ? ((p.total - r.reads) * inside) / outside : 0;
+            r.change = r.reads - r.expected;
+            reads += r.reads;
+            expected += r.expected;
+            return r;
+          });
+          function percent(got, usual) {
+            return usual ? signed((got / usual - 1) * 100) + "%" : "from 0";
+          }
+
+          function card(number, label) {
+            return (
+              '<div class="pid-stats-card"><div class="pid-stats-num">' + number +
+              '</div><div class="pid-stats-label">' + label + "</div></div>"
+            );
+          }
+          fill(
+            mounts.summary,
+            card(reads.toLocaleString(), "reads") +
+              card(rows.filter(function (r) { return r.reads; }).length, "pages read") +
+              card(inside, inside === 1 ? "day" : "days") +
+              (outside
+                ? card(percent(reads, expected), "reads per day, against the other " + outside + " days")
+                : card("&ndash;", "no other days to compare with"))
+          );
+
+          function table(list) {
+            return (
+              '<table class="pid-stats-table"><thead><tr><th class="pid-stats-rank">#</th>' +
+              '<th>Page</th><th class="pid-stats-trend">Daily reads</th>' +
+              '<th class="pid-stats-count">Reads</th>' +
+              (outside ? '<th class="pid-stats-count pid-stats-change">Change</th>' : "") +
+              "</tr></thead><tbody>" +
+              list
+                .map(function (r, i) {
+                  // Sphinx pagename to URL: an /index page is its directory.
+                  var href = "/pid/" + r.page.name.replace(/\/index$/, "/");
+                  return (
+                    '<tr><td class="pid-stats-rank">' + (i + 1) + "</td>" +
+                    // <wbr>: a long name wraps after a slash before it wraps inside a word.
+                    '<td><a href="' + escapeHtml(href) + '">' +
+                    escapeHtml(r.page.name).replace(/\//g, "/<wbr>") + "</a></td>" +
+                    '<td class="pid-stats-trend">' + sparkSvg(n, rowBand + r.page.spark) + "</td>" +
+                    '<td class="pid-stats-count">' + r.reads.toLocaleString() + "</td>" +
+                    (outside
+                      ? '<td class="pid-stats-count pid-stats-change">' + signed(r.change) +
+                        " <small>" + percent(r.reads, r.expected) + "</small></td>"
+                      : "") +
+                    "</tr>"
+                  );
+                })
+                .join("") +
+              "</tbody></table>"
+            );
+          }
+
+          var movers = rows
+            .filter(function (r) { return Math.round(r.change); })
+            .sort(function (x, y) { return Math.abs(y.change) - Math.abs(x.change); });
+          fill(
+            mounts.movers,
+            !outside
+              ? note("Narrow the window to see which pages changed against the other days.")
+              : movers.length
+                ? table(movers.slice(0, 10))
+                : note("No page is more than half a read from what its other days predict.")
+          );
+          fill(
+            mounts.top,
+            table(rows.slice().sort(function (x, y) { return y.reads - x.reads; }).slice(0, 20))
+          );
+          // Pages level on reads in the window are ordered by their reads
+          // on all the days, so a short window still lists the pages that
+          // are read least in general.
+          fill(
+            mounts.bottom,
+            table(
+              rows
+                .slice()
+                .sort(function (x, y) { return x.reads - y.reads || x.page.total - y.page.total; })
+                .slice(0, 10)
+            )
+          );
+        }
+
+        // The two thumbs may cross: the window is whatever lies between
+        // them, so neither can block the other. Their values are written
+        // only by a button, never during a drag.
+        function selectBetweenEdges() {
+          var x = +edges[0].value;
+          var y = +edges[1].value;
+          edges[0].setAttribute("aria-valuetext", formatDay(days[x]));
+          edges[1].setAttribute("aria-valuetext", formatDay(days[y]));
+          select(Math.min(x, y), Math.max(x, y));
+        }
+        function setEdges(a, b) {
+          edges[0].value = a;
+          edges[1].value = b;
+          selectBetweenEdges();
+        }
+        edges[0].addEventListener("input", selectBetweenEdges);
+        edges[1].addEventListener("input", selectBetweenEdges);
+        [].forEach.call(buttons, function (btn) {
+          btn.addEventListener("click", function () {
+            setEdges(n - btn.getAttribute("data-days"), n - 1);
+          });
+        });
+        onHover(daily.querySelector(".pid-stats-plot"), n, function (i) {
+          cursor.style.display = i < 0 ? "none" : "";
+          cursor.style.left = (i / (n - 1 || 1)) * 100 + "%";
+          readout.textContent =
+            i < 0 ? windowText : formatDay(days[i], true) + ": " + site[i].toLocaleString() + " reads";
+        });
+        setEdges(0, n - 1);
+      })
+      .catch(showEmpty);
   }
 
   // 5. Boot once the DOM is ready.
