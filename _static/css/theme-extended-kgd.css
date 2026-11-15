@@ -214,11 +214,13 @@ button.copybtn:focus,
 }
 
 .pid-stats-plot input[type="range"]::-webkit-slider-runnable-track {
+    height: var(--pid-thumb);
     background: none;
     border: 0;
 }
 
 .pid-stats-plot input[type="range"]::-moz-range-track {
+    height: var(--pid-thumb);
     background: none;
     border: 0;
 }

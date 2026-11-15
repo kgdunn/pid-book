@@ -394,11 +394,13 @@ drop to almost zero. That was an artefact of when the job ran, not a
 change in readership.
 
 Both halves now exclude it: `build-sparklines.py` ends its window at
-`lag_days` (default 1) days back, and `telemetry.js` clips to the last
-complete UTC day regardless of what the file contains. If you still see
-the cliff, the server is running an older copy of the script and a
-browser is serving a cached `telemetry.js`; redeploy the script and
-hard-reload.
+`lag_days` (default 1) days back, and `telemetry.js` clips to the day
+before the file was built (its `Last-Modified`), regardless of what the
+file contains. Until 2026-11-15 the client clipped to the day before
+*today* instead, which let the partial day through from midnight UTC
+until the next cron run. If you still see the cliff, the server is
+running an older copy of the script and a browser is serving a cached
+`telemetry.js`; redeploy the script and hard-reload.
 
 Once the partial day is excluded, judge the trend on complete days and
 allow for the weekly cycle before concluding anything. Weekends run

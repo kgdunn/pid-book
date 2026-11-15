@@ -61,14 +61,17 @@
   // -------------------------------------------------------------------
   var DISPLAY_DAYS = 180;
 
-  // The newest day that can possibly be complete, in UTC. The nightly
-  // builder already stops at yesterday (lag_days), but a server still
-  // running the older script publishes a bucket for the running day
-  // holding only a few hours of traffic, which plots as a near-zero
-  // cliff at the right-hand edge. Bounding the window here keeps the
-  // charts correct regardless of which build of the script is deployed.
+  // The newest day that can possibly be complete, in UTC: the day before
+  // the data file was built. The nightly builder already stops there
+  // (lag_days), but a server still running the older script publishes a
+  // bucket for its running day holding only a few hours of traffic, which
+  // plots as a near-zero cliff at the right-hand edge. Bounding the window
+  // here keeps the charts correct whichever build of the script is
+  // deployed. fetchStats() sets `builtAt` from the file's Last-Modified;
+  // "now" stands in for a server that does not send one.
+  var builtAt = Date.now();
   function lastCompleteDate() {
-    var d = new Date();
+    var d = new Date(builtAt);
     d.setUTCDate(d.getUTCDate() - 1);
     return d.toISOString().slice(0, 10);
   }
@@ -159,6 +162,7 @@
       fetch("/_stats/sparklines.json", { cache: "default" })
         .then(function (r) {
           if (!r.ok) throw new Error("sparklines.json " + r.status);
+          builtAt = Date.parse(r.headers.get("Last-Modified")) || builtAt;
           return r.json();
         })
         .then(function (data) {
