@@ -12,6 +12,11 @@ see in the sidebar of every page.
 
 See :ref:`privacy` for what is and isn't collected.
 
+Only the pages of the current edition of the book are counted. The data
+also records addresses that are not pages, such as a mistyped link, and
+pages that have since been removed. Those are left out of every figure
+on this page.
+
 .. note::
 
    All the figures count **complete days only**. The nightly

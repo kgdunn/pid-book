@@ -42,7 +42,11 @@ if TELEMETRY_ENABLED:
 
     def _inject_telemetry_globals(app, pagename, templatename, context, doctree):
         gc = TELEMETRY_GC_CODE.replace('"', "")
-        snippet = f'<script>window.__PID_TELEMETRY={{gc:"{gc}"}};</script>'
+        pages = ""
+        if pagename == "stats":
+            names = json.dumps(sorted(app.env.found_docs)).replace("</", "<\\/")
+            pages = f",pages:{names}"
+        snippet = f'<script>window.__PID_TELEMETRY={{gc:"{gc}"{pages}}};</script>'
         context["metatags"] = context.get("metatags", "") + snippet
 
     def setup(app):
@@ -51,6 +55,12 @@ if TELEMETRY_ENABLED:
 ```
 
 What each piece does:
+
+* **`pages`** is added on the stats page only: the names of every page
+  of this build (`env.found_docs`). `telemetry.js` keeps only the keys
+  of `sparklines.json` that are in it, so an address that is not a page
+  and a page that has since been removed stay out of the tables. About
+  7 KB, on one page.
 
 * **`html_js_files`** — Sphinx's HTML builder appends a `<script
   src="_static/js/telemetry.js" defer>` tag to every page. The tuple
