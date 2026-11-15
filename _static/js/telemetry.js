@@ -413,8 +413,9 @@
 
         // The chart. Gridlines, month labels and the slider are HTML laid
         // over the stretched SVG, so text keeps its shape at any width.
-        var step = axisStep(Math.max.apply(null, site));
-        var top = Math.ceil(Math.max.apply(null, site) / step) * step;
+        var peak = Math.max.apply(null, site);
+        var step = axisStep(peak);
+        var top = Math.ceil(peak / step) * step;
         var ticks = "";
         for (var t = 0; t <= top; t += step) {
           ticks +=
@@ -431,10 +432,11 @@
           });
           months += '<span style="left:' + (i / (n - 1 || 1)) * 100 + '%">' + label + "</span>";
         });
-        var presets = [7, 30, 90, n]
-          .filter(function (d, i) {
-            return d < n || i === 3;
+        var presets = [7, 30, 90]
+          .filter(function (d) {
+            return d < n;
           })
+          .concat(n)
           .map(function (d) {
             return (
               '<button type="button" class="btn btn-sm btn-outline-secondary" data-days="' + d + '">' +
