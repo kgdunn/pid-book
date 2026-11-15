@@ -345,7 +345,9 @@
    "chapter": 5,
    "level": 2,
    "order": 122,
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "time_effect",
@@ -445,7 +447,9 @@
    "chapter": 5,
    "level": 1,
    "order": 24,
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "pooled_variance",
@@ -1345,7 +1349,9 @@
    "chapter": 5,
    "level": 2,
    "order": 98,
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "saturated_design",
@@ -1992,7 +1998,9 @@
    "chapter": 5,
    "level": 2,
    "order": 154,
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "quadratic_model",
@@ -2250,7 +2258,9 @@
    "chapter": 5,
    "level": 2,
    "order": 157,
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "categorical_in_rsm",
@@ -2352,7 +2362,9 @@
    "chapter": 5,
    "level": 3,
    "order": 229,
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "phase_maintain",
@@ -2688,7 +2700,9 @@
    "chapter": 5,
    "level": 3,
    "order": 212,
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "mixture_constraint",
@@ -3408,7 +3422,9 @@
    "chapter": 5,
    "level": 3,
    "order": 205,
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "effect_size",
@@ -3980,7 +3996,9 @@
    "chapter": 5,
    "level": 3,
    "order": 225,
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "split_plot_design",
@@ -4310,7 +4328,9 @@
    "chapter": 5,
    "level": 2,
    "order": 125,
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "conditional_inference_chart",
@@ -4360,7 +4380,9 @@
    "chapter": 5,
    "level": 2,
    "order": 146,
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "id": "simplex_lattice_design",
@@ -4561,7 +4583,9 @@
    "type": "IS_A",
    "target": "disturbance",
    "evidence": "design-analysis-experiments/blocking-and-confounding-for-disturbances.rst:20",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "time_effect",
@@ -4651,14 +4675,18 @@
    "type": "USES",
    "target": "confidence_interval",
    "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:19",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "two_group_comparison",
    "type": "USES",
    "target": "t_distribution",
    "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:31",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "two_group_comparison",
@@ -4690,7 +4718,9 @@
    "type": "CONTRASTS_WITH",
    "target": "statistical_significance",
    "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:33",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "practical_significance",
@@ -5115,7 +5145,9 @@
    "type": "IS_A",
    "target": "half_fraction",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:80",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "half_fraction",
@@ -5132,7 +5164,9 @@
    "type": "COMPLEMENTS",
    "target": "half_fraction",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:104",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "fractional_factorial",
@@ -5381,7 +5415,9 @@
    "type": "IS_A",
    "target": "foldover",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst:12",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "full_foldover",
@@ -5389,7 +5425,8 @@
    "target": "foldover",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst:22",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -5398,7 +5435,8 @@
    "target": "sequential_experimentation",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/design-foldover-and-projectivity.rst:10",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -5502,7 +5540,9 @@
    "type": "USES",
    "target": "complementary_fraction",
    "evidence": "design-analysis-experiments/fractional-factorial-designs/generators-defining-relationships-blocking.rst:115",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "rsm",
@@ -5751,7 +5791,9 @@
    "type": "REMEDIED_BY",
    "target": "overlay_surfaces",
    "evidence": "design-analysis-experiments/response-surface-methods.rst:845",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "overlay_surfaces",
@@ -5759,7 +5801,8 @@
    "target": "contour_plot",
    "evidence": "design-analysis-experiments/multi-response-optimization.rst:188",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -5948,7 +5991,9 @@
    "type": "USES",
    "target": "exchange_algorithm",
    "evidence": "design-analysis-experiments/optimal-designs.rst:315",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "optimal_design",
@@ -6095,7 +6140,8 @@
    "target": "mixture_design",
    "evidence": "design-analysis-experiments/mixture-experiments.rst:165",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -6506,7 +6552,8 @@
    "target": "information_matrix",
    "evidence": "design-analysis-experiments/optimal-designs.rst:197",
    "also": [
-    "reviewed_text_1"
+    "reviewed_text_1",
+    "reviewed_text_2"
    ]
   },
   {
@@ -7394,7 +7441,9 @@
    "type": "USES",
    "target": "reference_distribution",
    "evidence": "design-analysis-experiments/experiments-with-a-single-variable-at-two-levels.rst:198",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "reference_distribution",
@@ -7556,21 +7605,27 @@
    "type": "PART_OF",
    "target": "randomization_replication_and_blocking",
    "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:18",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "replicate",
    "type": "PART_OF",
    "target": "randomization_replication_and_blocking",
    "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:18",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "blocking",
    "type": "PART_OF",
    "target": "randomization_replication_and_blocking",
    "evidence": "design-analysis-experiments/general-approach-for-experimentation.rst:18",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "split_plot_design",
@@ -7586,7 +7641,9 @@
    "type": "SUITED_TO",
    "target": "split_plot_design",
    "evidence": "design-analysis-experiments/optimal-designs.rst:61",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "split_plot_design",
@@ -8231,7 +8288,9 @@
    "type": "APPLIES_TO",
    "target": "factor",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:79",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "confidence_interval",
@@ -8254,21 +8313,36 @@
    "type": "HAS_PROPERTY",
    "target": "main_effect",
    "evidence": "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:46",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "half_normal_plot",
    "type": "SHOWS",
    "target": "main_effect",
    "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:131",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
+  },
+  {
+   "source": "half_normal_plot",
+   "type": "SHOWS",
+   "target": "interaction",
+   "evidence": "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:131",
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "least_squares_model",
    "type": "ESTIMATES",
    "target": "response_surface",
    "evidence": "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:121",
-   "also": []
+   "also": [
+    "reviewed_text_2"
+   ]
   },
   {
    "source": "optimal_design",

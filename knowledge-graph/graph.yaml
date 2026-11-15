@@ -2792,6 +2792,7 @@ edges:
 - [constraint, LIMITS, level, "design-analysis-experiments/optimal-designs.rst:106"]
 - [factor, HAS_PROPERTY, main_effect, "design-analysis-experiments/full-factorial-designs/example-design-and-analysis-of-a-three-factor-experiment.rst:46"]
 - [half_normal_plot, SHOWS, main_effect, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:131"]
+- [half_normal_plot, SHOWS, interaction, "design-analysis-experiments/full-factorial-designs/assessing-significance-of-main-effects-and-interactions.rst:131"]
 - [least_squares_model, ESTIMATES, response_surface, "design-analysis-experiments/full-factorial-designs/analysis-by-least-squares-modelling.rst:121"]
 - [optimal_design, ALTERNATIVE_TO, ccd, "design-analysis-experiments/screen-then-optimise-study.rst:207"]
 
@@ -3180,3 +3181,39 @@ corroborated:
   - canonical_analysis
   - i_optimal
   - dispersion_effect
+  - [coding, APPLIES_TO, factor]
+  - [factor, HAS_PROPERTY, main_effect]
+  - [least_squares_model, ESTIMATES, response_surface]
+  - [overlay_surfaces, USES, contour_plot]
+  - [multiple_responses, REMEDIED_BY, overlay_surfaces]
+  - [block, USES, complementary_fraction]
+  - [blocking, PART_OF, randomization_replication_and_blocking]
+  - [two_group_comparison, USES, confidence_interval]
+  - [two_group_comparison, USES, t_distribution]
+  - [complementary_fraction, COMPLEMENTS, half_fraction]
+  - [complementary_fraction, IS_A, half_fraction]
+  - [controlled_disturbance, IS_A, disturbance]
+  - [d_optimal, SUITED_TO, mixture_design]
+  - [foldover, IS_A, sequential_experimentation]
+  - [full_foldover, IS_A, foldover]
+  - [optimal_design, SUITED_TO, split_plot_design]
+  - [optimal_design, USES, exchange_algorithm]
+  - [optimality_criterion, MEASURES, information_matrix]
+  - [practical_significance, CONTRASTS_WITH, statistical_significance]
+  - [randomization, PART_OF, randomization_replication_and_blocking]
+  - [randomization_test, USES, reference_distribution]
+  - [replicate, PART_OF, randomization_replication_and_blocking]
+  - [single_factor_foldover, IS_A, foldover]
+  - overlay_surfaces
+  - two_group_comparison
+  - curvature_check
+  - complementary_fraction
+  - contrast
+  - controlled_disturbance
+  - mixture_design
+  - orthogonal_blocking
+  - phase_optimize
+  - randomization_replication_and_blocking
+  - statistical_power
+  - [half_normal_plot, SHOWS, main_effect]
+  - [half_normal_plot, SHOWS, interaction]
