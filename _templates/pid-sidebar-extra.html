@@ -24,10 +24,10 @@
   </p>
   {% if pid_telemetry %}
   {# Wrapper starts hidden. _static/js/telemetry.js unhides it only after
-     the sparkline data is fetched and a chart actually renders. So:
-     - JS exits early (DNT, localhost, file://, content blocker, fetch
-       error, no data for this page) → whole block stays hidden, no
-       orphan "Page views" heading. #}
+     the sparkline data is fetched and the chart is drawn. So when the
+     script exits early (DNT, localhost, file://, content blocker, fetch
+     error, no reads for this page) the whole block stays hidden, with no
+     orphan "Page views" heading. #}
   <div id="pid-sparkline-block" style="display:none">
     <hr/>
     <p style="color:#777; font-size:0.85em; margin:0.3em 0 0.1em">
