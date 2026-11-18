@@ -25,7 +25,7 @@ ffmpeg -framerate 30 -i frames/f_%05d.png -c:v libx264 -preset slow -crf 16 -pix
 ```
 
 The video is 1080 by 1350 pixels and 50 seconds long, at 30 frames a second: 1494 frames, which
-take about three minutes to draw.
+take about four minutes to draw.
 
 It needs Python 3 (no packages), Node.js with [Playwright](https://playwright.dev/) and its Chromium
 (`npm install playwright`, then `npx playwright install chromium`), and ffmpeg. The words are set in
