@@ -122,6 +122,28 @@ button.copybtn:focus,
     fill-opacity: 0.15;
 }
 
+/* A day above the top of the scale: a dot where its line is cut. */
+.pid-spark-off {
+    stroke: var(--pst-color-warning, #e8a33d);
+    stroke-width: 6;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+}
+
+.pid-stats-offnote {
+    margin: -0.5rem 1rem 1rem 3.2rem;
+    color: var(--pst-color-text-muted, #777);
+    font-size: 0.85rem;
+}
+
+.pid-stats-offdot {
+    display: inline-block;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: var(--pst-color-warning, #e8a33d);
+}
+
 /* The window of days selected on the stats page. */
 .pid-spark-band {
     fill: currentColor;

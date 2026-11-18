@@ -186,16 +186,47 @@
   // day index and y the reads as a fraction of `top`. sparkSvg() lets CSS
   // stretch both to the container, so a chart is the right size at every
   // width and needs no resize handler.
+  // A day above `top` is off the scale: its line is cut at the top edge
+  // and a dot marks the cut, so one burst of traffic cannot flatten the
+  // rest of the chart. The dot is a zero-length path with a round cap,
+  // which stays round however far the SVG is stretched.
   function sparkPaths(values, top) {
+    top = top || 1;
+    var dots = "";
     var line = values
       .map(function (v, i) {
-        return (i ? "L" : "M") + i + "," + (1 - v / (top || 1)).toFixed(3);
+        if (v > top) dots += "M" + i + ",0h0";
+        return (i ? "L" : "M") + i + "," + (1 - Math.min(v, top) / top).toFixed(3);
       })
       .join("");
     return (
       '<path class="pid-spark-area" d="' + line + "L" + (values.length - 1) + ',1L0,1Z"/>' +
-      '<path class="pid-spark-line" d="' + line + '"/>'
+      '<path class="pid-spark-line" d="' + line + '"/>' +
+      (dots ? '<path class="pid-spark-off" d="' + dots + '"/>' : "")
     );
+  }
+
+  // The top of the scale. Normally the peak; but when a few days (at most
+  // 2% of them, and at least one) sit far above Tukey's outer fence
+  // (Q3 + 3 IQR), the top is the highest of the other days, and those few
+  // are drawn off the scale. A trend that rises steadily has no outliers
+  // by this test, so its peak stays on the chart.
+  function scaleTop(values) {
+    var sorted = values.slice().sort(function (a, b) {
+      return a - b;
+    });
+    var n = sorted.length;
+    var peak = sorted[n - 1] || 0;
+    var q1 = sorted[Math.floor(n / 4)];
+    var q3 = sorted[Math.floor((3 * n) / 4)];
+    var fence = q3 + 3 * (q3 - q1);
+    var regular = sorted.filter(function (v) {
+      return v <= fence;
+    });
+    var off = n - regular.length;
+    var normalTop = regular[regular.length - 1] || 0;
+    if (!off || !normalTop || off >Math.max(1, Math.floor(n * 0.02)) || peak < 2 * normalTop) return peak;
+    return normalTop;
   }
   function sparkSvg(nDays, inner) {
     return (
@@ -323,7 +354,7 @@
         }, 0);
         // No reads for this page on those days: the block stays hidden.
         if (!total) return;
-        mount.innerHTML = sparkSvg(days.length, sparkPaths(values, Math.max.apply(null, values)));
+        mount.innerHTML = sparkSvg(days.length, sparkPaths(values, scaleTop(values)));
         if (totalEl) {
           var totalText = total.toLocaleString() + " reads";
           totalEl.textContent = totalText;
@@ -414,7 +445,7 @@
             name: name,
             values: values,
             total: total,
-            spark: sparkPaths(values, Math.max.apply(null, values)),
+            spark: sparkPaths(values, scaleTop(values)),
           });
         });
         if (!pages.length) {
@@ -424,9 +455,19 @@
 
         // The chart. Gridlines, month labels and the slider are HTML laid
         // over the stretched SVG, so text keeps its shape at any width.
-        var peak = Math.max.apply(null, site);
+        var peak = scaleTop(site);
         var step = axisStep(peak);
         var top = Math.ceil(peak / step) * step;
+        // Name each day drawn off the scale, with its reads, under the chart.
+        var offDays = days
+          .map(function (iso, i) {
+            return site[i] > top ? formatDay(iso) + " (" + site[i].toLocaleString() + " reads)" : "";
+          })
+          .filter(Boolean);
+        var offNote = offDays.length
+          ? '<p class="pid-stats-offnote"><span class="pid-stats-offdot"></span> Off the scale: ' +
+            offDays.join(", ") + ".</p>"
+          : "";
         var ticks = "";
         for (var t = 0; t <= top; t += step) {
           ticks +=
@@ -462,7 +503,7 @@
           '<div class="pid-stats-plot">' + ticks +
           sparkSvg(n, '<rect class="pid-spark-band" y="0" height="1"/>' + sparkPaths(site, top)) +
           '<div class="pid-stats-cursor" style="display:none"></div>' + edge + edge + "</div>" +
-          '<div class="pid-stats-months">' + months + "</div>";
+          '<div class="pid-stats-months">' + months + "</div>" + offNote;
         daily.style.display = "";
 
         var band = daily.querySelector(".pid-spark-band");

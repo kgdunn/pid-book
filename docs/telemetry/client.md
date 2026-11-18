@@ -334,7 +334,7 @@ if (!total) return;
 ### Phase 4d: draw
 
 ```js
-mount.innerHTML = sparkSvg(days.length, sparkPaths(values, Math.max.apply(null, values)));
+mount.innerHTML = sparkSvg(days.length, sparkPaths(values, scaleTop(values)));
 if (totalEl) {
   var totalText = total.toLocaleString() + " reads";
   totalEl.textContent = totalText;
@@ -351,7 +351,15 @@ stats page shares:
 * `sparkPaths(values, top)` returns two `<path>` elements, the line
   and the filled area under it. x is the day index and y is the reads
   as a fraction of `top`, so the drawing lives in a box that is
-  `days - 1` wide and 1 high.
+  `days - 1` wide and 1 high. A day above `top` is cut at the top
+  edge and marked with a dot (`.pid-spark-off`).
+* `scaleTop(values)` picks `top`. It is the peak, unless at most 2% of
+  the days (and at least one) lie above Tukey's outer fence,
+  Q3 + 3 IQR, and the peak is at least twice the highest other day.
+  Then `top` is that highest other day, and the outliers are drawn off
+  the scale, so one burst of traffic does not flatten the trend. The
+  stats page lists those days and their reads under its chart; hover
+  shows the real count everywhere.
 * `sparkSvg(nDays, inner)` wraps them in an `<svg>` whose `viewBox` is
   that box, with `preserveAspectRatio="none"`. CSS (`.pid-spark` in
   `theme-extended-kgd.css`) sets `width: 100%; height: 100%`, and
