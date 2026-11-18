@@ -1,7 +1,6 @@
 cff-version: 1.2.0
 title: "Process Improvement using Data"
 message: "If you use this book, please cite it as below."
-type: book
 authors:
   - family-names: Dunn
     given-names: Kevin G.
@@ -31,3 +30,13 @@ identifiers:
     value: "10.5281/zenodo.20284934"
     description: "Concept DOI: always resolves to the latest release"
 
+preferred-citation:
+  type: book
+  title: "Process Improvement using Data"
+  authors:
+    - family-names: Dunn
+      given-names: Kevin G.
+      orcid: "https://orcid.org/0000-0002-0681-6794"
+  doi: "10.5281/zenodo.20284934"
+  url: "https://learnche.org/pid"
+  year: 2026
