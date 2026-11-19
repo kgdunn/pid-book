@@ -1,0 +1,4 @@
+# What the scripts make: the page with the data set in, the frames, and the video.
+page*.html
+frames*/
+out/

@@ -1,0 +1,359 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Three Books Map</title>
+<style>html, body { margin: 0; background: #ffffff; } canvas { display: block; }</style>
+<canvas id="c" width="1080" height="1350"></canvas>
+<script>
+// One frame per call: window.renderFrame(t) draws the animation at t seconds. Nothing here reads a clock.
+// build_page.py puts the map's data in place of the null, and the theme in place of "light".
+const DATA = /*DATA*/null;
+const THEME = /*THEME*/"light";
+const W = 1080, H = 1350, MAP_Y = 632, MAP_W = 1000, MAP_H = 820;      // the map's centre line and the room it has
+const ctx = document.getElementById("c").getContext("2d");
+const FONT = '"Inter", system-ui, sans-serif', DISPLAY = '"Inter Display", "Inter", sans-serif';
+const P = THEME === "dark"
+  ? { bg: "#0f1720", ink: "#f4f6f8", ink2: "#b4bcc6", muted: "#7f8a96", line: "#263241", panel: "#16202c", bubble: "#141e29", bubbleLine: "#223040",
+      dot: "#8794a3", dotLight: "#4d5a69", link: "#3a4757", b2: "#ab63c6", b3: "#d06217", all: "#f4f6f8", veil: "15,23,32" }
+  : { bg: "#ffffff", ink: "#0b0b0b", ink2: "#52514e", muted: "#8a8984", line: "#e7e6e2", panel: "#f7f7f5", bubble: "#f8f8f6", bubbleLine: "#ecebe6",
+      dot: "#66717e", dotLight: "#aab1ba", link: "#c6cad0", b2: "#b668c8", b3: "#d46423", all: "#0b0b0b", veil: "255,255,255" };
+
+// ---------- small tools
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+const ease = (u) => (u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2);
+const seg = (t, a, b) => ease(clamp((t - a) / (b - a)));              // 0 before a, 1 after b, eased between
+const lin = (t, a, b) => clamp((t - a) / (b - a));
+const band = (t, a, b, f = 0.35) => Math.min(seg(t, a, a + f), 1 - seg(t, b - f, b));   // fades in at a, out at b
+const mix = (a, b, u) => a + (b - a) * u;
+const hash = (i) => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+const rgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+const mixc = (a, b, u) => a.map((v, i) => mix(v, b[i], u));
+const css = (c) => `rgb(${c.map(Math.round).join(",")})`;
+const C = Object.fromEntries(Object.entries(P).filter(([, v]) => /^#/.test(v)).map(([k, v]) => [k, rgb(v)]));
+const withAlpha = (hex, a) => `rgba(${rgb(hex).join(",")},${a})`;
+
+// ---------- the data
+const node = new Map(DATA.nodes.map((n) => [n.id, n]));
+const topic = new Map(DATA.clusters.map((c) => [c.id, c]));
+const FOCUS = topic.get(DATA.dive.topic), SUB = FOCUS.subs.find((s) => s.id === DATA.dive.sub);   // the topic and sub-topic the video opens
+const inSub = (n) => n.sub === SUB.id, inFocus = (n) => n.c === FOCUS.id;
+DATA.edges.forEach((e, i) => { e.a = node.get(e.s); e.b = node.get(e.t); e.i = i; e.within = e.a.c === e.b.c;
+  e.state = e.t1 && e.t2 ? 3 : e.t1 ? 1 : e.t2 ? 2 : 0; });
+DATA.nodes.forEach((n, i) => { n.i = i; n.state = n.t1 && n.t2 ? 3 : n.t1 ? 1 : n.t2 ? 2 : 0; });
+
+// ---------- the camera: world to screen. Three views: everything, the topic, the sub-topic.
+const all = DATA.clusters.reduce((b, c) => ({ x0: Math.min(b.x0, c.x - c.r), x1: Math.max(b.x1, c.x + c.r), y0: Math.min(b.y0, c.y - c.r), y1: Math.max(b.y1, c.y + c.r) }),
+  { x0: 1e9, x1: -1e9, y0: 1e9, y1: -1e9 });
+const fit = (x, y, hw, hh) => ({ x, y, s: Math.min(MAP_W / (2 * hw), MAP_H / (2 * hh)) });
+const Z0 = fit((all.x0 + all.x1) / 2, (all.y0 + all.y1) / 2 - 40, (all.x1 - all.x0) / 2, (all.y1 - all.y0) / 2 + 60);
+const Z1 = fit(FOCUS.x, FOCUS.y - 10, FOCUS.r * 1.1, FOCUS.r * 1.1);
+const members = DATA.nodes.filter(inSub);
+const mb = members.reduce((b, n) => ({ x0: Math.min(b.x0, n.x), x1: Math.max(b.x1, n.x), y0: Math.min(b.y0, n.y), y1: Math.max(b.y1, n.y) }), { x0: 1e9, x1: -1e9, y0: 1e9, y1: -1e9 });
+const Z2 = fit((mb.x0 + mb.x1) / 2, (mb.y0 + mb.y1) / 2 + 4, (mb.x1 - mb.x0) / 2 + 78, (mb.y1 - mb.y0) / 2 + 44);
+// A zoom towards a point: the scale moves geometrically and the centre closes in as 1/scale.
+function between(A, B, u) {
+  if (Math.abs(A.s - B.s) < 1e-9) return { x: mix(A.x, B.x, u), y: mix(A.y, B.y, u), s: A.s };
+  const s = A.s * Math.pow(B.s / A.s, u), k = (A.s / s - A.s / B.s) / (1 - A.s / B.s);
+  return { x: B.x + (A.x - B.x) * k, y: B.y + (A.y - B.y) * k, s };
+}
+const sx = (cam, x) => W / 2 + (x - cam.x) * cam.s, sy = (cam, y) => MAP_Y + (y - cam.y) * cam.s;
+
+// ---------- the timeline, in seconds
+const T = { build: 0, books: 3.1, sweepA: 3.7, sweepB: 5.5, toTopic: 8.2, atTopic: 10.0, toSub: 10.6, atSub: 12.4, verbs: 13.0,
+  say: [13.9, 15.7, 17.5, 19.3], sayEnd: 21.1, out: 21.2, card: 21.5, end: 24.9 };
+const SWEEP = 1.55;
+function camera(t) {
+  if (t < T.toTopic) return Z0;
+  if (t < T.toSub) return between(Z0, Z1, seg(t, T.toTopic, T.atTopic));
+  if (t < T.out) return between(Z1, Z2, seg(t, T.toSub, T.atSub));
+  return between(Z2, Z0, seg(t, T.out, T.out + 1.7));
+}
+
+// ---------- when each term and link shows up, and when each of the two other books reaches it
+const order = DATA.clusters.map((c, i) => [c, i]).sort((a, b) => (a[0].y + a[0].x * 0.4) - (b[0].y + b[0].x * 0.4));
+const topicAt = new Map(order.map(([c], k) => [c.id, 0.25 + 0.085 * k]));
+DATA.nodes.forEach((n) => { const c = topic.get(n.c); n.born = topicAt.get(n.c) + 0.55 * Math.hypot(n.x - c.x, n.y - c.y) / c.r + 0.12 * hash(n.i); });
+DATA.edges.forEach((e) => { e.born = 0.1 + 0.8 * (Math.max(e.a.born, e.b.born) - 0.25) + 0.3 * hash(e.i + 900); });   // the links draw in from the first moment
+const ORIGIN_A = { x: 150, y: 1100 }, ORIGIN_B = { x: 930, y: 1100 };   // where the two other books come from
+const far = Math.hypot(W, 1000);
+const reach = (o, x, y) => Math.hypot(sx(Z0, x) - o.x, sy(Z0, y) - o.y) / far;
+DATA.nodes.forEach((n) => { n.atA = T.sweepA + SWEEP * reach(ORIGIN_A, n.x, n.y); n.atB = T.sweepB + SWEEP * reach(ORIGIN_B, n.x, n.y); });
+DATA.edges.forEach((e) => { const x = (e.a.x + e.b.x) / 2, y = (e.a.y + e.b.y) / 2;
+  e.atA = T.sweepA + SWEEP * reach(ORIGIN_A, x, y); e.atB = T.sweepB + SWEEP * reach(ORIGIN_B, x, y); });
+// How far an item has gone to each book's colour at time t: [second, third] in 0..1
+const taken = (it, t) => [it.t1 ? seg(t, it.atA, it.atA + 0.28) : 0, it.t2 ? seg(t, it.atB, it.atB + 0.28) : 0];
+function colourOf(it, t, base) {            // base: [r, g, b]; the second book turns it blue, the third orange, both dark
+  const [a, b] = taken(it, t);
+  let c = a ? mixc(base, C.b2, a) : base;
+  if (b) c = mixc(c, it.t1 ? C.all : C.b3, b);
+  return css(c);
+}
+const dotBase = (t) => mixc(C.dot, C.dotLight, seg(t, T.books, T.books + 0.8));
+const weightOf = (it, t) => { const [a, b] = taken(it, t); return it.t1 && it.t2 ? 1 + 1.0 * a + 1.1 * b : 1 + 1.0 * Math.max(a, b); };
+
+// ---------- text
+function text(str, x, y, { size = 24, weight = 500, colour = P.ink, align = "left", family = FONT, italic = false, alpha = 1, halo = 0, spacing = 0 } = {}) {
+  if (alpha <= 0.003) return;
+  ctx.save();
+  ctx.globalAlpha *= alpha;
+  ctx.font = `${italic ? "italic " : ""}${weight} ${size}px ${family}`;
+  ctx.textAlign = align; ctx.textBaseline = "alphabetic";
+  if (spacing) ctx.letterSpacing = `${spacing}px`;
+  if (halo) { ctx.lineJoin = "round"; ctx.lineWidth = halo; ctx.strokeStyle = P.bg; ctx.strokeText(str, x, y); }
+  ctx.fillStyle = colour; ctx.fillText(str, x, y);
+  ctx.restore();
+}
+const widthOf = (str, size, weight = 500, family = FONT, italic = false) => { ctx.font = `${italic ? "italic " : ""}${weight} ${size}px ${family}`; return ctx.measureText(str).width; };
+function wrap(str, size, weight, max) {            // at most two lines, split nearest the middle
+  if (widthOf(str, size, weight) <= max) return [str];
+  const words = str.split(" "); let best = [str], gap = 1e9;
+  for (let i = 1; i < words.length; i++) { const a = words.slice(0, i).join(" "), b = words.slice(i).join(" ");
+    const g = Math.abs(widthOf(a, size, weight) - widthOf(b, size, weight)); if (g < gap) { gap = g; best = [a, b]; } }
+  return best;
+}
+const hit = (a, b) => a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1;
+const radiusAt = (n, cam) => (2.5 + 1.05 * Math.sqrt(n.deg)) * Math.pow(cam.s / Z0.s, 0.46);
+
+// Names are placed once, for the view they belong to: the spot that covers the fewest dots and other names.
+function placeNames(items, cam, { size, weight, max, spots, avoid = [] }) {
+  const taken = DATA.nodes.map((n) => { const r = radiusAt(n, cam) + 2, x = sx(cam, n.x), y = sy(cam, n.y); return { x0: x - r, x1: x + r, y0: y - r, y1: y + r }; }).concat(avoid);
+  const placed = [], names = [];                    // a name on another name costs far more than a name on a dot
+  for (const it of items) {
+    const lines = wrap(it.name, size, weight, max), w = Math.max(...lines.map((l) => widthOf(l, size, weight))), h = lines.length * size * 1.18;
+    let best = null;
+    for (const [k, spot] of spots(it, w, h).entries()) {
+      const box = { x0: spot.x - w / 2 - 5, x1: spot.x + w / 2 + 5, y0: spot.y - h - 2, y1: spot.y + 6 };
+      const out = box.x0 < 14 || box.x1 > W - 14 ? 50 : 0;
+      const cost = out + taken.filter((b) => hit(box, b)).length * 3 + names.filter((b) => hit(box, b)).length * 60 + (spot.pen || 0) + k * 0.01;
+      if (!best || cost < best.cost) best = { cost, spot, box };
+    }
+    names.push(best.box);
+    placed.push({ it, lines, x: best.spot.x, y: best.spot.y, size, weight });
+  }
+  return placed;
+}
+const shifts = [0, 30, -30, 60, -60, 95, -95, 130, -130, 170, -170];
+const topicNames = placeNames(DATA.clusters.map((c) => ({ ...c, ax: sx(Z0, c.x), top: sy(Z0, c.y - c.r), bottom: sy(Z0, c.y + c.r) })), Z0, { size: 26, weight: 650, max: 260,
+  spots: (c) => [...[0, 10, -12, 24, 40].flatMap((dy) => shifts.map((dx) => ({ x: c.ax + dx, y: c.top - 8 - dy }))), ...[30, 44, 60].flatMap((dy) => shifts.map((dx) => ({ x: c.ax + dx, y: c.bottom + dy, pen: 10 })))] });   // a name reads as its topic's when it is above it
+const subNames = placeNames(FOCUS.subs.map((s) => ({ ...s, ax: sx(Z1, s.x), top: sy(Z1, s.y - s.r), bottom: sy(Z1, s.y + s.r) })), Z1, { size: 29, weight: 650, max: 320,
+  spots: (s) => [...[0, 14, -14].flatMap((dy) => [0, 40, -40, 80, -80].map((dx) => ({ x: s.ax + dx, y: s.top - 6 - dy }))), { x: s.ax, y: s.bottom + 34 }] });
+const BOW = 0.14;
+function arc(e, cam) {                              // a mild arc to the right of the way the link reads, as the map draws it
+  const x1 = sx(cam, e.a.x), y1 = sy(cam, e.a.y), x2 = sx(cam, e.b.x), y2 = sy(cam, e.b.y);
+  const cx = (x1 + x2) / 2 - (y2 - y1) * BOW, cy = (y1 + y2) / 2 + (x2 - x1) * BOW;
+  return { x1, y1, x2, y2, cx, cy };
+}
+const along = (q, u) => ({ x: (1 - u) * (1 - u) * q.x1 + 2 * u * (1 - u) * q.cx + u * u * q.x2, y: (1 - u) * (1 - u) * q.y1 + 2 * u * (1 - u) * q.cy + u * u * q.y2 });
+const around = (p, r) => ({ x0: p.x - r, x1: p.x + r, y0: p.y - r, y1: p.y + r });
+const subLinks = DATA.edges.filter((e) => inSub(e.a) && inSub(e.b));
+const onLinks = DATA.edges.filter((e) => inSub(e.a) || inSub(e.b)).flatMap((e) => { const q = arc(e, Z2);
+  return Array.from({ length: 13 }, (_, i) => around(along(q, 0.14 + 0.06 * i), inSub(e.a) && inSub(e.b) ? 11 : 6)); });
+const termNames = placeNames(members.slice().sort((a, b) => b.deg - a.deg).map((n) => ({ ...n, px: sx(Z2, n.x), py: sy(Z2, n.y), pr: radiusAt(n, Z2) })), Z2, { size: 30, weight: 620, max: 275, avoid: onLinks,
+  spots: (n, w, h) => [{ x: n.px, y: n.py + n.pr + 10 + h }, { x: n.px, y: n.py - n.pr - 12 }, { x: n.px + n.pr + 14 + w / 2, y: n.py + h / 2 - 4 }, { x: n.px - n.pr - 14 - w / 2, y: n.py + h / 2 - 4 },
+    { x: n.px + w / 2 + 6, y: n.py + n.pr + 12 + h }, { x: n.px - w / 2 - 6, y: n.py + n.pr + 12 + h }, { x: n.px + w / 2 + 6, y: n.py - n.pr - 12 }, { x: n.px - w / 2 - 6, y: n.py - n.pr - 12 }] });
+// Offsets from each term, so a name rides with its dot while the camera moves
+termNames.forEach((p) => { p.dx = p.x - p.it.px; p.dy = p.y - p.it.py; });
+const VERB = 25;
+{ const boxes = termNames.flatMap((p) => p.lines.map((l, i) => { const w = widthOf(l, p.size, p.weight), y = p.y - (p.lines.length - 1 - i) * p.size * 1.18;
+    return { x0: p.x - w / 2 - 6, x1: p.x + w / 2 + 6, y0: y - p.size, y1: y + 8 }; })).concat(members.map((n) => around({ x: sx(Z2, n.x), y: sy(Z2, n.y) }, radiusAt(n, Z2) + 8)));
+  for (const e of subLinks.slice().sort((a, b) => b.state - a.state)) {
+    const q = arc(e, Z2), len = Math.hypot(q.x2 - q.x1, q.y2 - q.y1), w = widthOf(e.verb, VERB, 650, FONT, true) + 10; let best = null;
+    for (const [k, u] of [0.5, 0.43, 0.57, 0.36, 0.64, 0.3, 0.7].entries()) {
+      const pts = [-0.5, -0.25, 0, 0.25, 0.5].map((j) => { const p = along(q, clamp(u + (j * w) / len, 0.03, 0.97)); return { x: p.x, y: p.y - 6 }; });
+      const cost = pts.filter((p) => boxes.some((b) => p.x > b.x0 - 9 && p.x < b.x1 + 9 && p.y > b.y0 - 9 && p.y < b.y1 + 9)).length + k * 0.02;
+      if (!best || cost < best.cost) best = { cost, u, pts };
+    }
+    e.spot = best.u; boxes.push(...best.pts.map((p) => around(p, 12)));
+  } }
+
+// ---------- the links that are read out, and what is said of each
+const SAID = DATA.dive.read
+  .map(([s, t]) => { const e = DATA.edges.find((e) => e.s === s && e.t === t); if (!e) throw new Error(`no link ${s} -> ${t}`); return e; });
+const NOTE = [DATA.dive.only, "Book B states this too.", "Book M states this too.", "All 3 books state this."];
+
+// ---------- one frame
+// The times in T are those of the first cut, which moved on before its words could be read: DATA.slow stretches them all.
+window.DURATION = T.end * DATA.slow;
+window.renderFrame = function (time) {
+  const t = time / DATA.slow;
+  const cam = camera(t), z = cam.s / Z0.s;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = P.bg; ctx.fillRect(0, 0, W, H);
+
+  const focus = t < T.out ? seg(t, T.toTopic + 0.4, T.atTopic) : 1 - seg(t, T.out, T.out + 0.9);      // 1 while a topic is open
+  const deep = t < T.out ? seg(t, T.toSub + 0.4, T.atSub) : 1 - seg(t, T.out, T.out + 0.7);           // 1 while a sub-topic is open
+  const verbs = t < T.out ? seg(t, T.verbs, T.verbs + 0.7) : 1 - seg(t, T.out, T.out + 0.4);
+  const k = T.say.findIndex((s, i) => t >= s && t < (T.say[i + 1] || T.sayEnd));
+  const said = k >= 0 ? SAID[k] : null, sayU = k >= 0 ? band(t, T.say[k], T.say[k + 1] || T.sayEnd, 0.25) : 0;
+
+  // topics: soft circles
+  for (const c of DATA.clusters) {
+    const a = c === FOCUS ? 1 : 1 - 0.55 * focus;
+    ctx.globalAlpha = a; ctx.fillStyle = P.bubble; ctx.strokeStyle = P.bubbleLine; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(sx(cam, c.x), sy(cam, c.y), c.r * cam.s, 0, 7); ctx.fill(); ctx.stroke();
+  }
+  // the open topic's sub-topics
+  const subsA = focus * (1 - 0.0 * deep);
+  if (subsA > 0.003) for (const s of FOCUS.subs) {
+    ctx.globalAlpha = subsA * (s === SUB ? 1 : 1 - 0.6 * deep); ctx.fillStyle = THEME === "dark" ? "#1a2633" : "#ffffff"; ctx.strokeStyle = P.line; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(sx(cam, s.x), sy(cam, s.y), s.r * cam.s, 0, 7); ctx.fill(); ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+
+  // links, the plain ones first and the ones more books state on top
+  const drawLink = (e) => {
+    const born = seg(t, e.born, e.born + 0.5); if (born <= 0.003) return;
+    const q = arc(e, cam), w = weightOf(e, t), touches = inSub(e.a) || inSub(e.b), inside = inSub(e.a) && inSub(e.b);
+    const compared = seg(t, T.books, T.books + 0.8);
+    // A link between two topics is kept faint and thin: drawn as strongly as the links inside a topic, the long ones
+    // crossed the whole map and hid what each topic shows.
+    let a = born * (e.within ? 0.95 : mix(0.2, e.state === 0 ? 0.06 : e.state === 3 ? 0.2 : 0.13, compared));
+    if (!(inFocus(e.a) && inFocus(e.b))) a *= 1 - 0.88 * focus;
+    if (!inside) a *= 1 - (touches ? 0.55 : 0.8) * deep;
+    if (said && e !== said) a *= 1 - 0.45 * sayU;
+    const boost = e === said ? 1 + 0.45 * sayU : 1;
+    ctx.globalAlpha = clamp(a); ctx.strokeStyle = colourOf(e, t, C.link);
+    ctx.lineWidth = (0.7 + 0.45 * w) * Math.pow(z, 0.5) * boost * (e.within ? 1 : 0.55); ctx.lineCap = "round";
+    ctx.beginPath(); ctx.moveTo(q.x1, q.y1); ctx.quadraticCurveTo(q.cx, q.cy, q.x2, q.y2); ctx.stroke();
+    if (inside && verbs > 0.003) {                       // an arrowhead once the links are being read
+      const rb = radiusAt(e.b, cam) + 3, len = Math.hypot(q.x2 - q.cx, q.y2 - q.cy), ux = (q.x2 - q.cx) / len, uy = (q.y2 - q.cy) / len;
+      const tip = { x: q.x2 - ux * rb, y: q.y2 - uy * rb }, h = 15 * boost;
+      ctx.globalAlpha = clamp(a) * verbs; ctx.fillStyle = ctx.strokeStyle;
+      ctx.beginPath(); ctx.moveTo(tip.x, tip.y); ctx.lineTo(tip.x - ux * h - uy * h * 0.5, tip.y - uy * h + ux * h * 0.5); ctx.lineTo(tip.x - ux * h + uy * h * 0.5, tip.y - uy * h - ux * h * 0.5); ctx.closePath(); ctx.fill();
+    }
+  };
+  for (const state of [0, 1, 2, 3]) for (const e of DATA.edges) if (e.state === state) drawLink(e);
+
+  // the two other books arriving: a faint wave from where each one enters
+  for (const [start, o, colour] of [[T.sweepA, ORIGIN_A, P.b2], [T.sweepB, ORIGIN_B, P.b3]]) {
+    const u = lin(t, start, start + SWEEP + 0.3); if (u <= 0 || u >= 1) continue;
+    ctx.globalAlpha = 0.5 * Math.sin(Math.PI * u) ; ctx.strokeStyle = colour; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.arc(o.x, o.y, u * far * 1.15, Math.PI, 2 * Math.PI); ctx.stroke();
+    ctx.globalAlpha = 0.10 * Math.sin(Math.PI * u); ctx.lineWidth = 26; ctx.stroke();
+  }
+
+  // terms
+  for (const n of DATA.nodes) {
+    let a = 1; if (!inFocus(n)) a *= 1 - 0.7 * focus; if (!inSub(n)) a *= 1 - 0.55 * deep;
+    const lit = said && (n === said.a || n === said.b) ? sayU : 0;
+    const r = radiusAt(n, cam) * (1 + 0.16 * lit), x = sx(cam, n.x), y = sy(cam, n.y);
+    ctx.globalAlpha = a; ctx.fillStyle = colourOf(n, t, dotBase(t)); ctx.strokeStyle = P.bg; ctx.lineWidth = Math.max(1.2, 1.3 * Math.pow(z, 0.4));
+    ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill(); ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+
+  // names: topics in the wide view, sub-topics in the topic, terms in the sub-topic
+  const wide = t < T.out ? 1 - seg(t, T.toTopic, T.toTopic + 0.5) : 0;
+  if (wide > 0.003) for (const p of topicNames) p.lines.forEach((l, i) =>
+    text(l, p.x, p.y - (p.lines.length - 1 - i) * p.size * 1.18, { size: p.size, weight: p.weight, align: "center", alpha: wide, halo: 7 }));
+  const mid = seg(t, T.atTopic - 0.5, T.atTopic) * (1 - seg(t, T.toSub, T.toSub + 0.5));
+  if (mid > 0.003) for (const p of subNames) p.lines.forEach((l, i) =>
+    text(l, p.x, p.y - (p.lines.length - 1 - i) * p.size * 1.18, { size: p.size, weight: p.weight, align: "center", alpha: mid, halo: 7, colour: p.it.id === SUB.id ? P.ink : P.ink2 }));
+  const near = t < T.out ? seg(t, T.atSub - 0.45, T.atSub + 0.1) : 1 - seg(t, T.out, T.out + 0.35);
+  if (near > 0.003) for (const p of termNames) {
+    const x = sx(cam, p.it.x) + p.dx, y = sy(cam, p.it.y) + p.dy, lit = said && (p.it.id === said.s || p.it.id === said.t) ? sayU : 0;
+    p.lines.forEach((l, i) => text(l, x, y - (p.lines.length - 1 - i) * p.size * 1.18,
+      { size: p.size, weight: p.weight + 80 * lit, align: "center", alpha: near * (said ? 0.55 + 0.45 * (lit || (1 - sayU)) : 1), halo: 8 }));
+  }
+  // the links' verbs, along their lines
+  if (verbs > 0.003) for (const e of subLinks) {
+    const q = arc(e, cam), u = e.spot || 0.5, p = along(q, u), p2 = along(q, u + 0.02);
+    let ang = Math.atan2(p2.y - p.y, p2.x - p.x); if (ang > Math.PI / 2 || ang < -Math.PI / 2) ang += Math.PI;
+    const lit = e === said ? sayU : 0;
+    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(ang);
+    text(e.verb, 0, -9, { size: VERB + 4 * lit, weight: 650, italic: true, align: "center", halo: 8, alpha: verbs * (said && e !== said ? 1 - 0.6 * sayU : 1),
+      colour: e.state === 0 ? P.ink2 : colourOf(e, t, C.link) });
+    ctx.restore();
+  }
+
+  header(t);
+  footer(t, said, k, sayU);
+  endCard(t);
+};
+
+// ---------- the words above the map
+const TITLES = [[T.books, T.toTopic - 0.1, ["Two other textbooks,", "checked against it"]],
+  [T.toTopic, T.verbs - 0.1, ["Open a topic,", "then a sub-topic"]], [T.verbs, T.out, ["Every link reads", "as a sentence"]]];
+function header(t) {
+  const fade = 1 - seg(t, T.card - 0.3, T.card + 0.3);
+  ctx.globalAlpha = 1; ctx.fillStyle = P.bg; ctx.fillRect(0, 0, W, 196);
+  const g = ctx.createLinearGradient(0, 196, 0, 232); g.addColorStop(0, `rgba(${P.veil},1)`); g.addColorStop(1, `rgba(${P.veil},0)`); ctx.fillStyle = g; ctx.fillRect(0, 196, W, 36);
+  text("DESIGNED EXPERIMENTS  ·  CONCEPT MAP", 48, 62, { size: 21, weight: 600, colour: P.muted, spacing: 1.6, alpha: fade });
+  const first = (1 - seg(t, T.books - 0.5, T.books - 0.1)) * fade;
+  text("factori.al/map", 46, 130, { size: 66, weight: 720, family: DISPLAY, alpha: first, spacing: -1.4 });
+  text("One chapter of a textbook, as a map of its ideas", 48, 176, { size: 28, weight: 500, colour: P.ink2, alpha: first });
+  for (const [a, b, lines] of TITLES) { const u = band(t, a, b, 0.4) * fade;
+    lines.forEach((l, i) => text(l, 48, 118 + i * 56, { size: 48, weight: 650, family: DISPLAY, alpha: u, spacing: -0.6 })); }
+  venn(t, fade);
+}
+// Three books and what they share: this one, then the second and the third move in over it
+function venn(t, fade) {
+  const a = seg(t, T.books, T.books + 0.5) * fade; if (a <= 0.003) return;
+  const cx = 930, cy = 112, r = 46, inA = seg(t, T.sweepA - 0.5, T.sweepA + 0.3), inB = seg(t, T.sweepB - 0.5, T.sweepB + 0.3);
+  const c0 = { x: cx, y: cy - 22 }, cA = { x: cx - 27 - 90 * (1 - inA), y: cy + 24 }, cB = { x: cx + 27 + 90 * (1 - inB), y: cy + 24 };
+  const ring = (c, colour, al) => { ctx.globalAlpha = a * al; ctx.fillStyle = withAlpha(colour, 0.13); ctx.strokeStyle = colour; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, 7); ctx.fill(); ctx.stroke(); };
+  ring(c0, P.dot, 1); ring(cA, P.b2, inA); ring(cB, P.b3, inB);
+  const core = seg(t, T.sweepB + 0.5, T.sweepB + 1.3);                           // what all three share
+  if (core > 0.003) { ctx.save(); ctx.globalAlpha = a * core;
+    for (const c of [c0, cA]) { ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, 7); ctx.clip(); }
+    ctx.fillStyle = P.all; ctx.beginPath(); ctx.arc(cB.x, cB.y, r, 0, 7); ctx.fill(); ctx.restore(); }
+  ctx.globalAlpha = 1;
+}
+
+// ---------- the panel below the map
+function panel(alpha) { ctx.globalAlpha = alpha; ctx.fillStyle = P.panel; ctx.strokeStyle = P.line; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.roundRect(40, 1076, 1000, 196, 18); ctx.fill(); ctx.stroke(); ctx.globalAlpha = 1; }
+function sample(x, y, colour, width, alpha) { ctx.globalAlpha = alpha; ctx.strokeStyle = colour; ctx.lineWidth = width; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 58, y); ctx.stroke(); ctx.globalAlpha = 1; }
+function footer(t, said, k, sayU) {
+  const fade = 1 - seg(t, T.card - 0.3, T.card + 0.3);
+  ctx.fillStyle = P.bg; ctx.globalAlpha = 1; ctx.fillRect(0, 1050, W, 300);
+  const g = ctx.createLinearGradient(0, 1014, 0, 1050); g.addColorStop(0, `rgba(${P.veil},0)`); g.addColorStop(1, `rgba(${P.veil},1)`); ctx.fillStyle = g; ctx.fillRect(0, 1014, W, 36);
+  panel(fade);
+  const label = (s, a) => text(s, 72, 1118, { size: 20, weight: 650, colour: P.muted, spacing: 1.5, alpha: a * fade });
+  // 1: what a dot and a line are
+  let a = band(t, -1, T.books, 0.35);
+  label("THE MAP", a);
+  if (a > 0.003) { ctx.globalAlpha = a * fade; ctx.fillStyle = P.dot; ctx.beginPath(); ctx.arc(84, 1168, 10, 0, 7); ctx.fill(); ctx.globalAlpha = 1;
+    text("Each dot is a concept from the chapter.", 112, 1178, { size: 30, weight: 500, alpha: a * fade });
+    sample(72, 1220, P.link, 3.5, a * fade); text("Each line is a link the book states.", 148, 1230, { size: 30, weight: 500, alpha: a * fade }); }
+  // 2: the three books
+  a = band(t, T.books, T.toTopic, 0.35);
+  label("WHO ELSE STATES IT", a);
+  const rows = [[72, 1166, P.link, 3.5, "This book", T.books], [540, 1166, P.b2, 6, "Book B", T.sweepA - 0.3],
+    [72, 1222, P.b3, 6, "Book M", T.sweepB - 0.3], [540, 1222, P.all, 9.5, "All 3", T.sweepB + 0.5]];
+  for (const [x, y, colour, w, s, at] of rows) { const u = a * seg(t, at, at + 0.4) * fade; sample(x, y, colour, w, u); text(s, x + 78, y + 10, { size: 30, weight: 520, alpha: u }); }
+  // 3: where we are
+  a = band(t, T.toTopic, T.verbs, 0.35);
+  label("WHERE YOU ARE", a);
+  const crumbs = [["All topics", T.toTopic], [FOCUS.name, T.toTopic + 0.9], [SUB.name, T.toSub + 0.9]]; let x = 72;
+  crumbs.forEach(([s, at], i) => { const u = a * seg(t, at, at + 0.4) * fade, last = i === crumbs.length - 1 && t > T.toSub + 0.9, size = 29;
+    if (i) { text("›", x, 1178, { size: 30, weight: 500, colour: P.muted, alpha: u }); x += 30; }
+    text(s, x, 1178, { size, weight: last || (i === 1 && t < T.toSub + 0.9) ? 680 : 500, colour: last || (i === 1 && t < T.toSub + 0.9) ? P.ink : P.ink2, alpha: u }); x += widthOf(s, size, 680) + 16; });
+  text("Terms that link to each other sit together: the links set the topics.", 72, 1232, { size: 26, weight: 450, colour: P.ink2, alpha: a * seg(t, T.toTopic + 1.2, T.toTopic + 1.7) * fade });
+  // 4: the sentence a link makes
+  a = t >= T.verbs ? (1 - seg(t, T.out - 0.1, T.out + 0.3)) * seg(t, T.verbs, T.verbs + 0.4) : 0;
+  label("READ A LINK", a);
+  if (a > 0.003 && !said) text("Turn the link names on, and each line says what it means.", 72, 1180, { size: 29, weight: 500, colour: P.ink2, alpha: a * (1 - seg(t, T.say[0] - 0.3, T.say[0])) * fade });
+  if (said) { let x = 72; const u = a * sayU * fade, colour = said.state === 0 ? P.ink2 : [P.b2, P.b3, P.all][said.state - 1];
+    const parts = [[said.a.name, { weight: 700 }], [said.verb, { weight: 600, italic: true, colour }], [said.b.name, { weight: 700 }]];
+    const full = parts.reduce((w, [s, o]) => w + widthOf(s, 36, o.weight, FONT, o.italic) + 14, -14), size = Math.min(36, (36 * 936) / full);
+    for (const [s, o] of parts) { text(s, x, 1182, { size, alpha: u, ...o }); x += widthOf(s, size, o.weight, FONT, o.italic) + 14 * (size / 36); }
+    sample(72, 1226, said.state === 0 ? P.link : colour, [3.5, 6, 6, 9.5][said.state], u); text(NOTE[said.state], 148, 1236, { size: 27, weight: 480, colour: P.ink2, alpha: u }); }
+  // the line at the foot
+  text("factori.al/map", 48, 1318, { size: 26, weight: 650, alpha: fade * seg(t, T.books - 0.3, T.books + 0.2) });
+  text("from the open textbook Process Improvement using Data", W - 48, 1318, { size: 21, weight: 450, colour: P.muted, align: "right", alpha: fade });
+}
+
+// ---------- the last card
+function endCard(t) {
+  const a = seg(t, T.card, T.card + 0.6); if (a <= 0.003) return;
+  ctx.globalAlpha = 0.86 * a; ctx.fillStyle = P.bg; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1;
+  text("DESIGNED EXPERIMENTS  ·  CONCEPT MAP", W / 2, 470, { size: 21, weight: 600, colour: P.muted, spacing: 1.6, align: "center", alpha: a });
+  text("Explore the map", W / 2, 560, { size: 58, weight: 650, family: DISPLAY, align: "center", alpha: a, spacing: -0.8 });
+  text("factori.al/map", W / 2, 680, { size: 96, weight: 720, family: DISPLAY, align: "center", alpha: seg(t, T.card + 0.25, T.card + 0.85), spacing: -2 });
+  const b = seg(t, T.card + 0.7, T.card + 1.3);
+  text("Build one from your own texts:", W / 2, 790, { size: 32, weight: 520, colour: P.ink2, align: "center", alpha: b });
+  text("the how-to is linked in the post.", W / 2, 834, { size: 32, weight: 520, colour: P.ink2, align: "center", alpha: b });
+  const y = 940, items = [[P.link, 3.5, "this book"], [P.b2, 6, "Book B"], [P.b3, 6, "Book M"], [P.all, 9.5, "All 3"]]; let x = 170;
+  for (const [colour, w, s] of items) { sample(x, y, colour, w, b); text(s, x + 70, y + 9, { size: 25, weight: 520, colour: P.ink2, alpha: b }); x += 70 + widthOf(s, 25, 520) + 44; }
+}
+</script>

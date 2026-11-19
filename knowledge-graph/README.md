@@ -36,6 +36,7 @@ To do the same with your own texts, see [`HOWTO.md`](HOWTO.md).
 | `doe_kg.json`, `doe_kg_map.json` | Generated: the graph, then with topics and positions (the data the map draws). |
 | `doe_kg.cypher` | Generated: the graph as Cypher, for an empty Neo4j database. |
 | `audit/` | The November 2026 accuracy review, and the one-off scripts that reshaped the graph. |
+| `video/` | A short video of the map, drawn from `doe_kg_map.json`: the scripts only. See [`video/README.md`](video/README.md). |
 
 ## Rebuild
 
