@@ -28,7 +28,7 @@ Three constraints rule out the obvious answer (drop in Google Analytics):
    tracking; adding intrusive instrumentation now would betray that
    posture.
 3. **Free-only budget; full server ownership.** The owner runs
-   `139.162.148.246` (Hetzner), has shell access, holds the
+   `178.104.167.195` (Hetzner), has shell access, holds the
    pre-Hetzner Apache logs from earlier hosting. There is no business
    case for a paid SaaS like Plausible Cloud or Fathom.
 

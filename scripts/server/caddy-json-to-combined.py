@@ -60,7 +60,14 @@ def _convert(line: str) -> str | None:
     req = obj.get("request") or {}
     if not isinstance(req, dict):
         return None
-    ip = req.get("remote_ip") or _strip_port(req.get("remote_addr") or "") or "-"
+    # client_ip is the visitor once Caddy trusts the Cloudflare ranges;
+    # remote_ip is the immediate peer (a Cloudflare edge address behind the proxy).
+    ip = (
+        req.get("client_ip")
+        or req.get("remote_ip")
+        or _strip_port(req.get("remote_addr") or "")
+        or "-"
+    )
     method = req.get("method") or "-"
     path = req.get("uri") or "-"
     status = obj.get("status")

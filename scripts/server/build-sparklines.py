@@ -228,6 +228,7 @@ def parse_caddy_json(line: str) -> Hit | None:
         {"ts": 1746866243.123,
          "msg": "handled request",
          "request": {
+            "client_ip": "198.51.100.7",         # visitor, with trusted_proxies
             "remote_ip": "203.0.113.5",          # Caddy ≥ 2.7
             "remote_addr": "203.0.113.5:54321",  # older Caddy
             "method": "GET",
@@ -256,7 +257,9 @@ def parse_caddy_json(line: str) -> Hit | None:
     if not isinstance(req, dict):
         return None
 
-    ip = req.get("remote_ip") or ""
+    # client_ip is the visitor once Caddy trusts the Cloudflare ranges;
+    # remote_ip is the immediate peer (a Cloudflare edge address behind the proxy).
+    ip = req.get("client_ip") or req.get("remote_ip") or ""
     if not ip:
         addr = req.get("remote_addr") or ""
         # remote_addr is "ip:port"; rsplit handles IPv6 forms like
