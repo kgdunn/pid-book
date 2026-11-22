@@ -258,7 +258,7 @@ docker run -d \
   arp242/goatcounter:latest
 
 # Front-end via Caddy, on a subdomain or path. Subdomain is simpler:
-# add an A record for stats.learnche.org → 139.162.148.246, then add
+# add an A record for stats.learnche.org → 178.104.167.195, then add
 # this site block to /etc/caddy/Caddyfile (Caddy auto-provisions the
 # TLS cert via ACME; no certbot needed):
 cat >>/etc/caddy/Caddyfile <<'EOF'

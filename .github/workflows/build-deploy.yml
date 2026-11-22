@@ -116,11 +116,20 @@ jobs:
           test -s _build/html/contents
           test -s _build/latex/PID.pdf
 
+      # The site moved from Linode to Hetzner on 2026-11-22. The deploy key is
+      # restricted on the server to rsync into the learnche.org site root
+      # (`restrict,command="/usr/bin/rrsync -wo /home/deploy/learnche/site"` in
+      # authorized_keys), so the remote path `/pid/` below is relative to that
+      # root. With an unrestricted key the same path points at a directory the
+      # deploy user cannot create, so a misconfigured key fails instead of
+      # writing somewhere else. Override the host with the repository variable
+      # LEARNCHE_DEPLOY_HOST.
       - name: Configure SSH for learnche.org
         if: github.event_name != 'pull_request'
         env:
           SSH_PRIVATE_KEY: ${{ secrets.LEARNCHE_SSH_KEY }}
           SSH_KNOWN_HOSTS: ${{ secrets.LEARNCHE_KNOWN_HOSTS }}
+          DEPLOY_HOST: ${{ vars.LEARNCHE_DEPLOY_HOST || '178.104.167.195' }}
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
@@ -129,18 +138,19 @@ jobs:
           if [ -n "$SSH_KNOWN_HOSTS" ]; then
             printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           else
-            ssh-keyscan -H 139.162.148.246 >> ~/.ssh/known_hosts
+            ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
           fi
           chmod 600 ~/.ssh/known_hosts
 
-      - name: Deploy to learnche.org [139.162.148.246] (staging)
+      - name: Deploy to learnche.org (Hetzner)
         if: github.event_name != 'pull_request'
         env:
           SSH_USER: ${{ secrets.LEARNCHE_SSH_USER }}
+          DEPLOY_HOST: ${{ vars.LEARNCHE_DEPLOY_HOST || '178.104.167.195' }}
         run: |
           rsync -avz --delete-after \
             _build/html/ \
-            "$SSH_USER@139.162.148.246:/var/www/learnche.org/pid/"
+            "$SSH_USER@$DEPLOY_HOST:/pid/"
           rsync -avz \
             _build/latex/PID.pdf \
-            "$SSH_USER@139.162.148.246:/var/www/learnche.org/pid/"
+            "$SSH_USER@$DEPLOY_HOST:/pid/"

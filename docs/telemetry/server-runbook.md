@@ -1,7 +1,8 @@
 # Server-side runbook
 
-Everything that runs on the production server (`139.162.148.246`,
-Hetzner) to make the telemetry layer work end to end. Read this if
+Everything that runs on the production server (`178.104.167.195`,
+Hetzner, since 2026-11-22; before that the site ran on Apache at
+`139.162.148.246`, Linode) to make the telemetry layer work end to end. Read this if
 you are setting up a new server, troubleshooting why
 `/_stats/sparklines.json` is stale, or porting the pipeline to a
 different host.
@@ -49,6 +50,23 @@ your install differs.
 
 /etc/cron.d/pid-book-stats    # nightly cron entry
 ```
+
+On the Hetzner host the site root is `/home/deploy/learnche/site`, owned by
+the `deploy` user. `/var/www/learnche.org` is a symlink to it, so every path
+in this runbook and every default in `scripts/server/` works unchanged.
+
+CI deploys with its own SSH key, limited on the server to rsync into the site
+root. Its line in `/home/deploy/.ssh/authorized_keys` is:
+
+```
+restrict,command="/usr/bin/rrsync -wo /home/deploy/learnche/site" ssh-ed25519 AAAA... pid-book-deploy
+```
+
+`rrsync` reads the remote path `/pid/` in `build-deploy.yml` as relative to
+that root. The repository secrets are `LEARNCHE_SSH_KEY` (the private key),
+`LEARNCHE_SSH_USER` (`deploy`) and `LEARNCHE_KNOWN_HOSTS` (the host's
+`ssh-keyscan` line); the repository variable `LEARNCHE_DEPLOY_HOST`
+overrides the host address.
 
 The git checkout at `/opt/pid-book` exists so the server uses the
 **same** scripts that ship in the repo. To update the scripts:
@@ -153,12 +171,13 @@ learnche.org {
 
     # Per-host access log. JSON encoder is the default; we keep it.
     # Retention must be ≥ the sparkline window (default 365 days; see
-    # sparklines.conf.example). 400 days = 365 + ~5 weeks of slack.
+    # sparklines.conf.example). 1825 days matches the 5 years the Apache
+    # server kept.
     log {
         output file /var/log/caddy/learnche.org.access.log {
             roll_size 50MiB
-            roll_keep 400
-            roll_keep_for 400d
+            roll_keep 2000
+            roll_keep_for 1825d
         }
         format json
     }
@@ -171,13 +190,30 @@ Key points:
   pipeline depends on this; if you ever switch to a `transform` /
   `console` formatter, update `caddy-json-to-combined.py` or set the
   Caddyfile back to `json`.
-* **`roll_size` / `roll_keep` / `roll_keep_for`** — Caddy rotates the
-  log itself. The 400-day retention is ≥ the 365-day sparkline window
-  with ~5 weeks of slack. Note that the current Apache server keeps 5
-  years (`rotate 1825`), so migrating to this Caddy block as written
-  would start discarding history beyond ~13 months. Raise
-  `roll_keep_for` to match before cutting over if you want to keep the
-  longer archive; logs dropped at rotation cannot be recovered.
+* **`roll_size` / `roll_keep` / `roll_keep_for`**: Caddy rotates the
+  log itself. 1825 days matches the 5 years (`rotate 1825`) the Apache
+  server kept, and is longer than the 365-day sparkline window. Logs
+  dropped at rotation cannot be recovered.
+* **Real client IPs behind Cloudflare.** learnche.org is proxied by
+  Cloudflare, so the peer Caddy sees is a Cloudflare edge address. Caddy
+  records the visitor in the log's `client_ip` field only when it trusts
+  the Cloudflare ranges, set once in the global options block at the top
+  of the Caddyfile:
+
+  ```caddyfile
+  {
+      servers {
+          trusted_proxies static <ranges from https://www.cloudflare.com/ips-v4 and ips-v6>
+          client_ip_headers Cf-Connecting-Ip
+      }
+  }
+  ```
+
+  `build-sparklines.py` and `caddy-json-to-combined.py` read `client_ip`
+  first and fall back to `remote_ip`. Without the block every visitor
+  looks like one of a few Cloudflare addresses and the sparkline dedup
+  undercounts, as it did on Apache before 2026-05-24. Refresh the ranges
+  when Cloudflare updates its list.
 * **`/_stats/*` handle** — same-origin under `learnche.org` so the
   sidebar `fetch("/_stats/sparklines.json")` does not need CORS
   headers. The 1-hour cache is the staleness budget for browser
