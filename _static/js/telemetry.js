@@ -255,8 +255,13 @@
   }
 
   // 1. Path normalisation: extensionless URLs, fold trailing slash and /index.
+  //    The book's root URL (/pid/) serves the contents page itself, so a URL
+  //    ending in a slash counts under its canonical page (/pid/contents).
   function normPath() {
-    var p = location.pathname.replace(/\/+$/, "") || "/";
+    var p = location.pathname;
+    var canon = document.querySelector('link[rel="canonical"]');
+    if (/\/$/.test(p) && canon) p = new URL(canon.href, location.href).pathname;
+    p = p.replace(/\/+$/, "") || "/";
     p = p.replace(/\.html?$/i, "").replace(/\/index$/, "");
     return p + location.search;
   }
